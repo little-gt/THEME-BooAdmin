@@ -1,0 +1,566 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   1. 核心变量定义 (Design Tokens)
+   ========================================================================== */
+:root {
+    /* 品牌色 - 参考 Discord/Twitch 的清新风格 */
+    --primary-color: #6c5ce7;
+    --primary-hover: #5b4cc4;
+    --primary-light: #a29bfe;
+    --primary-soft: rgba(108, 92, 231, 0.1);
+
+    /* 背景色体系 */
+    --bg-body: #f8f9fd;       /* 页面大背景 */
+    --bg-card: #ffffff;       /* 卡片背景 */
+    --bg-sidebar: #ffffff;    /* 侧边栏背景 */
+
+    /* 文本色体系 */
+    --text-main: #2d3436;     /* 主要文字 */
+    --text-muted: #636e72;    /* 次要文字 */
+    --text-light: #b2bec3;    /* 辅助文字 */
+
+    /* 功能色 */
+    --success: #00b894;
+    --warning: #fdcb6e;
+    --danger: #ff7675;
+    --info: #0984e3;
+
+    /* 布局尺寸 */
+    --sidebar-width: 250px;
+    --header-height: 70px;
+    --card-radius: 16px;
+    --btn-radius: 10px;
+    --transition-speed: 0.3s;
+}
+
+/* ==========================================================================
+   2. 全局重置与基础样式
+   ========================================================================== */
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: 'Nunito', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.925rem;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* ==========================================================================
+   3. 侧边栏 (Sidebar) 样式
+   ========================================================================== */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--bg-sidebar);
+    border-right: 1px solid rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    z-index: 1020;
+    transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.02);
+}
+
+.sidebar-brand {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    letter-spacing: -0.5px;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.sidebar-menu {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 12px;
+}
+
+.menu-category {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-weight: 700;
+    margin: 20px 0 10px 12px;
+    letter-spacing: 0.5px;
+}
+
+.sidebar .nav-link {
+    color: var(--text-muted);
+    padding: 10px 16px;
+    border-radius: var(--btn-radius);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+    transition: all 0.2s ease;
+    border: none; /* 移除可能的边框 */
+}
+
+.sidebar .nav-link i {
+    width: 24px;
+    font-size: 1.1rem;
+    margin-right: 10px;
+    text-align: center;
+    color: #b2bec3;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.sidebar .nav-link:hover {
+    color: var(--primary-color);
+    background-color: var(--primary-soft);
+    transform: translateX(3px);
+}
+
+.sidebar .nav-link:hover i {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+}
+
+.sidebar .nav-link.active i {
+    color: #fff;
+}
+
+.sidebar-user {
+    padding: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    background: #fff;
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: var(--btn-radius);
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+
+.user-card:hover {
+    background: #f1f2f6;
+    border-color: #e9ecef;
+}
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ==========================================================================
+   4. 主布局与顶部导航 (Main & Header)
+   ========================================================================== */
+.main-content {
+    margin-left: var(--sidebar-width);
+    padding: 25px 30px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left var(--transition-speed) ease;
+}
+
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background: transparent;
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+/* 圆形按钮 */
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: var(--text-muted);
+    border: 1px solid #f1f2f6;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    transition: all 0.2s;
+}
+
+.btn-circle:hover {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.25);
+}
+
+/* ==========================================================================
+   5. 卡片与统计组件 (Cards & Stats)
+   ========================================================================== */
+.card-modern {
+    background: var(--bg-card);
+    border-radius: var(--card-radius);
+    border: none;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-modern:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.stat-widget {
+    display: flex;
+    align-items: center;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+
+/* 背景色变体 */
+.bg-light-primary { background: var(--primary-soft); color: var(--primary-color); }
+.bg-light-success { background: rgba(0, 184, 148, 0.1); color: var(--success); }
+.bg-light-warning { background: rgba(253, 203, 110, 0.1); color: var(--warning); }
+.bg-light-danger { background: rgba(255, 118, 117, 0.1); color: var(--danger); }
+
+/* ==========================================================================
+   6. 现代化表格 (Table)
+   ========================================================================== */
+.modern-table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.modern-table thead th {
+    border-bottom: 1px solid #eee;
+    color: var(--text-light);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 12px 15px;
+    background: transparent;
+}
+
+.modern-table tbody td {
+    padding: 16px 15px;
+    vertical-align: middle;
+    color: var(--text-main);
+    font-weight: 600;
+    border-bottom: 1px solid #f8f9fa;
+    font-size: 0.9rem;
+}
+
+.modern-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.modern-table tbody tr:hover {
+    background-color: #fafbfc;
+}
+
+/* ==========================================================================
+   7. Typecho 兼容性垫片 (Polyfill for Legacy Pages)
+   重要：这里强制覆盖 Typecho 原生的类名，使其看起来像 Bootstrap
+   ========================================================================== */
+
+/* 7.1 复写原生的列表表格 */
+.typecho-list-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+}
+
+.typecho-list-table th,
+.typecho-list-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f2f6;
+    vertical-align: middle;
+}
+
+.typecho-list-table thead th {
+    background-color: #fff;
+    color: var(--text-muted);
+    font-weight: 700;
+    border-bottom: 2px solid #edf2f7;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.typecho-list-table tbody tr {
+    transition: background-color 0.2s;
+    background: #fff;
+}
+
+.typecho-list-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* 选中高亮 */
+.typecho-list-table tbody tr.checked td {
+    background-color: var(--primary-soft);
+}
+
+/* 7.2 复写原生的操作栏 */
+.typecho-list-operate {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: var(--card-radius);
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* 7.3 复写分页 (Pagination) */
+.typecho-pager {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.typecho-pager li {
+    margin: 0 4px;
+}
+
+.typecho-pager a,
+.typecho-pager li.current span {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.typecho-pager a {
+    color: var(--text-main);
+    background-color: #fff;
+    border-color: #e2e8f0;
+}
+
+.typecho-pager a:hover {
+    background-color: #e2e8f0;
+    color: var(--primary-color);
+}
+
+.typecho-pager li.current span,
+.typecho-pager li.current a {
+    z-index: 3;
+    color: #fff;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    font-weight: bold;
+    cursor: default;
+}
+
+/* 7.4 复写表单元素 (Inputs & Buttons) */
+/* 强制所有 typecho 的 input.text 变成 Bootstrap 风格 */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+textarea,
+select {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-sizing: border-box;
+}
+
+input:focus, textarea:focus, select:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: var(--primary-light);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.25);
+}
+
+/* 按钮复写 */
+button.btn,
+input[type="submit"].btn,
+a.btn {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    padding: 0.45rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border-radius: var(--btn-radius);
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+/* 主按钮 */
+button.primary,
+input[type="submit"].primary,
+a.primary,
+.btn-primary {
+    color: #fff;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 6px rgba(108, 92, 231, 0.3);
+}
+
+button.primary:hover,
+input[type="submit"].primary:hover,
+a.primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* 警告/删除按钮 */
+.btn-warn {
+    color: #fff;
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+/* 7.5 Typecho 消息提示 (Toasts/Popups) */
+.message {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    position: relative;
+    animation: slideDown 0.3s ease-out;
+}
+
+.message.success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.message.error {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.message.notice {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+/* 弹窗式消息 */
+.message.popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    min-width: 300px;
+    z-index: 1080;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ==========================================================================
+   8. 辅助动画类
+   ========================================================================== */
+
+/* ==========================================================================
+   9. 响应式适配
+   ========================================================================== */
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+}
