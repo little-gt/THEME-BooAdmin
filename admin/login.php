@@ -225,6 +225,16 @@ include 'header.php';
                 </div>
                 <?php endif; ?>
 
+                <!-- 找回密码 -->
+                <?php if(in_array('Passport', array_keys(Typecho_Plugin::export()['activated']))): ?>
+                <div class="text-center mt-4 pt-3">
+                    <p class="text-muted small mb-0">
+                        <?php _e('忘记了密码？'); ?>
+                        <a href="<?php echo(Typecho_Common::url('passport/forgot', $options->index)); ?>" class="text-primary fw-bold text-decoration-none"><?php _e('立即找回'); ?></a>
+                    </p>
+                </div>
+                <?php endif; ?>
+
             </div>
         </div>
     </div>

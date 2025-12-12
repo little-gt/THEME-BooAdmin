@@ -7,7 +7,7 @@ include 'menu.php';
 
 <div class="container-fluid">
 
-    <!-- 顶部操作栏 - 页面标题与获取更多插件按钮 -->
+    <!-- 顶部操作栏 -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
@@ -32,8 +32,7 @@ include 'menu.php';
     <div class="row">
         <div class="col-12">
 
-            <?php // 获取已启用的插件列表
-            \Widget\Plugins\Rows::allocWithAlias('activated', 'activated=1')->to($activatedPlugins); ?>
+            <?php \Widget\Plugins\Rows::allocWithAlias('activated', 'activated=1')->to($activatedPlugins); ?>
 
             <!-- 已启用插件列表 -->
             <?php if ($activatedPlugins->have() || !empty($activatedPlugins->activatedPlugins)): ?>
@@ -58,7 +57,7 @@ include 'menu.php';
                                         <h5 class="fw-bold text-dark mb-1 text-truncate" title="<?php $activatedPlugins->title(); ?>">
                                             <?php $activatedPlugins->title(); ?>
                                         </h5>
-                                        <?php if (!$activatedPlugins->dependence): // 显示依赖警告 ?>
+                                        <?php if (!$activatedPlugins->dependence): ?>
                                             <span class="text-danger" data-bs-toggle="tooltip" title="<?php _e('%s 无法在此版本的typecho下正常工作', $activatedPlugins->title); ?>">
                                                 <i class="fa-solid fa-triangle-exclamation"></i>
                                             </span>
@@ -81,7 +80,7 @@ include 'menu.php';
                                     <i class="fa-solid fa-toggle-on fa-lg me-2"></i> <?php _e('已启用'); ?>
                                 </a>
 
-                                <!-- 插件设置按钮 (如果插件有配置页面) -->
+                                <!-- 插件设置按钮 -->
                                 <?php if ($activatedPlugins->config): ?>
                                     <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold">
                                         <i class="fa-solid fa-gear me-1"></i> <?php _e('设置'); ?>
@@ -95,7 +94,7 @@ include 'menu.php';
                 </div>
                 <?php endwhile; ?>
 
-                <!-- 异常插件处理 (文件缺失或损坏) -->
+                <!-- 异常插件处理 -->
                 <?php if (!empty($activatedPlugins->activatedPlugins)): ?>
                     <?php foreach ($activatedPlugins->activatedPlugins as $key => $val): ?>
                     <div class="col-md-6 col-xl-4">
@@ -121,8 +120,7 @@ include 'menu.php';
             </div>
             <?php endif; ?>
 
-            <?php // 获取未启用的插件列表
-            \Widget\Plugins\Rows::allocWithAlias('unactivated', 'activated=0')->to($deactivatedPlugins); ?>
+            <?php \Widget\Plugins\Rows::allocWithAlias('unactivated', 'activated=0')->to($deactivatedPlugins); ?>
 
             <!-- 已禁用插件列表 -->
             <?php if ($deactivatedPlugins->have() || !$activatedPlugins->have()): ?>
@@ -157,7 +155,6 @@ include 'menu.php';
                                 </p>
 
                                 <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                                    <!-- 启用插件按钮 -->
                                     <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>" class="text-decoration-none d-flex align-items-center text-muted fw-bold small hover-text-primary">
                                         <i class="fa-solid fa-toggle-off fa-lg me-2"></i> <?php _e('已禁用'); ?>
                                     </a>
@@ -185,69 +182,36 @@ include 'menu.php';
 
 <style>
 /* 插件卡片样式 */
-.plugin-card {
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.plugin-card.active {
-    border-color: rgba(108, 92, 231, 0.1);
-}
-
-.plugin-card.active:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(108, 92, 231, 0.1) !important;
-    border-color: var(--primary-light);
-}
-
-.plugin-card.inactive {
-    background-color: #fcfcfd;
-    border: 1px solid #f1f2f6;
-}
-
-.plugin-card.inactive:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
-    background-color: #fff;
-    opacity: 1 !important;
-}
-
-.plugin-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    flex-shrink: 0;
-}
-
-.hover-text-primary:hover {
-    color: var(--primary-color) !important;
-}
-
-.hover-text-primary:hover i {
-    color: var(--primary-color) !important;
-    transform: scale(1.1);
-    transition: transform 0.2s;
-}
+.plugin-card { transition: all 0.3s ease; border: 1px solid transparent; }
+.plugin-card.active { border-color: rgba(108, 92, 231, 0.1); }
+.plugin-card.active:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(108, 92, 231, 0.1) !important; border-color: var(--primary-light); }
+.plugin-card.inactive { background-color: #fcfcfd; border: 1px solid #f1f2f6; }
+.plugin-card.inactive:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; background-color: #fff; opacity: 1 !important; }
+.plugin-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
+.hover-text-primary:hover { color: var(--primary-color) !important; }
+.hover-text-primary:hover i { color: var(--primary-color) !important; transform: scale(1.1); transition: transform 0.2s; }
 </style>
 
 <?php
-// 引入版权信息、通用JS和页脚文件
 include 'copyright.php';
 include 'common-js.php';
 ?>
 
 <script>
-// 通用确认逻辑，用于带有 `lang` 属性的按钮或链接，点击时弹出确认框
-$('.btn-operate, a[lang]').click(function () {
-    var t = $(this), msg = t.attr('lang');
-    if (msg && !confirm(msg)) {
-        return false;
-    }
-});
+// 插件操作确认逻辑 - 修复 PJAX 绑定问题
+(function() {
+    // 使用 off().on() 防止 PJAX 重复绑定
+    $(document).off('click.pluginAction', '.btn-operate, a[lang]');
+    $(document).on('click.pluginAction', '.btn-operate, a[lang]', function (e) {
+        var t = $(this), msg = t.attr('lang');
+        if (msg && !confirm(msg)) {
+            e.preventDefault(); // 阻止 PJAX 跳转
+            return false;
+        }
+        // 如果 confirm 通过，PJAX 会自动处理 href 跳转
+        // common-js.php 中的 pjax:complete 会负责 checkTypechoNotice 显示成功消息
+    });
+})();
 </script>
 
 <?php include 'footer.php'; ?>

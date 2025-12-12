@@ -252,100 +252,124 @@ include 'common-js.php';
 ?>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // --- Chart.js 初始化：渲染近7天评论趋势图 ---
-    const chartLabels = <?php echo json_encode($chartLabels); ?>;
-    const chartData = <?php echo json_encode(array_values($chartData)); ?>;
-
-    const ctx = document.getElementById('commentChart').getContext('2d');
-
-    // 定义图表渐变色
-    let gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, 'rgba(108, 92, 231, 0.2)'); // 主色调
-    gradient.addColorStop(1, 'rgba(108, 92, 231, 0.0)');
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: chartLabels,
-            datasets: [{
-                label: '<?php _e("评论数量"); ?>',
-                data: chartData,
-                backgroundColor: gradient,
-                borderColor: '#6c5ce7',
-                borderWidth: 3,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#6c5ce7',
-                pointBorderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 7,
-                fill: true,
-                tension: 0.4 // 贝塞尔曲线平滑度
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false, // 允许填满容器高度
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#2d3436',
-                    padding: 10,
-                    titleFont: { size: 13 },
-                    bodyFont: { size: 13 },
-                    displayColors: false,
-                    cornerRadius: 8,
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { precision: 0, color: '#b2bec3' }, // 整数刻度
-                    grid: { color: '#f1f2f6', borderDash: [5, 5] },
-                    border: { display: false }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#b2bec3' },
-                    border: { display: false }
-                }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index',
-            },
-        }
+// 使用 IIFE (立即执行函数) 包裹代码，防止全局变量污染和 PJAX 重复声明错误
+(function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        // 由于 PJAX 可能不会触发 DOMContentLoaded (如果脚本是在 PJAX 之后插入的)，
+        // 我们需要一个更可靠的检查，或者依赖 jQuery 的 ready
+        initDashboard();
     });
 
-    // --- 异步加载 Typecho 官方动态 ---
-    const msgContainer = document.getElementById('typecho-message');
-    if (msgContainer) {
-        const cache = window.sessionStorage;
-        const feedHtml = cache ? cache.getItem('feed') : '';
+    // 兼容 PJAX：如果是在 PJAX reload 时，脚本被直接执行，此时 document 已经 ready
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        initDashboard();
+    }
 
-        if (feedHtml) {
-            // 如果缓存中存在，直接使用缓存内容
-            msgContainer.innerHTML = '<ul class="list-unstyled mb-0">' + feedHtml + '</ul>';
-        } else {
-            // 否则通过 AJAX 从 Typecho 后端获取最新动态
-            $.get('<?php $options->index('/action/ajax?do=feed'); ?>', function (o) {
-                let html = '<ul class="list-unstyled mb-0">';
-                for (let i = 0; i < o.length; i++) {
-                    let item = o[i];
-                    html += `<li class="mb-2 pb-2 border-bottom last-no-border">
-                        <div class="d-flex justify-content-between">
-                            <a href="${item.link}" target="_blank" class="text-dark text-decoration-none fw-bold small text-truncate" style="max-width: 75%;">${item.title}</a>
-                            <span class="badge bg-light text-muted fw-normal scale-8">${item.date}</span>
-                        </div>
-                    </li>`;
-                }
-                html += '</ul>';
-                msgContainer.innerHTML = html;
-                if(cache) cache.setItem('feed', html); // 缓存内容 (不带ul标签以便后续处理)
-            }, 'json');
+    function initDashboard() {
+        // 检查 Canvas 元素是否存在，防止报错
+        const ctxElement = document.getElementById('commentChart');
+        if (!ctxElement) return;
+
+        // 避免重复初始化 Chart
+        if (ctxElement.chartInstance) {
+            ctxElement.chartInstance.destroy();
+        }
+
+        // --- Chart.js 初始化：渲染近7天评论趋势图 ---
+        const chartLabels = <?php echo json_encode($chartLabels); ?>;
+        const chartData = <?php echo json_encode(array_values($chartData)); ?>;
+
+        const ctx = ctxElement.getContext('2d');
+
+        // 定义图表渐变色
+        let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(108, 92, 231, 0.2)'); // 主色调
+        gradient.addColorStop(1, 'rgba(108, 92, 231, 0.0)');
+
+        // 保存实例以便下次销毁
+        ctxElement.chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: '<?php _e("评论数量"); ?>',
+                    data: chartData,
+                    backgroundColor: gradient,
+                    borderColor: '#6c5ce7',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#6c5ce7',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.4 // 贝塞尔曲线平滑度
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // 允许填满容器高度
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#2d3436',
+                        padding: 10,
+                        titleFont: { size: 13 },
+                        bodyFont: { size: 13 },
+                        displayColors: false,
+                        cornerRadius: 8,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0, color: '#b2bec3' }, // 整数刻度
+                        grid: { color: '#f1f2f6', borderDash: [5, 5] },
+                        border: { display: false }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#b2bec3' },
+                        border: { display: false }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
+        });
+
+        // --- 异步加载 Typecho 官方动态 ---
+        const msgContainer = document.getElementById('typecho-message');
+        if (msgContainer) {
+            const cache = window.sessionStorage;
+            const feedHtml = cache ? cache.getItem('feed') : '';
+
+            if (feedHtml) {
+                // 如果缓存中存在，直接使用缓存内容
+                msgContainer.innerHTML = '<ul class="list-unstyled mb-0">' + feedHtml + '</ul>';
+            } else {
+                // 否则通过 AJAX 从 Typecho 后端获取最新动态
+                $.get('<?php $options->index('/action/ajax?do=feed'); ?>', function (o) {
+                    let html = '<ul class="list-unstyled mb-0">';
+                    for (let i = 0; i < o.length; i++) {
+                        let item = o[i];
+                        html += `<li class="mb-2 pb-2 border-bottom last-no-border">
+                            <div class="d-flex justify-content-between">
+                                <a href="${item.link}" target="_blank" class="text-dark text-decoration-none fw-bold small text-truncate" style="max-width: 75%;">${item.title}</a>
+                                <span class="badge bg-light text-muted fw-normal scale-8">${item.date}</span>
+                            </div>
+                        </li>`;
+                    }
+                    html += '</ul>';
+                    msgContainer.innerHTML = html;
+                    if(cache) cache.setItem('feed', html); // 缓存内容 (不带ul标签以便后续处理)
+                }, 'json');
+            }
         }
     }
-});
+})();
 </script>
 
 <?php include 'footer.php'; ?>

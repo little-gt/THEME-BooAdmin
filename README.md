@@ -4,7 +4,7 @@
 >
 > 一款为 Typecho 打造的现代化、简洁高效的后台主题。基于 Bootstrap 5 重构，旨在告别传统界面，全面拥抱高效与美观。
 
-[![项目版本](https://img.shields.io/badge/版本-1.0.0-6f42c1?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin)
+[![项目版本](https://img.shields.io/badge/版本-1.0.1--pre-6f42c1?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin)
 [![许可证: GPL v3](https://img.shields.io/badge/许可证-GPLv3-blue?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Bootstrap 版本](https://img.shields.io/badge/Bootstrap-5.3-7952b3?style=flat-square&logo=bootstrap)](https://getbootstrap.com/)
 [![Typecho 版本](https://img.shields.io/badge/Typecho-1.2%2B-orange?style=flat-square&logo=typecho)](https://typecho.org/)
@@ -31,6 +31,7 @@
 | 功能模块 | 说明 |
 | :-- | :-- |
 | **现代化设计** | 基于 Bootstrap 5 与 FontAwesome 6，提供清爽、一致的视觉体验。 |
+| **免刷新体验** | 引入 PJAX 技术，避免频繁管理时页面频繁刷新，提升体验。 |
 | **完全响应式** | 从桌面到手机，自适应各种屏幕尺寸，随时随地轻松管理。 |
 | **体验优化** | 重新设计的登录、撰写、管理界面，操作流程更直观、更高效。 |
 | **核心兼容** | 完美兼容 Typecho 1.2.1 核心功能，确保插件挂载点和基础功能稳定。 |
@@ -41,20 +42,19 @@
 
 ## 🚀 更新日志
 
-### v1.0.0
-- **UI/UX**:
-  - 全新的登录与注册界面。
-  - 基于 Bootstrap 5 Card 组件重构所有管理页面。
-  - 现代化、响应式的侧边栏与顶部导航栏设计。
-- **功能修复与增强**:
-  - 修复 `write-post.php` 和 `write-page.php` 的 JavaScript 兼容性问题。
-  - 优化文章标签（TokenInput）加载与显示逻辑。
-  - 改进附件上传区域的用户体验，整个区域均可点击。
-  - 优化自定义字段区域，默认展开且样式统一。
-  - 实现文章标题输入框根据内容自动增高。
-- **技术栈**:
-  - 前端框架升级至 **Bootstrap 5.3**。
-  - 图标库升级至 **FontAwesome 6**。
+### v1.0.1-pre
+  - **⚡ 核心稳定性修复 (PJAX)**:
+  - **JS 加载机制重构**: 核心库（jQuery, Typecho Core）改为同步阻塞加载，彻底解决 `Uncaught ReferenceError: $ is not defined` 报错，确保内联脚本执行时依赖已就绪。
+  - **生命周期管理**: 建立统一的 `reloadGlobalComponents` 全局重载入口，修复 PJAX 跳转后事件监听器重复绑定或失效的问题。
+  - **DOM 清理**: 增加 PJAX 请求前的深度清理逻辑，强制销毁残留的 Tooltips、Dropdowns 和模态框背景，防止页面状态污染。
+- **💬 评论管理重构**:
+  - **快速编辑修复**: 修复点击“编辑”无法读取原有评论数据的问题，采用更稳健的 JSON 解析方案。
+  - **交互优化**: 重新设计“快速回复”功能，回复框现在以动画形式在评论下方展开，且提交后自动高亮新回复。
+  - **逻辑分离**: 将评论操作的 JS 逻辑与 PHP 视图彻底分离，并使用命名空间管理事件，杜绝多次提交。
+- **✨ 体验优化**:
+  - **全局消息反馈**: 优化 `checkTypechoNotice` 触发时机，修复插件启用/禁用、设置保存后无法弹出成功提示（Flash Message）的问题。
+  - **UI 组件重载**: 修复 PJAX 跳转后 Bootstrap Tooltips（工具提示）和下拉菜单失效的问题。
+  - **通用确认机制**: 统一了全站的删除/操作确认逻辑（`.btn-operate`），无需在每个页面单独绑定。
 
 ---
 
@@ -103,6 +103,8 @@ BooAdmin 的核心设计理念是**零配置、开箱即用**。
 ## ❤️ 开源与支持
 
 > 如果你喜欢这个项目，请点个 ⭐ Star 支持！
+
+![支持我](screenshot/supportme.jpg)
 
 ---
 
