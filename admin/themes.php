@@ -1,4 +1,5 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
@@ -6,8 +7,8 @@ include 'menu.php';
 
 <div class="container-fluid">
     
-    <!-- 顶部操作栏 -->
-    <div class="row mb-4 fade-in-up">
+    <!-- 顶部操作栏 - 页面标题与获取更多主题按钮 -->
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex justify-content-between align-items-center">
@@ -27,22 +28,22 @@ include 'menu.php';
         </div>
     </div>
     
-    <div class="row fade-in-up">
+    <div class="row">
         <div class="col-12">
 
-            <!-- 顶部导航 Tabs -->
+            <!-- 顶部导航 Tabs - 切换主题管理、主题编辑和主题设置 -->
             <div class="card-modern mb-4">
                 <div class="card-body">
                     <ul class="nav nav-pills bg-light p-2 rounded-3 d-inline-flex">
                         <li class="nav-item">
-                            <a class="nav-link active fw-bold shadow-sm" href="<?php $options->adminUrl('themes.php'); ?>"><?php _e('可以使用的外观'); ?></a>
+                            <a class="nav-link active fw-bold shadow-sm" href="<?php $options->adminUrl('themes.php'); ?>"><?php _e('可使用的外观'); ?></a>
                         </li>
-                        <?php if (\Widget\Themes\Files::isWriteable()): ?>
+                        <?php if (\Widget\Themes\Files::isWriteable()): // 仅当主题文件可写入时显示编辑入口 ?>
                         <li class="nav-item">
                             <a class="nav-link text-muted" href="<?php $options->adminUrl('theme-editor.php'); ?>"><?php _e('编辑当前外观'); ?></a>
                         </li>
                         <?php endif; ?>
-                        <?php if (\Widget\Themes\Config::isExists()): ?>
+                        <?php if (\Widget\Themes\Config::isExists()): // 仅当主题有设置项时显示设置入口 ?>
                         <li class="nav-item">
                             <a class="nav-link text-muted" href="<?php $options->adminUrl('options-theme.php'); ?>"><?php _e('设置外观'); ?></a>
                         </li>
@@ -51,7 +52,7 @@ include 'menu.php';
                 </div>
             </div>
 
-            <!-- 错误提示：主题丢失 -->
+            <!-- 错误提示：主题文件丢失 -->
             <?php if ($options->missingTheme): ?>
                 <div class="alert alert-danger shadow-sm border-0 mb-4 rounded-3 d-flex align-items-center" role="alert">
                     <i class="fa-solid fa-triangle-exclamation fa-2x me-3"></i>
@@ -64,14 +65,15 @@ include 'menu.php';
                 </div>
             <?php endif; ?>
 
-            <?php \Widget\Themes\Rows::alloc()->to($themes); ?>
+            <?php // 获取所有主题列表
+            \Widget\Themes\Rows::alloc()->to($themes); ?>
 
-            <!-- 当前使用的主题 (Hero Section) -->
+            <!-- 当前使用的主题 - 突出显示活动主题 -->
             <h5 class="fw-bold text-dark mb-3 px-1"><i class="fa-solid fa-circle-check text-success me-2"></i><?php _e('当前外观'); ?></h5>
             <div class="row mb-5">
                 <div class="col-12">
                     <?php while($themes->next()): ?>
-                        <?php if ($themes->activated): ?>
+                        <?php if ($themes->activated): // 仅显示已激活的主题 ?>
                         <div class="card-modern overflow-hidden p-0">
                             <div class="row g-0">
                                 <div class="col-md-5 col-lg-4 position-relative">
@@ -109,13 +111,13 @@ include 'menu.php';
                                         </p>
 
                                         <div class="mt-auto pt-3 border-top d-flex gap-2">
-                                            <?php if (\Widget\Themes\Config::isExists()): ?>
+                                            <?php if (\Widget\Themes\Config::isExists()): // 如果当前主题有设置项 ?>
                                                 <a href="<?php $options->adminUrl('options-theme.php'); ?>" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
                                                     <i class="fa-solid fa-sliders me-2"></i><?php _e('设置外观'); ?>
                                                 </a>
                                             <?php endif; ?>
 
-                                            <?php if (\Widget\Themes\Files::isWriteable()): ?>
+                                            <?php if (\Widget\Themes\Files::isWriteable()): // 如果当前主题文件可写入 ?>
                                                 <a href="<?php $options->adminUrl('theme-editor.php?theme=' . $themes->name); ?>" class="btn btn-outline-secondary rounded-pill px-4">
                                                     <i class="fa-solid fa-code me-2"></i><?php _e('编辑代码'); ?>
                                                 </a>
@@ -130,18 +132,16 @@ include 'menu.php';
                 </div>
             </div>
 
-            <!-- 可用主题列表 (Grid) -->
+            <!-- 可用主题列表 - 未激活的主题 -->
             <h5 class="fw-bold text-dark mb-3 px-1"><i class="fa-solid fa-box-open text-primary me-2"></i><?php _e('可用外观'); ?></h5>
             <div class="row g-4 pb-5">
                 <?php
-                // 重置循环指针，因为上面已经循环过一次了
-                // Typecho 的 Widget 不支持 rewind，我们需要重新 alloc 或者在第一次循环时存数组
-                // 但为了不破坏逻辑，我们这里重新实例化一个对象来循环“其他”主题
+                // 重新实例化 Widget，以遍历所有主题（已激活主题在上方已显示，这里只显示未激活的）
                 \Widget\Themes\Rows::alloc()->to($availableThemes);
                 ?>
 
                 <?php while($availableThemes->next()): ?>
-                    <?php if (!$availableThemes->activated): ?>
+                    <?php if (!$availableThemes->activated): // 仅显示未激活的主题 ?>
                     <div class="col-md-6 col-lg-4 col-xl-3">
                         <div class="card-modern h-100 p-0 overflow-hidden theme-card">
                             <div class="theme-cover position-relative">
@@ -236,6 +236,7 @@ include 'menu.php';
 </style>
 
 <?php
+// 引入版权信息、通用JS和页脚文件
 include 'copyright.php';
 include 'common-js.php';
 include 'footer.php';

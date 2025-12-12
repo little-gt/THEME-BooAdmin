@@ -1,4 +1,5 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
@@ -6,8 +7,8 @@ include 'menu.php';
 
 <div class="container-fluid">
 
-    <!-- 顶部操作栏 -->
-    <div class="row mb-4 fade-in-up">
+    <!-- 顶部操作栏 - 页面标题与获取更多插件按钮 -->
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex justify-content-between align-items-center">
@@ -31,18 +32,19 @@ include 'menu.php';
     <div class="row">
         <div class="col-12">
 
-            <?php \Widget\Plugins\Rows::allocWithAlias('activated', 'activated=1')->to($activatedPlugins); ?>
+            <?php // 获取已启用的插件列表
+            \Widget\Plugins\Rows::allocWithAlias('activated', 'activated=1')->to($activatedPlugins); ?>
 
-            <!-- 1. 已启用插件 -->
+            <!-- 已启用插件列表 -->
             <?php if ($activatedPlugins->have() || !empty($activatedPlugins->activatedPlugins)): ?>
-            <div class="d-flex align-items-center mb-3 mt-2 fade-in-up">
+            <div class="d-flex align-items-center mb-3 mt-2">
                 <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 me-2">
                     <i class="fa-solid fa-circle-check me-1"></i> Running
                 </span>
                 <h5 class="fw-bold text-dark mb-0"><?php _e('已启用的插件'); ?></h5>
             </div>
 
-            <div class="row g-4 mb-5 fade-in-up" style="animation-delay: 0.1s;">
+            <div class="row g-4 mb-5" style="animation-delay: 0.1s;">
                 <?php while ($activatedPlugins->next()): ?>
                 <div class="col-md-6 col-xl-4">
                     <div class="card-modern h-100 plugin-card active" id="plugin-<?php $activatedPlugins->name(); ?>">
@@ -56,7 +58,7 @@ include 'menu.php';
                                         <h5 class="fw-bold text-dark mb-1 text-truncate" title="<?php $activatedPlugins->title(); ?>">
                                             <?php $activatedPlugins->title(); ?>
                                         </h5>
-                                        <?php if (!$activatedPlugins->dependence): ?>
+                                        <?php if (!$activatedPlugins->dependence): // 显示依赖警告 ?>
                                             <span class="text-danger" data-bs-toggle="tooltip" title="<?php _e('%s 无法在此版本的typecho下正常工作', $activatedPlugins->title); ?>">
                                                 <i class="fa-solid fa-triangle-exclamation"></i>
                                             </span>
@@ -74,12 +76,12 @@ include 'menu.php';
                             </p>
 
                             <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                                <!-- 禁用开关 -->
+                                <!-- 禁用插件按钮 -->
                                 <a lang="<?php _e('你确认要禁用插件 %s 吗?', $activatedPlugins->name); ?>" href="<?php $security->index('/action/plugins-edit?deactivate=' . $activatedPlugins->name); ?>" class="btn-operate text-decoration-none d-flex align-items-center text-success fw-bold small">
                                     <i class="fa-solid fa-toggle-on fa-lg me-2"></i> <?php _e('已启用'); ?>
                                 </a>
 
-                                <!-- 设置按钮 -->
+                                <!-- 插件设置按钮 (如果插件有配置页面) -->
                                 <?php if ($activatedPlugins->config): ?>
                                     <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold">
                                         <i class="fa-solid fa-gear me-1"></i> <?php _e('设置'); ?>
@@ -93,7 +95,7 @@ include 'menu.php';
                 </div>
                 <?php endwhile; ?>
 
-                <!-- 异常插件处理 (文件缺失等情况) -->
+                <!-- 异常插件处理 (文件缺失或损坏) -->
                 <?php if (!empty($activatedPlugins->activatedPlugins)): ?>
                     <?php foreach ($activatedPlugins->activatedPlugins as $key => $val): ?>
                     <div class="col-md-6 col-xl-4">
@@ -119,18 +121,19 @@ include 'menu.php';
             </div>
             <?php endif; ?>
 
-            <?php \Widget\Plugins\Rows::allocWithAlias('unactivated', 'activated=0')->to($deactivatedPlugins); ?>
+            <?php // 获取未启用的插件列表
+            \Widget\Plugins\Rows::allocWithAlias('unactivated', 'activated=0')->to($deactivatedPlugins); ?>
 
-            <!-- 2. 已禁用插件 -->
+            <!-- 已禁用插件列表 -->
             <?php if ($deactivatedPlugins->have() || !$activatedPlugins->have()): ?>
-            <div class="d-flex align-items-center mb-3 mt-4 fade-in-up" style="animation-delay: 0.2s;">
+            <div class="d-flex align-items-center mb-3 mt-4" style="animation-delay: 0.2s;">
                 <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-2 me-2">
                     <i class="fa-solid fa-circle-pause me-1"></i> Disabled
                 </span>
                 <h5 class="fw-bold text-muted mb-0"><?php _e('禁用的插件'); ?></h5>
             </div>
 
-            <div class="row g-4 mb-5 fade-in-up" style="animation-delay: 0.3s;">
+            <div class="row g-4 mb-5" style="animation-delay: 0.3s;">
                 <?php if ($deactivatedPlugins->have()): ?>
                     <?php while ($deactivatedPlugins->next()): ?>
                     <div class="col-md-6 col-xl-4">
@@ -145,7 +148,7 @@ include 'menu.php';
                                         <div class="small text-muted mb-2">
                                             <span class="badge bg-light text-muted border">v<?php $deactivatedPlugins->version(); ?></span>
                                             <span class="ms-1">by <?php echo empty($deactivatedPlugins->homepage) ? $deactivatedPlugins->author : '<a href="' . $deactivatedPlugins->homepage . '" target="_blank" class="text-muted text-decoration-none">' . $deactivatedPlugins->author . '</a>'; ?></span>
-                                        </div>
+                                    </div>
                                     </div>
                                 </div>
 
@@ -154,6 +157,7 @@ include 'menu.php';
                                 </p>
 
                                 <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                                    <!-- 启用插件按钮 -->
                                     <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>" class="text-decoration-none d-flex align-items-center text-muted fw-bold small hover-text-primary">
                                         <i class="fa-solid fa-toggle-off fa-lg me-2"></i> <?php _e('已禁用'); ?>
                                     </a>
@@ -231,12 +235,13 @@ include 'menu.php';
 </style>
 
 <?php
+// 引入版权信息、通用JS和页脚文件
 include 'copyright.php';
 include 'common-js.php';
 ?>
 
 <script>
-// 简单的确认逻辑，复用 Bootstrap 风格
+// 通用确认逻辑，用于带有 `lang` 属性的按钮或链接，点击时弹出确认框
 $('.btn-operate, a[lang]').click(function () {
     var t = $(this), msg = t.attr('lang');
     if (msg && !confirm(msg)) {

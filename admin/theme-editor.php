@@ -1,14 +1,17 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 
+// 初始化主题文件管理组件，用于获取文件列表和内容
 \Widget\Themes\Files::alloc()->to($files);
 ?>
 
 <div class="container-fluid">
     
-    <div class="row mb-4 fade-in-up">
+    <!-- 顶部操作栏 - 页面标题与获取更多主题按钮 -->
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex justify-content-between align-items-center">
@@ -28,34 +31,34 @@ include 'menu.php';
         </div>
     </div>
     
-    <div class="row fade-in-up">
+    <div class="row">
         <div class="col-12">
             
-            <!-- 顶部导航 Tabs -->
+            <!-- 顶部导航 Tabs - 切换主题管理、主题编辑和主题设置 -->
             <div class="card-modern mb-4">
                 <div class="card-body">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                         <ul class="nav nav-pills bg-light p-2 rounded-3">
                             <li class="nav-item">
-                                <a class="nav-link text-muted" href="<?php $options->adminUrl('themes.php'); ?>"><?php _e('可以使用的外观'); ?></a>
+                                <a class="nav-link text-muted" href="<?php $options->adminUrl('themes.php'); ?>"><?php _e('可使用的外观'); ?></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active fw-bold shadow-sm" href="<?php $options->adminUrl('theme-editor.php'); ?>">
-                                    <?php if ($options->theme == $files->theme): ?>
+                                    <?php if ($options->theme == $files->theme): // 判断是否正在编辑当前激活的主题 ?>
                                         <?php _e('编辑当前外观'); ?>
                                     <?php else: ?>
                                         <?php _e('编辑 %s 外观', '<span class="text-warning mx-1">' . $files->theme . '</span>'); ?>
                                     <?php endif; ?>
                                 </a>
                             </li>
-                            <?php if (\Widget\Themes\Config::isExists()): ?>
+                            <?php if (\Widget\Themes\Config::isExists()): // 仅当主题有设置项时显示设置入口 ?>
                             <li class="nav-item">
                                 <a class="nav-link text-muted" href="<?php $options->adminUrl('options-theme.php'); ?>"><?php _e('设置外观'); ?></a>
                             </li>
                             <?php endif; ?>
                         </ul>
 
-                        <!-- 当前编辑文件提示 -->
+                        <!-- 当前编辑文件路径提示 -->
                         <div class="d-flex align-items-center text-muted small">
                             <i class="fa-solid fa-file-code me-2"></i>
                             <span class="font-monospace"><?php echo $files->currentFile(); ?></span>
@@ -64,12 +67,11 @@ include 'menu.php';
                 </div>
             </div>
 
-            <!-- 主编辑器区域 -->
+            <!-- 主编辑器区域 - 包含文件列表和代码编辑框 -->
             <div class="typecho-edit-theme">
                 <div class="row g-4">
                     
-                    <!-- 右侧：文件列表 (在移动端显示在上方或折叠，这里遵循 PC 优先，放在右侧更像 IDE) -->
-                    <!-- 注意：Typecho 原生设计是文件列表在右，编辑器在左，这里我们保持这个逻辑但优化样式 -->
+                    <!-- 右侧：文件列表 - 导航和选择主题文件 -->
                     <div class="col-lg-3 order-lg-2">
                         <div class="card-modern h-100">
                             <div class="card-header bg-transparent border-bottom px-4 py-3">
@@ -79,9 +81,9 @@ include 'menu.php';
                             </div>
                             <div class="card-body p-0" style="max-height: 800px; overflow-y: auto;">
                                 <div class="list-group list-group-flush">
-                                    <?php while($files->next()): ?>
+                                    <?php while($files->next()): // 遍历主题文件 ?>
                                         <?php 
-                                            // 根据扩展名判断图标
+                                            // 根据文件扩展名判断并显示不同的图标
                                             $ext = pathinfo($files->file, PATHINFO_EXTENSION);
                                             $iconClass = 'fa-file-code';
                                             $iconColor = 'text-secondary';
@@ -94,7 +96,7 @@ include 'menu.php';
                                            class="list-group-item list-group-item-action border-0 py-2 px-4 d-flex align-items-center <?php if ($files->current): ?>active fw-bold bg-light-primary border-start border-4 border-primary text-primary<?php else: ?>text-muted<?php endif; ?>">
                                             <i class="<?php echo $iconClass . ' ' . $iconColor; ?> me-3" style="width: 20px; text-align: center;"></i>
                                             <span class="text-truncate font-monospace small"><?php $files->file(); ?></span>
-                                            <?php if ($files->current): ?>
+                                            <?php if ($files->current): // 当前编辑的文件显示一个小笔图标 ?>
                                                 <i class="fa-solid fa-pen-nib ms-auto small"></i>
                                             <?php endif; ?>
                                         </a>
@@ -104,21 +106,21 @@ include 'menu.php';
                         </div>
                     </div>
 
-                    <!-- 左侧：代码编辑器 -->
+                    <!-- 左侧：代码编辑器 - 显示和编辑文件内容 -->
                     <div class="col-lg-9 order-lg-1">
                         <div class="card-modern h-100 p-0 overflow-hidden d-flex flex-column">
                             
                             <form method="post" name="theme" id="theme" action="<?php $security->index('/action/themes-edit'); ?>" class="h-100 d-flex flex-column">
                                 
-                                <!-- 编辑器 Toolbar -->
+                                <!-- 编辑器工具栏 - 显示文件写入权限和重置按钮 -->
                                 <div class="bg-light border-bottom px-4 py-2 d-flex justify-content-between align-items-center">
                                     <div class="small text-muted">
                                         <?php if ($files->currentIsWriteable()): ?>
-                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle">
                                                 <i class="fa-solid fa-pen me-1"></i> <?php _e('可写入'); ?>
                                             </span>
                                         <?php else: ?>
-                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">
                                                 <i class="fa-solid fa-lock me-1"></i> <?php _e('不可写'); ?>
                                             </span>
                                         <?php endif; ?>
@@ -139,7 +141,7 @@ include 'menu.php';
                                               <?php if (!$files->currentIsWriteable()): ?>readonly<?php endif; ?>><?php echo $files->currentContent(); ?></textarea>
                                 </div>
 
-                                <!-- 底部提交栏 -->
+                                <!-- 底部提交栏 - 显示当前文件路径和保存按钮 -->
                                 <div class="card-footer bg-white border-top p-3 d-flex justify-content-between align-items-center">
                                     <div class="text-muted small">
                                         <i class="fa-solid fa-code-branch me-1"></i> <?php echo $files->currentTheme(); ?> / <?php echo $files->currentFile(); ?>
@@ -148,11 +150,11 @@ include 'menu.php';
                                         <?php if ($files->currentIsWriteable()): ?>
                                             <input type="hidden" name="theme" value="<?php echo $files->currentTheme(); ?>" />
                                             <input type="hidden" name="edit" value="<?php echo $files->currentFile(); ?>" />
-                                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                            <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">
                                                 <i class="fa-solid fa-floppy-disk me-2"></i><?php _e('保存文件'); ?>
                                             </button>
                                         <?php else: ?>
-                                            <button type="button" class="btn btn-secondary rounded-pill px-4 disabled">
+                                            <button type="button" class="btn btn-secondary px-4 disabled">
                                                 <i class="fa-solid fa-lock me-2"></i><?php _e('无法保存'); ?>
                                             </button>
                                         <?php endif; ?>
@@ -188,29 +190,29 @@ textarea#content:focus {
 </style>
 
 <?php
+// 引入版权信息和通用JS
 include 'copyright.php';
 include 'common-js.php';
 
-// 插件钩子：例如有些插件会在这里加载高亮编辑器 (CodeMirror/Ace)
-// 如果使用了这些插件，上面的 textarea 会被自动替换，我们的容器布局依然兼容
+// 插件钩子：允许插件在此处加载如代码高亮编辑器 (CodeMirror/Ace) 等功能
 \Typecho\Plugin::factory('admin/theme-editor.php')->bottom($files);
 
 include 'footer.php';
 ?>
 
 <script>
-// 简单的 Tab 键支持 (在 textarea 中输入 Tab 而不是切换焦点)
+// Tab 键支持：在 textarea 中插入 Tab 字符而不是切换焦点
 document.getElementById('content').addEventListener('keydown', function(e) {
   if (e.key == 'Tab') {
-    e.preventDefault();
+    e.preventDefault(); // 阻止默认的 Tab 行为
     var start = this.selectionStart;
     var end = this.selectionEnd;
 
-    // set textarea value to: text before caret + tab + text after caret
+    // 插入 Tab 字符到文本域
     this.value = this.value.substring(0, start) +
       "\t" + this.value.substring(end);
 
-    // put caret at right position again
+    // 将光标设置到插入 Tab 字符后的位置
     this.selectionStart = this.selectionEnd = start + 1;
   }
 });

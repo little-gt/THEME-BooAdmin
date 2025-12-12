@@ -1,12 +1,13 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 
-// 初始化统计组件
+// 初始化统计组件，用于获取各种网站数据
 $stat = Typecho\Widget::widget('Widget_Stat');
 
-// 获取最近7天的评论数据用于图表
+// --- 获取最近7天的评论数据用于图表 ---
 $db = Typecho\Db::get();
 $prefix = $db->getPrefix();
 $now = time();
@@ -14,7 +15,7 @@ $sevenDaysAgo = $now - (7 * 24 * 3600);
 $chartData = [];
 $chartLabels = [];
 
-// 初始化最近7天日期
+// 初始化最近7天的日期和评论数为0
 for ($i = 6; $i >= 0; $i--) {
     $date = date('m-d', strtotime("-$i days"));
     $chartLabels[] = $date;
@@ -22,26 +23,28 @@ for ($i = 6; $i >= 0; $i--) {
 }
 
 try {
-    // 按天统计评论数
+    // 执行数据库查询，按天统计评论数
     $sql = "SELECT FROM_UNIXTIME(created, '%m-%d') as date, COUNT(*) as count
             FROM {$prefix}comments
             WHERE created > {$sevenDaysAgo}
             GROUP BY date";
     $results = $db->fetchAll($sql);
 
+    // 将查询结果合并到图表数据中
     foreach ($results as $row) {
         if (isset($chartData[$row['date']])) {
             $chartData[$row['date']] = $row['count'];
         }
     }
 } catch (Exception $e) {
-    // 容错处理
+    // 数据库查询容错处理，防止异常导致页面崩溃
+    // Typecho 的 Db::fetchAll 可能会在查询错误时抛出异常
 }
 ?>
 
 <div class="container-fluid">
 
-    <!-- 欢迎语与状态栏 -->
+    <!-- 欢迎语与网站状态概览 -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern bg-white p-4">
@@ -58,9 +61,9 @@ try {
                             ); ?>
                         </p>
                     </div>
-                    <?php if($user->pass('editor', true)): ?>
+                    <?php if($user->pass('editor', true)): // 仅编辑及以上权限显示撰写按钮 ?>
                     <div class="mt-3 mt-md-0">
-                        <a href="<?php $options->adminUrl('write-post.php'); ?>" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                        <a href="<?php $options->adminUrl('write-post.php'); ?>" class="btn btn-primary px-4 shadow-sm fw-bold">
                             <i class="fa-solid fa-pen-nib me-2"></i><?php _e('撰写新文章'); ?>
                         </a>
                     </div>
@@ -70,9 +73,9 @@ try {
         </div>
     </div>
 
-    <!-- 统计卡片行 -->
+    <!-- 统计卡片行 - 显示关键数据概览 -->
     <div class="row g-4 mb-4" style="animation-delay: 0.1s;">
-        <!-- 文章数 -->
+        <!-- 已发布文章数 -->
         <div class="col-xl-3 col-sm-6">
             <div class="card-modern stat-widget h-100 d-flex align-items-center p-4">
                 <div class="stat-icon bg-light-primary">
@@ -85,7 +88,7 @@ try {
             </div>
         </div>
 
-        <!-- 评论数 -->
+        <!-- 收到的评论数 -->
         <div class="col-xl-3 col-sm-6">
             <div class="card-modern stat-widget h-100 d-flex align-items-center p-4">
                 <div class="stat-icon bg-light-success">
@@ -98,7 +101,7 @@ try {
             </div>
         </div>
 
-        <!-- 待审核评论 (如果有待审核，显示红色，否则显示灰色) -->
+        <!-- 待审核评论数 - 根据数量显示不同颜色 -->
         <div class="col-xl-3 col-sm-6">
             <div class="card-modern stat-widget h-100 d-flex align-items-center p-4">
                 <div class="stat-icon <?php echo $stat->waitingCommentsNum > 0 ? 'bg-light-danger' : 'bg-light'; ?>">
@@ -113,7 +116,7 @@ try {
             </div>
         </div>
 
-        <!-- 总分类 -->
+        <!-- 分类数量 -->
         <div class="col-xl-3 col-sm-6">
             <div class="card-modern stat-widget h-100 d-flex align-items-center p-4">
                 <div class="stat-icon bg-light-warning">
@@ -127,15 +130,15 @@ try {
         </div>
     </div>
 
-    <!-- 图表与动态 -->
+    <!-- 图表与官方动态区域 -->
     <div class="row g-4 mb-4">
-        <!-- 统计图表 -->
+        <!-- 统计图表 - 最近7天评论趋势 -->
         <div class="col-lg-8" style="animation-delay: 0.2s;">
             <div class="card-modern h-100">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-chart-area me-2 text-primary"></i><?php _e('互动趋势 (近7天评论)'); ?></h5>
                 </div>
-                <!-- 这里的容器高度限制非常重要 -->
+                <!-- Chart.js 渲染容器，限制高度以确保布局美观 -->
                 <div class="chart-container" style="position: relative; height: 320px; width: 100%;">
                     <canvas id="commentChart"></canvas>
                 </div>
@@ -161,12 +164,12 @@ try {
 
     <!-- 最近文章与评论列表 -->
     <div class="row g-4" style="animation-delay: 0.4s;">
-        <!-- 最近文章 -->
+        <!-- 最近文章列表 -->
         <div class="col-lg-6">
             <div class="card-modern h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold mb-0 text-dark"><?php _e('最近文章'); ?></h5>
-                    <a href="<?php $options->adminUrl('manage-posts.php'); ?>" class="btn btn-sm btn-light text-primary fw-bold rounded-pill"><?php _e('更多'); ?></a>
+                    <a href="<?php $options->adminUrl('manage-posts.php'); ?>" class="btn btn-sm btn-light text-primary fw-bold"><?php _e('更多'); ?></a>
                 </div>
                 <div class="table-responsive">
                     <table class="table modern-table table-borderless table-hover mb-0">
@@ -177,7 +180,8 @@ try {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php Typecho\Widget::widget('Widget_Contents_Post_Recent', 'pageSize=5')->to($posts); ?>
+                            <?php // 调用 Typecho Widget 获取最近 5 篇文章
+                            Typecho\Widget::widget('Widget_Contents_Post_Recent', 'pageSize=5')->to($posts); ?>
                             <?php if($posts->have()): ?>
                                 <?php while($posts->next()): ?>
                                 <tr>
@@ -200,20 +204,21 @@ try {
             </div>
         </div>
 
-        <!-- 最近回复 -->
+        <!-- 最近回复列表 -->
         <div class="col-lg-6">
             <div class="card-modern h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold mb-0 text-dark"><?php _e('最近回复'); ?></h5>
-                    <a href="<?php $options->adminUrl('manage-comments.php'); ?>" class="btn btn-sm btn-light text-primary fw-bold rounded-pill"><?php _e('更多'); ?></a>
+                    <a href="<?php $options->adminUrl('manage-comments.php'); ?>" class="btn btn-sm btn-light text-primary fw-bold"><?php _e('更多'); ?></a>
                 </div>
 
                 <div class="comment-list-modern">
-                    <?php Typecho\Widget::widget('Widget_Comments_Recent', 'pageSize=5')->to($comments); ?>
+                    <?php // 调用 Typecho Widget 获取最近 5 条评论
+                    Typecho\Widget::widget('Widget_Comments_Recent', 'pageSize=5')->to($comments); ?>
                     <?php if($comments->have()): ?>
                         <?php while($comments->next()): ?>
                         <div class="d-flex mb-3 border-bottom pb-3 last-no-border">
-                            <!-- 头像 -->
+                            <!-- 评论者头像 -->
                             <img src="<?php echo \Typecho\Common::gravatarUrl($comments->mail, 40, 'X', 'mm', $request->isSecure()); ?>"
                                  class="rounded-circle me-3 border" width="40" height="40" alt="Avatar">
 
@@ -241,20 +246,20 @@ try {
 </div>
 
 <?php
+// 引入版权信息、通用JS和页脚文件
 include 'copyright.php';
 include 'common-js.php';
 ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. 获取 PHP 准备好的图表数据
+    // --- Chart.js 初始化：渲染近7天评论趋势图 ---
     const chartLabels = <?php echo json_encode($chartLabels); ?>;
     const chartData = <?php echo json_encode(array_values($chartData)); ?>;
 
-    // 2. 初始化 Chart.js
     const ctx = document.getElementById('commentChart').getContext('2d');
 
-    // 创建漂亮的渐变色
+    // 定义图表渐变色
     let gradient = ctx.createLinearGradient(0, 0, 0, 300);
     gradient.addColorStop(0, 'rgba(108, 92, 231, 0.2)'); // 主色调
     gradient.addColorStop(1, 'rgba(108, 92, 231, 0.0)');
@@ -312,17 +317,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 3. 异步加载 Typecho 官方动态
-    // 这里的 CSS 选择器适配了新的 UI
+    // --- 异步加载 Typecho 官方动态 ---
     const msgContainer = document.getElementById('typecho-message');
     if (msgContainer) {
-        // 使用 jQuery (common-js.php 中已引入) 获取官方 feed
         const cache = window.sessionStorage;
         const feedHtml = cache ? cache.getItem('feed') : '';
 
         if (feedHtml) {
+            // 如果缓存中存在，直接使用缓存内容
             msgContainer.innerHTML = '<ul class="list-unstyled mb-0">' + feedHtml + '</ul>';
         } else {
+            // 否则通过 AJAX 从 Typecho 后端获取最新动态
             $.get('<?php $options->index('/action/ajax?do=feed'); ?>', function (o) {
                 let html = '<ul class="list-unstyled mb-0">';
                 for (let i = 0; i < o.length; i++) {

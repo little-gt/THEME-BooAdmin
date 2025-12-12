@@ -1,11 +1,12 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 ?>
 
 <div class="container-fluid">
-    <div class="row fade-in-up">
+    <div class="row">
         <div class="col-12">
             
             <!-- 顶部导航 Tabs -->

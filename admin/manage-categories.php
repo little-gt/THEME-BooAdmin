@@ -1,15 +1,17 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 
+// 初始化分类管理组件，用于获取和操作分类数据
 \Widget\Metas\Category\Admin::alloc()->to($categories);
 ?>
 
 <div class="container-fluid">
 
-    <!-- 顶部标题与操作区 -->
-    <div class="row mb-4 fade-in-up">
+    <!-- 顶部标题与操作区 - 拖拽排序提示和新增分类按钮 -->
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
@@ -25,8 +27,8 @@ include 'menu.php';
         </div>
     </div>
 
-    <!-- 主要内容区 -->
-    <div class="row fade-in-up" style="animation-delay: 0.1s;">
+    <!-- 主要内容区 - 分类列表表格 -->
+    <div class="row" style="animation-delay: 0.1s;">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body">
@@ -58,7 +60,7 @@ include 'menu.php';
                                             <label class="form-label small text-muted mb-1"><?php _e('合并到'); ?></label>
                                             <div class="input-group input-group-sm">
                                                 <select name="merge" class="form-select border-end-0">
-                                                    <?php $categories->parse('<option value="{mid}">{name}</option>'); ?>
+                                                    <?php $categories->parse('<option value="{mid}">{name}</option>'); // 渲染所有分类到下拉框 ?>
                                                 </select>
                                                 <button type="button" class="btn btn-outline-primary merge" rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>">
                                                     <?php _e('执行'); ?>
@@ -68,15 +70,9 @@ include 'menu.php';
                                     </ul>
                                 </div>
                             </div>
-
-                            <!-- 搜索框 (如果需要的话，Typecho原生这里是backLink，但上面已经处理了) -->
                         </div>
 
                         <!-- 分类列表表格 -->
-                        <!--
-                             注意：class "typecho-list-table" 必须保留，供 table-js.php 识别
-                             class "draggable" 提示样式
-                        -->
                         <div class="table-responsive">
                             <table class="table modern-table table-hover typecho-list-table draggable">
                                 <thead>
@@ -93,7 +89,7 @@ include 'menu.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php if($categories->have()): ?>
+                                <?php if($categories->have()): // 遍历分类列表 ?>
                                     <?php while($categories->next()): ?>
                                     <tr id="mid-<?php $categories->theId(); ?>" class="align-middle">
                                         <td class="text-center">
@@ -111,7 +107,7 @@ include 'menu.php';
                                             </a>
                                         </td>
                                         <td>
-                                            <?php if (count($categories->children) > 0): ?>
+                                            <?php if (count($categories->children) > 0): // 显示子分类数量或添加子分类入口 ?>
                                                 <a href="<?php $options->adminUrl('manage-categories.php?parent=' . $categories->mid); ?>" class="badge bg-light text-primary border text-decoration-none">
                                                     <i class="fa-regular fa-folder-open me-1"></i>
                                                     <?php echo _n('一个分类', '%d个分类', count($categories->children)); ?>
@@ -125,14 +121,14 @@ include 'menu.php';
                                         <td class="font-monospace small text-muted"><?php $categories->slug(); ?></td>
                                         <td class="text-center">
                                             <a href="<?php $options->adminUrl('manage-posts.php?category=' . $categories->mid); ?>"
-                                               class="badge rounded-pill <?php echo $categories->count > 0 ? 'bg-primary' : 'bg-secondary opacity-25'; ?> text-decoration-none"
+                                               class="badge <?php echo $categories->count > 0 ? 'bg-primary' : 'bg-secondary opacity-25'; ?> text-decoration-none"
                                                style="min-width: 30px;">
                                                 <?php $categories->count(); ?>
                                             </a>
                                         </td>
                                         <td class="text-end">
-                                            <?php if ($options->defaultCategory == $categories->mid): ?>
-                                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+                                            <?php if ($options->defaultCategory == $categories->mid): // 显示默认分类标记或设为默认按钮 ?>
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle">
                                                     <i class="fa-solid fa-check me-1"></i><?php _e('默认'); ?>
                                                 </span>
                                             <?php else: ?>
@@ -145,13 +141,13 @@ include 'menu.php';
                                         </td>
                                     </tr>
                                     <?php endwhile; ?>
-                                <?php else: ?>
+                                <?php else: // 没有找到分类时显示提示信息 ?>
                                     <tr>
                                         <td colspan="7" class="text-center py-5">
                                             <div class="text-muted">
                                                 <i class="fa-solid fa-inbox fa-3x mb-3 opacity-25"></i>
                                                 <p><?php _e('没有任何分类'); ?></p>
-                                                <a href="<?php $options->adminUrl('category.php'); ?>" class="btn btn-sm btn-primary rounded-pill mt-2">
+                                                <a href="<?php $options->adminUrl('category.php'); ?>" class="btn btn-sm btn-primary mt-2">
                                                     <?php _e('创建第一个分类'); ?>
                                                 </a>
                                             </div>
@@ -170,7 +166,7 @@ include 'menu.php';
 </div>
 
 <style>
-/* 悬停显示“设为默认”按钮 */
+/* 悬停时显示“设为默认”按钮 */
 tr:hover .hidden-by-mouse {
     opacity: 1 !important;
 }
@@ -191,6 +187,7 @@ tr:hover .hidden-by-mouse {
 </style>
 
 <?php
+// 引入版权信息、通用JS和表格JS
 include 'copyright.php';
 include 'common-js.php';
 ?>
@@ -198,19 +195,21 @@ include 'common-js.php';
 <script type="text/javascript">
 (function () {
     $(document).ready(function () {
-        // 初始化表格拖拽排序 (保留 Typecho 核心交互)
-        // 依赖 jquery-ui 或 jquery.tablednd
+        // --- 分类列表交互逻辑 ---
+
+        // 初始化表格拖拽排序 (依赖 jquery-ui 或 jquery.tablednd)
         var table = $('.typecho-list-table').tableDnD({
             onDrop: function () {
                 var ids = [];
+                // 获取排序后的分类ID列表
                 $('input[type=checkbox]', table).each(function () {
                     ids.push($(this).val());
                 });
-                // 发送排序请求
+                // 发送 AJAX 请求更新分类排序
                 $.post('<?php $security->index('/action/metas-category-edit?do=sort'); ?>',
                     $.param({mid: ids}));
 
-                // 重置行样式
+                // 重置行样式（如果使用了斑马纹效果）
                 $('tr', table).each(function (i) {
                     if (i % 2) $(this).addClass('even');
                     else $(this).removeClass('even');
@@ -219,7 +218,7 @@ include 'common-js.php';
         });
 
         // 重新实现表格全选逻辑，适配新 UI
-        // 注意：table-js.php 可能会有冲突，这里手动绑定一次更保险
+        // 注意：table-js.php 中可能也有类似逻辑，这里确保其正确性
         $('.typecho-table-select-all').click(function() {
             var checked = $(this).prop('checked');
             $('input[name="mid[]"]').prop('checked', checked).trigger('change');
@@ -233,13 +232,12 @@ include 'common-js.php';
             form.attr('action', btn.attr('rel')).submit();
         });
 
-        // 防止点击 select 导致下拉菜单关闭
+        // 防止点击 select 元素导致下拉菜单关闭
         $('.dropdown-menu select').click(function(e) {
             e.stopPropagation();
         });
 
-        <?php if (isset($request->mid)): ?>
-        // 高亮刚刚操作的行
+        <?php if (isset($request->mid)): // 如果通过 mid 参数跳转过来，高亮对应行 ?>
         $('#mid-<?php echo $request->mid; ?>').addClass('table-active');
         <?php endif; ?>
     });

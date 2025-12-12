@@ -1,4 +1,5 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
@@ -10,7 +11,7 @@ $stat = \Widget\Stat::alloc();
 <div class="container-fluid">
     
 
-    <div class="row g-4 fade-in-up" style="animation-delay: 0.1s;">
+    <div class="row g-4" style="animation-delay: 0.1s;">
         
         <!-- 左侧：个人概览卡片 -->
         <div class="col-lg-4 col-xl-3">
@@ -34,7 +35,7 @@ $stat = \Widget\Stat::alloc();
                     <h4 class="fw-bold text-dark mb-1"><?php $user->screenName(); ?></h4>
                     <p class="text-muted mb-3">@<?php $user->name(); ?></p>
                     
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 mb-4">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 mb-4">
                         <?php 
                         switch ($user->group) {
                             case 'administrator': _e('管理员'); break;
@@ -86,19 +87,19 @@ $stat = \Widget\Stat::alloc();
                 <div class="card-header bg-transparent border-bottom-0 pt-4 px-4 pb-0">
                     <ul class="nav nav-pills card-header-pills bg-light p-1 rounded-3 d-inline-flex" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active rounded-pill fw-bold small px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-selected="true"><?php _e('基本资料'); ?></button>
+                            <button class="nav-link active fw-bold small px-3" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-selected="true"><?php _e('基本资料'); ?></button>
                         </li>
                         <?php if ($user->pass('contributor', true)): ?>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill fw-bold small px-3" id="pills-writing-tab" data-bs-toggle="pill" data-bs-target="#pills-writing" type="button" role="tab" aria-selected="false"><?php _e('撰写设置'); ?></button>
+                            <button class="nav-link fw-bold small px-3" id="pills-writing-tab" data-bs-toggle="pill" data-bs-target="#pills-writing" type="button" role="tab" aria-selected="false"><?php _e('撰写设置'); ?></button>
                         </li>
                         <?php endif; ?>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill fw-bold small px-3" id="pills-password-tab" data-bs-toggle="pill" data-bs-target="#pills-password" type="button" role="tab" aria-selected="false"><?php _e('密码修改'); ?></button>
+                            <button class="nav-link fw-bold small px-3" id="pills-password-tab" data-bs-toggle="pill" data-bs-target="#pills-password" type="button" role="tab" aria-selected="false"><?php _e('密码修改'); ?></button>
                         </li>
                         <!-- 插件设置占位符检测 -->
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill fw-bold small px-3" id="pills-other-tab" data-bs-toggle="pill" data-bs-target="#pills-other" type="button" role="tab" aria-selected="false"><?php _e('更多设置'); ?></button>
+                            <button class="nav-link fw-bold small px-3" id="pills-other-tab" data-bs-toggle="pill" data-bs-target="#pills-other" type="button" role="tab" aria-selected="false"><?php _e('更多设置'); ?></button>
                         </li>
                     </ul>
                 </div>
@@ -173,7 +174,7 @@ $(document).ready(function() {
     $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
     
     // 按钮美化
-    $('.typecho-option-submit button').addClass('btn btn-primary px-4 rounded-pill shadow-sm fw-bold');
+    $('.typecho-option-submit button').addClass('btn btn-primary px-4 shadow-sm fw-bold');
     
     // 复选框/单选框美化
     $('.typecho-option input[type=radio], .typecho-option input[type=checkbox]').addClass('form-check-input me-1');

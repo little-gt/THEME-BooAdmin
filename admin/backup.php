@@ -1,19 +1,22 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 
+// 生成备份操作的 URL，包含安全Token
 $actionUrl = $security->getTokenUrl(
     \Typecho\Router::url('do', array('action' => 'backup', 'widget' => 'Backup'),
         \Typecho\Common::url('index.php', $options->rootUrl)));
 
+// 获取服务器上已有的备份文件列表
 $backupFiles = \Widget\Backup::alloc()->listFiles();
 ?>
 
 <div class="container-fluid">
     
-    <!-- 顶部标题 -->
-    <div class="row mb-4 fade-in-up">
+    <!-- 顶部标题栏 -->
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex justify-content-between align-items-center">
@@ -28,9 +31,9 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
         </div>
     </div>
 
-    <div class="row g-4 fade-in-up" style="animation-delay: 0.1s;">
+    <div class="row g-4" style="animation-delay: 0.1s;">
         
-        <!-- 左侧：备份 (导出) -->
+        <!-- 左侧：备份数据 (导出) 功能区 -->
         <div class="col-lg-6">
             <div class="card-modern h-100">
                 <div class="card-header bg-transparent border-bottom px-4 py-3">
@@ -39,6 +42,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
                     </h5>
                 </div>
                 <div class="card-body p-4 d-flex flex-column">
+                    <!-- 备份说明提示 -->
                     <div class="alert alert-info border-0 shadow-sm rounded-3 mb-4">
                         <div class="d-flex">
                             <i class="fa-solid fa-circle-info mt-1 me-3"></i>
@@ -53,6 +57,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
                         </div>
                     </div>
 
+                    <!-- 大数据量备份建议 -->
                     <div class="bg-light p-4 rounded-3 border mb-4 text-center">
                         <i class="fa-solid fa-hard-drive fa-3x text-secondary mb-3 opacity-50"></i>
                         <p class="text-muted small">
@@ -60,6 +65,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
                         </p>
                     </div>
 
+                    <!-- 备份数据表单 -->
                     <div class="mt-auto">
                         <form action="<?php echo $actionUrl; ?>" method="post">
                             <input tabindex="1" type="hidden" name="do" value="export">
@@ -72,7 +78,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
             </div>
         </div>
 
-        <!-- 右侧：恢复 (导入) -->
+        <!-- 右侧：恢复数据 (导入) 功能区 -->
         <div class="col-lg-6">
             <div class="card-modern h-100">
                 <div class="card-header bg-transparent border-bottom px-4 py-3 d-flex justify-content-between align-items-center">
@@ -82,7 +88,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
                 </div>
                 <div class="card-body p-4">
                     
-                    <!-- Tabs 导航 -->
+                    <!-- Tabs 导航 - 切换本地上传和从服务器选择 -->
                     <ul class="nav nav-pills nav-fill bg-light p-1 rounded-3 mb-4" id="restoreTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active rounded-pill small fw-bold" id="upload-tab" data-bs-toggle="pill" data-bs-target="#from-upload" type="button" role="tab"><?php _e('本地上传'); ?></button>
@@ -94,7 +100,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
 
                     <div class="tab-content" id="restoreTabContent">
                         
-                        <!-- Tab 1: 本地上传 -->
+                        <!-- Tab 1: 从本地上传备份文件 -->
                         <div class="tab-pane fade show active" id="from-upload" role="tabpanel">
                             <div class="text-center py-4 mb-3 border border-2 border-dashed rounded-3">
                                 <i class="fa-solid fa-upload fa-3x text-muted mb-3 opacity-50"></i>
@@ -112,9 +118,9 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
                             </form>
                         </div>
 
-                        <!-- Tab 2: 服务器文件 -->
+                        <!-- Tab 2: 从服务器选择备份文件 -->
                         <div class="tab-pane fade" id="from-server" role="tabpanel">
-                            <?php if (empty($backupFiles)): ?>
+                            <?php if (empty($backupFiles)): // 如果服务器上没有备份文件 ?>
                                 <div class="text-center py-5">
                                     <i class="fa-regular fa-folder-open fa-3x text-muted mb-3 opacity-50"></i>
                                     <p class="text-muted small">
@@ -124,7 +130,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
                                         <?php _e('请将备份文件手动上传至服务器的 <br><code>%s</code><br> 目录下', __TYPECHO_BACKUP_DIR__); ?>
                                     </p>
                                 </div>
-                            <?php else: ?>
+                            <?php else: // 如果服务器上有备份文件，提供选择下拉框 ?>
                                 <form action="<?php echo $actionUrl; ?>" method="post" class="restore-form">
                                     <div class="mb-4">
                                         <label class="form-label fw-bold text-dark mb-2" for="backup-select-file"><?php _e('选择一个备份文件'); ?></label>
@@ -144,7 +150,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
 
                     </div>
                     
-                    <!-- 警告提示 -->
+                    <!-- 恢复操作的警告提示 -->
                     <div class="mt-4 pt-3 border-top text-center">
                         <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3">
                             <i class="fa-solid fa-triangle-exclamation me-1"></i> <?php _e('注意'); ?>
@@ -162,6 +168,7 @@ $backupFiles = \Widget\Backup::alloc()->listFiles();
 </div>
 
 <?php
+// 引入版权信息、通用JS和页脚文件
 include 'copyright.php';
 include 'common-js.php';
 ?>
@@ -174,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
     restoreForms.forEach(form => {
         form.addEventListener('submit', function(e) {
             if (!confirm('<?php _e('恢复操作将清除所有现有数据, 是否继续?'); ?>')) {
-                e.preventDefault();
+                e.preventDefault(); // 阻止表单提交
                 return false;
             }
         });

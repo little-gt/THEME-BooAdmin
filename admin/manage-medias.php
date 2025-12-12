@@ -1,4 +1,5 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
@@ -24,7 +25,7 @@ function getFileIcon($mime) {
 <div class="container-fluid">
 
     <!-- 顶部操作栏 -->
-    <div class="row mb-4 fade-in-up">
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body">
@@ -75,7 +76,7 @@ function getFileIcon($mime) {
 
     <!-- 媒体网格 -->
     <form method="post" name="manage_medias" class="operate-form">
-        <div class="row g-3 fade-in-up" style="animation-delay: 0.1s;">
+        <div class="row g-3" style="animation-delay: 0.1s;">
             <?php if($attachments->have()): ?>
                 <?php while($attachments->next()): ?>
                     <div class="col-6 col-sm-4 col-md-3 col-xl-2 col-xxl-2">

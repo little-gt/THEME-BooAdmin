@@ -19,7 +19,7 @@ if (preg_match("/^([0-9]+)([a-z]{1,2})$/i", $phpMaxFilesize, $matches)) {
 ?>
 
 <div class="container-fluid">
-    <div class="row fade-in-up">
+    <div class="row rounded-pill">
         <div class="col-12">
             
             <!-- 主表单 -->

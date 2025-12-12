@@ -1,4 +1,5 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
@@ -11,7 +12,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
 <div class="container-fluid">
 
     <!-- 顶部状态栏 -->
-    <div class="row mb-4 fade-in-up">
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
@@ -29,9 +30,9 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                href="<?php $options->adminUrl('manage-posts.php?status=waiting' . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>">
                                <?php _e('待审核'); ?>
                                <?php if (!$isAllPosts && $stat->myWaitingPostsNum > 0 && !isset($request->uid)): ?>
-                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><?php $stat->myWaitingPostsNum(); ?></span>
+                                   <span class="position-absolute top-0 start-100 translate-middle badge bg-danger"><?php $stat->myWaitingPostsNum(); ?></span>
                                <?php elseif ($isAllPosts && $stat->waitingPostsNum > 0 && !isset($request->uid)): ?>
-                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><?php $stat->waitingPostsNum(); ?></span>
+                                   <span class="position-absolute top-0 start-100 translate-middle badge bg-danger"><?php $stat->waitingPostsNum(); ?></span>
                                <?php endif; ?>
                             </a>
                         </li>
@@ -40,9 +41,9 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                href="<?php $options->adminUrl('manage-posts.php?status=draft' . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>">
                                <?php _e('草稿'); ?>
                                <?php if (!$isAllPosts && $stat->myDraftPostsNum > 0 && !isset($request->uid)): ?>
-                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"><?php $stat->myDraftPostsNum(); ?></span>
+                                   <span class="position-absolute top-0 start-100 translate-middle badge bg-warning text-dark"><?php $stat->myDraftPostsNum(); ?></span>
                                <?php elseif ($isAllPosts && $stat->draftPostsNum > 0 && !isset($request->uid)): ?>
-                                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"><?php $stat->draftPostsNum(); ?></span>
+                                   <span class="position-absolute top-0 start-100 translate-middle badge bg-warning text-dark"><?php $stat->draftPostsNum(); ?></span>
                                <?php endif; ?>
                             </a>
                         </li>
@@ -67,7 +68,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
     </div>
 
     <!-- 主要操作区与表格 -->
-    <div class="row fade-in-up" style="animation-delay: 0.1s;">
+    <div class="row" style="animation-delay: 0.1s;">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body">
@@ -149,7 +150,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                         </td>
                                         <td class="text-center">
                                             <a href="<?php $options->adminUrl('manage-comments.php?cid=' . ($posts->parentId ? $posts->parentId : $posts->cid)); ?>"
-                                               class="badge bg-light text-dark rounded-pill border position-relative text-decoration-none"
+                                               class="badge bg-light text-dark border position-relative text-decoration-none"
                                                title="<?php $posts->commentsNum(); ?> <?php _e('评论'); ?>">
                                                 <?php $posts->commentsNum(); ?>
                                             </a>
@@ -184,8 +185,23 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="<?php echo \Typecho\Common::gravatarUrl($posts->author->mail, 24, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle me-2" width="24" height="24">
-                                                <a href="<?php $options->adminUrl('manage-posts.php?__typecho_all_posts=off&uid=' . $posts->author->uid); ?>" class="text-secondary text-decoration-none small"><?php $posts->author(); ?></a>
+                                                <?php
+                                                $authorMail = '';
+                                                $authorUid = '';
+                                                $authorName = _t('未知作者'); // Default text for missing author
+
+                                                // Check if the author object exists and is valid
+                                                if (isset($posts->author) && $posts->author instanceof \Typecho\Widget && $posts->author->have()) {
+                                                    $authorMail = $posts->author->mail;
+                                                    $authorUid = $posts->author->uid;
+                                                    // Use output buffering to safely get the author's display name
+                                                    ob_start();
+                                                    $posts->author();
+                                                    $authorName = ob_get_clean();
+                                                }
+                                                ?>
+                                                <img src="<?php echo \Typecho\Common::gravatarUrl($authorMail, 24, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle me-2" width="24" height="24" alt="<?php echo htmlspecialchars($authorName); ?>">
+                                                <a href="<?php echo $options->adminUrl('manage-posts.php?__typecho_all_posts=off&uid=' . $authorUid); ?>" class="text-secondary text-decoration-none small"><?php echo htmlspecialchars($authorName); ?></a>
                                             </div>
                                         </td>
                                         <td>

@@ -1,4 +1,5 @@
 <?php
+// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
@@ -10,7 +11,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
 <div class="container-fluid">
     
     <!-- 顶部说明与操作 -->
-    <div class="row mb-4 fade-in-up">
+    <div class="row mb-4">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
@@ -27,7 +28,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
     </div>
 
     <!-- 主要内容区 -->
-    <div class="row fade-in-up" style="animation-delay: 0.1s;">
+    <div class="row" style="animation-delay: 0.1s;">
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body">
@@ -116,7 +117,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                         <!-- 评论数 -->
                                         <td class="text-center">
                                             <a href="<?php $options->adminUrl('manage-comments.php?cid=' . $pages->cid); ?>" 
-                                               class="badge bg-light text-dark rounded-pill border position-relative text-decoration-none" 
+                                               class="badge bg-light text-dark border position-relative text-decoration-none"
                                                title="<?php $pages->commentsNum(); ?> <?php _e('评论'); ?>">
                                                 <?php $pages->commentsNum(); ?>
                                             </a>
@@ -152,8 +153,20 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                         <!-- 作者 -->
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="<?php echo \Typecho\Common::gravatarUrl($pages->author->mail, 24, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle me-2" width="24" height="24">
-                                                <span class="text-secondary small"><?php $pages->author(); ?></span>
+                                                <?php
+                                                $authorMail = '';
+                                                $authorName = _t('未知作者'); // Default text for missing author
+
+                                                // Check if the author object exists and is valid
+                                                if (isset($pages->author) && $pages->author instanceof \Typecho\Widget && $pages->author->have()) {
+                                                    $authorMail = $pages->author->mail;
+                                                    ob_start();
+                                                    $pages->author();
+                                                    $authorName = ob_get_clean();
+                                                }
+                                                ?>
+                                                <img src="<?php echo \Typecho\Common::gravatarUrl($authorMail, 24, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle me-2" width="24" height="24" alt="<?php echo htmlspecialchars($authorName); ?>">
+                                                <span class="text-secondary small"><?php echo htmlspecialchars($authorName); ?></span>
                                             </div>
                                         </td>
                                         <!-- 日期 -->
