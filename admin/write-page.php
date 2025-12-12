@@ -4,7 +4,7 @@ include 'header.php';
 include 'menu.php';
 \Widget\Contents\Page\Edit::alloc()->to($page);
 
-// 准备附件数据，逻辑与 write-post 一致
+// 准备附件数据
 if ($page->have()) {
     \Widget\Contents\Attachment\Related::alloc(['parentId' => $page->cid])->to($attachment);
 } else {
@@ -88,7 +88,12 @@ if (preg_match("/^([0-9]+)([a-z]{1,2})$/i", $phpMaxFilesize, $matches)) {
                         <!-- 底部操作栏 -->
                         <div class="card-modern mt-3">
                              <div class="card-body d-flex justify-content-between align-items-center submit">
-                                <div class="left">
+                                <div class="left d-flex align-items-center gap-3">
+                                    <!-- 新增：自动保存开关 -->
+                                    <div class="form-check form-switch mb-0">
+                                        <input class="form-check-input" type="checkbox" id="auto-save-switch">
+                                        <label class="form-check-label small text-muted" for="auto-save-switch"><?php _e('自动保存'); ?></label>
+                                    </div>
                                     <span id="auto-save-message" class="small text-muted"></span>
                                 </div>
                                 <div class="d-flex gap-2 right">
@@ -224,7 +229,7 @@ include 'copyright.php';
 ?>
 
 <!-- ======================================================= -->
-<!-- ALL JAVASCRIPTS ARE EMBEDDED HERE FOR A SINGLE FILE FIX -->
+<!-- ALL JAVASCRIPTS ARE EMBEDDED HERE -->
 <!-- ======================================================= -->
 <script src="<?php $options->adminStaticUrl('js', 'jquery.js'); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'jquery-ui.js'); ?>"></script>
@@ -235,11 +240,10 @@ include 'copyright.php';
 <script src="<?php $options->adminStaticUrl('js', 'moxie.js'); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'plupload.js'); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'timepicker.js'); ?>"></script>
-<script src="<?php $options->adminStaticUrl('js', 'tokeninput.js'); ?>"></script> <!-- Included for consistency, though not used by pages -->
+<script src="<?php $options->adminStaticUrl('js', 'tokeninput.js'); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'typecho.js'); ?>"></script>
 
 <script>
-// All the JS logic is now combined here, similar to the write-post.php fix.
 $(document).ready(function() {
     // =======================================================
     // MARKDOWN EDITOR INITIALIZATION
@@ -255,7 +259,23 @@ $(document).ready(function() {
         
         var options = {}, isMarkdown = <?php echo intval($page->isMarkdown || !$page->have()); ?>;
         
-        options.strings = { /* ... (same as write-post) ... */ };
+        options.strings = {
+            bold: '<?php _e('加粗'); ?> <strong> Ctrl+B', boldexample: '<?php _e('加粗文字'); ?>',
+            italic: '<?php _e('斜体'); ?> <em> Ctrl+I', italicexample: '<?php _e('斜体文字'); ?>',
+            link: '<?php _e('链接'); ?> <a> Ctrl+L', linkdescription: '<?php _e('请输入链接描述'); ?>',
+            quote:  '<?php _e('引用'); ?> <blockquote> Ctrl+Q', quoteexample: '<?php _e('引用文字'); ?>',
+            code: '<?php _e('代码'); ?> <pre><code> Ctrl+K', codeexample: '<?php _e('请输入代码'); ?>',
+            image: '<?php _e('图片'); ?> <img> Ctrl+G', imagedescription: '<?php _e('请输入图片描述'); ?>',
+            olist: '<?php _e('数字列表'); ?> <ol> Ctrl+O', ulist: '<?php _e('普通列表'); ?> <ul> Ctrl+U', litem: '<?php _e('列表项目'); ?>',
+            heading: '<?php _e('标题'); ?> <h1>/<h2> Ctrl+H', headingexample: '<?php _e('标题文字'); ?>',
+            hr: '<?php _e('分割线'); ?> <hr> Ctrl+R', more: '<?php _e('摘要分割线'); ?> <!--more--> Ctrl+M',
+            undo: '<?php _e('撤销'); ?> - Ctrl+Z', redo: '<?php _e('重做'); ?> - Ctrl+Y', redomac: '<?php _e('重做'); ?> - Ctrl+Shift+Z',
+            imagedialog: '<p><b><?php _e('插入图片'); ?></b></p><p><?php _e('请在下方的输入框内输入要插入的远程图片地址'); ?></p><p><?php _e('您也可以使用附件功能插入上传的本地图片'); ?></p>',
+            linkdialog: '<p><b><?php _e('插入链接'); ?></b></p><p><?php _e('请在下方的输入框内输入要插入的链接地址'); ?></p>',
+            ok: '<?php _e('确定'); ?>', cancel: '<?php _e('取消'); ?>',
+            help: '<?php _e('Markdown语法帮助'); ?>'
+        };
+
         var converter = new HyperDown();
         var editor = new Markdown.Editor(converter, '', options);
 
@@ -316,7 +336,7 @@ $(document).ready(function() {
         titleTextarea.on('input', resizeTitleTextarea);
         resizeTitleTextarea();
 
-        $('#date').datetimepicker({ /* ... (same options as write-post) ... */ });
+        $('#date').datetimepicker({ hourText: '<?php _e('时'); ?>', minuteText: '<?php _e('分'); ?>', timeSeparator: ':', currentText: '<?php _e('现在'); ?>', closeText: '<?php _e('完成'); ?>' });
         $('#title').focus();
         
         var submitted = false, form = $('#write_page').submit(function () { submitted = true; });
@@ -336,6 +356,52 @@ $(document).ready(function() {
         $('.edit-draft-notice a').click(function () {
             return confirm('<?php _e('您确认要删除这份草稿吗?'); ?>');
         });
+
+        // =======================================================
+        // NEW: AUTO SAVE LOGIC
+        // =======================================================
+        var autoSaveTimer = null;
+        var autoSaveSwitch = $('#auto-save-switch');
+
+        // Restore switch state
+        if (localStorage.getItem('typecho_autosave') === '1') {
+            autoSaveSwitch.prop('checked', true);
+            startAutoSave();
+        }
+
+        autoSaveSwitch.change(function() {
+            var checked = $(this).is(':checked');
+            localStorage.setItem('typecho_autosave', checked ? '1' : '0');
+            if (checked) {
+                startAutoSave();
+            } else {
+                stopAutoSave();
+                $('#auto-save-message').text('');
+            }
+        });
+
+        function startAutoSave() {
+            if (autoSaveTimer) clearInterval(autoSaveTimer);
+            autoSaveTimer = setInterval(function() {
+                if (changed && !submitted) {
+                    var formData = form.serialize() + '&do=save';
+                    // Silent save via AJAX
+                    $.post(form.attr('action'), formData, function(data) {
+                        var time = new Date();
+                        var timeStr = time.getHours().toString().padStart(2,'0') + ':' +
+                                      time.getMinutes().toString().padStart(2,'0') + ':' +
+                                      time.getSeconds().toString().padStart(2,'0');
+                        $('#auto-save-message').text('<?php _e('已于'); ?> ' + timeStr + ' <?php _e('自动保存'); ?>');
+                        changed = false; // Reset changed flag
+                    });
+                }
+            }, 30000); // Check every 30 seconds
+        }
+
+        function stopAutoSave() {
+            if (autoSaveTimer) clearInterval(autoSaveTimer);
+        }
+
     })();
 
 
@@ -343,7 +409,6 @@ $(document).ready(function() {
     // CUSTOM FIELDS LOGIC
     // =======================================================
     (function() {
-        // This is identical to write-post.php's logic.
         function attachDeleteEvent (el) {
             $('.btn-danger', el).click(function () {
                 if (confirm('<?php _e('确认要删除此字段吗?'); ?>')) {
@@ -373,24 +438,71 @@ $(document).ready(function() {
 
 
     // =======================================================
-    // FILE UPLOAD LOGIC
+    // FILE UPLOAD LOGIC (REWRITTEN & OPTIMIZED)
     // =======================================================
     (function() {
         window.Typecho.insertFileToEditor = function (file, url, isImage) {
             var textarea = $('#text');
-            var sel = textarea.getSelection();
+            var text = textarea.val();
             var markdown = $('input[name=markdown]').is(':checked');
-            var html = isImage ? 
-                (markdown ? '![' + file + '](' + url + ')' : '<img src="' + url + '" alt="' + file + '" />') : 
-                (markdown ? '[' + file + '](' + url + ')' : '<a href="' + url + '">' + file + '</a>');
-            var offset = (sel ? sel.start : 0) + html.length;
-            textarea.replaceSelection(html);
-            textarea.setSelection(offset, offset);
+
+            // 1. Preserve Scroll and Selection
+            var scrollPos = textarea.scrollTop();
+            var selStart = textarea.prop('selectionStart');
+
+            if (!markdown) {
+                // HTML fallback
+                var html = isImage ? '<img src="' + url + '" alt="' + file + '" />' : '<a href="' + url + '">' + file + '</a>';
+                textarea.replaceSelection(html);
+                return;
+            }
+
+            // 2. Calculate next Reference ID [n]
+            var maxId = 0;
+            // Matches start of line or space + [n]: url
+            var regex = /(?:^|\s)\[(\d+)\]:\s+http/g;
+            var match;
+            while ((match = regex.exec(text)) !== null) {
+                var currentId = parseInt(match[1]);
+                if (currentId > maxId) maxId = currentId;
+            }
+            var nextId = maxId + 1;
+
+            // 3. Prepare strings
+            var refTag = isImage ? '![' + file + '][' + nextId + ']' : '[' + file + '][' + nextId + ']';
+            var refDef = '\n  [' + nextId + ']: ' + url;
+
+            // 4. Update Content: Insert tag at cursor, append def at bottom
+            textarea.replaceSelection(refTag);
+
+            var currentVal = textarea.val();
+            textarea.val(currentVal + refDef);
+
+            // 5. Restore Cursor (after the inserted tag) and Scroll
+            var newCursorPos = selStart + refTag.length;
+            textarea.prop('selectionStart', newCursorPos);
+            textarea.prop('selectionEnd', newCursorPos);
+            textarea.scrollTop(scrollPos);
+
+            // Trigger change event
+            textarea.trigger('input');
         };
         
-        // This entire block is identical to write-post.php's file upload logic.
-        function updateAttachmentNumber() { /* ... */ }
+        function updateAttachmentNumber() {
+            var btn = $('#tab-files-btn');
+            var count = $('#file-list > li').length;
+            var balloon = btn.find('.badge');
+            if (count > 0) {
+                if (!balloon.length) {
+                    balloon = $('<span class="badge bg-primary rounded-pill ms-2"></span>').appendTo(btn);
+                }
+                balloon.html(count);
+            } else if (balloon.length > 0) {
+                balloon.remove();
+            }
+        }
         updateAttachmentNumber();
+
         var uploader = null;
         $('a[href="#tab-files"]').one('shown.bs.tab', function() {
             if (uploader) return;
