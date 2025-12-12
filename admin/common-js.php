@@ -1,11 +1,46 @@
 <?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
-<script src="<?php $options->adminStaticUrl('js', 'jquery.js'); ?>"></script>
-<script src="<?php $options->adminStaticUrl('js', 'jquery-ui.js'); ?>"></script>
-<script src="<?php $options->adminStaticUrl('js', 'typecho.js'); ?>"></script>
+
+<!-- 标记脚本，防止 PJAX 重复加载基础库 -->
 <script>
-    (function () {
+if (!window.typechoAdminJsLoaded) {
+    window.typechoAdminJsLoaded = true;
+
+    // 动态加载 CSS
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '<?php $options->adminStaticUrl('css', 'nprogress.css'); ?>';
+    document.head.appendChild(link);
+
+        // 动态加载 JS 库 (按顺序)
+        var scripts = [
+            '<?php $options->adminStaticUrl('js', 'jquery.js'); ?>',
+            '<?php $options->adminStaticUrl('js', 'jquery-ui.js'); ?>',
+            '<?php $options->adminStaticUrl('js', 'jquery.pjax.js'); ?>',
+            '<?php $options->adminStaticUrl('js', 'typecho.js'); ?>',
+            '<?php $options->adminStaticUrl('js', 'nprogress.js'); ?>',
+        ];
+
+        function loadScripts(index) {
+            if (index >= scripts.length) {
+                initAdminLogic(); // 所有库加载完后执行初始化
+                return;
+            }
+            var script = document.createElement('script');
+            script.src = scripts[index];
+            script.onload = function() { loadScripts(index + 1); };
+            document.body.appendChild(script);
+        }
+
+        loadScripts(0);
+    } else {
+        // 如果是 PJAX 重载，仅触发页面特定逻辑，跳过库加载
+        // 强制结束可能卡住的进度条
+        if (typeof NProgress !== 'undefined') NProgress.done();
+    }
+
+    function initAdminLogic() {
         $(document).ready(function() {
-            // 处理消息机制
+            // 1. 消息提示机制
             (function () {
                 var prefix = '<?php echo \Typecho\Cookie::getPrefix(); ?>',
                     cookies = {
@@ -30,37 +65,12 @@
                         p.prependTo(document.body);
                     }
 
-                    function checkScroll () {
-                        if ($(window).scrollTop() >= offset) {
-                            p.css({
-                                'position'  :   'fixed',
-                                'top'       :   0
-                            });
-                        } else {
-                            p.css({
-                                'position'  :   'absolute',
-                                'top'       :   offset
-                            });
-                        }
-                    }
-
-                    $(window).scroll(function () {
-                        checkScroll();
-                    });
-
-                    checkScroll();
-
                     p.slideDown(function () {
                         var t = $(this), color = '#C6D880';
-                        
-                        if (t.hasClass('error')) {
-                            color = '#FBC2C4';
-                        } else if (t.hasClass('notice')) {
-                            color = '#FFD324';
-                        }
+                        if (t.hasClass('error')) color = '#FBC2C4';
+                        else if (t.hasClass('notice')) color = '#FFD324';
 
-                        t.effect('highlight', {color : color})
-                            .delay(5000).fadeOut(function () {
+                        t.effect('highlight', {color : color}).delay(5000).fadeOut(function () {
                             $(this).remove();
                         });
                     });
@@ -75,7 +85,7 @@
                 }
             })();
 
-
+            // 2. 菜单与链接逻辑
             // 导航菜单 tab 聚焦时展开下拉菜单
             const menuBar = $('.menu-bar').click(function () {
                 const nav = $(this).next('#typecho-nav-list');
@@ -90,47 +100,15 @@
                 }
             });
 
-            $('#typecho-nav-list ul.root').each(function () {
-                const ul = $(this), nav = ul.parent();
-                let focused = false;
-
-                ul.on('click touchend', '.parent a', function (e) {
-                    nav.removeClass('noexpanded').addClass('expanded');
-                    if ($(window).width() < 576 && e.type == 'click') {
-                        return false;
-                    }
-                }).find('.child')
-                .append($('<li class="return"><a><?php _e('返回'); ?></a></li>').click(function () {
-                    nav.removeClass('expanded').addClass('noexpanded');
-                    return false;
-                }));
-
-                $('a', ul).focus(function () {
-                    ul.addClass('expanded');
-                    focused = true;
-                }).blur(function () {
-                    focused = false;
-
-                    setTimeout(function () {
-                        if (!focused) {
-                            ul.removeClass('expanded');
-                        }
-                    });
-                });
-            });
-
             if ($('.typecho-login').length == 0) {
                 $('a').each(function () {
                     var t = $(this), href = t.attr('href');
-
                     if ((href && href[0] == '#')
                         || /^<?php echo preg_quote($options->adminUrl, '/'); ?>.*$/.exec(href) 
                             || /^<?php echo substr(preg_quote(\Typecho\Common::url('s', $options->index), '/'), 0, -1); ?>action\/[_a-zA-Z0-9\/]+.*$/.exec(href)) {
                         return;
                     }
-
-                    t.attr('target', '_blank')
-                        .attr('rel', 'noopener noreferrer');
+                    t.attr('target', '_blank').attr('rel', 'noopener noreferrer');
                 });
             }
 
@@ -138,5 +116,5 @@
                 $('button[type=submit]', this).attr('disabled', 'disabled');
             });
         });
-    })();
-</script>
+    }
+    </script>

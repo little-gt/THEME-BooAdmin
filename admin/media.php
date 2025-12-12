@@ -29,7 +29,16 @@ function getMediaIcon($mime) {
         <div class="col-12">
             <div class="card-modern">
                 <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-                    编辑文件
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1">
+                            <i class="fa-solid fa-file-pen me-2 text-primary"></i><?php _e('编辑文件'); ?>
+                        </h4>
+                    </div>
+                    <div>
+                        <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="btn btn-light shadow-sm fw-bold small">
+                            <i class="fa-solid fa-arrow-left me-1"></i> <?php _e('返回媒体库'); ?>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,7 +127,6 @@ function getMediaIcon($mime) {
 </div>
 
 <style>
-/* 预览区棋盘格背景 (透明图片友好) */
 .preview-stage {
     min-height: 260px;
     background-color: #f8f9fa;
@@ -130,8 +138,6 @@ function getMediaIcon($mime) {
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
-
-/* 上传区悬停效果 */
 .upload-area-modern:hover {
     background-color: #fff !important;
     border-color: var(--primary-light) !important;
@@ -141,7 +147,6 @@ function getMediaIcon($mime) {
     background-color: var(--primary-soft) !important;
     border-color: var(--primary-color) !important;
 }
-
 .text-purple { color: #6c5ce7; }
 .backdrop-blur { backdrop-filter: blur(4px); }
 </style>
@@ -152,189 +157,137 @@ include 'common-js.php';
 include 'form-js.php';
 ?>
 
-<!-- 引入上传组件 -->
-<script src="<?php $options->adminStaticUrl('js', 'moxie.js'); ?>"></script>
-<script src="<?php $options->adminStaticUrl('js', 'plupload.js'); ?>"></script>
+<!-- 仅在未加载过时加载上传库，防止重复 -->
+<script>
+if (typeof plupload === 'undefined') {
+    document.write('<script src="<?php $options->adminStaticUrl('js', 'moxie.js'); ?>"><\/script>');
+    document.write('<script src="<?php $options->adminStaticUrl('js', 'plupload.js'); ?>"><\/script>');
+}
+</script>
 
 <script type="text/javascript">
-$(document).ready(function () {
-    // =======================================================
-    // 1. 表单美化 Polyfill (复用通用逻辑)
-    // =======================================================
-    $('.typecho-option input[type=text], .typecho-option textarea').addClass('form-control');
-    $('.typecho-option select').addClass('form-select');
-    $('.typecho-option').addClass('list-unstyled mb-0');
-    $('.typecho-option li').addClass('mb-3');
-    $('.typecho-option label.typecho-label').addClass('form-label fw-bold text-dark small text-uppercase mb-1 d-block');
-    $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
-    $('.typecho-option-submit').addClass('mt-4 pt-3 border-top d-flex justify-content-between align-items-center flex-row-reverse');
-    
-    // 提交按钮
-    $('.typecho-option-submit button').addClass('btn btn-primary px-4 rounded-pill fw-bold shadow-sm');
-    
-    // 删除按钮 (美化 Typecho 生成的链接)
-    $('.operate-delete').addClass('btn btn-outline-danger btn-sm border-0');
-    $('.operate-delete').html('<i class="fa-solid fa-trash me-1"></i> <?php _e('永久删除'); ?>');
-
-    // =======================================================
-    // 2. 复制链接功能
-    // =======================================================
-    $('#btn-copy').click(function() {
-        var urlField = document.getElementById('attachment-url');
-        urlField.select();
-        urlField.setSelectionRange(0, 99999); // For mobile devices
-        
-        try {
-            document.execCommand('copy');
-            var originalIcon = $(this).html();
-            $(this).html('<i class="fa-solid fa-check"></i>').removeClass('btn-primary').addClass('btn-success');
-            
-            setTimeout(() => {
-                $(this).html(originalIcon).removeClass('btn-success').addClass('btn-primary');
-            }, 2000);
-        } catch (err) {
-            alert('复制失败，请手动复制');
-        }
-    });
-
-    // =======================================================
-    // 3. 删除确认逻辑
-    // =======================================================
-    $('.operate-delete').click(function () {
-        var t = $(this), href = t.attr('href');
-        if (confirm(t.attr('lang'))) {
-            window.location.href = href;
-        }
-        return false;
-    });
-
-    // =======================================================
-    // 4. Plupload 上传逻辑 (保留原版核心逻辑，适配新 UI)
-    // =======================================================
-    
-    // 拖拽高亮效果
-    $('.upload-area').bind({
-        dragenter: function () {
-            $(this).parent().addClass('drag');
-        },
-        dragover: function (e) {
-            $(this).parent().addClass('drag');
-        },
-        drop: function () {
-            $(this).parent().removeClass('drag');
-        },
-        dragend: function () {
-            $(this).parent().removeClass('drag');
-        },
-        dragleave: function () {
-            $(this).parent().removeClass('drag');
-        }
-    });
-
-    function fileUploadStart(file) {
-        $('<li id="' + file.id + '" class="loading">'
-            + file.name + '</li>').appendTo('#file-list');
+(function() {
+    // 强制清理卡住的进度条
+    if (typeof NProgress !== 'undefined') {
+        NProgress.done();
+        $('.main-content').removeClass('pjax-loading');
     }
 
-    function fileUploadError(error) {
-        var file = error.file, code = error.code, word; 
-        
-        switch (code) {
-            case plupload.FILE_SIZE_ERROR:
-                word = '<?php _e('文件大小超过限制'); ?>';
-                break;
-            case plupload.FILE_EXTENSION_ERROR:
-                word = '<?php _e('文件扩展名不被支持'); ?>';
-                break;
-            case plupload.FILE_DUPLICATE_ERROR:
-                word = '<?php _e('文件已经上传过'); ?>';
-                break;
-            case plupload.HTTP_ERROR:
-            default:
-                word = '<?php _e('上传出现错误'); ?>';
-                break;
-        }
+    $(document).ready(function () {
+        // 1. 表单美化
+        $('.typecho-option input[type=text], .typecho-option textarea').addClass('form-control');
+        $('.typecho-option select').addClass('form-select');
+        $('.typecho-option').addClass('list-unstyled mb-0');
+        $('.typecho-option li').addClass('mb-3');
+        $('.typecho-option label.typecho-label').addClass('form-label fw-bold text-dark small text-uppercase mb-1 d-block');
+        $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
+        $('.typecho-option-submit').addClass('mt-4 pt-3 border-top d-flex justify-content-between align-items-center flex-row-reverse');
+        $('.typecho-option-submit button').addClass('btn btn-primary px-4 rounded-pill fw-bold shadow-sm');
 
-        var fileError = '<?php _e('%s 上传失败'); ?>'.replace('%s', file.name),
-            li, exist = $('#' + file.id);
-
-        if (exist.length > 0) {
-            li = exist.removeClass('loading').html(fileError);
-        } else {
-            li = $('<li>' + fileError + '<br />' + word + '</li>').appendTo('#file-list');
-        }
-
-        li.addClass('text-danger small mt-1').effect('highlight', {color : '#FBC2C4'}, 2000, function () {
-            $(this).remove();
+        // 删除按钮
+        $('.operate-delete').addClass('btn btn-outline-danger btn-sm border-0');
+        $('.operate-delete').html('<i class="fa-solid fa-trash me-1"></i> <?php _e('永久删除'); ?>');
+        $('.operate-delete').click(function () {
+            var t = $(this), href = t.attr('href');
+            if (confirm(t.attr('lang'))) {
+                window.location.href = href;
+            }
+            return false;
         });
-    }
 
-    function fileUploadComplete(id, url, data) {
-        var img = $('.typecho-attachment-photo');
-        
-        // 更新预览图
-        if (img.length > 0) {
-            img.attr('src', '<?php $attachment->attachment->url(); ?>?' + Math.random());
-        } else {
-            // 如果原来不是图片，现在上传了图片，刷新页面
-            window.location.reload();
-        }
-        
-        // 更新 URL 输入框
-        $('#attachment-url').val(data.url);
+        // 2. 复制链接
+        $('#btn-copy').click(function() {
+            var urlField = document.getElementById('attachment-url');
+            urlField.select();
+            // 兼容移动端
+            urlField.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                var btn = $(this);
+                var originalIcon = btn.html();
+                btn.html('<i class="fa-solid fa-check"></i>').removeClass('btn-primary').addClass('btn-success');
+                setTimeout(function() {
+                    btn.html(originalIcon).removeClass('btn-success').addClass('btn-primary');
+                }, 2000);
+            } catch (err) {
+                alert('复制失败，请手动复制');
+            }
+        });
 
-        $('#' + id).html('<span class="text-success"><i class="fa-solid fa-check me-1"></i><?php _e('文件 %s 已经替换'); ?>'.replace('%s', data.title) + '</span>')
-            .effect('highlight', 1000, function () {
-                $(this).fadeOut(function(){ $(this).remove(); });
+        // 3. 上传逻辑封装
+        function initUploader() {
+            if (typeof plupload === 'undefined') {
+                // 如果库还没加载完（极少情况），等待一下
+                setTimeout(initUploader, 100);
+                return;
+            }
+
+            // 拖拽高亮
+            $('.upload-area').bind({
+                dragenter: function () { $(this).parent().addClass('drag'); },
+                dragover: function (e) { $(this).parent().addClass('drag'); },
+                drop: function () { $(this).parent().removeClass('drag'); },
+                dragend: function () { $(this).parent().removeClass('drag'); },
+                dragleave: function () { $(this).parent().removeClass('drag'); }
             });
-    }
 
-    var uploader = new plupload.Uploader({
-        browse_button: $('.upload-file').get(0),
-        url: '<?php $security->index('/action/upload?do=modify&cid=' . $attachment->cid); ?>',
-        runtimes: 'html5,flash,html4',
-        flash_swf_url: '<?php $options->adminStaticUrl('js', 'Moxie.swf'); ?>',
-        drop_element: $('.upload-area').get(0),
-        filters: {
-            max_file_size: '<?php echo $phpMaxFilesize ?>',
-            mime_types: [{
-                'title': '<?php _e('允许上传的文件'); ?>',
-                'extensions': '<?php $attachment->attachment->type(); ?>'
-            }],
-            prevent_duplicates: true
-        },
-        multi_selection: false,
-
-        init: {
-            FilesAdded: function (up, files) {
-                plupload.each(files, function (file) {
-                    fileUploadStart(file);
-                });
-                uploader.start();
-            },
-
-            FileUploaded: function (up, file, result) {
-                if (200 == result.status) {
-                    var data = $.parseJSON(result.response);
-                    if (data) {
-                        fileUploadComplete(file.id, data[0], data[1]);
-                        return;
+            var uploader = new plupload.Uploader({
+                browse_button: $('.upload-file').get(0),
+                url: '<?php $security->index('/action/upload?do=modify&cid=' . $attachment->cid); ?>',
+                runtimes: 'html5,flash,html4',
+                flash_swf_url: '<?php $options->adminStaticUrl('js', 'Moxie.swf'); ?>',
+                drop_element: $('.upload-area').get(0),
+                filters: {
+                    max_file_size: '<?php echo $phpMaxFilesize ?>',
+                    mime_types: [{
+                        'title': '<?php _e('允许上传的文件'); ?>',
+                        'extensions': '<?php $attachment->attachment->type(); ?>'
+                    }],
+                    prevent_duplicates: true
+                },
+                multi_selection: false,
+                init: {
+                    FilesAdded: function (up, files) {
+                        plupload.each(files, function (file) {
+                            $('<li id="' + file.id + '" class="loading">' + file.name + '</li>').appendTo('#file-list');
+                        });
+                        uploader.start();
+                    },
+                    FileUploaded: function (up, file, result) {
+                        if (200 == result.status) {
+                            var data = $.parseJSON(result.response);
+                            if (data) {
+                                var img = $('.typecho-attachment-photo');
+                                if (img.length > 0) {
+                                    img.attr('src', '<?php $attachment->attachment->url(); ?>?' + Math.random());
+                                } else {
+                                    window.location.reload();
+                                }
+                                $('#attachment-url').val(data.url);
+                                $('#' + file.id).html('<span class="text-success"><i class="fa-solid fa-check me-1"></i><?php _e('文件替换成功'); ?></span>')
+                                    .effect('highlight', 1000, function () {
+                                        $(this).fadeOut(function(){ $(this).remove(); });
+                                    });
+                                return;
+                            }
+                        }
+                        $('#' + file.id).html('<span class="text-danger">上传失败</span>');
+                    },
+                    Error: function (up, error) {
+                        var fileError = '<?php _e('%s 上传失败'); ?>'.replace('%s', error.file ? error.file.name : '');
+                        var li = error.file ? $('#' + error.file.id) : $('<li>' + fileError + '</li>').appendTo('#file-list');
+                        li.html('<span class="text-danger">' + fileError + '</span>').effect('highlight', {color : '#FBC2C4'}, 2000, function () {
+                            $(this).remove();
+                        });
                     }
                 }
-                fileUploadError({
-                    code: plupload.HTTP_ERROR,
-                    file: file
-                });
-            },
-
-            Error: function (up, error) {
-                fileUploadError(error);
-            }
+            });
+            uploader.init();
         }
-    });
 
-    uploader.init();
-});
+        initUploader();
+    });
+})();
 </script>
 
 <?php include 'footer.php'; ?>

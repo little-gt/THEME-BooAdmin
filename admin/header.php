@@ -83,10 +83,28 @@ $header = \Typecho\Plugin::factory('admin/header.php')->header($header);
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .fade-in-up {
+            animation: fadeInUp 0.4s ease-out;
+        }
+
         /* 滚动条美化 */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
+
+        /* NProgress 颜色覆盖 */
+        #nprogress .bar { background: var(--primary-color) !important; height: 3px !important; }
+        #nprogress .peg { box-shadow: 0 0 10px var(--primary-color), 0 0 5px var(--primary-color) !important; }
+        #nprogress .spinner-icon { border-top-color: var(--primary-color) !important; border-left-color: var(--primary-color) !important; }
+
+        /* PJAX 容器动画 */
+        .main-content {
+            transition: opacity 0.2s ease;
+        }
+        .main-content.pjax-loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body<?php if (isset($bodyClass)) {echo ' class="' . $bodyClass . '"';} ?>>
