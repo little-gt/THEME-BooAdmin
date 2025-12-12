@@ -115,19 +115,23 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                             <?php if ('' != $request->keywords || '' != $request->category): ?>
                                 <a href="<?php $options->adminUrl('manage-posts.php' . (isset($request->status) || isset($request->uid) ? '?' . (isset($request->status) ? 'status=' . $request->filter('encode')->status : '') . (isset($request->uid) ? (isset($request->status) ? '&' : '') . 'uid=' . $request->filter('encode')->uid : '') : '')); ?>"
                                    class="btn btn-outline-secondary" title="<?php _e('取消筛选'); ?>">
-                                   <i class="fa-solid fa-xmark"></i>
+                                   <i class="fa-solid fa-xmark"></i> 取消筛选
                                 </a>
                             <?php endif; ?>
 
-                            <input type="hidden" value="<?php echo $request->filter('html')->uid; ?>" name="uid" />
-                            <input type="hidden" value="<?php echo $request->filter('html')->status; ?>" name="status" />
+                            <!-- 修复点：只有当参数存在且不为空时才输出隐藏域 -->
+                            <?php if (isset($request->uid) && !empty($request->uid)): ?>
+                                <input type="hidden" value="<?php echo $request->filter('html')->uid; ?>" name="uid" />
+                            <?php endif; ?>
+                            <?php if (isset($request->status) && !empty($request->status)): ?>
+                                <input type="hidden" value="<?php echo $request->filter('html')->status; ?>" name="status" />
+                            <?php endif; ?>
                         </form>
                     </div>
 
                     <!-- 数据表格 -->
                     <form method="post" name="manage_posts" class="operate-form">
                         <div class="table-responsive">
-                            <!-- 注意：保留 typecho-list-table 类名以兼容 table-js.php 的逻辑 -->
                             <table class="table modern-table table-hover typecho-list-table">
                                 <thead>
                                     <tr>
@@ -159,7 +163,6 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                             <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>" class="fw-bold text-dark text-decoration-none post-title-link">
                                                 <?php $posts->title(); ?>
                                             </a>
-                                            <!-- 状态徽章 -->
                                             <?php if ($posts->hasSaved || 'post_draft' == $posts->type): ?>
                                                 <span class="badge bg-warning text-dark ms-1" style="font-size: 0.7rem;"><i class="fa-solid fa-file-pen me-1"></i><?php _e('草稿'); ?></span>
                                             <?php endif; ?>
@@ -173,7 +176,6 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                                 <span class="badge bg-danger ms-1" style="font-size: 0.7rem;"><i class="fa-solid fa-key me-1"></i><?php _e('加密'); ?></span>
                                             <?php endif; ?>
 
-                                            <!-- 快捷操作图标 -->
                                             <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>" title="<?php _e('编辑 %s', htmlspecialchars($posts->title)); ?>" class="text-muted ms-2 opacity-50 hover-opacity-100">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
@@ -185,27 +187,12 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <?php
-                                                $authorMail = '';
-                                                $authorUid = '';
-                                                $authorName = _t('未知作者'); // Default text for missing author
-
-                                                // Check if the author object exists and is valid
-                                                if (isset($posts->author) && $posts->author instanceof \Typecho\Widget && $posts->author->have()) {
-                                                    $authorMail = $posts->author->mail;
-                                                    $authorUid = $posts->author->uid;
-                                                    // Use output buffering to safely get the author's display name
-                                                    ob_start();
-                                                    $posts->author();
-                                                    $authorName = ob_get_clean();
-                                                }
-                                                ?>
-                                                <img src="<?php echo \Typecho\Common::gravatarUrl($authorMail, 24, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle me-2" width="24" height="24" alt="<?php echo htmlspecialchars($authorName); ?>">
-                                                <a href="<?php echo $options->adminUrl('manage-posts.php?__typecho_all_posts=off&uid=' . $authorUid); ?>" class="text-secondary text-decoration-none small"><?php echo htmlspecialchars($authorName); ?></a>
+                                                <img src="<?php echo \Typecho\Common::gravatarUrl($posts->author->mail, 24, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle me-2" width="24" height="24">
+                                                <a href="<?php $options->adminUrl('manage-posts.php?__typecho_all_posts=off&uid=' . $posts->author->uid); ?>" class="text-secondary text-decoration-none small"><?php $posts->author(); ?></a>
                                             </div>
                                         </td>
                                         <td>
-                                            <?php $categories = $posts->categories; $length = count($categories); ?>
+                                            <?php $categories = $posts->categories; ?>
                                             <?php foreach ($categories as $key => $val): ?>
                                                 <a href="<?php $options->adminUrl('manage-posts.php?category=' . $val['mid'] . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '') . (isset($request->status) ? '&status=' . $request->filter('encode')->status : '')); ?>"
                                                    class="badge bg-light text-secondary border fw-normal text-decoration-none">
@@ -239,7 +226,6 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                         </div>
                     </form>
 
-                    <!-- 分页 -->
                     <?php if ($posts->have()): ?>
                     <div class="mt-4 d-flex justify-content-center">
                         <?php $posts->pageNav('&laquo;', '&raquo;', 3, '...', array('wrapTag' => 'ul', 'wrapClass' => 'pagination pagination-modern', 'itemTag' => 'li', 'textTag' => 'span', 'currentClass' => 'active', 'prevClass' => 'prev', 'nextClass' => 'next')); ?>
@@ -255,6 +241,6 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
 <?php
 include 'copyright.php';
 include 'common-js.php';
-include 'table-js.php'; // 必须包含，用于处理全选等逻辑
+include 'table-js.php';
 include 'footer.php';
 ?>

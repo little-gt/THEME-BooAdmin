@@ -16,8 +16,8 @@ $pages = \Widget\Contents\Page\Admin::alloc();
             <div class="card-modern">
                 <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
                     <p class="text-muted mb-0">
-                        <i class="fa-regular fa-hand-pointer me-1"></i>
-                        <?php _e('您可以拖拽表格行来调整页面显示的顺序'); ?>
+                        <i class="fa-solid fa-circle-info me-1"></i>
+                        <?php _e('你可以通过设置页面排序来改变展示顺序'); ?>
                     </p>
                     <a href="<?php $options->adminUrl('write-page.php'); ?>" class="btn btn-primary px-4 shadow-sm fw-bold">
                         <i class="fa-solid fa-plus me-2"></i><?php _e('创建新的独立页面'); ?>
@@ -36,7 +36,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                     <!-- 顶部工具栏 -->
                     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 gap-3">
                         
-                        <!-- 批量操作 -->
+                        <!-- 批量操作 (左侧) -->
                         <div class="operate">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,22 +63,36 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                             </div>
                         </div>
 
-                        <!-- 搜索框 -->
-                        <div class="input-group" style="max-width: 300px;">
-                        <form method="get" class="d-flex gap-2">
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                                <input type="text" class="form-control border-start-0 ps-0" placeholder="<?php _e('请输入关键字'); ?>" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" name="keywords">
+                        <!-- 搜索与筛选 (右侧) -->
+                        <form method="get" class="d-flex gap-2 w-100 w-lg-auto" style="max-width: 400px;">
+                            <div class="input-group shadow-sm">
+                                <!-- 取消筛选按钮 (仅在有搜索词时显示) -->
+                                <?php if ('' != $request->keywords): ?>
+                                    <a href="<?php $options->adminUrl('manage-pages.php'); ?>"
+                                       class="btn btn-outline-secondary bg-white border-end-0 text-muted"
+                                       title="<?php _e('取消筛选'); ?>">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </a>
+                                <?php endif; ?>
+
+                                <!-- 搜索图标 -->
+                                <span class="input-group-text bg-white border-end-0 text-muted <?php echo '' != $request->keywords ? 'border-start-0' : ''; ?>">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </span>
+
+                                <!-- 输入框 -->
+                                <input type="text" class="form-control border-start-0 ps-0"
+                                       placeholder="<?php _e('请输入关键字'); ?>"
+                                       value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>"
+                                       name="keywords">
+
+                                <!-- 提交按钮 -->
+                                <button type="submit" class="btn btn-primary fw-bold">
+                                    <?php _e('筛选'); ?>
+                                </button>
                             </div>
-                            <button type="submit" class="btn btn-primary fw-bold"><?php _e('筛选'); ?></button>
-                            
-                            <?php if ('' != $request->keywords): ?>
-                                <a href="<?php $options->adminUrl('manage-pages.php'); ?>" class="btn btn-outline-secondary" title="<?php _e('取消筛选'); ?>">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </a>
-                            <?php endif; ?>
                         </form>
-                        </div>
+
                     </div>
 
                     <!-- 数据表格 -->
@@ -87,7 +101,6 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                             <!-- 
                                 关键类名说明：
                                 typecho-list-table: table-js.php 依赖，用于全选
-                                draggable: 视觉提示，表明可拖拽
                             -->
                             <table class="table modern-table table-hover typecho-list-table draggable">
                                 <thead>
@@ -95,11 +108,9 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                         <th width="40" class="text-center">
                                             <input type="checkbox" class="form-check-input typecho-table-select-all" />
                                         </th>
-                                        <th width="50"></th> <!-- 拖拽手柄 -->
                                         <th width="60" class="text-center"><i class="fa-solid fa-comments text-muted"></i></th>
                                         <th><?php _e('标题'); ?></th>
                                         <th><?php _e('缩略名'); ?></th>
-                                        <th><?php _e('作者'); ?></th>
                                         <th><?php _e('日期'); ?></th>
                                     </tr>
                                 </thead>
@@ -109,10 +120,6 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                     <tr id="<?php $pages->theId(); ?>" class="align-middle">
                                         <td class="text-center">
                                             <input type="checkbox" value="<?php $pages->cid(); ?>" name="cid[]" class="form-check-input" />
-                                        </td>
-                                        <!-- 拖拽手柄 -->
-                                        <td class="text-center text-muted" style="cursor: move;">
-                                            <i class="fa-solid fa-grip-vertical opacity-25 hover-opacity-100"></i>
                                         </td>
                                         <!-- 评论数 -->
                                         <td class="text-center">
@@ -150,25 +157,6 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                         </td>
                                         <!-- 缩略名 -->
                                         <td class="font-monospace text-muted small"><?php $pages->slug(); ?></td>
-                                        <!-- 作者 -->
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <?php
-                                                $authorMail = '';
-                                                $authorName = _t('未知作者'); // Default text for missing author
-
-                                                // Check if the author object exists and is valid
-                                                if (isset($pages->author) && $pages->author instanceof \Typecho\Widget && $pages->author->have()) {
-                                                    $authorMail = $pages->author->mail;
-                                                    ob_start();
-                                                    $pages->author();
-                                                    $authorName = ob_get_clean();
-                                                }
-                                                ?>
-                                                <img src="<?php echo \Typecho\Common::gravatarUrl($authorMail, 24, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle me-2" width="24" height="24" alt="<?php echo htmlspecialchars($authorName); ?>">
-                                                <span class="text-secondary small"><?php echo htmlspecialchars($authorName); ?></span>
-                                            </div>
-                                        </td>
                                         <!-- 日期 -->
                                         <td class="text-muted small">
                                             <?php if ($pages->hasSaved): ?>
@@ -203,14 +191,6 @@ $pages = \Widget\Contents\Page\Admin::alloc();
 </div>
 
 <style>
-/* 拖拽排序时的样式 */
-.tDnD_whileDrag {
-    background-color: var(--primary-soft) !important;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: scale(1.01);
-    cursor: move;
-}
-
 /* 标题链接悬停效果 */
 .post-title-link:hover {
     color: var(--primary-color) !important;
@@ -231,32 +211,5 @@ include 'copyright.php';
 include 'common-js.php';
 include 'table-js.php';
 ?>
-
-<!-- 拖拽排序 JS 逻辑 (仅在“公开”状态下有效) -->
-<?php if (!isset($request->status) || 'publish' == $request->get('status')): ?>
-<script type="text/javascript">
-(function () {
-    $(document).ready(function () {
-        var table = $('.typecho-list-table').tableDnD({
-            onDrop: function () {
-                var ids = [];
-                $('input[type=checkbox]', table).each(function () {
-                    ids.push($(this).val());
-                });
-
-                $.post('<?php $security->index('/action/contents-page-edit?do=sort'); ?>',
-                    $.param({cid: ids}));
-                
-                // 重置斑马纹 (虽然我们现在用 table-hover，但保留这个逻辑无害)
-                $('tr', table).each(function (i) {
-                    if (i % 2) $(this).addClass('even');
-                    else $(this).removeClass('even');
-                });
-            }
-        });
-    });
-})();
-</script>
-<?php endif; ?>
 
 <?php include 'footer.php'; ?>
