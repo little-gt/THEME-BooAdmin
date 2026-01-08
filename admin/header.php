@@ -9,10 +9,10 @@ $header = '
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- FontAwesome 6 -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<!-- Google Fonts (Nunito) -->
+<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<!-- Typecho Original Style (Optional preservation for plugins) -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css', true) . '">';
+<!-- Typecho Style -->
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=v1.0.1', true) . '">';
 
 /** 注册一个初始化插件 */
 $header = \Typecho\Plugin::factory('admin/header.php')->header($header);

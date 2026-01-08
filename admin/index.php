@@ -37,12 +37,19 @@ try {
         }
     }
 } catch (Exception $e) {
-    // 数据库查询容错处理，防止异常导致页面崩溃
-    // Typecho 的 Db::fetchAll 可能会在查询错误时抛出异常
+    // 数据库查询容错处理
 }
 ?>
 
 <div class="container-fluid">
+
+    <!-- 【新增】插件挂载点：首页顶部 (Begin) -->
+    <!-- 很多统计类插件会在这里插入内容 -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <?php \Typecho\Plugin::factory('admin/index.php')->begin(); ?>
+        </div>
+    </div>
 
     <!-- 欢迎语与网站状态概览 -->
     <div class="row mb-4">
@@ -74,7 +81,7 @@ try {
     </div>
 
     <!-- 统计卡片行 - 显示关键数据概览 -->
-    <div class="row g-4 mb-4" style="animation-delay: 0.1s;">
+    <div class="row g-4 mb-4 fade-in-up" style="animation-delay: 0.1s;">
         <!-- 已发布文章数 -->
         <div class="col-xl-3 col-sm-6">
             <div class="card-modern stat-widget h-100 d-flex align-items-center p-4">
@@ -133,12 +140,12 @@ try {
     <!-- 图表与官方动态区域 -->
     <div class="row g-4 mb-4">
         <!-- 统计图表 - 最近7天评论趋势 -->
-        <div class="col-lg-8" style="animation-delay: 0.2s;">
+        <div class="col-lg-8 fade-in-up" style="animation-delay: 0.2s;">
             <div class="card-modern h-100">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-chart-area me-2 text-primary"></i><?php _e('互动趋势 (近7天评论)'); ?></h5>
                 </div>
-                <!-- Chart.js 渲染容器，限制高度以确保布局美观 -->
+                <!-- Chart.js 渲染容器 -->
                 <div class="chart-container" style="position: relative; height: 320px; width: 100%;">
                     <canvas id="commentChart"></canvas>
                 </div>
@@ -146,7 +153,7 @@ try {
         </div>
 
         <!-- 官方动态/版本信息 -->
-        <div class="col-lg-4" style="animation-delay: 0.3s;">
+        <div class="col-lg-4 fade-in-up" style="animation-delay: 0.3s;">
             <div class="card-modern h-100">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-bullhorn me-2 text-warning"></i><?php _e('官方动态'); ?></h5>
@@ -163,7 +170,7 @@ try {
     </div>
 
     <!-- 最近文章与评论列表 -->
-    <div class="row g-4" style="animation-delay: 0.4s;">
+    <div class="row g-4 fade-in-up" style="animation-delay: 0.4s;">
         <!-- 最近文章列表 -->
         <div class="col-lg-6">
             <div class="card-modern h-100">
@@ -243,6 +250,13 @@ try {
             </div>
         </div>
     </div>
+
+    <!-- 【新增】插件挂载点：首页底部 (End) -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <?php \Typecho\Plugin::factory('admin/index.php')->end(); ?>
+        </div>
+    </div>
 </div>
 
 <?php
@@ -252,28 +266,14 @@ include 'common-js.php';
 ?>
 
 <script>
-// 使用 IIFE (立即执行函数) 包裹代码，防止全局变量污染和 PJAX 重复声明错误
-(function() {
-    document.addEventListener('DOMContentLoaded', function() {
-        // 由于 PJAX 可能不会触发 DOMContentLoaded (如果脚本是在 PJAX 之后插入的)，
-        // 我们需要一个更可靠的检查，或者依赖 jQuery 的 ready
-        initDashboard();
-    });
-
-    // 兼容 PJAX：如果是在 PJAX reload 时，脚本被直接执行，此时 document 已经 ready
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        initDashboard();
-    }
+$(document).ready(function() {
+    // 初始化图表与动态
+    initDashboard();
 
     function initDashboard() {
-        // 检查 Canvas 元素是否存在，防止报错
+        // 检查 Canvas 元素是否存在
         const ctxElement = document.getElementById('commentChart');
         if (!ctxElement) return;
-
-        // 避免重复初始化 Chart
-        if (ctxElement.chartInstance) {
-            ctxElement.chartInstance.destroy();
-        }
 
         // --- Chart.js 初始化：渲染近7天评论趋势图 ---
         const chartLabels = <?php echo json_encode($chartLabels); ?>;
@@ -286,8 +286,8 @@ include 'common-js.php';
         gradient.addColorStop(0, 'rgba(108, 92, 231, 0.2)'); // 主色调
         gradient.addColorStop(1, 'rgba(108, 92, 231, 0.0)');
 
-        // 保存实例以便下次销毁
-        ctxElement.chartInstance = new Chart(ctx, {
+        // 创建图表实例
+        new Chart(ctx, {
             type: 'line',
             data: {
                 labels: chartLabels,
@@ -308,7 +308,7 @@ include 'common-js.php';
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false, // 允许填满容器高度
+                maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
                     tooltip: {
@@ -323,7 +323,7 @@ include 'common-js.php';
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { precision: 0, color: '#b2bec3' }, // 整数刻度
+                        ticks: { precision: 0, color: '#b2bec3' },
                         grid: { color: '#f1f2f6', borderDash: [5, 5] },
                         border: { display: false }
                     },
@@ -353,23 +353,29 @@ include 'common-js.php';
                 // 否则通过 AJAX 从 Typecho 后端获取最新动态
                 $.get('<?php $options->index('/action/ajax?do=feed'); ?>', function (o) {
                     let html = '<ul class="list-unstyled mb-0">';
-                    for (let i = 0; i < o.length; i++) {
-                        let item = o[i];
-                        html += `<li class="mb-2 pb-2 border-bottom last-no-border">
-                            <div class="d-flex justify-content-between">
-                                <a href="${item.link}" target="_blank" class="text-dark text-decoration-none fw-bold small text-truncate" style="max-width: 75%;">${item.title}</a>
-                                <span class="badge bg-light text-muted fw-normal scale-8">${item.date}</span>
-                            </div>
-                        </li>`;
+                    if (o && o.length > 0) {
+                        for (let i = 0; i < o.length; i++) {
+                            let item = o[i];
+                            html += `<li class="mb-2 pb-2 border-bottom last-no-border">
+                                <div class="d-flex justify-content-between">
+                                    <a href="${item.link}" target="_blank" class="text-dark text-decoration-none fw-bold small text-truncate" style="max-width: 75%;">${item.title}</a>
+                                    <span class="badge bg-light text-muted fw-normal scale-8">${item.date}</span>
+                                </div>
+                            </li>`;
+                        }
+                    } else {
+                        html += '<li class="text-center small text-muted">暂无动态</li>';
                     }
                     html += '</ul>';
                     msgContainer.innerHTML = html;
-                    if(cache) cache.setItem('feed', html); // 缓存内容 (不带ul标签以便后续处理)
-                }, 'json');
+                    if(cache) cache.setItem('feed', html);
+                }, 'json').fail(function() {
+                    msgContainer.innerHTML = '<p class="text-center small text-muted my-4">无法获取官方动态</p>';
+                });
             }
         }
     }
-})();
+});
 </script>
 
 <?php include 'footer.php'; ?>

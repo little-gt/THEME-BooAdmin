@@ -1,111 +1,95 @@
 # 👻 BooAdmin Theme for Typecho
 
-> 简洁 · 现代 · 高效
+> **稳定 · 现代 · 极简**
 >
-> 一款为 Typecho 打造的现代化、简洁高效的后台主题。基于 Bootstrap 5 重构，旨在告别传统界面，全面拥抱高效与美观。
+> 一款基于 Bootstrap 5 重构的 Typecho 现代化后台主题。v1.0.1 版本回归原生加载机制，彻底解决了插件兼容性问题，并带来了全新的智能侧边栏体验。
 
-[![项目版本](https://img.shields.io/badge/版本-1.0.1--pre-6f42c1?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin)
-[![许可证: GPL v3](https://img.shields.io/badge/许可证-GPLv3-blue?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
-[![Bootstrap 版本](https://img.shields.io/badge/Bootstrap-5.3-7952b3?style=flat-square&logo=bootstrap)](https://getbootstrap.com/)
-[![Typecho 版本](https://img.shields.io/badge/Typecho-1.2%2B-orange?style=flat-square&logo=typecho)](https://typecho.org/)
-[![作者信息](https://img.shields.io/badge/作者-GARFIELDTOM-blueviolet?style=flat-square&logo=github)](https://github.com/little-gt/)
+[![Release](https://img.shields.io/badge/Release-v1.0.1-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Typecho](https://img.shields.io/badge/Typecho-1.2+-orange?style=flat-square&logo=typecho)](https://typecho.org)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952b3?style=flat-square&logo=bootstrap)](https://getbootstrap.com)
+[![License](https://img.shields.io/badge/License-GPLv3-green?style=flat-square)](LICENSE)
 
-**主题预览：**
+![预览图](screenshot/screenshot1.png)
 
-![登录界面](screenshot/screenshot1.png)
+## ✨ v1.0.1 更新亮点
 
-![插件管理](screenshot/screenshot2.png)
+**此版本是里程碑式的正式版更新，重点在于“回归稳定”与“交互升级”。**
 
-![网站外观](screenshot/screenshot3.png)
+### 🔌 极致的插件兼容性
+- **移除 PJAX**: 为了确保所有第三方插件（尤其是包含复杂 JS 逻辑的统计、编辑器类插件）能 100% 正常工作，我们移除了 PJAX 机制，回归 Typecho 原生的生命周期。
+- **补全核心钩子**: 重新加入了 `admin/index.php` (begin/end)、`menu.php`、`footer.php` 等关键位置的插件挂载点。现在，Access、Stat 等插件的面板可以完美显示在后台首页了。
 
-![编辑文件](screenshot/screenshot4.png)
+### 🧭 智能侧边栏 (Smart Sidebar)
+- **折叠式分组**: 菜单支持按组折叠/展开，保持界面整洁。
+- **智能状态保持**: 自动展开当前所在的菜单组，其他无关组自动收起。
+- **自动定位**: 刷新页面后，侧边栏会自动滚动并将当前激活的菜单项置于视野中心（防止在安装大量插件后菜单过长找不到当前项）。
+- **插件图标支持**: 智能识别插件注入的菜单，并为其分配专属图标。
 
-**参与讨论：**
-
-[前往知乎帖子进行讨论](https://zhuanlan.zhihu.com/p/1981856895309480062)
+### 🎨 细节优化
+- **移动端适配**: 修复了移动端侧边栏遮罩和切换按钮的逻辑。
+- **消息提示**: 重写了 Flash Message (操作成功/失败提示) 的样式与触发逻辑，更加醒目且不遮挡内容。
+- **Bootstrap 5**: 全面使用 BS5 的原生组件（Tooltip, Dropdown, Collapse），减少对 jQuery UI 的依赖，加载更快。
 
 ---
 
-## ✨ 特点概览
+## 🚀 特性概览
 
 | 功能模块 | 说明 |
 | :-- | :-- |
-| **现代化设计** | 基于 Bootstrap 5 与 FontAwesome 6，提供清爽、一致的视觉体验。 |
-| **免刷新体验** | 引入 PJAX 技术，避免频繁管理时页面频繁刷新，提升体验。 |
-| **完全响应式** | 从桌面到手机，自适应各种屏幕尺寸，随时随地轻松管理。 |
-| **体验优化** | 重新设计的登录、撰写、管理界面，操作流程更直观、更高效。 |
-| **核心兼容** | 完美兼容 Typecho 1.2.1 核心功能，确保插件挂载点和基础功能稳定。 |
-| **简单部署** | 仅需替换 `admin` 目录即可完成升级，无需复杂配置。 |
-| **轻量高效** | 移除部分原生 jQuery UI 依赖，使用现代 JS 框架，加载速度更快。 |
+| **现代化 UI** | 采用清爽的配色与卡片式设计，告别陈旧的后台界面。 |
+| **完全响应式** | 完美适配 PC、平板与手机，随时随地管理博客。 |
+| **开箱即用** | 无需繁琐配置，替换目录即可生效。 |
+| **原生体验** | 保留 Typecho 所有原生操作习惯，但在视觉与交互上做减法。 |
+| **代码高亮** | 内置主题编辑器支持代码高亮与行号显示。 |
 
 ---
 
-## 🚀 更新日志
+## ⚙️ 安装与升级
 
-### v1.0.1-pre
-  - **⚡ 核心稳定性修复 (PJAX)**:
-  - **JS 加载机制重构**: 核心库（jQuery, Typecho Core）改为同步阻塞加载，彻底解决 `Uncaught ReferenceError: $ is not defined` 报错，确保内联脚本执行时依赖已就绪。
-  - **生命周期管理**: 建立统一的 `reloadGlobalComponents` 全局重载入口，修复 PJAX 跳转后事件监听器重复绑定或失效的问题。
-  - **DOM 清理**: 增加 PJAX 请求前的深度清理逻辑，强制销毁残留的 Tooltips、Dropdowns 和模态框背景，防止页面状态污染。
-- **💬 评论管理重构**:
-  - **快速编辑修复**: 修复点击“编辑”无法读取原有评论数据的问题，采用更稳健的 JSON 解析方案。
-  - **交互优化**: 重新设计“快速回复”功能，回复框现在以动画形式在评论下方展开，且提交后自动高亮新回复。
-  - **逻辑分离**: 将评论操作的 JS 逻辑与 PHP 视图彻底分离，并使用命名空间管理事件，杜绝多次提交。
-- **✨ 体验优化**:
-  - **全局消息反馈**: 优化 `checkTypechoNotice` 触发时机，修复插件启用/禁用、设置保存后无法弹出成功提示（Flash Message）的问题。
-  - **UI 组件重载**: 修复 PJAX 跳转后 Bootstrap Tooltips（工具提示）和下拉菜单失效的问题。
-  - **通用确认机制**: 统一了全站的删除/操作确认逻辑（`.btn-operate`），无需在每个页面单独绑定。
+**⚠️ 重要提示：操作前请务必备份您的网站数据库和 `admin` 目录！**
 
----
+### 全新安装
+1.  下载本项目的 [最新 Release 版本](https://github.com/little-gt/THEME-BooAdmin/releases)。
+2.  解压压缩包。
+3.  将解压得到的 `admin` 文件夹上传至您的 Typecho 网站根目录，**覆盖**原有的 `admin` 目录。
+4.  登录后台，享受全新的 BooAdmin。
 
-## ⚙️ 安装指南
-
-**⚠️ 重要提示：** 此主题将替换 Typecho 的整个 `admin` 核心目录。在开始之前，**请务必备份您的整个网站和数据库！**
-
-1.  **备份**
-    *   备份您网站根目录下的 `admin` 文件夹（例如，将其重命名为 `admin_backup`）。
-    *   备份您的数据库。
-
-2.  **下载主题**
-    ```bash
-    git clone https://github.com/little-gt/BooAdmin.git
-    ```
-    或者直接下载 ZIP 压缩包并解压。
-
-3.  **替换目录**
-    *   将下载好的 `BooAdmin` 文件夹中的 `admin` 目录，上传并覆盖到您 Typecho 网站的根目录。
-
-4.  **完成**
-    *   登录您的后台 (例如 `yourdomain.com/admin/`)，即可看到全新的 BooAdmin 界面。
+### 从 v1.0.0 或 Pre 版本升级
+1.  **强烈建议**删除服务器上旧的 `admin` 目录（保留 `config.inc.php` 文件在根目录不动即可，`admin` 目录下通常没有配置文件）。
+2.  上传 v1.0.1 版本的 `admin` 目录到网站根目录。
+3.  清理浏览器缓存，以加载最新的 CSS 和 JS 文件。
 
 ---
 
-## 🎨 配置与使用
+## 📸 截图预览
 
-BooAdmin 的核心设计理念是**零配置、开箱即用**。
+|                登录页                 | 插件管理 |
+|:----------------------------------:| :--: |
+| ![仪表盘](screenshot/screenshot1.png) | ![插件管理](screenshot/screenshot2.png) |
 
-您无需进行任何额外的设置，只需按照安装指南替换 `admin` 目录，即可享受现代化的后台体验。所有原生功能（包括插件和主题设置）都将无缝集成到新界面中。
-
----
-
-## 🧱 使用的组件
-
-| 组件 | 描述 |
-| :------- | :----------------------------- |
-| **框架** | Bootstrap 5.3 |
-| **核心库** | jQuery (保留以兼容 Typecho 核心及插件) |
-| **图标库** | FontAwesome 6 |
-| **异步交互** | Plupload (文件上传) |
-| **表单增强** | TokenInput (标签输入), TimePicker (日期选择) |
+|                编辑文件                 |               主题设置                |
+|:-----------------------------------:|:---------------------------------:|
+| ![撰写文章](screenshot/screenshot4.png) | ![菜单](screenshot/screenshot3.png) |
 
 ---
 
-## ❤️ 开源与支持
+## 🧱 技术栈
 
-> 如果你喜欢这个项目，请点个 ⭐ Star 支持！
-
-![支持我](screenshot/supportme.jpg)
+*   **框架**: Bootstrap 5.3
+*   **图标**: FontAwesome 6 Free
+*   **脚本**: jQuery (核心依赖), Chart.js (图表支持)
+*   **字体**: Nunito (英文字体优化)
 
 ---
 
-**BooAdmin** — 为您的 Typecho 带来应有的现代后台体验。
+## ❤️ 贡献与反馈
+
+如果您在使用过程中遇到任何问题，或有更好的建议：
+
+1.  欢迎提交 [Issues](https://github.com/little-gt/THEME-BooAdmin/issues) 反馈 BUG。
+2.  欢迎提交 Pull Requests 贡献代码。
+3.  如果喜欢这个主题，请点亮右上角的 ⭐ **Star** 支持作者！
+
+---
+
+**BooAdmin** — 让写作回归纯粹与优雅。
