@@ -4,8 +4,8 @@ include 'common.php';
 include 'header.php';
 include 'menu.php';
 
-// 初始化统计组件，用于获取各种网站数据
-$stat = Typecho\Widget::widget('Widget_Stat');
+// 初始化统计组件，用于获取各种网站数据 - Typecho 1.3.0 兼容
+$stat = \Widget\Stat::alloc();
 
 // --- 获取最近7天的评论数据用于图表 ---
 $db = Typecho\Db::get();
@@ -23,21 +23,23 @@ for ($i = 6; $i >= 0; $i--) {
 }
 
 try {
-    // 执行数据库查询，按天统计评论数
+    // 执行数据库查询，按天统计评论数 - Typecho 1.3.0 改进
     $sql = "SELECT FROM_UNIXTIME(created, '%m-%d') as date, COUNT(*) as count
             FROM {$prefix}comments
             WHERE created > {$sevenDaysAgo}
-            GROUP BY date";
+            GROUP BY date
+            ORDER BY date ASC";
     $results = $db->fetchAll($sql);
 
     // 将查询结果合并到图表数据中
     foreach ($results as $row) {
         if (isset($chartData[$row['date']])) {
-            $chartData[$row['date']] = $row['count'];
+            $chartData[$row['date']] = (int)$row['count'];
         }
     }
 } catch (Exception $e) {
     // 数据库查询容错处理
+    error_log('Dashboard chart error: ' . $e->getMessage());
 }
 ?>
 
@@ -187,8 +189,8 @@ try {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php // 调用 Typecho Widget 获取最近 5 篇文章
-                            Typecho\Widget::widget('Widget_Contents_Post_Recent', 'pageSize=5')->to($posts); ?>
+                            <?php // 调用 Typecho Widget 获取最近 5 篇文章 - Typecho 1.3.0 兼容
+                            \Widget\Contents\Post\Recent::alloc('pageSize=5')->to($posts); ?>
                             <?php if($posts->have()): ?>
                                 <?php while($posts->next()): ?>
                                 <tr>
@@ -220,8 +222,8 @@ try {
                 </div>
 
                 <div class="comment-list-modern">
-                    <?php // 调用 Typecho Widget 获取最近 5 条评论
-                    Typecho\Widget::widget('Widget_Comments_Recent', 'pageSize=5')->to($comments); ?>
+                    <?php // 调用 Typecho Widget 获取最近 5 条评论 - Typecho 1.3.0 兼容
+                    \Widget\Comments\Recent::alloc('pageSize=5')->to($comments); ?>
                     <?php if($comments->have()): ?>
                         <?php while($comments->next()): ?>
                         <div class="d-flex mb-3 border-bottom pb-3 last-no-border">

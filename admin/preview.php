@@ -21,7 +21,7 @@ if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preview</title>
     <!-- 引入 Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.8/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #fff;

@@ -3,19 +3,21 @@ if (!defined('__TYPECHO_ADMIN__')) {
     exit;
 }
 
-/** Header 头部信息定义 */
+/** Header 头部信息定义 - 升级至 Typecho 1.3.0 */
 $header = '
 <!-- Bootstrap 5 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.8/css/bootstrap.min.css" rel="stylesheet">
 <!-- FontAwesome 6 -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!-- Typecho Style -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=v1.0.1', true) . '">';
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=v1.0.2-r1', true) . '">
+<!-- NProgress 加载条 -->
+<link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">';
 
-/** 注册一个初始化插件 */
-$header = \Typecho\Plugin::factory('admin/header.php')->header($header);
+/** 注册一个初始化插件钩子 - 1.3.0 兼容 */
+$header = \Typecho\Plugin::factory('admin/header.php')->filter('header', $header);
 
 ?>
 <!DOCTYPE html>
@@ -28,17 +30,19 @@ $header = \Typecho\Plugin::factory('admin/header.php')->header($header);
     <meta name="robots" content="noindex, nofollow">
     <?php echo $header; ?>
 
-    <!-- Modern UI Core Styles -->
+    <!-- Modern UI Core Styles - Typecho 1.3.0 兼容 -->
     <style>
         :root {
             /* 核心配色：参考 Discord/Twitch 风格 */
             --primary-color: #6c5ce7;
             --primary-light: #a29bfe;
             --primary-hover: #5b4cc4;
+            --primary-soft: rgba(108, 92, 231, 0.1);
             --secondary-bg: #f8f9fd;
             --sidebar-bg: #ffffff;
             --text-main: #2d3436;
             --text-muted: #636e72;
+            --text-light: #b2bec3;
 
             /* 尺寸变量 */
             --sidebar-width: 250px;
@@ -50,6 +54,11 @@ $header = \Typecho\Plugin::factory('admin/header.php')->header($header);
             --success-color: #00b894;
             --warning-color: #fdcb6e;
             --danger-color: #ff7675;
+            --info-color: #0984e3;
+
+            /* 过渡动画 */
+            --transition-speed: 0.3s;
+            --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
@@ -57,10 +66,11 @@ $header = \Typecho\Plugin::factory('admin/header.php')->header($header);
             background-color: var(--secondary-bg);
             color: var(--text-main);
             overflow-x: hidden;
-            font-size: 0.9rem; /* 稍微调小字体使其更精致 */
+            font-size: 0.925rem;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a { text-decoration: none; color: var(--primary-color); transition: 0.2s; }
+        a { text-decoration: none; color: var(--primary-color); transition: color 0.2s ease; }
         a:hover { color: var(--primary-hover); }
 
         /* 移动端遮罩层 */
@@ -72,6 +82,7 @@ $header = \Typecho\Plugin::factory('admin/header.php')->header($header);
             z-index: 999;
             opacity: 0;
             transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
         }
         .overlay.show { display: block; opacity: 1; }
 
@@ -91,11 +102,21 @@ $header = \Typecho\Plugin::factory('admin/header.php')->header($header);
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
 
-        /* NProgress 颜色覆盖 */
-        #nprogress .bar { background: var(--primary-color) !important; height: 3px !important; }
-        #nprogress .peg { box-shadow: 0 0 10px var(--primary-color), 0 0 5px var(--primary-color) !important; }
-        #nprogress .spinner-icon { border-top-color: var(--primary-color) !important; border-left-color: var(--primary-color) !important; }
+        /* NProgress 颜色覆盖 - Typecho 1.3.0 改进 */
+        #nprogress .bar {
+            background: var(--primary-color) !important;
+            height: 3px !important;
+            box-shadow: 0 0 10px var(--primary-color) !important;
+        }
+        #nprogress .peg {
+            box-shadow: 0 0 10px var(--primary-color), 0 0 5px var(--primary-color) !important;
+        }
+        #nprogress .spinner-icon {
+            border-top-color: var(--primary-color) !important;
+            border-left-color: var(--primary-color) !important;
+        }
 
         /* PJAX 容器动画 */
         .main-content {
@@ -104,6 +125,15 @@ $header = \Typecho\Plugin::factory('admin/header.php')->header($header);
         .main-content.pjax-loading {
             opacity: 0.5;
             pointer-events: none;
+        }
+
+        /* Typecho 1.3.0 新增样式兼容 */
+        .typecho-option ul { padding: 0; list-style: none; }
+        .typecho-option li { padding: 0; }
+
+        /* 响应式字体调整 */
+        @media (max-width: 768px) {
+            body { font-size: 0.875rem; }
         }
     </style>
 </head>

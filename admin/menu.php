@@ -10,7 +10,8 @@ $iconMapping = [
     '个人设置' => 'fa-solid fa-user-gear',
     '插件'   => 'fa-solid fa-plug',
     '外观'   => 'fa-solid fa-paintbrush',
-    '设置外观' => 'fa-solid fa-palette',
+    '编辑外观' => 'fa-solid fa-code',
+    '外观设置' => 'fa-solid fa-palette',
     '备份'   => 'fa-solid fa-database',
     '升级'   => 'fa-solid fa-cloud-arrow-up',
     '欢迎'   => 'fa-solid fa-hand-spock',
@@ -22,9 +23,12 @@ $iconMapping = [
     '独立页面' => 'fa-solid fa-file-invoice',
     '评论'   => 'fa-solid fa-comments',
     '分类'   => 'fa-solid fa-folder-tree',
+    '编辑分类' => 'fa-solid fa-folder-plus',
     '标签'   => 'fa-solid fa-tags',
     '文件'   => 'fa-solid fa-images',
+    '编辑文件' => 'fa-solid fa-image',
     '用户'   => 'fa-solid fa-users',
+    '编辑用户' => 'fa-solid fa-user-pen',
     '设置'   => 'fa-solid fa-sliders',
     '基本'   => 'fa-solid fa-gear',
     '阅读'   => 'fa-brands fa-readme',
@@ -49,6 +53,8 @@ $childNodes = [
         [_t('概要'), _t('网站概要'), 'index.php', 'subscriber', false],
         [_t('插件'), _t('插件管理'), 'plugins.php', 'administrator', false],
         [_t('外观'), _t('网站外观'), 'themes.php', 'administrator', false],
+        [_t('编辑外观'), _t('编辑外观'), 'theme-editor.php', 'administrator', true],  // 隐藏，仅用于高亮
+        [_t('外观设置'), _t('外观设置'), 'options-theme.php', 'administrator', true],  // 隐藏，仅用于高亮
         [_t('备份'), _t('备份'), 'backup.php', 'administrator', false],
         [_t('个人设置'), _t('个人设置'), 'profile.php', 'subscriber', false],
     ],
@@ -61,9 +67,12 @@ $childNodes = [
         [_t('独立页面'), _t('管理独立页面'), 'manage-pages.php', 'editor', false],
         [_t('评论'), _t('管理评论'), 'manage-comments.php', 'contributor', false],
         [_t('分类'), _t('管理分类'), 'manage-categories.php', 'editor', false],
+        [_t('编辑分类'), _t('编辑分类'), 'category.php', 'editor', true],  // 隐藏，仅用于高亮
         [_t('标签'), _t('管理标签'), 'manage-tags.php', 'editor', false],
         [_t('文件'), _t('管理文件'), 'manage-medias.php', 'editor', false],
+        [_t('编辑文件'), _t('编辑文件'), 'media.php', 'editor', true],  // 隐藏，仅用于高亮
         [_t('用户'), _t('管理用户'), 'manage-users.php', 'administrator', false],
+        [_t('编辑用户'), _t('编辑用户'), 'user.php', 'administrator', true],  // 隐藏，仅用于高亮
     ],
     4 => [
         [_t('基本'), _t('基本设置'), 'options-general.php', 'administrator', false],
@@ -74,8 +83,13 @@ $childNodes = [
 ];
 
 // 3. 合并插件扩展菜单 (从 options->panelTable 解析)
-$panelTable = unserialize($options->panelTable);
-if (isset($panelTable['parent']) && isset($panelTable['child'])) {
+// Typecho 1.3.0 兼容：panelTable 可能已经是数组或需要反序列化
+$panelTable = $options->panelTable;
+if (is_string($panelTable)) {
+    $panelTable = unserialize($panelTable);
+}
+
+if (is_array($panelTable) && isset($panelTable['parent']) && isset($panelTable['child'])) {
     foreach ($panelTable['parent'] as $key => $val) {
         $parentNodes[10 + $key] = $val;
     }
@@ -94,6 +108,7 @@ foreach ($parentNodes as $key => $parentName) {
 
     $children = [];
     $isGroupActive = false; // 标记该组是否包含当前激活的页面
+    $hiddenActiveName = null; // 用于存储隐藏但激活的菜单项名称
 
     foreach ($childNodes[$key] as $child) {
         $name = $child[0];
@@ -106,29 +121,41 @@ foreach ($parentNodes as $key => $parentName) {
             continue;
         }
 
-        // 判断当前激活状态
+        // 判断当前激活状态 - 直接使用文件名匹配
         $isActive = false;
-        if (strpos($currentUrl, $url) !== false) {
+        $currentRequestUri = $request->getRequestUri();
+
+        // 精确匹配文件名
+        if (basename($currentRequestUri) === $child[2]) {
             $isActive = true;
         }
-        // 特殊处理首页
-        if ($child[2] == 'index.php' && $request->getRequestUri() == $options->adminUrl) {
-            $isActive = true;
+        // 首页特殊处理
+        else if ($child[2] === 'index.php') {
+            if ($currentRequestUri === $options->adminUrl || $currentRequestUri === $options->adminUrl . 'index.php' || $currentRequestUri === '/' || $currentRequestUri === '') {
+                $isActive = true;
+            }
         }
 
         if ($isActive) {
             $isGroupActive = true;
+            // 如果是隐藏的菜单项,记录其名称
+            if ($hidden) {
+                $hiddenActiveName = $name;
+            }
         }
 
         // 判断是否是插件菜单（用于分配默认图标）
         $isPluginItem = ($key >= 10);
 
-        $children[] = [
-            'name' => $name,
-            'url'  => $url,
-            'active' => $isActive,
-            'is_plugin' => $isPluginItem
-        ];
+        // 只有非隐藏的菜单项才添加到渲染列表中
+        if (!$hidden) {
+            $children[] = [
+                'name' => $name,
+                'url'  => $url,
+                'active' => $isActive,
+                'is_plugin' => $isPluginItem
+            ];
+        }
     }
 
     if (!empty($children)) {
@@ -182,12 +209,12 @@ foreach ($parentNodes as $key => $parentName) {
                                 </div>
                                 <span class="nav-text"><?php echo $item['name']; ?></span>
 
-                                <!-- 评论红点逻辑 -->
+                                <!-- 评论红点逻辑 - Typecho 1.3.0 兼容 -->
                                 <?php if ($item['name'] == '评论'):
-                                    $stat = Typecho\Widget::widget('Widget_Stat');
-                                    if ($stat->waitingCommentsNum > 0): ?>
+                                    $statWidget = \Widget\Stat::alloc();
+                                    if ($statWidget->waitingCommentsNum > 0): ?>
                                     <span class="badge bg-danger rounded-pill ms-auto" style="font-size: 0.6rem; padding: 4px 8px;">
-                                        <?php echo $stat->waitingCommentsNum; ?>
+                                        <?php echo $statWidget->waitingCommentsNum; ?>
                                     </span>
                                 <?php endif; endif; ?>
                             </a>
@@ -276,9 +303,17 @@ foreach ($parentNodes as $key => $parentName) {
     cursor: pointer;
     text-decoration: none;
     user-select: none;
+    transition: all 0.2s ease;
 }
 .menu-category:hover {
     color: var(--primary-color);
+}
+
+/* 一级菜单高亮状态 */
+.menu-category.active-category {
+    color: var(--primary-color);
+    background-color: var(--primary-soft);
+    border-radius: 8px;
 }
 
 /* 旋转箭头动画 */
@@ -288,6 +323,11 @@ foreach ($parentNodes as $key => $parentName) {
 /* 当 aria-expanded="true" 时旋转箭头 */
 .menu-category[aria-expanded="true"] .transition-icon {
     transform: rotate(180deg);
+}
+
+/* 一级菜单高亮时箭头颜色 */
+.menu-category.active-category .transition-icon {
+    color: var(--primary-color);
 }
 
 /* 菜单项容器 */

@@ -322,94 +322,136 @@ a:hover {
 /* ==========================================================================
    7. Typecho 兼容性垫片 (Polyfill for Legacy Pages)
    重要：这里强制覆盖 Typecho 原生的类名，使其看起来像 Bootstrap
+   Typecho 1.3.0 增强版
    ========================================================================== */
 
-/* 7.1 复写原生的列表表格 */
+/* 7.1 复写原生的列表表格 - 1.3.0 增强 */
 .typecho-list-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
 
 .typecho-list-table th,
 .typecho-list-table td {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid #f1f2f6;
     vertical-align: middle;
 }
 
 .typecho-list-table thead th {
-    background-color: #fff;
+    background-color: #fafbfc;
     color: var(--text-muted);
     font-weight: 700;
     border-bottom: 2px solid #edf2f7;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    text-align: left;
 }
 
 .typecho-list-table tbody tr {
-    transition: background-color 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     background: #fff;
 }
 
 .typecho-list-table tbody tr:hover {
     background-color: #f8f9fa;
+    transform: scale(1.002);
 }
 
-/* 选中高亮 */
+/* 选中高亮 - 1.3.0 增强 */
 .typecho-list-table tbody tr.checked td {
     background-color: var(--primary-soft);
+    color: var(--primary-color);
 }
 
-/* 7.2 复写原生的操作栏 */
+/* 复选框美化 */
+.typecho-list-table input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid #dfe6e9;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.typecho-list-table input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 7.2 复写原生的操作栏 - 1.3.0 增强 */
 .typecho-list-operate {
     background: #fff;
-    padding: 15px 20px;
+    padding: 20px 25px;
     border-radius: var(--card-radius);
     margin-bottom: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
+    position: sticky;
+    top: 80px;
+    z-index: 100;
 }
 
-/* 7.3 复写分页 (Pagination) */
+.typecho-list-operate .btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* 7.3 复写分页 (Pagination) - 1.3.0 增强 */
 .typecho-pager {
     display: flex;
     padding-left: 0;
     list-style: none;
     justify-content: center;
-    margin-top: 20px;
+    margin: 25px 0;
+    gap: 6px;
 }
 
 .typecho-pager li {
-    margin: 0 4px;
+    margin: 0;
 }
 
 .typecho-pager a,
 .typecho-pager li.current span {
     position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
     padding: 0.5rem 0.85rem;
     font-size: 0.9rem;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid transparent;
-    transition: all 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
 }
 
 .typecho-pager a {
-    color: var(--text-main);
+    color: var(--text-muted);
     background-color: #fff;
     border-color: #e2e8f0;
 }
 
 .typecho-pager a:hover {
-    background-color: #e2e8f0;
-    color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
 }
 
 .typecho-pager li.current span,
@@ -418,57 +460,86 @@ a:hover {
     color: #fff;
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    font-weight: bold;
+    font-weight: 700;
     cursor: default;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
 }
 
-/* 7.4 复写表单元素 (Inputs & Buttons) */
+/* 7.4 复写表单元素 (Inputs & Buttons) - 1.3.0 增强 */
 /* 强制所有 typecho 的 input.text 变成 Bootstrap 风格 */
 input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="url"],
+input[type="number"],
+input[type="tel"],
 textarea,
 select {
     display: block;
     width: 100%;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
     font-size: 0.95rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #495057;
+    color: #2d3436;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.375rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    transition: all 0.2s ease;
     box-sizing: border-box;
 }
 
-input:focus, textarea:focus, select:focus {
-    color: #495057;
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+textarea:focus,
+select:focus {
+    color: #2d3436;
     background-color: #fff;
-    border-color: var(--primary-light);
+    border-color: var(--primary-color);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.25);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
 }
 
-/* 按钮复写 */
+/* 禁用状态 */
+input:disabled,
+textarea:disabled,
+select:disabled {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
+/* 按钮复写 - 1.3.0 增强 */
 button.btn,
 input[type="submit"].btn,
+input[type="button"].btn,
 a.btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
     text-align: center;
     vertical-align: middle;
     user-select: none;
-    padding: 0.45rem 1.2rem;
+    padding: 0.55rem 1.5rem;
     font-size: 0.9rem;
     line-height: 1.5;
     border-radius: var(--btn-radius);
-    transition: color 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid transparent;
     cursor: pointer;
+    gap: 6px;
+}
+
+button.btn:active,
+input[type="submit"].btn:active {
+    transform: translateY(0);
 }
 
 /* 主按钮 */
@@ -479,32 +550,82 @@ a.primary,
     color: #fff;
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    box-shadow: 0 4px 6px rgba(108, 92, 231, 0.3);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.35);
 }
 
 button.primary:hover,
 input[type="submit"].primary:hover,
-a.primary:hover {
+a.primary:hover,
+.btn-primary:hover {
     background-color: var(--primary-hover);
     border-color: var(--primary-hover);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(108, 92, 231, 0.45);
+}
+
+/* 成功按钮 */
+.btn-success {
+    color: #fff;
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+.btn-success:hover {
+    background-color: #00a884;
+    transform: translateY(-2px);
 }
 
 /* 警告/删除按钮 */
-.btn-warn {
+.btn-warn,
+.btn-danger {
     color: #fff;
     background-color: var(--danger);
     border-color: var(--danger);
 }
 
-/* 7.5 Typecho 消息提示 (Toasts/Popups) */
+.btn-warn:hover,
+.btn-danger:hover {
+    background-color: #ff5f5f;
+    transform: translateY(-2px);
+}
+
+/* 次要按钮 */
+.btn-secondary,
+.btn-light {
+    color: var(--text-main);
+    background-color: #fff;
+    border-color: #e2e8f0;
+}
+
+.btn-secondary:hover,
+.btn-light:hover {
+    background-color: #f8f9fa;
+    border-color: #cbd5e0;
+}
+
+/* 轮廓按钮 */
+.btn-outline-primary {
+    color: var(--primary-color);
+    background-color: transparent;
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* 7.5 Typecho 消息提示 (Toasts/Popups) - 1.3.0 增强 */
 .message {
     padding: 1rem 1.5rem;
     margin-bottom: 1.5rem;
     border: 1px solid transparent;
-    border-radius: 0.5rem;
+    border-radius: 12px;
     position: relative;
-    animation: slideDown 0.3s ease-out;
+    animation: fadeIn 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .message.success {
@@ -513,10 +634,22 @@ a.primary:hover {
     border-color: #badbcc;
 }
 
+.message.success::before {
+    content: '✓';
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
 .message.error {
     color: #842029;
     background-color: #f8d7da;
     border-color: #f5c2c7;
+}
+
+.message.error::before {
+    content: '✕';
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
 .message.notice {
@@ -525,32 +658,276 @@ a.primary:hover {
     border-color: #ffecb5;
 }
 
-/* 弹窗式消息 */
-.message.popup {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    min-width: 300px;
-    z-index: 1080;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+.message.notice::before {
+    content: 'ℹ';
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 7.6 1.3.0 新增：标签样式 */
+.tag,
+.badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
     text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px;
+    transition: all 0.2s;
 }
 
-@keyframes slideDown {
-    from { opacity: 0; transform: translate(-50%, -20px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
+.tag-primary,
+.badge-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.tag-success,
+.badge-success {
+    background-color: var(--success);
+    color: #fff;
+}
+
+.tag-warning,
+.badge-warning {
+    background-color: var(--warning);
+    color: #2d3436;
+}
+
+.tag-danger,
+.badge-danger {
+    background-color: var(--danger);
+    color: #fff;
+}
+
+/* 7.7 1.3.0 新增：代码块样式 */
+pre, code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+code {
+    padding: 0.2em 0.4em;
+    font-size: 0.875em;
+}
+
+pre {
+    padding: 1rem;
+    overflow-x: auto;
+    border: 1px solid #e9ecef;
+}
+
+pre code {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    font-size: 0.875em;
+}
+
+/* 7.8 1.3.0 新增：加载状态 */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+}
+
+/* 7.9 1.3.0 新增：分隔线 */
+hr {
+    border: 0;
+    border-top: 1px solid #e9ecef;
+    margin: 2rem 0;
+}
+
+/* 7.10 1.3.0 新增：下拉菜单样式 */
+.dropdown-menu {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 8px;
+    background: #fff;
+    min-width: 180px;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 8px 16px;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
 }
 
 /* ==========================================================================
-   8. 辅助动画类
+   8. 辅助动画类 - Typecho 1.3.0 增强
    ========================================================================== */
 
+/* 8.1 淡入动画 */
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* 8.2 淡入上浮动画 */
+.fade-in-up {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 8.3 缩放动画 */
+.scale-in {
+    animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* 8.4 旋转动画 */
+.rotate-in {
+    animation: rotateIn 0.4s ease-out;
+}
+
+@keyframes rotateIn {
+    from { opacity: 0; transform: rotate(-180deg); }
+    to { opacity: 1; transform: rotate(0); }
+}
+
+/* 8.5 弹跳动画 */
+.bounce {
+    animation: bounce 0.5s ease-out;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* 8.6 闪烁动画 */
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 8.7 工具类 */
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.last-no-border:last-child {
+    border-bottom: none !important;
+}
+
+/* 8.8 1.3.0 新增：响应式显示/隐藏 */
+@media (max-width: 768px) {
+    .d-none-mobile {
+        display: none !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .d-none-desktop {
+        display: none !important;
+    }
+}
+
+/* 8.9 1.3.0 新增：阴影工具类 */
+.shadow-sm { box-shadow: 0 2px 6px rgba(0,0,0,0.05) !important; }
+.shadow { box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important; }
+.shadow-lg { box-shadow: 0 10px 25px rgba(0,0,0,0.12) !important; }
+
+/* 8.10 1.3.0 新增：圆角工具类 */
+.rounded-0 { border-radius: 0 !important; }
+.rounded-sm { border-radius: 6px !important; }
+.rounded { border-radius: 8px !important; }
+.rounded-lg { border-radius: 12px !important; }
+.rounded-xl { border-radius: 16px !important; }
+.rounded-2xl { border-radius: 20px !important; }
+.rounded-pill { border-radius: 50rem !important; }
+.rounded-circle { border-radius: 50% !important; }
+
+/* 8.11 1.3.0 新增：间距工具类 */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 0.5rem !important; }
+.m-2 { margin: 1rem !important; }
+.m-3 { margin: 1.5rem !important; }
+.m-4 { margin: 2rem !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 0.5rem !important; }
+.p-2 { padding: 1rem !important; }
+.p-3 { padding: 1.5rem !important; }
+.p-4 { padding: 2rem !important; }
+
+.mt-1 { margin-top: 0.5rem !important; }
+.mb-1 { margin-bottom: 0.5rem !important; }
+.mt-2 { margin-top: 1rem !important; }
+.mb-2 { margin-bottom: 1rem !important; }
+.mt-3 { margin-top: 1.5rem !important; }
+.mb-3 { margin-bottom: 1.5rem !important; }
+.mt-4 { margin-top: 2rem !important; }
+.mb-4 { margin-bottom: 2rem !important; }
+
+.pt-1 { padding-top: 0.5rem !important; }
+.pb-1 { padding-bottom: 0.5rem !important; }
+.pt-2 { padding-top: 1rem !important; }
+.pb-2 { padding-bottom: 1rem !important; }
+.pt-3 { padding-top: 1.5rem !important; }
+.pb-3 { padding-bottom: 1.5rem !important; }
+.pt-4 { padding-top: 2rem !important; }
+.pb-4 { padding-bottom: 2rem !important; }
+
 /* ==========================================================================
-   9. 响应式适配
+   9. 响应式适配 - Typecho 1.3.0 增强
    ========================================================================== */
-@media (max-width: 991px) {
+@media (max-width: 1199.98px) {
+    :root {
+        --sidebar-width: 220px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    :root {
+        --sidebar-width: 260px;
+    }
+
     .sidebar {
         transform: translateX(-100%);
     }
@@ -562,5 +939,453 @@ a.primary:hover {
     .main-content {
         margin-left: 0;
         padding: 15px;
+    }
+
+    .typecho-page-main {
+        padding: 0;
+    }
+
+    .typecho-list-operate {
+        position: relative;
+        top: 0;
+    }
+
+    /* 移动端优化表格 */
+    .typecho-list-table {
+        font-size: 0.875rem;
+    }
+
+    .typecho-list-table th,
+    .typecho-list-table td {
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    :root {
+        --card-radius: 16px;
+        --btn-radius: 10px;
+    }
+
+    .top-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .quick-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    /* 移动端卡片堆叠 */
+    .stat-widget {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .stat-icon {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 575.98px) {
+    :root {
+        --header-height: 60px;
+    }
+
+    .sidebar {
+        width: 85%;
+        max-width: 300px;
+    }
+
+    .sidebar-brand {
+        font-size: 1.2rem;
+        padding: 0 16px;
+    }
+
+    .main-content {
+        padding: 12px;
+    }
+
+    .card-modern {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    /* 移动端按钮全宽 */
+    .typecho-option-submit {
+        flex-direction: column;
+    }
+
+    .typecho-option-submit button,
+    .typecho-option-submit a {
+        width: 100%;
+    }
+
+    /* 移动端小屏幕优化 */
+    .typecho-list-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* ==========================================================================
+   10. Typecho 1.3.0 新增：深色模式支持（预留）
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    /* 预留深色模式样式，未来可以扩展 */
+}
+
+/* ==========================================================================
+   11. Tab 和 Accordion 组件样式 - v1.0.2 新增
+   ========================================================================== */
+
+/* 11.1 Tab 导航 */
+.typecho-option-tabs {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    gap: 6px !important;
+}
+
+.typecho-option-tabs .nav-link {
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.typecho-option-tabs .nav-link:hover {
+    background: #fff;
+    color: var(--primary-color);
+}
+
+.typecho-option-tabs .nav-link.active {
+    background: #fff;
+    color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* 11.2 Tab 内容区 */
+.tab-content {
+    background: transparent;
+}
+
+.tab-pane {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.tab-pane.fade.show.active {
+    opacity: 1;
+}
+
+/* 11.3 Accordion 折叠面板 */
+.accordion-flush .accordion-item {
+    border: 1px solid #e9ecef;
+    border-radius: 8px !important;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.accordion-flush .accordion-button {
+    background-color: #f8f9fa;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    box-shadow: none;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.accordion-flush .accordion-button:not(.collapsed) {
+    background-color: var(--primary-color);
+    color: #fff;
+    box-shadow: none;
+}
+
+.accordion-flush .accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-flush .accordion-button::after {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.accordion-flush .accordion-button:not(.collapsed)::after {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.accordion-flush .accordion-collapse {
+    border: none;
+}
+
+.accordion-flush .accordion-body {
+    background: #fff;
+}
+
+/* 11.4 Form Label 美化 */
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-label.small {
+    font-size: 0.8rem;
+}
+
+.form-label.text-muted {
+    color: var(--text-muted);
+}
+
+.form-label.fw-bold {
+    font-weight: 700;
+}
+
+.form-label.mb-1 {
+    margin-bottom: 0.25rem;
+}
+
+/* 11.5 Form Check Switch 开关 */
+.form-check-input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    border: 2px solid #dfe6e9;
+    transition: all 0.2s ease;
+}
+
+.form-check-input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.15);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    font-size: 0.875rem;
+    color: var(--text-main);
+    cursor: pointer;
+    user-select: none;
+}
+
+.form-check-label.small {
+    font-size: 0.8rem;
+}
+
+/* 11.6 Form Select 下拉框 */
+.form-select-sm {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    border-color: #dfe6e9;
+    transition: all 0.2s ease;
+}
+
+.form-select-sm:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.15);
+}
+
+/* 11.7 Form Text 辅助文本 */
+.form-text {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+}
+
+.form-text.small {
+    font-size: 0.7rem;
+}
+
+.form-text.mt-1 {
+    margin-top: 0.25rem;
+}
+
+/* 11.8 DatePicker 样式支持 */
+#date.hasDatepicker {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 6px !important;
+    background-color: #fff !important;
+    border-color: #dfe6e9 !important;
+    color: #2d3436 !important;
+    transition: all 0.2s ease;
+}
+
+#date.hasDatepicker:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.15) !important;
+    outline: none !important;
+}
+
+/* jQuery UI Datepicker 自定义样式 */
+.ui-datepicker {
+    font-family: 'Nunito', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-size: 0.875rem;
+    background: #fff !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+    padding: 12px !important;
+    z-index: 9999 !important;
+    display: block;
+    width: auto;
+}
+
+.ui-datepicker-header {
+    background: var(--primary-soft) !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    margin-bottom: 8px !important;
+    border: none !important;
+}
+
+.ui-datepicker-title {
+    color: var(--primary-color) !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    text-align: center !important;
+}
+
+.ui-datepicker-prev,
+.ui-datepicker-next {
+    color: var(--primary-color) !important;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.ui-datepicker-prev {
+    left: 12px;
+}
+
+.ui-datepicker-next {
+    right: 12px;
+}
+
+.ui-datepicker-prev:hover,
+.ui-datepicker-next:hover {
+    background-color: rgba(108, 92, 231, 0.1);
+    color: var(--primary-hover) !important;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.ui-datepicker-prev span,
+.ui-datepicker-next span {
+    display: block;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236c5ce7'%3E%3Cpath d='M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z'/%3E%3C/svg%3E") !important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.ui-datepicker-next span {
+    transform: rotate(180deg);
+}
+
+.ui-datepicker-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.ui-datepicker th {
+    color: var(--text-light) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    padding: 8px 4px !important;
+    text-align: center;
+    border: none;
+    background: transparent;
+}
+
+.ui-datepicker td {
+    padding: 4px 2px;
+    border: none;
+    text-align: center;
+}
+
+.ui-datepicker td a,
+.ui-datepicker td span {
+    display: block !important;
+    text-align: center !important;
+    padding: 8px 4px !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    color: var(--text-main) !important;
+    font-weight: 600 !important;
+    transition: all 0.2s !important;
+    background: transparent !important;
+    border: none !important;
+    font-size: 0.85rem;
+}
+
+.ui-datepicker td a:hover {
+    background-color: var(--primary-soft) !important;
+    color: var(--primary-color) !important;
+}
+
+.ui-datepicker td.ui-datepicker-current-day a,
+.ui-datepicker td.ui-datepicker-today a {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.3);
+}
+
+.ui-datepicker td.ui-state-disabled span {
+    color: #dfe6e9 !important;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.ui-datepicker td.ui-state-disabled a {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   12. 打印样式
+   ========================================================================== */
+@media print {
+    .sidebar,
+    .top-navbar,
+    .typecho-list-operate,
+    .typecho-pager {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card-modern {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
     }
 }

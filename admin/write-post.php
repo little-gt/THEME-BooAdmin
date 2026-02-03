@@ -270,8 +270,21 @@ $(document).ready(function() {
         
         textarea.addClass('form-control').wrap('<div id="wmd-editarea"></div>');
         
-        var options = {}, isMarkdown = <?php echo intval($post->isMarkdown || !$post->have()); ?>;
-        
+        var options = {}, isMarkdown = <?php
+            $isMarkdown = false;
+            try {
+                if ($post->have()) {
+                    $text = $post->text;
+                    $isMarkdown = @($post->isMarkdown || stripos($text, '<!--markdown-->') === 0);
+                } else {
+                    $isMarkdown = ($options->markdown ? true : false);
+                }
+            } catch (Exception $e) {
+                $isMarkdown = ($options->markdown ? true : false);
+            }
+            echo $isMarkdown ? 1 : 0;
+        ?>;
+
         options.strings = {
             bold: '<?php _e('加粗'); ?> <strong> Ctrl+B', boldexample: '<?php _e('加粗文字'); ?>',
             italic: '<?php _e('斜体'); ?> <em> Ctrl+I', italicexample: '<?php _e('斜体文字'); ?>',
@@ -281,7 +294,7 @@ $(document).ready(function() {
             image: '<?php _e('图片'); ?> <img> Ctrl+G', imagedescription: '<?php _e('请输入图片描述'); ?>',
             olist: '<?php _e('数字列表'); ?> <ol> Ctrl+O', ulist: '<?php _e('普通列表'); ?> <ul> Ctrl+U', litem: '<?php _e('列表项目'); ?>',
             heading: '<?php _e('标题'); ?> <h1>/<h2> Ctrl+H', headingexample: '<?php _e('标题文字'); ?>',
-            hr: '<?php _e('分割线'); ?> <hr> Ctrl+R', more: '<?php _e('摘要分割线'); ?> <!--more--> Ctrl+M',
+            hr: '<?php _e('分割线'); ?> <hr> Ctrl+R', more: '<?php _e('摘要分割线'); ?> Ctrl+M',
             undo: '<?php _e('撤销'); ?> - Ctrl+Z', redo: '<?php _e('重做'); ?> - Ctrl+Y', redomac: '<?php _e('重做'); ?> - Ctrl+Shift+Z',
             imagedialog: '<p><b><?php _e('插入图片'); ?></b></p><p><?php _e('请在下方的输入框内输入要插入的远程图片地址'); ?></p><p><?php _e('您也可以使用附件功能插入上传的本地图片'); ?></p>',
             linkdialog: '<p><b><?php _e('插入链接'); ?></b></p><p><?php _e('请在下方的输入框内输入要插入的链接地址'); ?></p>',
@@ -365,17 +378,27 @@ $(document).ready(function() {
                 }
             }
 
-            tags.tokenInput(<?php \Widget\Metas\Tag\Cloud::alloc('sort=count&desc=1&limit=200')->to($tags_data); 
-                $data = []; while ($tags_data->next()) { $data[] = ['id' => $tags_data->name, 'name' => $tags_data->name]; } echo json_encode($data); ?>, 
-                {
-                    theme: 'bootstrap',
-                    propertyToSearch: 'name', tokenValue: 'name', searchDelay: 0, preventDuplicates: true,
-                    hintText: '<?php _e('输入标签...'); ?>', noResultsText: '<?php _e('无匹配结果, 按回车创建'); ?>', searchingText: '<?php _e('搜索中...'); ?>',
-                    prePopulate: tagsPre,
-                    resultsFormatter: function(item){ return "<li>" + item.name + "</li>"; },
-                    tokenFormatter: function(item){ return "<li><p>" + item.name + "</p></li>"; }
+            $('#tags').tokenInput(<?php
+            try {
+                \Widget\Metas\Tag\Cloud::alloc('sort=count&desc=1&limit=200')->to($tags_data);
+                $data = [];
+                while ($tags_data->next()) {
+                    $data[] = ['id' => $tags_data->name, 'name' => $tags_data->name];
                 }
-            );
+                echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_UNESCAPED_UNICODE);
+            } catch (Exception $e) {
+                echo '[]';
+            }
+        ?>,
+            {
+                theme: 'bootstrap',
+                propertyToSearch: 'name', tokenValue: 'name', searchDelay: 0, preventDuplicates: true,
+                hintText: '<?php _e('输入标签...'); ?>', noResultsText: '<?php _e('无匹配结果, 按回车创建'); ?>', searchingText: '<?php _e('搜索中...'); ?>',
+                prePopulate: tagsPre,
+                resultsFormatter: function(item){ return "<li>" + item.name + "</li>"; },
+                tokenFormatter: function(item){ return "<li><p>" + item.name + "</p></li>"; }
+            }
+        );
         }
 
         var submitted = false, form = $('#write_post').submit(function () { submitted = true; });

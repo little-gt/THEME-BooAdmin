@@ -257,7 +257,20 @@ $(document).ready(function() {
         
         textarea.addClass('form-control').wrap('<div id="wmd-editarea"></div>');
         
-        var options = {}, isMarkdown = <?php echo intval($page->isMarkdown || !$page->have()); ?>;
+        var options = {}, isMarkdown = <?php
+            $isMarkdown = false;
+            try {
+                if ($page->have()) {
+                    $text = $page->text;
+                    $isMarkdown = @($page->isMarkdown || stripos($text, '<!--markdown-->') === 0);
+                } else {
+                    $isMarkdown = ($options->markdown ? true : false);
+                }
+            } catch (Exception $e) {
+                $isMarkdown = ($options->markdown ? true : false);
+            }
+            echo $isMarkdown ? 1 : 0;
+        ?>;
         
         options.strings = {
             bold: '<?php _e('加粗'); ?> <strong> Ctrl+B', boldexample: '<?php _e('加粗文字'); ?>',
@@ -268,7 +281,7 @@ $(document).ready(function() {
             image: '<?php _e('图片'); ?> <img> Ctrl+G', imagedescription: '<?php _e('请输入图片描述'); ?>',
             olist: '<?php _e('数字列表'); ?> <ol> Ctrl+O', ulist: '<?php _e('普通列表'); ?> <ul> Ctrl+U', litem: '<?php _e('列表项目'); ?>',
             heading: '<?php _e('标题'); ?> <h1>/<h2> Ctrl+H', headingexample: '<?php _e('标题文字'); ?>',
-            hr: '<?php _e('分割线'); ?> <hr> Ctrl+R', more: '<?php _e('摘要分割线'); ?> <!--more--> Ctrl+M',
+            hr: '<?php _e('分割线'); ?> <hr> Ctrl+R', more: '<?php _e('摘要分割线'); ?> Ctrl+M',
             undo: '<?php _e('撤销'); ?> - Ctrl+Z', redo: '<?php _e('重做'); ?> - Ctrl+Y', redomac: '<?php _e('重做'); ?> - Ctrl+Shift+Z',
             imagedialog: '<p><b><?php _e('插入图片'); ?></b></p><p><?php _e('请在下方的输入框内输入要插入的远程图片地址'); ?></p><p><?php _e('您也可以使用附件功能插入上传的本地图片'); ?></p>',
             linkdialog: '<p><b><?php _e('插入链接'); ?></b></p><p><?php _e('请在下方的输入框内输入要插入的链接地址'); ?></p>',
