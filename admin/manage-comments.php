@@ -368,9 +368,42 @@ $(document).ready(function () {
     // 使用命名空间 .manageComments 进行解绑，确保事件不重复
     $(document).off('.manageComments');
 
+    // 0. 批量操作处理
+    $(document).on('click.manageComments', '.dropdown-menu a[href*="comments-edit"]', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $form = $('.operate-form');
+        var $checked = $form.find('input[name="coid[]"]:checked');
+        
+        if ($checked.length === 0) {
+            alert('<?php _e('请先选择要操作的评论'); ?>');
+            return false;
+        }
+        
+        var msg = $this.attr('lang');
+        if (msg && !confirm(msg)) {
+            return false;
+        }
+        
+        $form.attr('action', $this.attr('href')).submit();
+        return false;
+    });
+
+    // 0.1 清空垃圾评论按钮处理
+    $(document).on('click.manageComments', '.btn-operate', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var msg = $this.attr('lang');
+        if (msg && !confirm(msg)) {
+            return false;
+        }
+        window.location.href = $this.attr('href');
+        return false;
+    });
+
     // 1. 记住滚动条位置
     function rememberScroll () {
-        $(window).bind('beforeunload', function () {
+        $(window).on('beforeunload', function () {
             $.cookie('__typecho_comments_scroll', $('body').scrollTop());
         });
     }
@@ -423,11 +456,12 @@ $(document).ready(function () {
             });
 
             // 自动聚焦
-            var textarea = $('textarea', form).focus();
+            $('textarea', form).focus();
 
             // 绑定提交事件
             form.submit(function () {
                 var t = $(this), tr = t.closest('tr'),
+                    textarea = $('textarea', t),
                     reply = $('<div class="comment-reply-content mt-3 p-3 bg-white border rounded"></div>').insertAfter($('.comment-content', tr));
 
                 var html = DOMPurify.sanitize(textarea.val(), {USE_PROFILES: {html: true}});
@@ -435,7 +469,12 @@ $(document).ready(function () {
 
                 $.post(t.attr('action'), t.serialize(), function (o) {
                     var html = DOMPurify.sanitize(o.comment.content, {USE_PROFILES: {html: true}});
-                    reply.html(html).effect('highlight');
+                    reply.html(html);
+                    if (typeof reply.effect === 'function') {
+                        reply.effect('highlight');
+                    } else {
+                        reply.css('background-color', '#fff9c4').animate({'background-color': '#ffffff'}, 1000);
+                    }
                 }, 'json');
 
                 t.remove();

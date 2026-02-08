@@ -2,35 +2,40 @@
 
 > **稳定 · 现代 · 极简**
 >
-> 一款基于 Bootstrap 5 重构的 Typecho 现代化后台主题。v1.0.2 版本深度兼容 Typecho 1.3.0，修复了多项关键兼容性问题，带来更流畅的后台管理体验。
+> 一款基于 Bootstrap 5 重构的 Typecho 现代化后台主题。v1.0.3 版本深度兼容 Typecho 1.3.0，修复了评论管理功能的多项关键问题，带来更流畅的后台管理体验。
 
-[![Release](https://img.shields.io/badge/Release-v1.0.2-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Release](https://img.shields.io/badge/Release-v1.0.3-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952b3?style=flat-square&logo=bootstrap)](https://getbootstrap.com)
 [![License](https://img.shields.io/badge/License-GPLv3-green?style=flat-square)](LICENSE)
 
 ![预览图](screenshot/screenshot1.png)
 
-## ✨ v1.0.2 更新亮点
+## ✨ v1.0.3 更新亮点
 
-**此版本专注于 Typecho 1.3.0 深度兼容性与稳定性优化。**
+**此版本专注于评论管理功能的全面修复与优化。**
 
-### 🔧 Typecho 1.3.0 全面兼容
-- **unserialize 修复**: 修复了 Typecho 1.3.0 中 `panelTable` 数据结构变更导致的 `unserialize()` 类型错误
-- **JavaScript 容错**: 优化了 PHP 错误抑制机制，防止 PHP 警告输出到 JavaScript 代码中导致语法错误
-- **Markdown 检测增强**: 重写了文章/页面编辑器的 Markdown 状态检测逻辑，增加异常捕获与容错处理
-- **菜单高亮重构**: 修复了菜单高亮仅在首页生效的问题，现在所有页面都能正确高亮当前菜单项
+### 🔧 评论管理功能修复
+- **jQuery Cookie 兼容性**: 修复了 jQuery 3.x 中 `$.cookie()` 函数不存在导致的评论管理页面功能失效
+- **批量操作功能**: 修复了批量通过、待审核、标记垃圾、删除评论的功能，现在可以正常使用
+- **清空垃圾评论**: 修复了清空垃圾评论按钮的处理逻辑
+- **评论删除确认**: 修复了删除评论时的确认对话框功能
+- **评论状态切换**: 修复了评论状态切换（通过/待审核/垃圾）功能
+- **快速回复评论**: 修复了快速回复功能的变量作用域问题和 `.effect()` 方法兼容性
+- **快速编辑评论**: 修复了编辑功能的数据加载和提交逻辑
+- **滚动条位置记忆**: 修复了滚动条位置记忆功能，将 `$(window).bind()` 改为 `$(window).on()` 兼容 jQuery 3.x
+- **复选框全选**: 修复了评论复选框的全选/取消全选功能，添加了对 `input[name="coid[]"]` 的支持
+- **下拉菜单初始化**: 修复了下拉菜单初始化问题，兼容 Bootstrap 5 的 Dropdown 组件
 
 ### 🛡️ 代码健壮性提升
-- **异常处理**: 在关键位置增加 try-catch 块，确保即使发生异常也不会导致页面崩溃
-- **向后兼容**: 同时支持 Typecho 1.3.0 的新数据结构和旧版本的序列化字符串格式
-- **错误抑制**: 使用 `@` 操作符抑制非关键 PHP 警告，保持输出纯净
-- **JSON 编码优化**: 使用 `JSON_HEX_QUOT`、`JSON_HEX_APOS`、`JSON_UNESCAPED_UNICODE` 标志确保数据正确编码
+- **事件命名空间**: 使用命名空间 `.manageComments` 进行事件绑定和解绑，防止 PJAX 环境下事件重复绑定
+- **错误处理**: 在评论编辑功能中增加了 JSON 解析的异常捕获
+- **兼容性降级**: 为 `.effect()` 方法添加了兼容性检查，在不可用时使用 CSS 动画替代
 
 ### 🎯 交互体验优化
-- **文件名匹配**: 菜单高亮使用文件名而非完整路径匹配，更可靠且不受 URL 参数影响
-- **自动滚动**: 侧边栏菜单自动滚动到当前激活项，防止菜单过长时找不到当前位置
-- **状态保持**: 折叠式菜单自动展开当前所在分组，收起无关分组，保持界面整洁
+- **操作反馈**: 批量操作前会检查是否选中了评论，未选中时给出提示
+- **确认对话框**: 删除操作和清空垃圾评论操作都有确认对话框，防止误操作
+- **动画效果**: 回复成功后使用高亮动画提示用户
 
 ---
 
@@ -57,9 +62,9 @@
 3.  将解压得到的 `admin` 文件夹上传至您的 Typecho 网站根目录，**覆盖**原有的 `admin` 目录。
 4.  登录后台，享受全新的 BooAdmin。
 
-### 从 v1.0.0 或 v1.0.1 升级
-1.  **强烈建议**删除服务器上旧的 `admin` 目录（保留 `config.inc.php` 文件在根目录不动即可，`admin` 目录下通常没有配置文件）。
-2.  上传 v1.0.2 版本的 `admin` 目录到网站根目录。
+### 从 v1.0.0、v1.0.1 或 v1.0.2 升级
+1.  **强烈建议**删除服务器上旧的 `admin` 目录。
+2.  上传 v1.0.3 版本的 `admin` 目录到网站根目录。
 3.  清理浏览器缓存，以加载最新的 CSS 和 JS 文件。
 4.  如果您使用的是 Typecho 1.3.0 或更高版本，升级后所有功能将自动适配。
 
@@ -98,6 +103,22 @@
 ---
 
 ## 📋 更新日志
+
+### v1.0.3 (2026-02-08)
+- 🔧 修复 jQuery 3.x 中 `$.cookie()` 函数不存在导致的评论管理页面功能失效
+- 🔧 修复批量通过、待审核、标记垃圾、删除评论的功能
+- 🔧 修复清空垃圾评论按钮的处理逻辑
+- 🔧 修复删除评论时的确认对话框功能
+- 🔧 修复评论状态切换（通过/待审核/垃圾）功能
+- 🔧 修复快速回复功能的变量作用域问题和 `.effect()` 方法兼容性
+- 🔧 修复快速编辑功能的数据加载和提交逻辑
+- 🔧 修复滚动条位置记忆功能，将 `$(window).bind()` 改为 `$(window).on()` 兼容 jQuery 3.x
+- 🔧 修复评论复选框的全选/取消全选功能，添加了对 `input[name="coid[]"]` 的支持
+- 🔧 修复下拉菜单初始化问题，兼容 Bootstrap 5 的 Dropdown 组件
+- 🛡️ 使用命名空间 `.manageComments` 进行事件绑定和解绑，防止 PJAX 环境下事件重复绑定
+- 🛡️ 在评论编辑功能中增加了 JSON 解析的异常捕获
+- 🛡️ 为 `.effect()` 方法添加了兼容性检查，在不可用时使用 CSS 动画替代
+- 📝 更新资源文件版本号为 v1.0.3
 
 ### v1.0.2 (2026-02-04)
 - 🔧 修复 Typecho 1.3.0 `panelTable` 数据结构变更导致的 `unserialize()` 类型错误

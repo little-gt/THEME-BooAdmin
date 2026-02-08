@@ -12,7 +12,7 @@ $header = '
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <!-- Typecho Style -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=v1.0.2-r1', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=v1.0.3', true) . '">';
 <!-- NProgress 加载条 -->
 <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">';
 

@@ -11,14 +11,22 @@ window.initTableBehavior = function() {
         actionEl    :   '.dropdown-menu a, button.btn-operate'
     });
 
-    // 2. 下拉菜单逻辑 (Typecho 原生)
-    $('.btn-drop').dropdownMenu({
-        btnEl       :   '.dropdown-toggle',
-        menuEl      :   '.dropdown-menu'
-    });
+    // 2. 下拉菜单逻辑 (Bootstrap 5 兼容)
+    if (typeof bootstrap !== 'undefined' && bootstrap.Dropdown) {
+        var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
+        var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+            return new bootstrap.Dropdown(dropdownToggleEl);
+        });
+    } else {
+        // 降级到 Typecho 原生下拉菜单
+        $('.btn-drop').dropdownMenu({
+            btnEl       :   '.dropdown-toggle',
+            menuEl      :   '.dropdown-menu'
+        });
+    }
 
     // 3. 补充：新版 UI 的复选框高亮逻辑 (Bootstrap 风格)
-    const checkboxes = document.querySelectorAll('input.typecho-table-select-all, input[name="cid[]"], input[name="uid[]"], input[name="mid[]"]');
+    const checkboxes = document.querySelectorAll('input.typecho-table-select-all, input[name="cid[]"], input[name="uid[]"], input[name="mid[]"], input[name="coid[]"]');
     checkboxes.forEach(chk => {
         // 移除旧的监听器防止重复
         const newChk = chk.cloneNode(true);
