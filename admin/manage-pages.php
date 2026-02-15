@@ -1,5 +1,4 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
@@ -7,209 +6,210 @@ include 'menu.php';
 $stat = \Widget\Stat::alloc();
 $pages = \Widget\Contents\Page\Admin::alloc();
 ?>
-
-<div class="container-fluid">
-    
-    <!-- 顶部说明与操作 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-                    <p class="text-muted mb-0">
-                        <i class="fa-solid fa-circle-info me-1"></i>
-                        <?php _e('你可以通过设置页面排序来改变展示顺序'); ?>
-                    </p>
-                    <a href="<?php $options->adminUrl('write-page.php'); ?>" class="btn btn-primary px-4 shadow-sm fw-bold">
-                        <i class="fa-solid fa-plus me-2"></i><?php _e('创建新的独立页面'); ?>
-                    </a>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-file-alt mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('管理独立页面'); ?></span>
         </div>
-    </div>
+        
+        <div class="flex items-center space-x-4">
+             <a href="<?php $options->adminUrl('write-page.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+                <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
+            </a>
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-    <!-- 主要内容区 -->
-    <div class="row" style="animation-delay: 0.1s;">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body">
-                    
-                    <!-- 顶部工具栏 -->
-                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 gap-3">
-                        
-                        <!-- 批量操作 (左侧) -->
-                        <div class="operate">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-check-double me-2 text-primary"></i><?php _e('选中项'); ?>
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+            
+            <!-- Filters -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                    <?php $pages->backLink(); ?>
+                    <?php if ('' != $request->keywords): ?>
+                        <a href="<?php $options->adminUrl('manage-pages.php'); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
+                    <?php endif; ?>
+                </div>
+
+                <form method="get" class="flex flex-wrap items-center gap-2">
+                     <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                    </div>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                </form>
+            </div>
+
+            <!-- Page List -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <form method="post" name="manage_pages" class="operate-form">
+                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                         <div class="flex items-center space-x-2">
+                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <span><?php _e('全选'); ?></span>
+                             </label>
+                             <div class="relative group">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <ul class="dropdown-menu shadow border-0 p-2" style="border-radius: 12px;">
-                                    <li>
-                                        <a class="dropdown-item rounded-2 text-danger" lang="<?php _e('你确认要删除这些页面吗?'); ?>" href="<?php $security->index('/action/contents-page-edit?do=delete'); ?>">
-                                            <i class="fa-solid fa-trash me-2"></i><?php _e('删除'); ?>
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <a class="dropdown-item rounded-2" href="<?php $security->index('/action/contents-page-edit?do=mark&status=publish'); ?>">
-                                            <i class="fa-solid fa-eye me-2 text-success"></i><?php _e('标记为公开'); ?>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item rounded-2" href="<?php $security->index('/action/contents-page-edit?do=mark&status=hidden'); ?>">
-                                            <i class="fa-solid fa-eye-slash me-2 text-secondary"></i><?php _e('标记为隐藏'); ?>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 搜索与筛选 (右侧) -->
-                        <form method="get" class="d-flex gap-2 w-100 w-lg-auto" style="max-width: 400px;">
-                            <div class="input-group shadow-sm">
-                                <!-- 取消筛选按钮 (仅在有搜索词时显示) -->
-                                <?php if ('' != $request->keywords): ?>
-                                    <a href="<?php $options->adminUrl('manage-pages.php'); ?>"
-                                       class="btn btn-outline-secondary bg-white border-end-0 text-muted"
-                                       title="<?php _e('取消筛选'); ?>">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </a>
-                                <?php endif; ?>
-
-                                <!-- 搜索图标 -->
-                                <span class="input-group-text bg-white border-end-0 text-muted <?php echo '' != $request->keywords ? 'border-start-0' : ''; ?>">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </span>
-
-                                <!-- 输入框 -->
-                                <input type="text" class="form-control border-start-0 ps-0"
-                                       placeholder="<?php _e('请输入关键字'); ?>"
-                                       value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>"
-                                       name="keywords">
-
-                                <!-- 提交按钮 -->
-                                <button type="submit" class="btn btn-primary fw-bold">
-                                    <?php _e('筛选'); ?>
-                                </button>
-                            </div>
-                        </form>
-
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=publish'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记为公开'); ?></a>
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=hidden'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记为隐藏'); ?></a>
+                                </div>
+                             </div>
+                         </div>
                     </div>
 
-                    <!-- 数据表格 -->
-                    <form method="post" name="manage_pages" class="operate-form">
-                        <div class="table-responsive">
-                            <!-- 
-                                关键类名说明：
-                                typecho-list-table: table-js.php 依赖，用于全选
-                            -->
-                            <table class="table modern-table table-hover typecho-list-table draggable">
-                                <thead>
-                                    <tr>
-                                        <th width="40" class="text-center">
-                                            <input type="checkbox" class="form-check-input typecho-table-select-all" />
-                                        </th>
-                                        <th width="60" class="text-center"><i class="fa-solid fa-comments text-muted"></i></th>
-                                        <th><?php _e('标题'); ?></th>
-                                        <th><?php _e('缩略名'); ?></th>
-                                        <th><?php _e('日期'); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php if($pages->have()): ?>
-                                    <?php while($pages->next()): ?>
-                                    <tr id="<?php $pages->theId(); ?>" class="align-middle">
-                                        <td class="text-center">
-                                            <input type="checkbox" value="<?php $pages->cid(); ?>" name="cid[]" class="form-check-input" />
+                    <table class="w-full text-left border-collapse typecho-list-table">
+                        <thead>
+                            <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
+                                <th class="w-10 pl-4 py-3"></th>
+                                <th class="w-16 py-3 text-center"><i class="fas fa-comment-alt"></i></th>
+                                <th class="py-3"><?php _e('标题'); ?></th>
+                                <th class="py-3"><?php _e('子页面'); ?></th>
+                                <th class="py-3 hidden md:table-cell"><?php _e('作者'); ?></th>
+                                <th class="py-3 pr-4 text-right"><?php _e('日期'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <?php if ($pages->have()): ?>
+                                <?php while ($pages->next()): ?>
+                                    <tr id="<?php $pages->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
+                                        <td class="pl-4 py-3">
+                                            <input type="checkbox" value="<?php $pages->cid(); ?>" name="cid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
                                         </td>
-                                        <!-- 评论数 -->
-                                        <td class="text-center">
+                                        <td class="py-3 text-center">
                                             <a href="<?php $options->adminUrl('manage-comments.php?cid=' . $pages->cid); ?>" 
-                                               class="badge bg-light text-dark border position-relative text-decoration-none"
-                                               title="<?php $pages->commentsNum(); ?> <?php _e('评论'); ?>">
+                                               class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $pages->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
                                                 <?php $pages->commentsNum(); ?>
                                             </a>
                                         </td>
-                                        <!-- 标题 -->
-                                        <td>
-                                            <a href="<?php $options->adminUrl('write-page.php?cid=' . $pages->cid); ?>" class="fw-bold text-dark text-decoration-none post-title-link">
-                                                <?php $pages->title(); ?>
-                                            </a>
-                                            
-                                            <!-- 状态徽章 -->
-                                            <?php 
-                                            if ($pages->hasSaved || 'page_draft' == $pages->type) {
-                                                echo '<span class="badge bg-warning text-dark ms-1" style="font-size: 0.7rem;"><i class="fa-solid fa-file-pen me-1"></i>' . _t('草稿') . '</span>';
-                                            }
-                                            if ('hidden' == $pages->status) {
-                                                echo '<span class="badge bg-secondary ms-1" style="font-size: 0.7rem;"><i class="fa-solid fa-eye-slash me-1"></i>' . _t('隐藏') . '</span>';
-                                            }
-                                            ?>
-
-                                            <!-- 快捷操作图标 -->
-                                            <a href="<?php $options->adminUrl('write-page.php?cid=' . $pages->cid); ?>" title="<?php _e('编辑 %s', htmlspecialchars($pages->title)); ?>" class="text-muted ms-2 opacity-50 hover-opacity-100">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                            <?php if ('page_draft' != $pages->type): ?>
-                                                <a href="<?php $pages->permalink(); ?>" title="<?php _e('浏览 %s', htmlspecialchars($pages->title)); ?>" target="_blank" class="text-muted ms-2 opacity-50 hover-opacity-100">
-                                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        <td class="py-3">
+                                            <div class="flex items-center">
+                                                <a href="<?php $options->adminUrl('write-page.php?cid=' . $pages->cid); ?>" class="text-discord-text font-medium hover:text-discord-accent transition-colors">
+                                                    <?php $pages->title(); ?>
                                                 </a>
+                                                <?php
+                                                if ('page_draft' == $pages->type) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
+                                                elseif ($pages->revision) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
+                                                
+                                                if ('hidden' == $pages->status) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
+                                                ?>
+                                            </div>
+                                            <div class="mt-1 flex items-center space-x-3 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <a href="<?php $options->adminUrl('write-page.php?cid=' . $pages->cid); ?>" class="hover:text-discord-accent"><i class="fas fa-edit mr-1"></i><?php _e('编辑'); ?></a>
+                                                <?php if ('page_draft' != $pages->type): ?>
+                                                    <a href="<?php $pages->permalink(); ?>" target="_blank" class="hover:text-discord-accent"><i class="fas fa-external-link-alt mr-1"></i><?php _e('查看'); ?></a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 text-sm text-gray-600">
+                                            <?php if (count($pages->children) > 0): ?>
+                                                <a href="<?php $options->adminUrl('manage-pages.php?parent=' . $pages->cid); ?>" class="text-discord-accent hover:underline bg-discord-light px-2 py-0.5 rounded-full text-xs font-medium"><?php echo _n('1', '%d', count($pages->children)); ?></a>
+                                            <?php else: ?>
+                                                <a href="<?php $options->adminUrl('write-page.php?parent=' . $pages->cid); ?>" class="text-gray-400 hover:text-discord-accent text-xs"><i class="fas fa-plus"></i> <?php echo _e('新增'); ?></a>
                                             <?php endif; ?>
                                         </td>
-                                        <!-- 缩略名 -->
-                                        <td class="font-monospace text-muted small"><?php $pages->slug(); ?></td>
-                                        <!-- 日期 -->
-                                        <td class="text-muted small">
-                                            <?php if ($pages->hasSaved): ?>
-                                                <span class="text-warning" data-bs-toggle="tooltip" title="<?php _e('上次保存时间'); ?>">
-                                                    <i class="fa-solid fa-clock-rotate-left me-1"></i><?php $modifyDate = new \Typecho\Date($pages->modified); _e('保存于 %s', $modifyDate->word()); ?>
-                                                </span>
+                                        <td class="py-3 hidden md:table-cell text-sm text-gray-600">
+                                            <?php $pages->author(); ?>
+                                        </td>
+                                        <td class="py-3 pr-4 text-right text-sm text-gray-500">
+                                            <?php if ('page_draft' == $pages->type || $pages->revision): ?>
+                                                <span class="block text-xs text-green-600"><?php $modifyDate = new \Typecho\Date($pages->revision ? $pages->revision['modified'] : $pages->modified); _e('保存于 %s', $modifyDate->word()); ?></span>
                                             <?php else: ?>
                                                 <?php $pages->dateWord(); ?>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="7" class="text-center py-5">
-                                            <div class="text-muted">
-                                                <i class="fa-regular fa-file fa-3x mb-3 opacity-25"></i>
-                                                <p><?php _e('没有任何页面'); ?></p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
-
-                </div>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                        <div class="mb-2 text-4xl text-gray-300"><i class="far fa-file"></i></div>
+                                        <?php _e('没有找到任何页面'); ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </form>
             </div>
+
+            <?php if ($pages->have()): ?>
+                
+            <?php endif; ?>
         </div>
     </div>
-</div>
-
+</main>
 <style>
-/* 标题链接悬停效果 */
-.post-title-link:hover {
-    color: var(--primary-color) !important;
+.typecho-pager li a, .typecho-pager li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background-color: white;
+    color: #4b5563; /* text-gray-600 */
+    font-size: 0.875rem; /* text-sm */
+    border: 1px solid #e5e7eb; /* border-gray-200 */
+    transition: all 0.2s;
+    text-decoration: none;
 }
 
-/* 快捷图标透明度过渡 */
-.hover-opacity-100 {
-    transition: opacity 0.2s;
+.typecho-pager li a:hover {
+    background-color: #f3f4f6; /* bg-gray-100 */
+    color: #5865F2; /* text-discord-accent */
+    border-color: #d1d5db; /* border-gray-300 */
 }
-.hover-opacity-100:hover {
-    opacity: 1 !important;
-    color: var(--primary-color) !important;
+
+.typecho-pager li.current span {
+    background-color: #5865F2; /* bg-discord-accent */
+    color: white;
+    border-color: #5865F2;
+    font-weight: 600;
 }
 </style>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
 include 'table-js.php';
 ?>
+
+<?php if (!$request->is('keywords')): ?>
+    <script type="text/javascript">
+        (function () {
+            $(document).ready(function () {
+                var table = $('.typecho-list-table').tableDnD({
+                    onDrop: function () {
+                        var ids = [];
+
+                        $('input[type=checkbox]', table).each(function () {
+                            ids.push($(this).val());
+                        });
+
+                        $.post('<?php $security->index('/action/contents-page-edit?do=sort'); ?>',
+                            $.param({cid: ids}));
+                    }
+                });
+            });
+        })();
+    </script>
+<?php endif; ?>
 
 <?php include 'footer.php'; ?>

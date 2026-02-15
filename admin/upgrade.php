@@ -4,7 +4,7 @@ include 'header.php';
 include 'menu.php';
 ?>
 
-<div class="main">
+<main class="main">
     <div class="body container">
         <?php include 'page-title.php'; ?>
         <div class="row typecho-page-main" role="main">
@@ -29,10 +29,9 @@ include 'menu.php';
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
 ?>
 <script>

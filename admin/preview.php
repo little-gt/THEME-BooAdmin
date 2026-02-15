@@ -1,60 +1,70 @@
 <?php
+
 include 'common.php';
 
-// 获取内容 Widget
+/** 获取内容 Widget */
 \Widget\Archive::alloc('type=single&checkPermalink=0&preview=1')->to($content);
 
-// 检测是否存在
+/** 检测是否存在 */
 if (!$content->have()) {
     $response->redirect($options->adminUrl);
 }
 
-// 检测权限
+/** 检测权限 */
 if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
     $response->redirect($options->adminUrl);
 }
+
+/** Output Content */
+// Instead of rendering the theme, we output a clean HTML structure
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview</title>
-    <!-- 引入 Bootstrap 5 CSS -->
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.8/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #fff;
-            padding: 40px;
-            font-family: 'Nunito', sans-serif;
-            color: #2d3436;
-        }
-        .preview-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        /* 文章内容样式重置，模拟前台 */
-        img { max-width: 100%; height: auto; border-radius: 8px; }
-        blockquote { border-left: 4px solid #eee; padding-left: 15px; color: #666; margin: 20px 0; }
-        pre { background: #f8f9fa; padding: 15px; border-radius: 8px; }
-        h1, h2, h3 { margin-top: 30px; margin-bottom: 15px; font-weight: 700; }
-    </style>
+    <title><?php $content->title(); ?> - Preview</title>
 </head>
 <body>
-    <div class="preview-container">
-        <h1 class="mb-4 display-5 fw-bold"><?php $content->title(); ?></h1>
-        <div class="article-content">
+    <article>
+        <header class="post-title">
+            <h1><?php $content->title(); ?></h1>
+            <div class="post-meta">
+                <time datetime="<?php $content->date('c'); ?>"><?php $content->date(); ?></time>
+                <span>&bull;</span>
+                <span><?php $content->author(); ?></span>
+            </div>
+        </header>
+        <div class="post-content">
             <?php $content->content(); ?>
         </div>
-    </div>
-    
-    <script>
-        // 监听父窗口关闭信号
-        window.onbeforeunload = function () {
-            if (!!window.parent) {
-                window.parent.postMessage('cancelPreview', '<?php $options->rootUrl(); ?>');
-            }
-        }
-    </script>
-</body>
-</html>
+    </article>
+<script>
+    window.onbeforeunload = function () {
+        // Updated for modern preview modal handling
+        // No-op or send message if needed
+    }
+</script>
+<style>
+    body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background-color: #f9fafb;
+    }
+    img { max-width: 100%; height: auto; border-radius: 8px; }
+    h1, h2, h3, h4, h5, h6 { color: #111; margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 700; }
+    h1 { font-size: 2.25rem; border-bottom: 1px solid #eaeaea; padding-bottom: 0.3em; }
+    h2 { font-size: 1.75rem; }
+    a { color: #5865F2; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 4px solid #5865F2; margin: 1.5em 0; padding-left: 1em; color: #555; background: #f0f2fd; padding: 10px 15px; border-radius: 0 4px 4px 0; }
+    code { background: #eee; padding: 2px 5px; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
+    pre { background: #2f3136; color: #eee; padding: 15px; border-radius: 8px; overflow-x: auto; }
+    pre code { background: none; padding: 0; color: inherit; }
+    .post-title { text-align: center; margin-bottom: 40px; }
+    .post-meta { text-align: center; color: #888; margin-bottom: 40px; font-size: 0.9em; }
+</style>

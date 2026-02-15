@@ -1,97 +1,85 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-cog mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('基本设置'); ?></span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
             
-            <!-- 顶部导航 Tabs -->
-            <div class="card-modern mb-4">
-                <div class="card-body">
-                    <ul class="nav nav-pills bg-light p-2 rounded-3 d-inline-flex">
-                        <li class="nav-item">
-                            <a class="nav-link active fw-bold shadow-sm" href="<?php $options->adminUrl('options-general.php'); ?>">
-                                <?php _e('基本'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" href="<?php $options->adminUrl('options-discussion.php'); ?>">
-                                <?php _e('评论'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" href="<?php $options->adminUrl('options-reading.php'); ?>">
-                                <?php _e('阅读'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" href="<?php $options->adminUrl('options-permalink.php'); ?>">
-                                <?php _e('永久链接'); ?>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Settings Tabs -->
+            <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg select-none overflow-x-auto">
+                <a href="<?php $options->adminUrl('options-general.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm bg-white text-discord-text"><?php _e('基本设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('评论设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-reading.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('阅读设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('永久链接'); ?></a>
             </div>
-            
-            <div class="card-modern">
-                <div class="card-body">
 
-                    <div class="row">
-                        <div class="col-md-12 col-lg-8">
-                            <h4 class="mb-4 fw-bold text-dark"><?php _e('基本设置'); ?></h4>
-
-                            <!-- Typecho 表单渲染容器 -->
-                            <div class="typecho-form-modern">
-                                <?php \Widget\Options\General::alloc()->form()->render(); ?>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 col-lg-4 mt-4 mt-lg-0">
-                            <div class="alert alert-info border-0 shadow-sm rounded-3">
-                                <h5 class="alert-heading"><i class="fa-solid fa-circle-info me-2"></i>说明</h5>
-                                <p class="small mb-0 opacity-75">这里定义了站点的名称、描述、关键词等核心信息。这些信息将被用于 SEO 和页面头部展示。</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <?php \Widget\Options\General::alloc()->form()->render(); ?>
             </div>
         </div>
     </div>
-</div>
+</main>
+
+<style>
+/* Discord-style form customization */
+.typecho-option { margin-bottom: 1.5rem; }
+.typecho-option label { display: block; font-weight: 500; color: #4b5563; margin-bottom: 0.5rem; }
+.typecho-option input[type=text], .typecho-option textarea, .typecho-option select {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+.typecho-option input[type=text]:focus, .typecho-option textarea:focus, .typecho-option select:focus {
+    outline: none;
+    border-color: #5865F2;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
+}
+.typecho-option .description { display: block; margin-top: 0.375rem; font-size: 0.75rem; color: #9ca3af; }
+.typecho-option .required { color: #ef4444; margin-left: 0.25rem; }
+.typecho-option-submit button {
+    background-color: #5865F2;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+.typecho-option-submit button:hover { background-color: #4752c4; }
+</style>
 
 <?php
-include 'copyright.php';
-                                include 'common-js.php';
-                                include 'form-js.php';
-                                ?>
-
-                                <!-- 核心：表单美化脚本 -->
-                                <script>
-                                $(document).ready(function() {
-                                    // 1. 给输入框添加 Bootstrap 类
-                                    $('.typecho-option input[type=text], .typecho-option input[type=password], .typecho-option input[type=email], .typecho-option input[type=url]').addClass('form-control');
-                                    $('.typecho-option textarea').addClass('form-control');
-                                    $('.typecho-option select').addClass('form-select');
-
-                                    // 2. 优化布局结构
-                                    $('.typecho-option').addClass('list-unstyled mb-0');
-                                    $('.typecho-option li').addClass('mb-4');
-                                    $('.typecho-option label.typecho-label').addClass('form-label fw-bold small text-muted text-uppercase mb-1 d-block');
-                                    $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
-
-                                    // 3. 按钮美化
-                                    $('.typecho-option-submit button').addClass('btn btn-primary px-4 rounded-pill shadow-sm fw-bold').removeClass('btn-s');
-
-                                    // 4. 单选/多选框美化 (Typecho 原生是一个 span 包裹 input 和 label)
-                                    $('.typecho-option span').addClass('form-check d-inline-block me-3');
-                                    $('.typecho-option span input').addClass('form-check-input');
-                                    $('.typecho-option span label').removeClass('form-label fw-bold small text-muted text-uppercase mb-1 d-block').addClass('form-check-label');
-                                });
-                                </script>
-
-                                <?php include 'footer.php'; ?>
+include 'common-js.php';
+include 'form-js.php';
+include 'footer.php';
+?>

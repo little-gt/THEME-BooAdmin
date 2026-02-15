@@ -1,88 +1,129 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 ?>
 
-<div class="container-fluid">
-    
-    <!-- 顶部操作栏 - 页面标题及返回插件列表按钮 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <h4 class="fw-bold text-dark mb-1">
-                            <i class="fa-solid fa-plug me-2 text-primary"></i><?php _e('插件管理'); ?>
-                        </h4>
-                        <p class="text-muted mb-0 small">管理系统的扩展功能</p>
-                    </div>
-                    <div>
-                        <a href="<?php $options->adminUrl('plugins.php'); ?>" class="btn btn-outline-primary px-4 fw-bold">
-                            <i class="fa-solid fa-arrow-left"></i> <?php _e('返回插件列表');?>
-                        </a>
-                    </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Top Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+            <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-plug mr-2 hidden md:inline"></i>
+            <span class="mx-2 hidden md:inline">/</span>
+            <span class="font-medium text-discord-text"><?php _e('插件管理'); ?></span>
+             <span class="mx-2">/</span>
+            <span class="font-medium text-discord-text"><?php _e('设置'); ?></span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+             <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                 <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <h2 class="text-lg font-bold text-discord-text flex items-center">
+                        <i class="fas fa-sliders-h text-discord-accent mr-2"></i> <?php _e('插件设置'); ?>
+                    </h2>
+                     <a href="<?php $options->adminUrl('plugins.php'); ?>" class="text-sm text-discord-muted hover:text-discord-accent">
+                        <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回插件列表'); ?>
+                    </a>
+                </div>
+                <div class="p-8">
+                     <div class="typecho-reform-style">
+                        <?php \Widget\Plugins\Config::alloc()->config()->render(); ?>
+                     </div>
                 </div>
             </div>
         </div>
     </div>
+</main>
 
-    <!-- 插件配置表单容器 -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="typecho-form-modern">
-                                <?php // 渲染当前插件的配置表单
-                                \Widget\Plugins\Config::alloc()->config()->render(); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
+<style>
+/* Reusing the form styling from profile.php for consistency */
+.typecho-reform-style ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.typecho-reform-style li {
+    margin-bottom: 1.5rem;
+}
+.typecho-reform-style label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4B5563;
+}
+.typecho-reform-style input[type="text"],
+.typecho-reform-style input[type="password"],
+.typecho-reform-style input[type="email"],
+.typecho-reform-style input[type="url"],
+.typecho-reform-style textarea,
+.typecho-reform-style select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: #1F2937;
+    transition: all 0.2s;
+}
+.typecho-reform-style input:focus,
+.typecho-reform-style textarea:focus,
+.typecho-reform-style select:focus {
+    outline: none;
+    border-color: #5865F2;
+    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+    background-color: #FFFFFF;
+}
+.typecho-reform-style .description {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: #9CA3AF;
+}
+.typecho-reform-style button[type="submit"] {
+    background-color: #5865F2;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.typecho-reform-style button[type="submit"]:hover {
+    background-color: #4752C4;
+}
+/* Styling for radio and checkboxes which might be common in plugin settings */
+.typecho-reform-style input[type="radio"],
+.typecho-reform-style input[type="checkbox"] {
+    margin-right: 0.5rem;
+    accent-color: #5865F2;
+}
+.typecho-reform-style .typecho-option span {
+    margin-right: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+}
+</style>
 
 <?php
-// 引入版权信息、通用JS和表单JS
-include 'copyright.php';
 include 'common-js.php';
 include 'form-js.php';
+include 'footer.php';
 ?>
-
-<script>
-$(document).ready(function() {
-    // 插件设置页面的表单美化 Polyfill
-    // Typecho 插件生成的表单结构可能不统一，此处进行通用化 Bootstrap 样式适配。
-
-    // 1. 输入框、文本域和选择框
-    $('.typecho-option input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=hidden])').addClass('form-control');
-    $('.typecho-option textarea').addClass('form-control');
-    $('.typecho-option select').addClass('form-select');
-
-    // 2. 列表和列表项布局
-    $('.typecho-option').addClass('list-unstyled mb-0');
-    $('.typecho-option li').addClass('mb-4');
-
-    // 3. 标签和描述
-    $('.typecho-option label.typecho-label').addClass('form-label fw-bold text-dark mb-1 d-block');
-    $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
-
-    // 4. 提交按钮
-    $('.typecho-option-submit button').addClass('btn btn-primary px-4 shadow-sm fw-bold');
-
-    // 5. 单选框和复选框
-    $('.typecho-option input[type=radio], .typecho-option input[type=checkbox]').addClass('form-check-input me-1');
-
-    // 6. 针对多选框组的优化，确保每个选项独占一行并应用 form-check 样式
-    $('.typecho-option .multiline').addClass('d-block mb-1 form-check');
-    $('.typecho-option .multiline label').addClass('form-check-label');
-});
-</script>
-
-<?php include 'footer.php'; ?>

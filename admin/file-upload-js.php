@@ -1,23 +1,18 @@
 <?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
 <?php
-if (isset($post) && $post instanceof \Typecho\Widget && $post->have()) {
-    $fileParentContent = $post;
-} elseif (isset($page) && $page instanceof \Typecho\Widget && $page->have()) {
-    $fileParentContent = $page;
-}
+$phpMaxFilesize = function_exists('ini_get') ? trim(ini_get('upload_max_filesize')) : '0';
 
-$phpMaxFilesize = function_exists('ini_get') ? trim(ini_get('upload_max_filesize')) : 0;
+if (preg_match("/^([0-9]+)([a-z]{1,2})?$/i", $phpMaxFilesize, $matches)) {
+    $size = intval($matches[1]);
+    $unit = $matches[2] ?? 'b';
 
-if (preg_match("/^([0-9]+)([a-z]{1,2})$/i", $phpMaxFilesize, $matches)) {
-    $phpMaxFilesize = strtolower($matches[1] . $matches[2] . (1 == strlen($matches[2]) ? 'b' : ''));
+    $phpMaxFilesize = round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
 }
 ?>
 
-<script src="<?php $options->adminStaticUrl('js', 'moxie.js'); ?>"></script>
-<script src="<?php $options->adminStaticUrl('js', 'plupload.js'); ?>"></script>
 <script>
 $(document).ready(function() {
-    function updateAttacmentNumber () {
+    function updateAttachmentNumber () {
         var btn = $('#tab-files-btn'),
             balloon = $('.balloon', btn),
             count = $('#file-list li .insert').length;
@@ -29,24 +24,40 @@ $(document).ready(function() {
             }
 
             balloon.html(count);
-        } else if (0 == count && balloon.length > 0) {
+        } else if (0 === count && balloon.length > 0) {
             balloon.remove();
         }
     }
 
-    $('.upload-area').bind({
-        dragenter   :   function () {
+    updateAttachmentNumber();
+
+    const uploadUrl = $('.upload-area').bind({
+        dragenter   :   function (e) {
             $(this).parent().addClass('drag');
         },
 
         dragover    :   function (e) {
+            e.stopPropagation();
+            e.preventDefault();
             $(this).parent().addClass('drag');
         },
 
-        drop        :   function () {
+        drop        :   function (e) {
+            e.stopPropagation();
+            e.preventDefault();
             $(this).parent().removeClass('drag');
+
+            const files = e.originalEvent.dataTransfer.files;
+
+            if (files.length === 0) {
+                return;
+            }
+
+            for (const file of files) {
+                Typecho.uploadFile(file);
+            }
         },
-        
+
         dragend     :   function () {
             $(this).parent().removeClass('drag');
         },
@@ -54,31 +65,44 @@ $(document).ready(function() {
         dragleave   :   function () {
             $(this).parent().removeClass('drag');
         }
+    }).data('url');
+
+    const btn = $('.upload-file');
+    const fileInput = $('<input type="file" name="file" />').hide().insertAfter(btn);
+
+    btn.click(function () {
+        fileInput.click();
+        return false;
     });
 
-    updateAttacmentNumber();
+    fileInput.change(function () {
+        if (this.files.length === 0) {
+            return;
+        }
+
+        Typecho.uploadFile(this.files[0]);
+    });
 
     function fileUploadStart (file) {
-        $('<li id="' + file.id + '" class="loading">'
-            + file.name + '</li>').appendTo('#file-list');
+        $('<li id="' + file.id + '" class="loading group flex items-center justify-between p-2 bg-white rounded border border-gray-200 shadow-sm">'
+            + '<span class="text-sm text-gray-500 flex items-center"><i class="fas fa-spinner fa-spin mr-2 text-discord-accent"></i> ' + file.name + '</span></li>').appendTo('#file-list');
     }
 
-    function fileUploadError (error) {
-        var file = error.file, code = error.code, word; 
+    function fileUploadError (type, file) {
+        let word = '<?php _e('上传出现错误'); ?>';
         
-        switch (code) {
-            case plupload.FILE_SIZE_ERROR:
+        switch (type) {
+            case 'size':
                 word = '<?php _e('文件大小超过限制'); ?>';
                 break;
-            case plupload.FILE_EXTENSION_ERROR:
+            case 'type':
                 word = '<?php _e('文件扩展名不被支持'); ?>';
                 break;
-            case plupload.FILE_DUPLICATE_ERROR:
+            case 'duplicate':
                 word = '<?php _e('文件已经上传过'); ?>';
                 break;
-            case plupload.HTTP_ERROR:
+            case 'network':
             default:
-                word = '<?php _e('上传出现错误'); ?>';
                 break;
         }
 
@@ -86,112 +110,100 @@ $(document).ready(function() {
             li, exist = $('#' + file.id);
 
         if (exist.length > 0) {
-            li = exist.removeClass('loading').html(fileError);
+            li = exist.removeClass('loading').html('<span class="text-red-500 text-sm">' + fileError + '</span><span class="text-xs text-gray-400 ml-2">' + word + '</span>');
         } else {
-            li = $('<li>' + fileError + '<br />' + word + '</li>').appendTo('#file-list');
+            li = $('<li class="p-2 bg-red-50 border border-red-200 rounded text-sm">' + fileError + '<br /><span class="text-xs text-gray-500">' + word + '</span></li>').appendTo('#file-list');
         }
 
         li.effect('highlight', {color : '#FBC2C4'}, 2000, function () {
             $(this).remove();
         });
-
-        // fix issue #341
-        this.removeFile(file);
     }
 
-    var completeFile = null;
-    function fileUploadComplete (id, url, data) {
-        var li = $('#' + id).removeClass('loading').data('cid', data.cid)
-            .data('url', data.url)
-            .data('image', data.isImage)
-            .html('<input type="hidden" name="attachment[]" value="' + data.cid + '" />'
-                + '<a class="insert" target="_blank" href="###" title="<?php _e('点击插入文件'); ?>">' + data.title + '</a><div class="info">' + data.bytes
-                + ' <a class="file" target="_blank" href="<?php $options->adminUrl('media.php'); ?>?cid=' 
-                + data.cid + '" title="<?php _e('编辑'); ?>"><i class="i-edit"></i></a>'
-                + ' <a class="delete" href="###" title="<?php _e('删除'); ?>"><i class="i-delete"></i></a></div>')
+    function fileUploadComplete (file, attachment) {
+        const li = $('#' + file.id).removeClass('loading').addClass('group flex items-center justify-between p-2 bg-white rounded border border-gray-200 hover:border-discord-accent transition-colors shadow-sm').data('cid', attachment.cid)
+            .data('url', attachment.url)
+            .data('image', attachment.isImage)
+            .html('<input type="hidden" name="attachment[]" value="' + attachment.cid + '" />'
+                + '<a class="insert flex-1 text-sm text-discord-text hover:text-discord-accent truncate mr-2" target="_blank" href="###" title="<?php _e('点击插入文件'); ?>">'
+                + '<i class="far fa-file mr-2 text-gray-400"></i>' + attachment.title + '</a>'
+                + '<div class="info text-xs text-gray-400 flex items-center space-x-2">' + attachment.bytes
+                + ' <a class="file text-gray-400 hover:text-discord-accent" target="_blank" href="<?php $options->adminUrl('media.php'); ?>?cid=' 
+                + attachment.cid + '" title="<?php _e('编辑'); ?>"><i class="fas fa-edit"></i></a>'
+                + ' <a class="delete text-gray-400 hover:text-red-500" href="###" title="<?php _e('删除'); ?>"><i class="fas fa-trash-alt"></i></a></div>')
             .effect('highlight', 1000);
-            
+
         attachInsertEvent(li);
         attachDeleteEvent(li);
-        updateAttacmentNumber();
+        updateAttachmentNumber();
 
-        if (!completeFile) {
-            completeFile = data;
-        }
+        Typecho.uploadComplete(attachment);
     }
 
-    var uploader = null, tabFilesEl = $('#tab-files').bind('init', function () {
-        uploader = new plupload.Uploader({
-            browse_button   :   $('.upload-file').get(0),
-            url             :   '<?php $security->index('/action/upload'
-                . (isset($fileParentContent) ? '?cid=' . $fileParentContent->cid : '')); ?>',
-            runtimes        :   'html5,flash,html4',
-            flash_swf_url   :   '<?php $options->adminStaticUrl('js', 'Moxie.swf'); ?>',
-            drop_element    :   $('.upload-area').get(0),
-            filters         :   {
-                max_file_size       :   '<?php echo $phpMaxFilesize ?>',
-                mime_types          :   [{'title' : '<?php _e('允许上传的文件'); ?>', 'extensions' : '<?php echo implode(',', $options->allowedAttachmentTypes); ?>'}],
-                prevent_duplicates  :   true
-            },
+    Typecho.uploadFile = (function () {
+        const types = '<?php echo json_encode($options->allowedAttachmentTypes); ?>';
+        const maxSize = <?php echo $phpMaxFilesize ?>;
+        const queue = [];
+        let index = 0;
 
-            init            :   {
-                FilesAdded      :   function (up, files) {
-                    for (var i = 0; i < files.length; i ++) {
-                        fileUploadStart(files[i]);
-                    }
+        const getUrl = function () {
+            const url = new URL(uploadUrl);
+            const cid = $('input[name=cid]').val();
 
-                    completeFile = null;
-                    uploader.start();
-                },
+            url.searchParams.append('cid', cid);
+            return url.toString();
+        };
 
-                UploadComplete  :   function () {
-                    if (completeFile) {
-                        Typecho.uploadComplete(completeFile);
-                    }
-                },
+        const upload = function () {
+            const file = queue.shift();
 
-                FileUploaded    :   function (up, file, result) {
-                    if (200 == result.status) {
-                        var data = $.parseJSON(result.response);
-
-                        if (data) {
-                            fileUploadComplete(file.id, data[0], data[1]);
-                            uploader.removeFile(file);
-                            return;
-                        }
-                    }
-
-                    fileUploadError.call(uploader, {
-                        code : plupload.HTTP_ERROR,
-                        file : file
-                    });
-                },
-
-                Error           :   function (up, error) {
-                    fileUploadError.call(uploader, error);
-                }
-            }
-        });
-
-        uploader.init();
-    });
-
-    Typecho.uploadFile = function (file, name) {
-        if (!uploader) {
-            $('#tab-files-btn').parent().trigger('click');
-        }
-        
-        var timer = setInterval(function () {
-            if (!uploader) {
+            if (!file) {
                 return;
             }
 
-            clearInterval(timer);
-            timer = null;
+            const data = new FormData();
+            data.append('file', file);
 
-            uploader.addFile(file, name);
-        }, 50);
-    };
+            fetch(getUrl(), {
+                method: 'POST',
+                body: data
+            }).then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(response.statusText);
+                }
+            }).then(function (data) {
+                if (data) {
+                    const [_, attachment] = data;
+                    fileUploadComplete(file, attachment);
+                    upload();
+                } else {
+                    throw new Error('no data');
+                }
+            }).catch(function (error) {
+                fileUploadError('network', file);
+                upload();
+            });
+        };
+
+        return function (file) {
+            file.id = 'upload-' + (index++);
+
+            if (file.size > maxSize) {
+                return fileUploadError('size', file);
+            }
+
+            const match = file.name.match(/\.([a-z0-9]+)$/i);
+            if (!match || types.indexOf(match[1].toLowerCase()) < 0) {
+                return fileUploadError('type', file);
+            }
+
+            queue.push(file);
+            fileUploadStart(file);
+            upload();
+        };
+    })();
 
     function attachInsertEvent (el) {
         $('.insert', el).click(function () {
@@ -211,7 +223,7 @@ $(document).ready(function() {
                     function () {
                         $(el).fadeOut(function () {
                             $(this).remove();
-                            updateAttacmentNumber();
+                            updateAttachmentNumber();
                         });
                     });
             }

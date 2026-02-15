@@ -3,291 +3,175 @@ include 'common.php';
 include 'header.php';
 include 'menu.php';
 
-// 获取 PHP 上传限制
-$phpMaxFilesize = function_exists('ini_get') ? trim(ini_get('upload_max_filesize')) : 0;
-if (preg_match("/^([0-9]+)([a-z]{1,2})$/i", $phpMaxFilesize, $matches)) {
-    $phpMaxFilesize = strtolower($matches[1] . $matches[2] . (1 == strlen($matches[2]) ? 'b' : ''));
-}
-
-$attachment = \Widget\Contents\Attachment\Edit::alloc();
-
-// 辅助函数：获取图标
-function getMediaIcon($mime) {
-    if (strpos($mime, 'image/') === 0) return 'fa-regular fa-image text-purple';
-    if (strpos($mime, 'video/') === 0) return 'fa-regular fa-file-video text-danger';
-    if (strpos($mime, 'audio/') === 0) return 'fa-regular fa-file-audio text-warning';
-    if (strpos($mime, 'text/') === 0) return 'fa-regular fa-file-lines text-secondary';
-    if (strpos($mime, 'application/pdf') !== false) return 'fa-regular fa-file-pdf text-danger';
-    if (strpos($mime, 'zip') !== false || strpos($mime, 'compressed') !== false) return 'fa-regular fa-file-zipper text-warning';
-    return 'fa-regular fa-file text-muted';
-}
+\Widget\Contents\Attachment\Edit::alloc()->prepare()->to($attachment);
 ?>
 
-<div class="container-fluid">
-    
-    <div class="row mb-4 fade-in-up">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-                    <div>
-                        <h4 class="fw-bold text-dark mb-1">
-                            <i class="fa-solid fa-file-pen me-2 text-primary"></i><?php _e('编辑文件'); ?>
-                        </h4>
-                    </div>
-                    <div>
-                        <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="btn btn-light shadow-sm fw-bold small">
-                            <i class="fa-solid fa-arrow-left me-1"></i> <?php _e('返回媒体库'); ?>
-                        </a>
-                    </div>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-edit mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('编辑文件'); ?></span>
         </div>
-    </div>
-
-    <div class="row g-4 fade-in-up" style="animation-delay: 0.1s;">
         
-        <!-- 左侧：预览与替换 -->
-        <div class="col-lg-8">
-            <div class="card-modern h-100">
-                <div class="card-body p-4 d-flex flex-column">
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded text-sm font-medium hover:bg-gray-200 transition-colors">
+                <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回'); ?>
+            </a>
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- File Preview & Info -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e('文件预览'); ?></h3>
                     
-                    <!-- 1. 预览区域 -->
-                    <div class="preview-stage bg-light rounded-3 d-flex align-items-center justify-content-center mb-4 position-relative overflow-hidden border">
+                    <div class="flex flex-col items-center">
                         <?php if ($attachment->attachment->isImage): ?>
-                            <img src="<?php $attachment->attachment->url(); ?>" 
-                                 alt="<?php $attachment->attachment->name(); ?>" 
-                                 class="typecho-attachment-photo img-fluid" 
-                                 style="max-height: 400px; object-fit: contain;" />
+                            <div class="mb-4 bg-gray-100 rounded-lg p-2 border border-gray-200">
+                                <img src="<?php $attachment->attachment->url(); ?>" alt="<?php $attachment->attachment->name(); ?>" class="typecho-attachment-photo max-h-96 rounded shadow-sm"/>
+                            </div>
                         <?php else: ?>
-                            <div class="text-center p-5">
-                                <i class="<?php echo getMediaIcon($attachment->attachment->mime); ?> fa-6x mb-3"></i>
-                                <h5 class="text-muted"><?php echo $attachment->attachment->mime; ?></h5>
+                            <div class="mb-4 w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                                <i class="fas fa-file text-5xl"></i>
                             </div>
                         <?php endif; ?>
-                        
-                        <!-- 尺寸信息徽章 -->
-                        <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-dark bg-opacity-75 backdrop-blur shadow-sm">
-                                <?php echo number_format(ceil($attachment->attachment->size / 1024)); ?> KB
-                            </span>
-                        </div>
-                    </div>
 
-                    <!-- 2. 链接复制区 -->
-                    <div class="mb-4">
-                        <label class="form-label fw-bold small text-muted text-uppercase mb-1"><?php _e('文件地址'); ?></label>
-                        <div class="input-group">
-                            <input type="text" id="attachment-url" class="form-control font-monospace text-muted bg-white" value="<?php $attachment->attachment->url(); ?>" readonly />
-                            <button class="btn btn-primary" type="button" id="btn-copy" data-bs-toggle="tooltip" title="<?php _e('复制链接'); ?>">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
-                            <a href="<?php $attachment->attachment->url(); ?>" target="_blank" class="btn btn-outline-secondary" title="<?php _e('新窗口打开'); ?>">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 3. 替换文件 (Dropzone) -->
-                    <div class="mt-auto">
-                        <label class="form-label fw-bold small text-muted text-uppercase mb-1"><?php _e('替换文件'); ?></label>
-                        <div id="upload-panel" class="upload-area-modern p-4 text-center border border-2 border-dashed rounded-3 bg-light transition-all">
-                            <div class="upload-area" draggable="true">
-                                <i class="fa-solid fa-cloud-arrow-up fa-2x text-muted mb-2"></i>
-                                <p class="mb-0 text-muted small">
-                                    <?php _e('拖放文件到这里或'); ?> 
-                                    <a href="javascript:void(0)" class="upload-file text-primary fw-bold text-decoration-none stretched-link"><?php _e('点击上传'); ?></a>
-                                </p>
+                        <div class="text-center">
+                            <?php $mime = \Typecho\Common::mimeIconType($attachment->attachment->mime); ?>
+                            <div class="font-bold text-lg text-gray-800 flex items-center justify-center">
+                                <i class="fas fa-<?php echo 'image' == $mime ? 'image' : 'file'; ?> mr-2 text-discord-accent"></i>
+                                <?php $attachment->attachment->name(); ?>
                             </div>
-                            <ul id="file-list" class="list-unstyled mt-2 mb-0"></ul>
+                            <div class="text-sm text-gray-500 mt-1">
+                                <span><?php echo number_format(ceil($attachment->attachment->size / 1024)); ?> Kb</span>
+                                <span class="mx-2">•</span>
+                                <span class="uppercase"><?php echo $attachment->attachment->type; ?></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 w-full max-w-xl">
+                            <label class="block text-sm font-medium text-gray-700 mb-1"><?php _e('文件链接'); ?></label>
+                            <div class="flex">
+                                <input id="attachment-url" type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-gray-50 text-sm text-gray-600 focus:outline-none focus:border-discord-accent" value="<?php $attachment->attachment->url(); ?>" readonly/>
+                                <button type="button" class="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium" onclick="document.getElementById('attachment-url').select();document.execCommand('copy');alert('<?php _e('已复制到剪贴板'); ?>');"><?php _e('复制'); ?></button>
+                            </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e('替换文件'); ?></h3>
+                    <div id="upload-panel" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors relative">
+                        <div class="upload-area cursor-pointer" data-url="<?php $security->index('/action/upload?do=modify'); ?>">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-500 font-medium"><?php _e('拖放文件到这里'); ?></p>
+                            <p class="text-gray-400 text-sm mt-1"><?php _e('或者'); ?> <a href="###" class="upload-file text-discord-accent hover:underline"><?php _e('选择文件上传'); ?></a></p>
+                        </div>
+                        <ul id="file-list" class="mt-4 space-y-2"></ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 右侧：元数据编辑 -->
-        <div class="col-lg-4">
-            <div class="card-modern h-100">
-                <div class="card-header bg-transparent border-bottom px-4 py-3">
-                    <h5 class="fw-bold mb-0 text-dark small text-uppercase ls-1">
-                        <i class="fa-solid fa-pen-to-square me-2 text-primary"></i><?php _e('文件信息'); ?>
-                    </h5>
-                </div>
-                <div class="card-body p-4 edit-media">
-                    <!-- Typecho 表单渲染 -->
-                    <div class="typecho-form-modern">
-                        <?php $attachment->form()->render(); ?>
+            <!-- Edit Form -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-4">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e('编辑信息'); ?></h3>
+                    <?php $attachment->form()->render(); ?>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+                        <button class="text-red-500 hover:text-red-700 text-sm operate-delete" lang="<?php _e('你确认要删除文件 %s 吗?', $attachment->attachment->name); ?>" href="<?php $security->index('/action/contents-attachment-edit?do=delete&cid=' . $attachment->cid); ?>">
+                            <i class="fas fa-trash-alt mr-1"></i> <?php _e('删除此文件'); ?>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-</div>
+</main>
 
 <style>
-.preview-stage {
-    min-height: 260px;
-    background-color: #f8f9fa;
-    background-image: 
-        linear-gradient(45deg, #e9ecef 25%, transparent 25%), 
-        linear-gradient(-45deg, #e9ecef 25%, transparent 25%), 
-        linear-gradient(45deg, transparent 75%, #e9ecef 75%), 
-        linear-gradient(-45deg, transparent 75%, #e9ecef 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+/* Discord-style form customization */
+.typecho-option { margin-bottom: 1rem; }
+.typecho-option label { display: block; font-weight: 500; color: #4b5563; margin-bottom: 0.375rem; font-size: 0.875rem; }
+.typecho-option input[type=text], .typecho-option textarea, .typecho-option select {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    background-color: #f9fafb;
+    transition: all 0.2s;
 }
-.upload-area-modern:hover {
-    background-color: #fff !important;
-    border-color: var(--primary-light) !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+.typecho-option input[type=text]:focus, .typecho-option textarea:focus, .typecho-option select:focus {
+    outline: none;
+    border-color: #5865F2;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
 }
-.upload-area-modern.drag {
-    background-color: var(--primary-soft) !important;
-    border-color: var(--primary-color) !important;
+.typecho-option .description { display: block; margin-top: 0.25rem; font-size: 0.75rem; color: #9ca3af; }
+.typecho-option .required { color: #ef4444; margin-left: 0.25rem; }
+.typecho-option-submit button {
+    width: 100%;
+    background-color: #5865F2;
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
 }
-.text-purple { color: #6c5ce7; }
-.backdrop-blur { backdrop-filter: blur(4px); }
+.typecho-option-submit button:hover { background-color: #4752c4; }
 </style>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
-include 'form-js.php';
+include 'file-upload-js.php';
 ?>
-
-<!-- 仅在未加载过时加载上传库，防止重复 -->
-<script>
-if (typeof plupload === 'undefined') {
-    document.write('<script src="<?php $options->adminStaticUrl('js', 'moxie.js'); ?>"><\/script>');
-    document.write('<script src="<?php $options->adminStaticUrl('js', 'plupload.js'); ?>"><\/script>');
-}
-</script>
-
 <script type="text/javascript">
-(function() {
-    // 强制清理卡住的进度条
-    if (typeof NProgress !== 'undefined') {
-        NProgress.done();
-        $('.main-content').removeClass('pjax-loading');
-    }
-
     $(document).ready(function () {
-        // 1. 表单美化
-        $('.typecho-option input[type=text], .typecho-option textarea').addClass('form-control');
-        $('.typecho-option select').addClass('form-select');
-        $('.typecho-option').addClass('list-unstyled mb-0');
-        $('.typecho-option li').addClass('mb-3');
-        $('.typecho-option label.typecho-label').addClass('form-label fw-bold text-dark small text-uppercase mb-1 d-block');
-        $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
-        $('.typecho-option-submit').addClass('mt-4 pt-3 border-top d-flex justify-content-between align-items-center flex-row-reverse');
-        $('.typecho-option-submit button').addClass('btn btn-primary px-4 rounded-pill fw-bold shadow-sm');
+        $('#attachment-url').click(function () {
+            $(this).select();
+        });
 
-        // 删除按钮
-        $('.operate-delete').addClass('btn btn-outline-danger btn-sm border-0');
-        $('.operate-delete').html('<i class="fa-solid fa-trash me-1"></i> <?php _e('永久删除'); ?>');
         $('.operate-delete').click(function () {
             var t = $(this), href = t.attr('href');
+
             if (confirm(t.attr('lang'))) {
                 window.location.href = href;
             }
+
             return false;
         });
 
-        // 2. 复制链接
-        $('#btn-copy').click(function() {
-            var urlField = document.getElementById('attachment-url');
-            urlField.select();
-            // 兼容移动端
-            urlField.setSelectionRange(0, 99999);
-            try {
-                document.execCommand('copy');
-                var btn = $(this);
-                var originalIcon = btn.html();
-                btn.html('<i class="fa-solid fa-check"></i>').removeClass('btn-primary').addClass('btn-success');
-                setTimeout(function() {
-                    btn.html(originalIcon).removeClass('btn-success').addClass('btn-primary');
-                }, 2000);
-            } catch (err) {
-                alert('复制失败，请手动复制');
-            }
-        });
-
-        // 3. 上传逻辑封装
-        function initUploader() {
-            if (typeof plupload === 'undefined') {
-                // 如果库还没加载完（极少情况），等待一下
-                setTimeout(initUploader, 100);
-                return;
+        Typecho.uploadComplete = function (attachment) {
+            if (attachment.isImage) {
+                $('.typecho-attachment-photo').attr('src', attachment.url + '?' + Math.random());
             }
 
-            // 拖拽高亮
-            $('.upload-area').bind({
-                dragenter: function () { $(this).parent().addClass('drag'); },
-                dragover: function (e) { $(this).parent().addClass('drag'); },
-                drop: function () { $(this).parent().removeClass('drag'); },
-                dragend: function () { $(this).parent().removeClass('drag'); },
-                dragleave: function () { $(this).parent().removeClass('drag'); }
-            });
-
-            var uploader = new plupload.Uploader({
-                browse_button: $('.upload-file').get(0),
-                url: '<?php $security->index('/action/upload?do=modify&cid=' . $attachment->cid); ?>',
-                runtimes: 'html5,flash,html4',
-                flash_swf_url: '<?php $options->adminStaticUrl('js', 'Moxie.swf'); ?>',
-                drop_element: $('.upload-area').get(0),
-                filters: {
-                    max_file_size: '<?php echo $phpMaxFilesize ?>',
-                    mime_types: [{
-                        'title': '<?php _e('允许上传的文件'); ?>',
-                        'extensions': '<?php $attachment->attachment->type(); ?>'
-                    }],
-                    prevent_duplicates: true
-                },
-                multi_selection: false,
-                init: {
-                    FilesAdded: function (up, files) {
-                        plupload.each(files, function (file) {
-                            $('<li id="' + file.id + '" class="loading">' + file.name + '</li>').appendTo('#file-list');
-                        });
-                        uploader.start();
-                    },
-                    FileUploaded: function (up, file, result) {
-                        if (200 == result.status) {
-                            var data = $.parseJSON(result.response);
-                            if (data) {
-                                var img = $('.typecho-attachment-photo');
-                                if (img.length > 0) {
-                                    img.attr('src', '<?php $attachment->attachment->url(); ?>?' + Math.random());
-                                } else {
-                                    window.location.reload();
-                                }
-                                $('#attachment-url').val(data.url);
-                                $('#' + file.id).html('<span class="text-success"><i class="fa-solid fa-check me-1"></i><?php _e('文件替换成功'); ?></span>')
-                                    .effect('highlight', 1000, function () {
-                                        $(this).fadeOut(function(){ $(this).remove(); });
-                                    });
-                                return;
-                            }
-                        }
-                        $('#' + file.id).html('<span class="text-danger">上传失败</span>');
-                    },
-                    Error: function (up, error) {
-                        var fileError = '<?php _e('%s 上传失败'); ?>'.replace('%s', error.file ? error.file.name : '');
-                        var li = error.file ? $('#' + error.file.id) : $('<li>' + fileError + '</li>').appendTo('#file-list');
-                        li.html('<span class="text-danger">' + fileError + '</span>').effect('highlight', {color : '#FBC2C4'}, 2000, function () {
-                            $(this).remove();
-                        });
-                    }
-                }
-            });
-            uploader.init();
-        }
-
-        initUploader();
+            $('#file-list').append($('<li class="text-sm text-green-600 bg-green-50 p-2 rounded"></li>').text('<?php _e('文件 %s 已经替换'); ?>'.replace('%s', attachment.title))
+                .effect('highlight', 1000, function () {
+                    setTimeout(function() {
+                        $(this).fadeOut(function() { $(this).remove(); });
+                    }.bind(this), 3000);
+                }));
+        };
     });
-})();
 </script>
-
-<?php include 'footer.php'; ?>
+<?php
+include 'footer.php';
+?>

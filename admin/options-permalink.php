@@ -1,89 +1,89 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-link mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('永久链接设置'); ?></span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
             
-            <div class="card-modern mb-4">
-                <div class="card-body">
-                    <ul class="nav nav-pills bg-light p-2 rounded-3 d-inline-flex">
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" href="<?php $options->adminUrl('options-general.php'); ?>">
-                                <?php _e('基本'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" href="<?php $options->adminUrl('options-discussion.php'); ?>">
-                                <?php _e('评论'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" href="<?php $options->adminUrl('options-reading.php'); ?>">
-                                <?php _e('阅读'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active fw-bold shadow-sm" href="<?php $options->adminUrl('options-permalink.php'); ?>">
-                                <?php _e('永久链接'); ?>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Settings Tabs -->
+            <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg select-none overflow-x-auto">
+                <a href="<?php $options->adminUrl('options-general.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('基本设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('评论设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-reading.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('阅读设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm bg-white text-discord-text"><?php _e('永久链接'); ?></a>
             </div>
-            
-            <div class="card-modern">
-                <div class="card-body">
 
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <h4 class="mb-4 fw-bold text-dark"><?php _e('永久链接设置'); ?></h4>
-
-                            <div class="alert alert-warning border-0 shadow-sm mb-4">
-                                <i class="fa-solid fa-triangle-exclamation me-2"></i>
-                                <?php _e('如果您不了解这些设置的作用，请勿随意修改。错误的设置可能导致网站无法访问。'); ?>
-                            </div>
-
-                            <div class="typecho-form-modern">
-                                <?php \Widget\Options\Permalink::alloc()->form()->render(); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <?php \Widget\Options\Permalink::alloc()->form()->render(); ?>
             </div>
         </div>
     </div>
-</div>
+</main>
+
+<style>
+/* Discord-style form customization */
+.typecho-option { margin-bottom: 1.5rem; }
+.typecho-option label { display: block; font-weight: 500; color: #4b5563; margin-bottom: 0.5rem; }
+.typecho-option input[type=text], .typecho-option textarea, .typecho-option select {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+.typecho-option input[type=text]:focus, .typecho-option textarea:focus, .typecho-option select:focus {
+    outline: none;
+    border-color: #5865F2;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
+}
+.typecho-option .description { display: block; margin-top: 0.375rem; font-size: 0.75rem; color: #9ca3af; }
+.typecho-option .required { color: #ef4444; margin-left: 0.25rem; }
+.typecho-option-submit button {
+    background-color: #5865F2;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+.typecho-option-submit button:hover { background-color: #4752c4; }
+
+/* Custom styles for permalink page specifically */
+.typecho-option span { display: inline-block; margin-right: 0.5rem; color: #6b7280; font-family: monospace; }
+</style>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
 include 'form-js.php';
 ?>
-
-<script>
-$(document).ready(function() {
-    // 基础美化
-    $('.typecho-option input[type=text]').addClass('form-control');
-    $('.typecho-option select').addClass('form-select');
-    $('.typecho-option').addClass('list-unstyled mb-0');
-    $('.typecho-option li').addClass('mb-4 p-3 border rounded bg-light'); // 给每个选项加边框，区分度更高
-    $('.typecho-option label.typecho-label').addClass('form-label fw-bold text-dark mb-2 d-block');
-    $('.typecho-option p.description').addClass('form-text text-muted small mt-2');
-    $('.typecho-option-submit button').addClass('btn btn-primary px-4 rounded-pill shadow-sm fw-bold');
-
-    // 单选框组优化
-    $('.typecho-option span').addClass('d-block mb-2 form-check');
-    $('.typecho-option input[type=radio]').addClass('form-check-input');
-    $('.typecho-option span label').addClass('form-check-label');
-
-    // <code> 标签样式优化
-    $('code').addClass('bg-white border rounded px-1 text-primary');
-});
-</script>
 
 <?php include 'footer.php'; ?>

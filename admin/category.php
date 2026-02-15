@@ -1,93 +1,79 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 ?>
 
-<div class="container-fluid">
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-edit mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('编辑分类'); ?></span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->adminUrl('manage-categories.php'); ?>" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded text-sm font-medium hover:bg-gray-200 transition-colors">
+                <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回'); ?>
+            </a>
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-    <!-- 顶部标题栏 - 显示“编辑分类”或“新增分类”及返回列表按钮 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-                    <p class="text-muted mb-0">
-                        <?php // 根据请求中是否存在 mid 参数判断是编辑还是新增操作，并显示相应图标
-                            $iconClass = isset($request->mid) ? 'fa-solid fa-pen-to-square' : 'fa-solid fa-folder-plus';
-                        ?>
-                        <i class="fa-regular <?php echo $iconClass; ?> me-1"></i>
-                        <?php echo isset($request->mid) ? _t('编辑分类') : _t('新增分类'); ?>
-                    </p>
-                    <a href="<?php $options->adminUrl('manage-categories.php'); ?>" class="btn btn-light shadow-sm fw-bold small">
-                        <i class="fa-solid fa-arrow-left me-1"></i> <?php _e('返回列表'); ?>
-                    </a>
-                </div>
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <?php \Widget\Metas\Category\Edit::alloc()->form()->render(); ?>
             </div>
         </div>
     </div>
+</main>
 
-    <!-- 表单区域 -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body p-4">
-                    <div class="typecho-form-modern">
-                        <?php // 渲染分类编辑或新增表单
-                        \Widget\Metas\Category\Edit::alloc()->form()->render(); ?>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
+<style>
+/* Discord-style form customization */
+.typecho-option { margin-bottom: 1.5rem; }
+.typecho-option label { display: block; font-weight: 500; color: #4b5563; margin-bottom: 0.5rem; }
+.typecho-option input[type=text], .typecho-option textarea, .typecho-option select {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+.typecho-option input[type=text]:focus, .typecho-option textarea:focus, .typecho-option select:focus {
+    outline: none;
+    border-color: #5865F2;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
+}
+.typecho-option .description { display: block; margin-top: 0.375rem; font-size: 0.75rem; color: #9ca3af; }
+.typecho-option .required { color: #ef4444; margin-left: 0.25rem; }
+.typecho-option-submit button {
+    background-color: #5865F2;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+.typecho-option-submit button:hover { background-color: #4752c4; }
+</style>
 
 <?php
-// 引入版权信息、通用JS和表单JS
-include 'copyright.php';
 include 'common-js.php';
 include 'form-js.php';
+include 'footer.php';
 ?>
-
-<script>
-$(document).ready(function() {
-    // --- 表单美化 Polyfill ---
-    
-    // 1. 输入框和文本域统一添加 Bootstrap 的 form-control 类
-    $('.typecho-option input[type=text], .typecho-option textarea').addClass('form-control');
-
-    // 2. 选择框统一添加 Bootstrap 的 form-select 类
-    $('.typecho-option select').addClass('form-select');
-    
-    // 3. 列表布局优化：移除默认列表样式并添加间距
-    $('.typecho-option').addClass('list-unstyled mb-0');
-    $('.typecho-option li').addClass('mb-3');
-    
-    // 4. 标签和描述文本样式化
-    $('.typecho-option label.typecho-label').addClass('form-label fw-bold text-dark small text-uppercase mb-1 d-block');
-    $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
-    
-    // 5. 必填项添加红色星号标记
-    $('.typecho-option label.required').each(function() {
-        $(this).html($(this).html() + ' <span class="text-danger">*</span>');
-    });
-
-    // 6. 提交按钮容器布局和按钮样式
-    $('.typecho-option-submit').addClass('mt-4 pt-3 border-top d-flex justify-content-end');
-    $('.typecho-option-submit button').addClass('btn btn-primary px-4 fw-bold shadow-sm');
-    
-    // 7. 特殊处理：隐藏包含单个 hidden input 的列表项 (Typecho 有时会输出空的 li)
-    $('.typecho-option li').each(function() {
-        if ($(this).find('input[type=hidden]').length > 0 && $(this).children().length === 1) {
-            $(this).hide();
-        }
-    });
-
-    // 8. 自动聚焦到第一个文本输入框
-    $('.typecho-option input[type=text]:first').focus();
-});
-</script>
-
-<?php include 'footer.php'; ?>

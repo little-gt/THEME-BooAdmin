@@ -1,257 +1,67 @@
 <?php
 include 'common.php';
 
-// 如果已经登录，直接跳转到后台首页
 if ($user->hasLogin()) {
     $response->redirect($options->adminUrl);
 }
-
-// 获取记住的用户名
 $rememberName = htmlspecialchars(\Typecho\Cookie::get('__typecho_remember_name', ''));
 \Typecho\Cookie::delete('__typecho_remember_name');
 
-// 设置 Body 类名，方便 CSS 定位
-$bodyClass = 'body-login';
+$bodyClass = 'body-100';
 
 include 'header.php';
 ?>
-
-<style>
-    /* 登录页专用样式覆盖 */
-    body {
-        background-color: #fff;
-        overflow: hidden; /* 防止出现不必要的滚动条 */
-    }
-
-    /* 覆盖 header/menu 可能带来的干扰 */
-    .sidebar, .top-navbar, footer {
-        display: none !important;
-    }
-
-    .login-wrapper {
-        min-height: 100vh;
-        width: 100%;
-    }
-
-    /* 左侧品牌区 */
-    .login-brand-side {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        overflow: hidden;
-    }
-
-    .brand-circle {
-        width: 400px;
-        height: 400px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.1);
-        position: absolute;
-        top: -100px;
-        right: -100px;
-    }
-
-    .brand-circle-2 {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.1);
-        position: absolute;
-        bottom: -50px;
-        left: -50px;
-    }
-
-    /* 右侧表单区 */
-    .login-form-side {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 50px;
-        background-color: #fff;
-        position: relative;
-    }
-
-    .login-card {
-        max-width: 400px;
-        width: 100%;
-        margin: 0 auto;
-    }
-
-    .form-control-lg {
-        font-size: 1rem;
-        padding: 0.8rem 1rem;
-        border-color: #f1f2f6;
-        background-color: #f8f9fa;
-    }
-
-    .form-control-lg:focus {
-        background-color: #fff;
-        border-color: var(--primary-light);
-        box-shadow: 0 0 0 4px var(--primary-soft);
-    }
-
-    .input-group-text {
-        background-color: #f8f9fa;
-        border-color: #f1f2f6;
-        color: var(--text-muted);
-    }
-
-    .btn-login {
-        padding: 0.8rem;
-        font-size: 1rem;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(108, 92, 231, 0.5);
-    }
-
-    .back-home {
-        position: absolute;
-        top: 30px;
-        right: 30px;
-        z-index: 10;
-    }
-
-    /* 移动端适配 */
-    @media (max-width: 768px) {
-        .login-brand-side {
-            display: none;
-        }
-        .login-form-side {
-            padding: 30px;
-        }
-    }
-</style>
-
-<main class="main-content p-0 m-0">
-
-    <div class="row g-0 login-wrapper">
-
-        <!-- 左侧：品牌展示 -->
-        <div class="col-md-6 col-lg-7 d-none d-md-flex login-brand-side">
-            <div class="brand-circle"></div>
-            <div class="brand-circle-2"></div>
-
-            <div class="text-center position-relative" style="z-index: 2;">
-                <div class="mb-4">
-                    <i class="fa-solid fa-layer-group fa-4x"></i>
-                </div>
-                <h1 class="fw-bold display-5 mb-3">Typecho</h1>
-                <p class="lead opacity-75">轻量级、现代化的博客平台</p>
-            </div>
-
-            <div class="position-absolute bottom-0 mb-4 small opacity-50">
-                &copy; <?php echo date('Y'); ?> Typecho Team.
-            </div>
+<div class="flex-1 overflow-y-auto w-full" style="background-image: url('https://image.uc.cn/s/uae/g/3n/mos-production/1220/85df1a9657682d1c.jpg'); background-size: cover; background-position: center;">
+    <div class="min-h-full flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-[480px] rounded shadow-2xl p-8 transform transition-all hover:scale-[1.01] duration-300">
+            <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-1 flex items-center justify-center">
+                <?php _e('欢迎回来！'); ?>
+            </h1>
+            <p class="text-gray-500 text-sm"><?php _e('很高兴见到你！'); ?></p>
         </div>
 
-        <!-- 右侧：登录表单 -->
-        <div class="col-md-6 col-lg-5 login-form-side">
-
-            <!-- 返回首页按钮 -->
-            <a href="<?php $options->siteUrl(); ?>" class="btn btn-light shadow-sm back-home" title="<?php _e('返回首页'); ?>">
-                <i class="fa-solid fa-home"></i> 首页
-            </a>
-
-            <div class="login-card fade-in-up">
-                <!-- 移动端显示的 Logo -->
-                <div class="text-center mb-4 d-md-none">
-                    <i class="fa-solid fa-layer-group fa-3x text-primary"></i>
-                    <h2 class="fw-bold mt-2 text-dark">Typecho</h2>
-                </div>
-
-                <div class="mb-4">
-                    <h3 class="fw-bold text-dark"><?php _e('欢迎回来'); ?></h3>
-                    <p class="text-muted small"><?php _e('请登录以管理您的网站'); ?></p>
-                </div>
-
-                <form action="<?php $options->loginAction(); ?>" method="post" name="login" role="form">
-
-                    <!-- 用户名输入 -->
-                    <div class="mb-3">
-                        <label for="name" class="form-label small text-muted fw-bold"><?php _e('用户名'); ?></label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
-                            <input type="text" id="name" name="name" value="<?php echo $rememberName; ?>" placeholder="<?php _e('请输入用户名'); ?>" class="form-control form-control-lg" required autofocus />
-                        </div>
-                    </div>
-
-                    <!-- 密码输入 -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <label for="password" class="form-label small text-muted fw-bold mb-0"><?php _e('密码'); ?></label>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                            <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="<?php _e('请输入密码'); ?>" required />
-                        </div>
-                    </div>
-
-                    <!-- 记住我 & 登录按钮 -->
-                    <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
-                        <div class="form-check">
-                            <input type="checkbox" name="remember" class="form-check-input" value="1" id="remember" <?php if(\Typecho\Cookie::get('__typecho_remember_remember')): ?>checked<?php endif; ?> />
-                            <label class="form-check-label text-muted small" for="remember">
-                                <?php _e('下次自动登录'); ?>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100 btn-login rounded-3">
-                        <?php _e('登 录'); ?> <i class="fa-solid fa-arrow-right ms-2"></i>
-                    </button>
-
-                    <!-- 安全参数 hidden -->
-                    <input type="hidden" name="referer" value="<?php echo $request->filter('html')->get('referer'); ?>" />
-
-                </form>
-
-                <!-- 注册链接 -->
-                <?php if($options->allowRegister): ?>
-                <div class="text-center mt-4 pt-3 border-top">
-                    <p class="text-muted small mb-0">
-                        <?php _e('还没有账号？'); ?>
-                        <a href="<?php $options->registerUrl(); ?>" class="text-primary fw-bold text-decoration-none"><?php _e('立即注册'); ?></a>
-                    </p>
-                </div>
-                <?php endif; ?>
-
-                <!-- 找回密码 -->
-                <?php if(in_array('Passport', array_keys(Typecho_Plugin::export()['activated']))): ?>
-                <div class="text-center mt-4 pt-3">
-                    <p class="text-muted small mb-0">
-                        <?php _e('忘记了密码？'); ?>
-                        <a href="<?php echo(Typecho_Common::url('passport/forgot', $options->index)); ?>" class="text-primary fw-bold text-decoration-none"><?php _e('立即找回'); ?></a>
-                    </p>
-                </div>
-                <?php endif; ?>
-
+        <form action="<?php $options->loginAction(); ?>" method="post" name="login" role="form" class="space-y-4">
+            <div>
+                <label for="name" class="block text-xs font-bold text-gray-500 uppercase mb-2"><?php _e('用户名'); ?> <span class="text-red-500">*</span></label>
+                <input type="text" id="name" name="name" value="<?php echo $rememberName; ?>" class="w-full px-3 py-2.5 bg-gray-200 border-none rounded text-sm focus:outline-none focus:ring-0 text-discord-text transition-all" required autofocus />
             </div>
+            
+            <div>
+                <label for="password" class="block text-xs font-bold text-gray-500 uppercase mb-2"><?php _e('密码'); ?> <span class="text-red-500">*</span></label>
+                <input type="password" id="password" name="password" class="w-full px-3 py-2.5 bg-gray-200 border-none rounded text-sm focus:outline-none focus:ring-0 text-discord-text transition-all" required />
+                <div class="mt-1 text-xs">
+                    <?php $activates = array_keys(Typecho_Plugin::export()['activated']);
+                    if (in_array('Passport', $activates)) {
+                    echo '<a href="' . Typecho_Common::url('passport/forgot', $options->index) . '">' . '忘记密码' . '</a>';}?>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-2.5 bg-discord-accent text-white rounded font-medium hover:bg-blue-600 transition-colors shadow-sm mb-2 mt-4">
+                <?php _e('登录'); ?>
+            </button>
+            
+            <div class="text-sm text-gray-500 mt-2">
+                 <?php _e('需要账户？'); ?> <a href="<?php $options->registerUrl(); ?>" class="text-discord-accent hover:underline"><?php _e('注册'); ?></a>
+            </div>
+            
+            <input type="hidden" name="referer" value="<?php echo htmlspecialchars($request->get('referer')); ?>" />
+        </form>
+        
+        <div class="mt-8 text-center text-xs text-gray-400">
+            &copy; <?php echo date('Y'); ?> Typecho Team.
         </div>
     </div>
-
-<?php
+</div>
+</div>
+<?php 
 include 'common-js.php';
 ?>
 <script>
-// 聚焦逻辑
 $(document).ready(function () {
     $('#name').focus();
 });
 </script>
 <?php
-/* 执行 Typecho 底部插件钩子 */
-\Typecho\Plugin::factory('admin/footer.php')->end();
+include 'footer.php';
 ?>
-</main>
-</body>
-</html>

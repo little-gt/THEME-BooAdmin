@@ -5,239 +5,216 @@ include 'menu.php';
 
 $users = \Widget\Users\Admin::alloc();
 ?>
-
-<div class="container-fluid">
-    
-    <!-- 顶部标题与操作 -->
-    <div class="row mb-4 fade-in-up">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-                    <p class="text-muted mb-0">
-                        <i class="fa-solid fa-shield-halved me-1"></i><?php _e('管理站点的注册用户及其权限'); ?>
-                    </p>
-                    <a href="<?php $options->adminUrl('user.php'); ?>" class="btn btn-primary px-4 shadow-sm fw-bold">
-                        <i class="fa-solid fa-user-plus me-2"></i><?php _e('新增用户'); ?>
-                    </a>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-users mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('管理用户'); ?></span>
         </div>
-    </div>
+        
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->adminUrl('user.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white rounded hover:bg-discord-accent-hover transition-colors text-sm font-medium">
+                <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
+            </a>
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-    <!-- 主要内容区 -->
-    <div class="row fade-in-up" style="animation-delay: 0.1s;">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body">
-                    
-                    <form method="post" name="manage_users" class="operate-form">
-                        
-                        <!-- 工具栏：批量操作 & 搜索 -->
-                        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 gap-3">
-                            <div class="operate">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa-solid fa-check-double me-2 text-primary"></i><?php _e('选中项'); ?>
-                                    </button>
-                                    <ul class="dropdown-menu shadow border-0 p-2" style="border-radius: 12px;">
-                                        <li>
-                                            <button type="button" class="dropdown-item rounded-2 text-danger btn-operate" lang="<?php _e('你确认要删除这些用户吗?'); ?>" rel="<?php $security->index('/action/users-edit?do=delete'); ?>">
-                                                <i class="fa-solid fa-trash me-2"></i><?php _e('删除'); ?>
-                                            </button>
-                                        </li>
-                                    </ul>
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+            
+            <!-- Filters -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                    <?php if ('' != $request->keywords): ?>
+                        <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
+                    <?php endif; ?>
+                </div>
+
+                <form method="get" class="flex flex-wrap items-center gap-2">
+                     <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                    </div>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                </form>
+            </div>
+
+            <!-- User List -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <form method="post" name="manage_users" class="operate-form">
+                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                         <div class="flex items-center space-x-2">
+                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <span><?php _e('全选'); ?></span>
+                             </label>
+                             <div class="relative group">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                </button>
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                    <a lang="<?php _e('你确认要删除这些用户吗?'); ?>" href="<?php $security->index('/action/users-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                 </div>
-                            </div>
+                             </div>
+                         </div>
+                    </div>
 
-                            <!-- 搜索框 -->
-                            <div class="input-group" style="max-width: 300px;">
-                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                                <input type="text" class="form-control border-start-0 ps-0" placeholder="<?php _e('请输入关键字'); ?>" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" name="keywords">
-                                <button type="submit" class="btn btn-primary fw-bold"><?php _e('筛选'); ?></button>
-                                <?php if ('' != $request->keywords): ?>
-                                    <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="btn btn-outline-secondary" title="<?php _e('取消筛选'); ?>">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                        <!-- 用户列表表格 -->
-                        <div class="table-responsive">
-                            <table class="table modern-table table-hover typecho-list-table">
-                                <thead>
-                                    <tr>
-                                        <th width="40" class="text-center">
-                                            <input type="checkbox" class="form-check-input typecho-table-select-all" />
-                                        </th>
-                                        <th width="60"></th> <!-- 头像列 -->
-                                        <th><?php _e('用户名 / 昵称'); ?></th>
-                                        <th><?php _e('电子邮件'); ?></th>
-                                        <th><?php _e('用户组'); ?></th>
-                                        <th class="text-center"><?php _e('文章'); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php if($users->have()): ?>
-                                    <?php while($users->next()): ?>
-                                    <tr id="user-<?php $users->uid(); ?>" class="align-middle">
-                                        <td class="text-center">
-                                            <input type="checkbox" value="<?php $users->uid(); ?>" name="uid[]" class="form-check-input" />
+                    <table class="w-full text-left border-collapse typecho-list-table draggable">
+                        <thead>
+                            <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
+                                <th class="w-10 pl-4 py-3"></th>
+                                <th class="w-16 py-3 text-center"><i class="fas fa-edit"></i></th>
+                                <th class="py-3"><?php _e('用户名'); ?></th>
+                                <th class="py-3 hidden md:table-cell"><?php _e('昵称'); ?></th>
+                                <th class="py-3 hidden md:table-cell"><?php _e('电子邮件'); ?></th>
+                                <th class="py-3 pr-4 text-right"><?php _e('用户组'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <?php if ($users->have()): ?>
+                                <?php while ($users->next()): ?>
+                                    <tr id="user-<?php $users->uid(); ?>" class="group hover:bg-gray-50 transition-colors">
+                                        <td class="pl-4 py-3">
+                                            <input type="checkbox" value="<?php $users->uid(); ?>" name="uid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
                                         </td>
-                                        
-                                        <!-- 头像 -->
-                                        <td>
-                                            <a href="<?php $options->adminUrl('user.php?uid=' . $users->uid); ?>">
-                                                <img src="<?php echo \Typecho\Common::gravatarUrl($users->mail, 40, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle shadow-sm border" width="40" height="40" alt="Avatar">
+                                        <td class="py-3 text-center">
+                                            <a href="<?php $options->adminUrl('manage-posts.php?__typecho_all_posts=off&uid=' . $users->uid); ?>" 
+                                               class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $users->postsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                                <?php $users->postsNum(); ?>
                                             </a>
                                         </td>
-
-                                        <!-- 用户名 & 昵称 -->
-                                        <td>
-                                            <div class="d-flex flex-column">
-                                                <a href="<?php $options->adminUrl('user.php?uid=' . $users->uid); ?>" class="fw-bold text-dark text-decoration-none">
-                                                    <?php $users->name(); ?>
-                                                </a>
-                                                <span class="small text-muted">
-                                                    <?php $users->screenName(); ?>
-                                                    <a href="<?php $users->permalink(); ?>" title="<?php _e('浏览 %s', $users->screenName); ?>" target="_blank" class="ms-1 text-muted opacity-50 hover-opacity-100">
-                                                        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i>
+                                        <td class="py-3">
+                                            <div class="flex items-center">
+                                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3 text-gray-500 text-xs font-bold overflow-hidden">
+                                                    <?php if ($users->mail): ?>
+                                                        <img src="<?php echo \Typecho\Common::gravatarUrl($users->mail, 64, 'X', 'mm', $request->isSecure()); ?>" alt="<?php $users->screenName(); ?>" class="w-full h-full object-cover">
+                                                    <?php else: ?>
+                                                        <i class="fas fa-user"></i>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div>
+                                                    <a href="<?php $options->adminUrl('user.php?uid=' . $users->uid); ?>" class="text-discord-text font-medium hover:text-discord-accent transition-colors block">
+                                                        <?php $users->name(); ?>
                                                     </a>
-                                                </span>
+                                                    <a href="<?php $users->permalink(); ?>" target="_blank" class="text-gray-400 hover:text-discord-accent opacity-0 group-hover:opacity-100 transition-opacity text-xs" title="<?php _e('浏览 %s', $users->screenName); ?>"><i class="fas fa-external-link-alt"></i> <?php _e('主页'); ?></a>
+                                                </div>
                                             </div>
                                         </td>
-
-                                        <!-- 邮件 -->
-                                        <td>
+                                        <td class="py-3 hidden md:table-cell text-sm text-gray-600">
+                                            <?php $users->screenName(); ?>
+                                        </td>
+                                        <td class="py-3 hidden md:table-cell text-sm text-gray-600">
                                             <?php if ($users->mail): ?>
-                                                <a href="mailto:<?php $users->mail(); ?>" class="text-secondary text-decoration-none font-monospace small">
-                                                    <i class="fa-regular fa-envelope me-1"></i><?php $users->mail(); ?>
-                                                </a>
+                                                <a href="mailto:<?php $users->mail(); ?>" class="hover:text-discord-accent"><?php $users->mail(); ?></a>
                                             <?php else: ?>
-                                                <span class="text-muted small"><?php _e('暂无'); ?></span>
+                                                <span class="text-gray-400"><?php _e('暂无'); ?></span>
                                             <?php endif; ?>
                                         </td>
-
-                                        <!-- 用户组 (彩色徽章) -->
-                                        <td>
+                                        <td class="py-3 pr-4 text-left text-sm">
                                             <?php 
-                                            $badgeClass = 'bg-secondary';
-                                            $icon = 'fa-user';
+                                            $groupClass = 'bg-gray-100 text-gray-500';
+                                            $groupName = '';
                                             switch ($users->group) {
                                                 case 'administrator':
-                                                    $badgeClass = 'bg-dark text-white';
-                                                    $icon = 'fa-user-shield';
+                                                    $groupClass = 'bg-red-100 text-red-600';
+                                                    $groupName = _t('管理员');
                                                     break;
                                                 case 'editor':
-                                                    $badgeClass = 'bg-primary text-white';
-                                                    $icon = 'fa-user-pen';
+                                                    $groupClass = 'bg-blue-100 text-blue-600';
+                                                    $groupName = _t('编辑');
                                                     break;
                                                 case 'contributor':
-                                                    $badgeClass = 'bg-info text-dark';
-                                                    $icon = 'fa-feather';
+                                                    $groupClass = 'bg-green-100 text-green-600';
+                                                    $groupName = _t('贡献者');
                                                     break;
                                                 case 'subscriber':
-                                                    $badgeClass = 'bg-success text-white';
-                                                    $icon = 'fa-user-check';
+                                                    $groupClass = 'bg-yellow-100 text-yellow-600';
+                                                    $groupName = _t('关注者');
                                                     break;
                                                 case 'visitor':
-                                                    $badgeClass = 'bg-light text-muted border';
-                                                    $icon = 'fa-user';
+                                                    $groupClass = 'bg-gray-100 text-gray-500';
+                                                    $groupName = _t('访问者');
                                                     break;
-                                            }
+                                                default:
+                                                    $groupClass = 'bg-gray-100 text-gray-500';
+                                                    $groupName = $users->group;
+                                                    break;
+                                            } 
                                             ?>
-                                            <span class="badge rounded-pill <?php echo $badgeClass; ?> fw-normal px-3 py-2">
-                                                <i class="fa-solid <?php echo $icon; ?> me-1"></i>
-                                                <?php 
-                                                switch ($users->group) {
-                                                    case 'administrator': _e('管理员'); break;
-                                                    case 'editor': _e('编辑'); break;
-                                                    case 'contributor': _e('贡献者'); break;
-                                                    case 'subscriber': _e('关注者'); break;
-                                                    case 'visitor': _e('访问者'); break;
-                                                    default: echo $users->group; break;
-                                                } 
-                                                ?>
-                                            </span>
-                                        </td>
-
-                                        <!-- 文章数 -->
-                                        <td class="text-center">
-                                            <a href="<?php $options->adminUrl('manage-posts.php?__typecho_all_posts=off&uid=' . $users->uid); ?>" 
-                                               class="badge bg-light text-primary border rounded-pill text-decoration-none px-3 py-2"
-                                               data-bs-toggle="tooltip" title="<?php _e('查看 %s 发布的文章', $users->screenName); ?>">
-                                                <i class="fa-solid fa-file-pen me-1"></i><?php $users->postsNum(); ?>
-                                            </a>
+                                            <span class="px-2 py-0.5 rounded text-xs font-medium <?php echo $groupClass; ?>"><?php echo $groupName; ?></span>
                                         </td>
                                     </tr>
-                                    <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="6" class="text-center py-5">
-                                            <div class="text-muted">
-                                                <i class="fa-solid fa-user-slash fa-3x mb-3 opacity-25"></i>
-                                                <p><?php _e('没有找到用户'); ?></p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
-
-                    <!-- 分页 -->
-                    <?php if($users->have()): ?>
-                    <div class="mt-4 d-flex justify-content-center">
-                        <?php $users->pageNav('&laquo;', '&raquo;', 3, '...', array('wrapTag' => 'ul', 'wrapClass' => 'pagination pagination-modern', 'itemTag' => 'li', 'textTag' => 'span', 'currentClass' => 'active', 'prevClass' => 'prev', 'nextClass' => 'next')); ?>
-                    </div>
-                    <?php endif; ?>
-
-                </div>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                        <div class="mb-2 text-4xl text-gray-300"><i class="fas fa-users"></i></div>
+                                        <?php _e('没有找到任何用户'); ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </form>
             </div>
+            
+            <?php if ($users->have()): ?>
+                <div class="mt-4 flex justify-end">
+                     <?php $users->pageNav('&laquo;', '&raquo;', 1, '...', array(
+                         'wrapTag' => 'ul', 
+                         'wrapClass' => 'flex items-center space-x-1 typecho-pager list-none', 
+                         'itemTag' => 'li', 
+                         'textTag' => 'span', 
+                         'currentClass' => 'current', 
+                         'prevClass' => 'prev', 
+                         'nextClass' => 'next'
+                     )); ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
-</div>
+</main>
+<style>
+.typecho-pager li a, .typecho-pager li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background-color: white;
+    color: #4b5563;
+    font-size: 0.875rem;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.typecho-pager li a:hover {
+    background-color: #f3f4f6;
+    color: #5865F2;
+    border-color: #d1d5db;
+}
+.typecho-pager li.current span {
+    background-color: #5865F2;
+    color: white;
+    border-color: #5865F2;
+    font-weight: 600;
+}
+</style>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
 include 'table-js.php';
+include 'footer.php';
 ?>
-
-<script type="text/javascript">
-(function () {
-    $(document).ready(function () {
-        // 自定义全选逻辑 (因为表格结构变化，table-js.php 可能需要辅助)
-        $('.typecho-table-select-all').click(function () {
-            var checked = $(this).prop('checked');
-            $('input[name="uid[]"]').prop('checked', checked).trigger('change');
-        });
-
-        // 选中行高亮
-        $('input[name="uid[]"]').change(function() {
-            var tr = $(this).closest('tr');
-            if ($(this).prop('checked')) {
-                tr.addClass('table-active');
-            } else {
-                tr.removeClass('table-active');
-            }
-        });
-
-        // 批量操作按钮逻辑
-        $('.btn-operate').click(function (e) {
-            e.preventDefault();
-            var btn = $(this);
-            var msg = btn.attr('lang');
-            var href = btn.attr('rel');
-
-            if (confirm(msg)) {
-                var form = btn.parents('form');
-                form.attr('action', href).submit();
-            }
-        });
-    });
-})();
-</script>
-
-<?php include 'footer.php'; ?>

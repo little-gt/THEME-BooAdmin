@@ -4,161 +4,87 @@ include 'header.php';
 include 'menu.php';
 ?>
 
-<style>
-/* 欢迎页专用样式 */
-.welcome-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
-}
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light items-center justify-center p-4">
+    <div class="w-full max-w-lg">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-discord-text mb-2"><?php _e('欢迎使用'); ?></h1>
+            <div class="w-16 h-16 rounded-full bg-discord-accent text-white flex items-center justify-center mx-auto mb-4 shadow-lg text-2xl">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <p class="text-discord-muted"><?php _e('Typecho "%s" 管理后台', $options->title); ?></p>
+        </div>
 
-.welcome-card {
-    max-width: 650px;
-    width: 100%;
-    animation: fadeInUp 0.5s ease-out;
-}
-
-.welcome-step {
-    display: flex;
-    align-items: center;
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    border: 1px solid transparent;
-}
-
-.welcome-step:hover {
-    background-color: var(--primary-soft);
-    border-color: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.welcome-step-icon {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-}
-
-/* 高亮重要的安全步骤 */
-.welcome-step.priority-high:hover {
-    background-color: rgba(255, 118, 117, 0.1);
-    border-color: rgba(255, 118, 117, 0.4);
-}
-.welcome-step.priority-high .welcome-step-icon {
-    background-color: var(--danger);
-    color: #fff;
-}
-</style>
-
-<div class="container-fluid welcome-container">
-    <div class="row">
-        <div class="col-12">
-            
-            <div class="card-modern welcome-card shadow-lg">
-                <div class="card-body p-4 p-md-5 text-center">
-                    
-                    <!-- 顶部 Logo 和标题 -->
-                    <div class="mb-4">
-                        <i class="fa-solid fa-layer-group fa-3x text-primary mb-3"></i>
-                        <h2 class="fw-bold text-dark"><?php _e('欢迎使用 Typecho'); ?></h2>
-                        <p class="text-muted">
-                            <?php _e('很高兴与您一同开始创作之旅！在正式开始前，我们建议您完成以下几个简单步骤：'); ?>
-                        </p>
-                    </div>
-
-                    <!-- 步骤引导列表 -->
-                    <div class="list-group text-start">
-                        
-                        <!-- 1. 更改密码 (高优先级) -->
-                        <a href="<?php $options->adminUrl('profile.php#change-password'); ?>" class="list-group-item list-group-item-action border-0 mb-2 p-0">
-                            <div class="welcome-step priority-high">
-                                <div class="welcome-step-icon me-3">
-                                    <i class="fa-solid fa-shield-halved"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold text-danger mb-0"><?php _e('更改您的默认密码'); ?></h6>
-                                    <small class="text-muted"><?php _e('为了保障您的账户安全，这是最重要的一步'); ?></small>
-                                </div>
-                                <div class="ms-auto text-danger">
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </div>
+        <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+            <div class="p-8">
+                <h3 class="text-lg font-bold text-discord-text mb-6 flex items-center justify-center">
+                    <?php _e('开始您的创作之旅'); ?>
+                </h3>
+                
+                <form action="<?php $options->adminUrl(); ?>" method="get" class="space-y-4">
+                    <div class="space-y-3">
+                        <a href="<?php $options->adminUrl('profile.php#change-password'); ?>" class="block w-full p-4 border border-gray-200 rounded-lg hover:border-discord-accent hover:bg-blue-50 transition-all group flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-4 group-hover:bg-discord-accent group-hover:text-white transition-colors">
+                                <i class="fas fa-key"></i>
                             </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-discord-text"><?php _e('更改密码'); ?></h4>
+                                <p class="text-xs text-gray-500"><?php _e('强烈建议更改您的默认密码以保障安全'); ?></p>
+                            </div>
+                            <i class="fas fa-chevron-right text-gray-300 group-hover:text-discord-accent"></i>
                         </a>
 
-                        <!-- 2. 撰写文章/查看站点 (根据权限不同) -->
                         <?php if($user->pass('contributor', true)): ?>
-                            <a href="<?php $options->adminUrl('write-post.php'); ?>" class="list-group-item list-group-item-action border-0 mb-2 p-0">
-                                <div class="welcome-step">
-                                    <div class="welcome-step-icon bg-light-primary me-3">
-                                        <i class="fa-solid fa-pen-nib"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="fw-bold text-dark mb-0"><?php _e('撰写第一篇日志'); ?></h6>
-                                        <small class="text-muted"><?php _e('开始分享您的想法和故事'); ?></small>
-                                    </div>
-                                    <div class="ms-auto text-muted">
-                                        <i class="fa-solid fa-arrow-right"></i>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="<?php $options->siteUrl(); ?>" target="_blank" class="list-group-item list-group-item-action border-0 mb-2 p-0">
-                                <div class="welcome-step">
-                                    <div class="welcome-step-icon bg-light-success me-3">
-                                        <i class="fa-solid fa-globe"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="fw-bold text-dark mb-0"><?php $user->pass('administrator', true) ? _e('查看我的站点') : _e('查看网站'); ?></h6>
-                                        <small class="text-muted"><?php _e('看看您的网站在前台是什么样子'); ?></small>
-                                    </div>
-                                    <div class="ms-auto text-muted">
-                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                    </div>
-                                </div>
-                            </a>
+                        <a href="<?php $options->adminUrl('write-post.php'); ?>" class="block w-full p-4 border border-gray-200 rounded-lg hover:border-discord-accent hover:bg-blue-50 transition-all group flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-green-100 text-green-500 flex items-center justify-center mr-4 group-hover:bg-discord-accent group-hover:text-white transition-colors">
+                                <i class="fas fa-pen-nib"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-discord-text"><?php _e('撰写文章'); ?></h4>
+                                <p class="text-xs text-gray-500"><?php _e('发布您的第一篇精彩内容'); ?></p>
+                            </div>
+                            <i class="fas fa-chevron-right text-gray-300 group-hover:text-discord-accent"></i>
+                        </a>
+
+                        <a href="<?php $options->siteUrl(); ?>" target="_blank" class="block w-full p-4 border border-gray-200 rounded-lg hover:border-discord-accent hover:bg-blue-50 transition-all group flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mr-4 group-hover:bg-discord-accent group-hover:text-white transition-colors">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-discord-text"><?php _e('查看站点'); ?></h4>
+                                <p class="text-xs text-gray-500"><?php _e('访问您的网站首页'); ?></p>
+                            </div>
+                            <i class="fas fa-external-link-alt text-gray-300 group-hover:text-discord-accent text-sm"></i>
+                        </a>
                         <?php else: ?>
-                            <a href="<?php $options->siteUrl(); ?>" target="_blank" class="list-group-item list-group-item-action border-0 mb-2 p-0">
-                                <div class="welcome-step">
-                                    <div class="welcome-step-icon bg-light-success me-3">
-                                        <i class="fa-solid fa-globe"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="fw-bold text-dark mb-0"><?php _e('查看网站'); ?></h6>
-                                        <small class="text-muted"><?php _e('看看您的网站在前台是什么样子'); ?></small>
-                                    </div>
-                                    <div class="ms-auto text-muted">
-                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                    </div>
-                                </div>
-                            </a>
+                        <a href="<?php $options->siteUrl(); ?>" target="_blank" class="block w-full p-4 border border-gray-200 rounded-lg hover:border-discord-accent hover:bg-blue-50 transition-all group flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mr-4 group-hover:bg-discord-accent group-hover:text-white transition-colors">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-discord-text"><?php _e('查看站点'); ?></h4>
+                                <p class="text-xs text-gray-500"><?php _e('访问网站首页'); ?></p>
+                            </div>
+                            <i class="fas fa-external-link-alt text-gray-300 group-hover:text-discord-accent text-sm"></i>
+                        </a>
                         <?php endif; ?>
                     </div>
 
-                    <!-- 最终操作 -->
-                    <div class="mt-5">
-                        <form action="<?php $options->adminUrl(); ?>" method="get">
-                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">
-                                <?php _e('直接进入控制台 &raquo;'); ?>
-                            </button>
-                        </form>
+                    <div class="pt-6 mt-2 border-t border-gray-100">
+                        <button type="submit" class="w-full py-3 bg-discord-accent text-white rounded-md font-bold hover:bg-blue-600 transition-colors shadow-sm transform hover:scale-[1.02] duration-200">
+                            <?php _e('进入后台管理 &raquo;'); ?>
+                        </button>
                     </div>
-
-                </div>
+                </form>
             </div>
-
+        </div>
+        
+        <div class="text-center mt-6 text-xs text-gray-400">
+            &copy; <?php echo date('Y'); ?> Typecho Team. All Rights Reserved.
         </div>
     </div>
-</div>
+</main>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
 include 'footer.php';
 ?>

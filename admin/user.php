@@ -2,112 +2,88 @@
 include 'common.php';
 include 'header.php';
 include 'menu.php';
-
-// 初始化用户编辑组件，如果 URL 中有 uid，则会加载该用户数据
-\Widget\Users\Edit::alloc()->to($userEdit);
 ?>
 
-<div class="container-fluid">
-    
-    <!-- 顶部说明与操作 -->
-    <div class="row mb-4 fade-in-up">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-                    <p class="text-muted mb-0">
-                        <i class="fa-solid fa-shield-halved me-1"></i>
-                        <?php if ($userEdit->have()): ?>
-                            <?php _e('编辑用户: %s', $userEdit->name); ?>
-                        <?php else: ?>
-                            <?php _e('新增用户'); ?>
-                        <?php endif; ?>
-                        <?php if ($userEdit->have()): ?>
-                            <small class="text-muted font-monospace">UID: <?php echo $userEdit->uid; ?></small>
-                        <?php endif; ?>
-                    </p>
-                    <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="btn btn-light shadow-sm fw-bold small">
-                        <i class="fa-solid fa-arrow-left me-1"></i> <?php _e('返回列表'); ?>
-                    </a>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-user-edit mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('编辑用户'); ?></span>
         </div>
-    </div>
-    
-    <div class="row fade-in-up">
         
-        <!-- 使用居中布局，适合表单填写 -->
-        <div class="col-12">
-            
-            <div class="card-modern">
-                <div class="card-body p-4 p-md-5">
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded text-sm font-medium hover:bg-gray-200 transition-colors">
+                <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回'); ?>
+            </a>
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-                    <!-- 表单区域 -->
-                    <div class="typecho-form-modern">
-                        <?php $userEdit->form()->render(); ?>
-                    </div>
-
-                </div>
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-8">
+                <?php \Widget\Users\Edit::alloc()->form()->render(); ?>
             </div>
-
         </div>
     </div>
-</div>
+</main>
+
+<style>
+/* Discord-style form customization */
+.typecho-option { margin-bottom: 1.5rem; }
+.typecho-option label { display: block; font-weight: 600; color: #4b5563; margin-bottom: 0.5rem; font-size: 0.875rem; }
+.typecho-option input[type=text], 
+.typecho-option input[type=password], 
+.typecho-option input[type=email],
+.typecho-option input[type=url],
+.typecho-option textarea, 
+.typecho-option select {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+.typecho-option input:focus, .typecho-option textarea:focus, .typecho-option select:focus {
+    outline: none;
+    border-color: #5865F2;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
+}
+.typecho-option .description { display: block; margin-top: 0.375rem; font-size: 0.75rem; color: #9ca3af; }
+.typecho-option .required { color: #ef4444; margin-left: 0.25rem; }
+.typecho-option-submit button {
+    background-color: #5865F2;
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+.typecho-option-submit button:hover { background-color: #4752c4; }
+
+/* Radio/Checkbox styling fix */
+.typecho-option li { list-style: none; margin-bottom: 0.5rem; }
+.typecho-option li label { font-weight: normal; display: inline-flex; align-items: center; }
+.typecho-option input[type=radio], .typecho-option input[type=checkbox] { margin-right: 0.5rem; }
+</style>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
 include 'form-js.php';
+include 'footer.php';
 ?>
-
-<script>
-$(document).ready(function() {
-    // =======================================================
-    // 表单美化 Polyfill
-    // =======================================================
-    
-    // 1. 输入框
-    $('.typecho-option input[type=text], .typecho-option input[type=password], .typecho-option input[type=email], .typecho-option input[type=url]').addClass('form-control');
-    $('.typecho-option select').addClass('form-select');
-    
-    // 2. 布局
-    $('.typecho-option').addClass('list-unstyled mb-0');
-    $('.typecho-option li').addClass('mb-3');
-    
-    // 3. 标签与描述
-    $('.typecho-option label.typecho-label').addClass('form-label fw-bold small text-muted mb-1 d-block');
-    $('.typecho-option p.description').addClass('form-text text-muted small mt-1');
-    
-    // 4. 必填项星号
-    $('.typecho-option label.required').each(function() {
-        $(this).html($(this).html().replace(' *', ' <span class="text-danger">*</span>'));
-    });
-
-    // 5. 提交按钮
-    $('.typecho-option-submit').addClass('mt-4 pt-3 border-top d-flex justify-content-end');
-    $('.typecho-option-submit button').addClass('btn btn-primary px-4 rounded-pill fw-bold shadow-sm');
-    
-    // 6. 特殊布局：将密码和确认密码放在一行 (Bootstrap Grid)
-    var passwordRow = $('input[name=password]').closest('li');
-    var confirmRow = $('input[name=confirm]').closest('li');
-    if (passwordRow.length && confirmRow.length) {
-        var newRow = $('<div class="row g-3"></div>');
-        var passCol = $('<div class="col-md-6"></div>').append(passwordRow.contents());
-        var confirmCol = $('<div class="col-md-6"></div>').append(confirmRow.contents());
-        newRow.append(passCol).append(confirmCol);
-        passwordRow.empty().append(newRow);
-        confirmRow.remove();
-    }
-    
-    // 7. 隐藏 hidden input 的行
-    $('.typecho-option li').each(function() {
-        if ($(this).find('input[type=hidden]').length > 0 && $(this).children().length === 1) {
-            $(this).hide();
-        }
-    });
-
-    // 8. 自动聚焦
-    $('.typecho-option input[type=text]:first').focus();
-});
-</script>
-
-<?php include 'footer.php'; ?>

@@ -1,562 +1,415 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 
-// 初始化统计和评论组件
 $stat = \Widget\Stat::alloc();
 $comments = \Widget\Comments\Admin::alloc();
-
-// 判断查看模式：所有评论 vs 我的评论
 $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Typecho\Cookie::get('__typecho_all_comments'));
 ?>
-
-<div class="container-fluid">
-
-    <!-- 1. 顶部状态筛选栏 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-
-                    <!-- 左侧：状态 Tabs -->
-                    <ul class="nav nav-pills mb-3 mb-md-0 gap-2">
-                        <li class="nav-item">
-                            <a class="nav-link <?php if(!isset($request->status) || 'approved' == $request->get('status')): ?>active<?php endif; ?>"
-                               href="<?php $options->adminUrl('manage-comments.php' . (isset($request->cid) ? '?cid=' . $request->filter('encode')->cid : '')); ?>">
-                               <i class="fa-solid fa-check-circle me-2"></i><?php _e('已通过'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item position-relative">
-                            <a class="nav-link <?php if('waiting' == $request->get('status')): ?>active<?php endif; ?>"
-                               href="<?php $options->adminUrl('manage-comments.php?status=waiting' . (isset($request->cid) ? '&cid=' . $request->filter('encode')->cid : '')); ?>">
-                               <i class="fa-solid fa-hourglass-half me-2"></i><?php _e('待审核'); ?>
-                               <?php
-                                // 计算待审核数量徽章
-                                $waitingNum = 0;
-                                if(!$isAllComments && $stat->myWaitingCommentsNum > 0 && !isset($request->cid)) $waitingNum = $stat->myWaitingCommentsNum;
-                                elseif($isAllComments && $stat->waitingCommentsNum > 0 && !isset($request->cid)) $waitingNum = $stat->waitingCommentsNum;
-                                elseif(isset($request->cid) && $stat->currentWaitingCommentsNum > 0) $waitingNum = $stat->currentWaitingCommentsNum;
-
-                                if ($waitingNum > 0): ?>
-                                   <span class="badge bg-danger ms-2"><?php echo $waitingNum; ?></span>
-                               <?php endif; ?>
-                            </a>
-                        </li>
-                        <li class="nav-item position-relative">
-                            <a class="nav-link <?php if('spam' == $request->get('status')): ?>active<?php endif; ?>"
-                               href="<?php $options->adminUrl('manage-comments.php?status=spam' . (isset($request->cid) ? '&cid=' . $request->filter('encode')->cid : '')); ?>">
-                               <i class="fa-solid fa-trash-can me-2"></i><?php _e('垃圾'); ?>
-                               <?php
-                                // 计算垃圾评论数量徽章
-                                $spamNum = 0;
-                                if(!$isAllComments && $stat->mySpamCommentsNum > 0 && !isset($request->cid)) $spamNum = $stat->mySpamCommentsNum;
-                                elseif($isAllComments && $stat->spamCommentsNum > 0 && !isset($request->cid)) $spamNum = $stat->spamCommentsNum;
-                                elseif(isset($request->cid) && $stat->currentSpamCommentsNum > 0) $spamNum = $stat->currentSpamCommentsNum;
-
-                                if ($spamNum > 0): ?>
-                                   <span class="badge bg-secondary ms-2"><?php echo $spamNum; ?></span>
-                               <?php endif; ?>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- 右侧：所有/我的 切换 -->
-                    <?php if($user->pass('editor', true) && !isset($request->cid)): ?>
-                    <div class="btn-group shadow-sm">
-                        <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=on'); ?>"
-                           class="btn btn-sm <?php if($isAllComments): ?>btn-primary<?php else: ?>btn-outline-primary<?php endif; ?>">
-                           <?php _e('所有'); ?>
-                        </a>
-                        <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=off'); ?>"
-                           class="btn btn-sm <?php if(!$isAllComments): ?>btn-primary<?php else: ?>btn-outline-primary<?php endif; ?>">
-                           <?php _e('我的'); ?>
-                        </a>
-                    </div>
-                    <?php endif; ?>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-comments mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('管理评论'); ?></span>
         </div>
-    </div>
+        
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-    <!-- 2. 主体内容区 -->
-    <div class="row" style="animation-delay: 0.1s;">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body">
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+            
+            <!-- Tabs & Filters -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <div class="flex items-center bg-gray-100 p-1 rounded-lg select-none self-start">
+                     <a href="<?php $options->adminUrl('manage-comments.php' . (isset($request->cid) ? '?cid=' . $request->filter('encode')->cid : '')); ?>" 
+                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if (!isset($request->status) || 'approved' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        <?php _e('已通过'); ?>
+                     </a>
+                     <a href="<?php $options->adminUrl('manage-comments.php?status=waiting' . (isset($request->cid) ? '&cid=' . $request->filter('encode')->cid : '')); ?>" 
+                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if ('waiting' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        <?php _e('待审核'); ?>
+                        <?php if(!$isAllComments && $stat->myWaitingCommentsNum > 0 && !isset($request->cid)): ?> 
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->myWaitingCommentsNum(); ?></span>
+                        <?php elseif($isAllComments && $stat->waitingCommentsNum > 0 && !isset($request->cid)): ?>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->waitingCommentsNum(); ?></span>
+                        <?php elseif(isset($request->cid) && $stat->currentWaitingCommentsNum > 0): ?>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->currentWaitingCommentsNum(); ?></span>
+                        <?php endif; ?>
+                     </a>
+                     <a href="<?php $options->adminUrl('manage-comments.php?status=spam' . (isset($request->cid) ? '&cid=' . $request->filter('encode')->cid : '')); ?>" 
+                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if ('spam' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        <?php _e('垃圾'); ?>
+                        <?php if(!$isAllComments && $stat->mySpamCommentsNum > 0 && !isset($request->cid)): ?> 
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->mySpamCommentsNum(); ?></span>
+                        <?php elseif($isAllComments && $stat->spamCommentsNum > 0 && !isset($request->cid)): ?>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->spamCommentsNum(); ?></span>
+                        <?php elseif(isset($request->cid) && $stat->currentSpamCommentsNum > 0): ?>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->currentSpamCommentsNum(); ?></span>
+                        <?php endif; ?>
+                     </a>
+                </div>
 
-                    <!-- 工具栏：批量操作 & 搜索 -->
-                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 gap-3">
-                        <form method="get" class="d-flex gap-2 flex-grow-1 operate-form-get">
+                <form method="get" class="flex flex-wrap items-center gap-2">
+                     <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                    </div>
+                    <?php if(isset($request->status)): ?>
+                        <input type="hidden" value="<?php echo $request->filter('html')->status; ?>" name="status" />
+                    <?php endif; ?>
+                    <?php if(isset($request->cid)): ?>
+                        <input type="hidden" value="<?php echo $request->filter('html')->cid; ?>" name="cid" />
+                    <?php endif; ?>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <?php if ('' != $request->keywords || '' != $request->category): ?>
+                        <a href="<?php $options->adminUrl('manage-comments.php' . (isset($request->status) || isset($request->cid) ? '?' . (isset($request->status) ? 'status=' . $request->filter('encode')->status : '') . (isset($request->cid) ? (isset($request->status) ? '&' : '') . 'cid=' . $request->filter('encode')->cid : '') : '')); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors text-xs text-gray-600"><?php _e('取消筛选'); ?></a>
+                    <?php endif; ?>
+                </form>
+            </div>
 
-                            <!-- 批量操作下拉菜单 -->
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-check-double me-2 text-primary"></i><?php _e('选中项'); ?>
+            <!-- Comment List -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <form method="post" name="manage_comments" class="operate-form">
+                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                         <div class="flex items-center space-x-2">
+                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <span><?php _e('全选'); ?></span>
+                             </label>
+                             <div class="relative group">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <ul class="dropdown-menu shadow border-0" style="border-radius: 12px;">
-                                    <li><a class="dropdown-item" href="<?php $security->index('/action/comments-edit?do=approved'); ?>"><i class="fa-solid fa-check me-2 text-success"></i><?php _e('通过'); ?></a></li>
-                                    <li><a class="dropdown-item" href="<?php $security->index('/action/comments-edit?do=waiting'); ?>"><i class="fa-solid fa-clock me-2 text-warning"></i><?php _e('待审核'); ?></a></li>
-                                    <li><a class="dropdown-item" href="<?php $security->index('/action/comments-edit?do=spam'); ?>"><i class="fa-solid fa-ban me-2 text-secondary"></i><?php _e('标记垃圾'); ?></a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" lang="<?php _e('你确认要删除这些评论吗?'); ?>" href="<?php $security->index('/action/comments-edit?do=delete'); ?>"><i class="fa-solid fa-trash me-2"></i><?php _e('删除'); ?></a></li>
-                                </ul>
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                    <a href="<?php $security->index('/action/comments-edit?do=approved'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('通过'); ?></a>
+                                    <a href="<?php $security->index('/action/comments-edit?do=waiting'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('待审核'); ?></a>
+                                    <a href="<?php $security->index('/action/comments-edit?do=spam'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记垃圾'); ?></a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <a href="<?php $security->index('/action/comments-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
+                                </div>
+                             </div>
+                             <?php if('spam' == $request->get('status')): ?>
+                                <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 rounded hover:bg-red-100 text-red-600 shadow-sm btn-operate" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>"><?php _e('删除所有垃圾评论'); ?></button>
+                             <?php endif; ?>
+                         </div>
+                         <?php if($user->pass('editor', true) && !isset($request->cid)): ?>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=on'); ?>" class="<?php if($isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('所有'); ?></a>
+                                <span class="text-gray-300">|</span>
+                                <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=off'); ?>" class="<?php if(!$isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('我的'); ?></a>
                             </div>
-
-                            <!-- 清空垃圾评论按钮 -->
-                            <?php if('spam' == $request->get('status')): ?>
-                                <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="btn btn-danger btn-operate" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>">
-                                    <i class="fa-solid fa-dumpster-fire me-1"></i> <?php _e('清空垃圾评论'); ?>
-                                </button>
-                            <?php endif; ?>
-
-                            <!-- 搜索框 -->
-                            <div class="input-group ms-auto" style="max-width: 300px;">
-                                <?php if ('' != $request->keywords || '' != $request->category): ?>
-                                <a href="<?php $options->adminUrl('manage-comments.php' . (isset($request->status) || isset($request->cid) ? '?' . (isset($request->status) ? 'status=' . $request->filter('encode')->status : '') . (isset($request->cid) ? (isset($request->status) ? '&' : '') . 'cid=' . $request->filter('encode')->cid : '') : '')); ?>"
-                                   class="btn btn-outline-secondary" title="<?php _e('取消筛选'); ?>"><i class="fa-solid fa-xmark"></i></a>
-                                <?php endif; ?>
-
-                                <input type="text" class="form-control" placeholder="<?php _e('搜索评论...'); ?>" value="<?php echo $request->filter('html')->keywords; ?>" name="keywords" />
-                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
-
-                                <!-- 保持筛选状态的隐藏域 -->
-                                <?php if(isset($request->status)): ?>
-                                    <input type="hidden" value="<?php echo $request->filter('html')->status; ?>" name="status" />
-                                <?php endif; ?>
-                                <?php if(isset($request->cid)): ?>
-                                    <input type="hidden" value="<?php echo $request->filter('html')->cid; ?>" name="cid" />
-                                <?php endif; ?>
-                            </div>
-                        </form>
+                         <?php endif; ?>
                     </div>
 
-                    <!-- 评论列表表格 -->
-                    <form method="post" name="manage_comments" class="operate-form">
-                        <div class="table-responsive">
-                            <table class="table modern-table table-hover typecho-list-table">
-                                <thead class="d-none d-md-table-header-group">
-                                    <tr>
-                                        <th width="40" class="text-center">
-                                            <input type="checkbox" class="form-check-input typecho-table-select-all" />
-                                        </th>
-                                        <th width="60"></th> <!-- 头像占位 -->
-                                        <th width="200"><?php _e('作者'); ?></th>
-                                        <th><?php _e('内容'); ?></th>
-                                        <th width="150" class="text-end"><?php _e('操作'); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php if($comments->have()): ?>
+                    <table class="w-full text-left border-collapse typecho-list-table">
+                        <thead>
+                            <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50">
+                                <th class="w-10 pl-4 py-3"></th>
+                                <th class="w-16 py-3 text-center"><i class="fas fa-user-circle"></i></th>
+                                <th class="py-3"><?php _e('作者'); ?></th>
+                                <th class="py-3"><?php _e('内容'); ?></th>
+                                <th class="py-3 w-48 text-right pr-4"><?php _e('操作'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <?php if($comments->have()): ?>
                                 <?php while($comments->next()): ?>
-                                <tr id="comment-<?php $comments->theId(); ?>"
-                                    data-comment="<?php
-                                    // 预先生成 JSON 数据供 JS 读取
-                                    $commentData = array(
+                                    <tr id="<?php $comments->theId(); ?>" data-comment="<?php
+                                    $comment = array(
                                         'author'    =>  $comments->author,
                                         'mail'      =>  $comments->mail,
                                         'url'       =>  $comments->url,
                                         'ip'        =>  $comments->ip,
-                                        'type'      =>  $comments->type,
+                                        'type'        =>  $comments->type,
                                         'text'      =>  $comments->text
                                     );
-                                    echo htmlspecialchars(json_encode($commentData));
-                                ?>" class="<?php if('waiting' == $comments->status) echo 'table-warning'; ?>">
 
-                                    <!-- 复选框 -->
-                                    <td class="text-center align-top pt-4">
-                                        <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="form-check-input" />
-                                    </td>
-
-                                    <!-- 头像 -->
-                                    <td class="align-top pt-3">
-                                        <div class="position-relative">
-                                            <?php if ('comment' == $comments->type): ?>
-                                                <img src="<?php echo \Typecho\Common::gravatarUrl($comments->mail, 48, 'X', 'mm', $request->isSecure()); ?>" class="rounded-circle shadow-sm" width="40" height="40">
-                                            <?php else: ?>
-                                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-muted" style="width: 40px; height: 40px;">
-                                                    <i class="fa-solid fa-quote-left"></i>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </td>
-
-                                    <!-- 作者信息 -->
-                                    <td class="align-top pt-3">
-                                        <div class="mb-1">
-                                            <?php if($comments->url): ?>
-                                                <a href="<?php $comments->url(); ?>" target="_blank" class="fw-bold text-dark text-decoration-none">
-                                                    <?php $comments->author(); ?> <i class="fa-solid fa-arrow-up-right-from-square small text-muted opacity-50 ms-1" style="font-size:0.7em;"></i>
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="fw-bold text-dark"><?php $comments->author(); ?></span>
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="small text-muted mb-1">
-                                            <?php if($comments->mail): ?>
-                                                <a href="mailto:<?php $comments->mail(); ?>" class="text-muted text-decoration-none"><i class="fa-regular fa-envelope me-1"></i><?php $comments->mail(); ?></a>
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="small text-muted font-monospace bg-light d-inline-block px-2 rounded">
-                                            <?php $comments->ip(); ?>
-                                        </div>
-                                    </td>
-
-                                    <!-- 评论内容 (气泡样式) -->
-                                    <td class="align-top pt-3">
-                                        <div class="comment-bubble p-3 rounded-3 bg-light position-relative">
-                                            <div class="comment-arrow"></div>
-
-                                            <div class="d-flex justify-content-between align-items-start mb-2 small text-muted">
-                                                <span>
-                                                    <?php _e('于'); ?> <a href="<?php $comments->permalink(); ?>" class="fw-bold text-primary text-decoration-none"><?php $comments->title(); ?></a>
-                                                </span>
-                                                <span><?php $comments->dateWord(); ?></span>
+                                    echo htmlspecialchars(json_encode($comment));
+                                    ?>" class="group hover:bg-gray-50 transition-colors">
+                                        <td class="pl-4 py-3 align-top">
+                                            <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300 mt-1">
+                                        </td>
+                                        <td class="py-3 text-center align-top">
+                                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 mx-auto">
+                                                <?php if ('comment' == $comments->type): ?>
+                                                    <?php $comments->gravatar(40, null, true); ?>
+                                                <?php else: ?>
+                                                    <div class="flex items-center justify-center w-full h-full text-gray-500"><i class="fas fa-quote-right"></i></div>
+                                                <?php endif; ?>
                                             </div>
-
-                                            <div class="comment-content text-break">
+                                        </td>
+                                        <td class="py-3 align-top text-sm">
+                                            <div class="font-medium text-discord-text">
+                                                <?php if($comments->url): ?>
+                                                    <a href="<?php $comments->url(); ?>" target="_blank" class="hover:underline"><?php $comments->author(); ?></a>
+                                                <?php else: ?>
+                                                    <?php $comments->author(); ?>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="text-xs text-gray-400 mt-0.5">
+                                                <?php if($comments->mail): ?>
+                                                    <a href="mailto:<?php $comments->mail(); ?>" class="hover:text-discord-accent block"><?php $comments->mail(); ?></a>
+                                                <?php endif; ?>
+                                                <span class="block mt-0.5"><?php $comments->ip(); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 align-top text-sm text-gray-600">
+                                            <div class="mb-1 text-xs text-gray-400">
+                                                <?php $comments->dateWord(); ?> 于 <a href="<?php $comments->permalink(); ?>" class="text-discord-accent hover:underline"><?php $comments->title(); ?></a>
+                                            </div>
+                                            <div class="comment-content prose prose-sm max-w-none text-gray-700">
                                                 <?php $comments->content(); ?>
                                             </div>
-
-                                            <?php if('waiting' == $comments->status): ?>
-                                                <div class="mt-2">
-                                                    <span class="badge bg-warning text-dark"><i class="fa-solid fa-clock me-1"></i><?php _e('待审核'); ?></span>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </td>
-
-                                    <!-- 操作按钮 -->
-                                    <td class="align-top pt-3 text-end">
-                                        <div class="btn-group btn-group-sm opacity-50 hover-opacity-100">
-                                            <?php if('approved' == $comments->status): ?>
-                                                <?php if('comment' == $comments->type): ?>
-                                                <a href="#<?php $comments->theId(); ?>" rel="<?php $security->index('/action/comments-edit?do=reply&coid=' . $comments->coid); ?>" class="btn btn-outline-primary operate-reply" title="<?php _e('回复'); ?>">
-                                                    <i class="fa-solid fa-reply"></i>
-                                                </a>
+                                        </td>
+                                        <td class="py-3 pr-4 text-right align-top text-sm">
+                                            <div class="flex flex-col items-end space-y-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <a href="#<?php $comments->theId(); ?>" rel="<?php $security->index('/action/comments-edit?do=reply&coid=' . $comments->coid); ?>" class="operate-reply text-discord-accent hover:underline"><i class="fas fa-reply mr-1"></i><?php _e('回复'); ?></a>
+                                                <a href="#<?php $comments->theId(); ?>" rel="<?php $security->index('/action/comments-edit?do=edit&coid=' . $comments->coid); ?>" class="operate-edit text-gray-500 hover:text-discord-accent"><i class="fas fa-edit mr-1"></i><?php _e('编辑'); ?></a>
+                                                
+                                                <?php if('approved' == $comments->status): ?>
+                                                    <!-- Current status approved -->
+                                                <?php else: ?>
+                                                    <a href="<?php $security->index('/action/comments-edit?do=approved&coid=' . $comments->coid); ?>" class="operate-approved text-green-600 hover:underline"><?php _e('通过'); ?></a>
                                                 <?php endif; ?>
-                                            <?php else: ?>
-                                                <a href="<?php $security->index('/action/comments-edit?do=approved&coid=' . $comments->coid); ?>" class="btn btn-outline-success operate-approved" title="<?php _e('通过'); ?>">
-                                                    <i class="fa-solid fa-check"></i>
-                                                </a>
-                                            <?php endif; ?>
-
-                                            <a href="#<?php $comments->theId(); ?>" rel="<?php $security->index('/action/comments-edit?do=edit&coid=' . $comments->coid); ?>" class="btn btn-outline-secondary operate-edit" title="<?php _e('编辑'); ?>">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </a>
-
-                                            <?php if('spam' != $comments->status): ?>
-                                            <a href="<?php $security->index('/action/comments-edit?do=spam&coid=' . $comments->coid); ?>" class="btn btn-outline-warning operate-spam" title="<?php _e('标记垃圾'); ?>">
-                                                <i class="fa-solid fa-ban"></i>
-                                            </a>
-                                            <?php endif; ?>
-
-                                            <a lang="<?php _e('你确认要删除%s的评论吗?', htmlspecialchars($comments->author)); ?>" href="<?php $security->index('/action/comments-edit?do=delete&coid=' . $comments->coid); ?>" class="btn btn-outline-danger operate-delete" title="<?php _e('删除'); ?>">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                                
+                                                <?php if('spam' == $comments->status): ?>
+                                                    <!-- Current status spam -->
+                                                <?php else: ?>
+                                                    <a href="<?php $security->index('/action/comments-edit?do=spam&coid=' . $comments->coid); ?>" class="operate-spam text-orange-500 hover:underline"><?php _e('标为垃圾'); ?></a>
+                                                <?php endif; ?>
+                                                
+                                                <a lang="<?php _e('你确认要删除%s的评论吗?', htmlspecialchars($comments->author)); ?>" href="<?php $security->index('/action/comments-edit?do=delete&coid=' . $comments->coid); ?>" class="operate-delete text-red-500 hover:underline"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php endwhile; ?>
-                                <?php else: ?>
+                            <?php else: ?>
                                 <tr>
-                                    <td colspan="5" class="text-center py-5">
-                                        <div class="text-muted">
-                                            <i class="fa-regular fa-comment-dots fa-3x mb-3 opacity-50"></i>
-                                            <p><?php _e('没有找到任何评论'); ?></p>
-                                        </div>
+                                    <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                                        <div class="mb-2 text-4xl text-gray-300"><i class="far fa-comments"></i></div>
+                                        <?php _e('没有找到任何评论'); ?>
                                     </td>
                                 </tr>
-                                <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- 隐藏的筛选参数 -->
-                        <?php if(isset($request->cid)): ?>
-                        <input type="hidden" value="<?php echo $request->filter('html')->cid; ?>" name="cid" />
-                        <?php endif; ?>
-                    </form>
-
-                    <!-- 分页 -->
-                    <?php if($comments->have()): ?>
-                    <div class="mt-4 d-flex justify-content-center">
-                        <?php $comments->pageNav('&laquo;', '&raquo;', 3, '...', array('wrapTag' => 'ul', 'wrapClass' => 'pagination pagination-modern', 'itemTag' => 'li', 'textTag' => 'span', 'currentClass' => 'active', 'prevClass' => 'prev', 'nextClass' => 'next')); ?>
-                    </div>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                    
+                    <?php if(isset($request->cid)): ?>
+                    <input type="hidden" value="<?php echo $request->filter('html')->cid; ?>" name="cid" />
                     <?php endif; ?>
-
-                </div>
+                </form>
             </div>
+            
+            <?php if ($comments->have()): ?>
+                <div class="mt-4 flex justify-end">
+                     <?php $comments->pageNav('&laquo;', '&raquo;', 1, '...', array(
+                         'wrapTag' => 'ul', 
+                         'wrapClass' => 'flex items-center space-x-1 typecho-pager list-none', 
+                         'itemTag' => 'li', 
+                         'textTag' => 'span', 
+                         'currentClass' => 'current', 
+                         'prevClass' => 'prev', 
+                         'nextClass' => 'next'
+                     )); ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
-</div>
-
+</main>
 <style>
-/* 评论列表样式 */
-.comment-bubble {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    position: relative;
-    transition: background-color 0.2s;
+.typecho-pager li a, .typecho-pager li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background-color: white;
+    color: #4b5563; /* text-gray-600 */
+    font-size: 0.875rem; /* text-sm */
+    border: 1px solid #e5e7eb; /* border-gray-200 */
+    transition: all 0.2s;
+    text-decoration: none;
 }
-.comment-bubble:hover {
-    background-color: #fff;
-    border-color: var(--primary-light);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+
+.typecho-pager li a:hover {
+    background-color: #f3f4f6; /* bg-gray-100 */
+    color: #5865F2; /* text-discord-accent */
+    border-color: #d1d5db; /* border-gray-300 */
 }
-.comment-arrow {
-    position: absolute;
-    top: 15px;
-    left: -6px;
-    width: 10px;
-    height: 10px;
-    background-color: #f8f9fa;
-    border-left: 1px solid #e9ecef;
-    border-bottom: 1px solid #e9ecef;
-    transform: rotate(45deg);
-    transition: background-color 0.2s;
+
+.typecho-pager li.current span {
+    background-color: #5865F2; /* bg-discord-accent */
+    color: white;
+    border-color: #5865F2;
+    font-weight: 600;
 }
-.comment-bubble:hover .comment-arrow {
-    background-color: #fff;
-    border-color: var(--primary-light);
-}
-/* 待审核高亮 */
-.table-warning .comment-bubble {
-    background-color: #fff3cd;
-    border-color: #ffecb5;
-}
-.table-warning .comment-arrow {
-    background-color: #fff3cd;
-    border-color: #ffecb5;
-}
-.hover-opacity-100:hover {
-    opacity: 1 !important;
-}
-/* 编辑/回复区域样式 */
-.comment-reply, .comment-edit {
-    margin-top: 15px;
-    padding: 15px;
-    background: #fff;
-    border: 1px solid var(--primary-light);
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(108, 92, 231, 0.1);
-}
-.comment-reply textarea, .comment-edit textarea {
-    width: 100%;
-    min-height: 100px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-.comment-reply textarea:focus, .comment-edit textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
+
+.comment-content img {
+    max-width: 100%;
+    border-radius: 4px;
 }
 </style>
-
 <?php
-include 'copyright.php';
 include 'common-js.php';
 include 'table-js.php';
 ?>
-
 <script type="text/javascript">
 $(document).ready(function () {
-    // --- 核心修复：PJAX 环境下的事件绑定 ---
-    // 使用命名空间 .manageComments 进行解绑，确保事件不重复
-    $(document).off('.manageComments');
-
-    // 0. 批量操作处理
-    $(document).on('click.manageComments', '.dropdown-menu a[href*="comments-edit"]', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $form = $('.operate-form');
-        var $checked = $form.find('input[name="coid[]"]:checked');
-        
-        if ($checked.length === 0) {
-            alert('<?php _e('请先选择要操作的评论'); ?>');
-            return false;
-        }
-        
-        var msg = $this.attr('lang');
-        if (msg && !confirm(msg)) {
-            return false;
-        }
-        
-        $form.attr('action', $this.attr('href')).submit();
-        return false;
-    });
-
-    // 0.1 清空垃圾评论按钮处理
-    $(document).on('click.manageComments', '.btn-operate', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var msg = $this.attr('lang');
-        if (msg && !confirm(msg)) {
-            return false;
-        }
-        window.location.href = $this.attr('href');
-        return false;
-    });
-
-    // 1. 记住滚动条位置
+    // 记住滚动条
     function rememberScroll () {
-        $(window).on('beforeunload', function () {
+        $(window).bind('beforeunload', function () {
             $.cookie('__typecho_comments_scroll', $('body').scrollTop());
         });
     }
-    // 恢复滚动条位置
+
+    // 自动滚动
     (function () {
         var scroll = $.cookie('__typecho_comments_scroll');
+
         if (scroll) {
             $.cookie('__typecho_comments_scroll', null);
             $('html, body').scrollTop(scroll);
         }
     })();
 
-    // 2. 批量删除确认
-    $(document).on('click.manageComments', '.operate-delete', function (e) {
-        var t = $(this), href = t.attr('href'), tr = t.closest('tr');
+    $('.operate-delete').click(function () {
+        var t = $(this), href = t.attr('href'), tr = t.parents('tr');
+
         if (confirm(t.attr('lang'))) {
             tr.fadeOut(function () {
                 rememberScroll();
                 window.location.href = href;
             });
         }
+
         return false;
     });
 
-    // 3. 状态切换（通过、待审核、垃圾）
-    $(document).on('click.manageComments', '.operate-approved, .operate-waiting, .operate-spam', function (e) {
+    $('.operate-approved, .operate-waiting, .operate-spam').click(function () {
         rememberScroll();
         window.location.href = $(this).attr('href');
         return false;
     });
 
-    // 4. 快速回复功能
-    $(document).on('click.manageComments', '.operate-reply', function (e) {
-        var td = $(this).closest('td'), t = $(this);
+    $('.operate-reply').click(function () {
+        var td = $(this).parents('td'), t = $(this);
 
-        // 如果已经打开了回复框，则关闭它
         if ($('.comment-reply', td).length > 0) {
-            $('.comment-reply', td).remove();
+            $('.comment-reply').remove();
         } else {
-            // 插入回复表单
             var form = $('<form method="post" action="'
-                + t.attr('rel') + '" class="comment-reply fade-in-up">'
-                + '<div class="mb-2"><label for="text" class="form-label fw-bold text-primary small"><?php _e('回复内容'); ?></label><textarea id="text" name="text" class="form-control" rows="3"></textarea></div>'
-                + '<div class="d-flex justify-content-end gap-2"><button type="button" class="btn btn-sm btn-light cancel"><?php _e('取消'); ?></button> <button type="submit" class="btn btn-sm btn-primary"><?php _e('回复评论'); ?></button></div>'
-                + '</form>').insertAfter($('.comment-bubble', td).next());
+                + t.attr('rel') + '" class="comment-reply mt-2 p-3 bg-gray-50 rounded border border-gray-200">'
+                + '<p><label for="text" class="sr-only"><?php _e('内容'); ?></label><textarea id="text" name="text" class="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" rows="3"></textarea></p>'
+                + '<p class="mt-2 flex space-x-2"><button type="submit" class="px-3 py-1 bg-discord-accent text-white rounded text-sm hover:bg-blue-600 transition-colors"><?php _e('回复'); ?></button> <button type="button" class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300 transition-colors cancel"><?php _e('取消'); ?></button></p>'
+                + '</form>').appendTo($('.comment-content', t.parents('tr')));
 
-            // 绑定取消按钮
             $('.cancel', form).click(function () {
-                $(this).closest('.comment-reply').remove();
+                $(this).parents('.comment-reply').remove();
             });
 
-            // 自动聚焦
-            $('textarea', form).focus();
+            var textarea = $('textarea', form).focus();
 
-            // 绑定提交事件
             form.submit(function () {
-                var t = $(this), tr = t.closest('tr'),
-                    textarea = $('textarea', t),
-                    reply = $('<div class="comment-reply-content mt-3 p-3 bg-white border rounded"></div>').insertAfter($('.comment-content', tr));
+                var t = $(this), tr = t.parents('tr'), 
+                    reply = $('<div class="comment-reply-content mt-2 p-2 bg-blue-50 text-blue-800 text-sm rounded border border-blue-100"></div>').insertAfter($('.comment-content', tr));
 
                 var html = DOMPurify.sanitize(textarea.val(), {USE_PROFILES: {html: true}});
-                reply.html('<p class="mb-0">' + html + '</p>');
-
+                reply.html('<p>' + html + '</p>');
                 $.post(t.attr('action'), t.serialize(), function (o) {
                     var html = DOMPurify.sanitize(o.comment.content, {USE_PROFILES: {html: true}});
-                    reply.html(html);
-                    if (typeof reply.effect === 'function') {
-                        reply.effect('highlight');
-                    } else {
-                        reply.css('background-color', '#fff9c4').animate({'background-color': '#ffffff'}, 1000);
-                    }
+                    reply.html(html)
+                        .effect('highlight');
                 }, 'json');
 
                 t.remove();
                 return false;
             });
         }
+
         return false;
     });
 
-    // 5. 快速编辑功能 (修复数据加载)
-    $(document).on('click.manageComments', '.operate-edit', function (e) {
-        var tr = $(this).closest('tr'),
-            t = $(this),
-            id = tr.attr('id');
-
-        // --- 关键修复：从 data-comment 属性中安全获取 JSON 数据 ---
-        var comment = tr.data('comment');
-
-        // 兼容性处理：如果 jQuery .data() 缓存失效，直接解析属性字符串
-        if (!comment || typeof comment !== 'object') {
-            var rawData = tr.attr('data-comment');
-            if (rawData) {
-                try {
-                    comment = $.parseJSON(rawData);
-                } catch(err) {
-                    console.error('Comment data parse error:', err);
-                    alert('<?php _e('无法加载评论数据'); ?>');
-                    return false;
-                }
-            }
-        }
-
-        if (!comment) return false;
-
-        // 隐藏原行，插入编辑行
+    $('.operate-edit').click(function () {
+        var tr = $(this).parents('tr'), t = $(this), id = tr.attr('id'), comment = tr.data('comment');
         tr.hide();
 
-        var edit = $('<tr class="comment-edit-row"><td></td><td colspan="4">'
-                        + '<form method="post" action="' + t.attr('rel') + '" class="comment-edit card p-4 shadow-sm fade-in-up">'
-                        + '<div class="row g-3">'
-                        + '<div class="col-md-4"><label class="form-label small text-muted"><?php _e('用户名'); ?></label><input class="form-control form-control-sm" name="author" type="text"></div>'
-                        + '<div class="col-md-4"><label class="form-label small text-muted"><?php _e('电子邮箱'); ?></label><input class="form-control form-control-sm" type="email" name="mail"></div>'
-                        + '<div class="col-md-4"><label class="form-label small text-muted"><?php _e('个人主页'); ?></label><input class="form-control form-control-sm" type="text" name="url"></div>'
-                        + '<div class="col-12"><label class="form-label small text-muted"><?php _e('内容'); ?></label><textarea name="text" rows="6" class="form-control"></textarea></div>'
-                        + '<div class="col-12 text-end"><button type="button" class="btn btn-sm btn-light cancel me-2"><?php _e('取消'); ?></button><button type="submit" class="btn btn-sm btn-primary"><?php _e('保存修改'); ?></button></div>'
-                        + '</div></form></td></tr>')
+        var edit = $('<tr class="comment-edit bg-white"><td colspan="5" class="p-4 border-b border-gray-200">'
+                        + '<form method="post" action="' + t.attr('rel') + '" class="comment-edit-info space-y-4">'
+                        + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4">'
+                        + '<div><label for="' + id + '-author" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('用户名'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" id="' + id + '-author" name="author" type="text"></div>'
+                        + '<div><label for="' + id + '-mail" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('电子邮箱'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" type="email" name="mail" id="' + id + '-mail"></div>'
+                        + '<div><label for="' + id + '-url" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('个人主页'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" type="text" name="url" id="' + id + '-url"></div>'
+                        + '</div>'
+                        + '<div><label for="' + id + '-text" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('内容'); ?></label><textarea name="text" id="' + id + '-text" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent"></textarea></div>'
+                        + '<div class="flex space-x-2"><button type="submit" class="px-4 py-2 bg-discord-accent text-white rounded hover:bg-blue-600 transition-colors text-sm"><?php _e('提交'); ?></button> '
+                        + '<button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors text-sm cancel"><?php _e('取消'); ?></button></div>'
+                        + '</form></td></tr>')
                         .data('id', id).data('comment', comment).insertAfter(tr);
 
-        // 填充表单数据
         $('input[name=author]', edit).val(comment.author);
         $('input[name=mail]', edit).val(comment.mail);
         $('input[name=url]', edit).val(comment.url);
         $('textarea[name=text]', edit).val(comment.text).focus();
 
-        // 绑定取消按钮
         $('.cancel', edit).click(function () {
-            var tr = $(this).closest('tr'); // 这里的 tr 其实是编辑行
-            // 恢复显示原始行
+            var tr = $(this).parents('tr');
+
             $('#' + tr.data('id')).show();
             tr.remove();
         });
 
-        // 绑定提交事件
         $('form', edit).submit(function () {
-            var t = $(this), tr = t.closest('tr'),
+            var t = $(this), tr = t.parents('tr'),
                 oldTr = $('#' + tr.data('id')),
                 comment = oldTr.data('comment');
 
-            // 收集表单数据
-            var formData = {};
-            $.each(t.serializeArray(), function() {
-                formData[this.name] = this.value;
+            $('form', tr).each(function () {
+                var items  = $(this).serializeArray();
+
+                for (var i = 0; i < items.length; i ++) {
+                    var item = items[i];
+                    comment[item.name] = item.value;
+                }
             });
 
-            // 合并新数据
-            $.extend(comment, formData);
+            var unsafeHTML = '<div class="font-medium text-discord-text">'
+                + (comment.url ? '<a target="_blank" href="' + comment.url + '" class="hover:underline">'
+                + comment.author + '</a>' : comment.author) + '</div>'
+                + '<div class="text-xs text-gray-400 mt-0.5">'
+                + (comment.mail ? '<a href="mailto:' + comment.mail + '" class="hover:text-discord-accent block">'
+                + comment.mail + '</a>' : '')
+                + (comment.ip ? '<span class="block mt-0.5">' + comment.ip + '</span>' : '') + '</div>';
+
+            var html = DOMPurify.sanitize(unsafeHTML, {USE_PROFILES: {html: true}});
+            var content = DOMPurify.sanitize(comment.text, {USE_PROFILES: {html: true}});
+            // Update the author info column (3rd column)
+            oldTr.find('td:eq(2)').html(html).effect('highlight');
+            // Update content
+            oldTr.find('.comment-content').html(content);
+            oldTr.data('comment', comment);
 
             $.post(t.attr('action'), comment, function (o) {
-                // 编辑成功后刷新页面以显示最新状态
-                // 在 PJAX 环境下，location.reload() 也会触发 PJAX 刷新
-                window.location.reload();
+                var content = DOMPurify.sanitize(o.comment.content, {USE_PROFILES: {html: true}});
+                oldTr.find('.comment-content').html(content).effect('highlight');
             }, 'json');
+            
+            oldTr.show();
+            tr.remove();
 
             return false;
         });
@@ -565,5 +418,6 @@ $(document).ready(function () {
     });
 });
 </script>
-
-<?php include 'footer.php'; ?>
+<?php
+include 'footer.php';
+?>

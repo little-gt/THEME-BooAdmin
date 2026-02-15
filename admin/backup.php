@@ -1,192 +1,160 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 
-// 生成备份操作的 URL，包含安全Token
 $actionUrl = $security->getTokenUrl(
     \Typecho\Router::url('do', array('action' => 'backup', 'widget' => 'Backup'),
         \Typecho\Common::url('index.php', $options->rootUrl)));
 
-// 获取服务器上已有的备份文件列表
 $backupFiles = \Widget\Backup::alloc()->listFiles();
 ?>
 
-<div class="container-fluid">
-    
-    <!-- 顶部标题栏 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <h4 class="fw-bold text-dark mb-1">
-                            <i class="fa-solid fa-database me-2 text-primary"></i><?php _e('备份与恢复'); ?>
-                        </h4>
-                        <p class="text-muted mb-0 small">定期备份是保护数据安全的最佳方式</p>
-                    </div>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-database mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('备份与恢复'); ?></span>
         </div>
-    </div>
-
-    <div class="row g-4" style="animation-delay: 0.1s;">
         
-        <!-- 左侧：备份数据 (导出) 功能区 -->
-        <div class="col-lg-6">
-            <div class="card-modern h-100">
-                <div class="card-header bg-transparent border-bottom px-4 py-3">
-                    <h5 class="fw-bold mb-0 text-dark">
-                        <i class="fa-solid fa-cloud-arrow-down me-2 text-primary"></i><?php _e('备份数据'); ?>
-                    </h5>
-                </div>
-                <div class="card-body p-4 d-flex flex-column">
-                    <!-- 备份说明提示 -->
-                    <div class="alert alert-info border-0 shadow-sm rounded-3 mb-4">
-                        <div class="d-flex">
-                            <i class="fa-solid fa-circle-info mt-1 me-3"></i>
-                            <div>
-                                <h6 class="alert-heading fw-bold mb-1"><?php _e('备份说明'); ?></h6>
-                                <ul class="mb-0 ps-3 small opacity-75">
-                                    <li><?php _e('此备份操作仅包含<strong>内容数据</strong> (文章、评论、分类等)'); ?></li>
-                                    <li><?php _e('并不包含<strong>主题文件</strong>、<strong>插件文件</strong>或<strong>上传的图片</strong>'); ?></li>
-                                    <li><?php _e('生成的 .dat 文件是 Typecho 专用格式'); ?></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-                    <!-- 大数据量备份建议 -->
-                    <div class="bg-light p-4 rounded-3 border mb-4 text-center">
-                        <i class="fa-solid fa-hard-drive fa-3x text-secondary mb-3 opacity-50"></i>
-                        <p class="text-muted small">
-                            <?php _e('如果您的数据量过大, 为了避免操作超时, 建议您直接使用数据库提供的备份工具 (如 phpMyAdmin) 备份数据'); ?>
-                        </p>
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Backup Section -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col h-full">
+                <h3 class="text-lg font-bold text-discord-text mb-4 pb-2 border-b border-gray-100 flex items-center">
+                    <i class="fas fa-cloud-download-alt mr-2 text-discord-accent"></i>
+                    <?php _e('备份您的数据'); ?>
+                </h3>
+                <form action="<?php echo $actionUrl; ?>" method="post" class="flex-1 flex flex-col">
+                    <div class="text-sm text-gray-600 mb-6 space-y-3 flex-1">
+                        <p class="flex items-start"><i class="fas fa-info-circle text-blue-400 mt-1 mr-2 flex-shrink-0"></i> <span><?php _e('此备份操作仅包含<strong>内容数据</strong>, 并不会涉及任何<strong>设置信息</strong>'); ?></span></p>
+                        <p class="flex items-start"><i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-2 flex-shrink-0"></i> <span><?php _e('如果您的数据量过大, 为了避免操作超时, 建议您直接使用数据库提供的备份工具备份数据'); ?></span></p>
+                        <p class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2 flex-shrink-0"></i> <strong class="text-discord-text"><?php _e('为了缩小备份文件体积, 建议您在备份前删除不必要的数据'); ?></strong></p>
                     </div>
-
-                    <!-- 备份数据表单 -->
                     <div class="mt-auto">
-                        <form action="<?php echo $actionUrl; ?>" method="post">
-                            <input tabindex="1" type="hidden" name="do" value="export">
-                            <button class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-sm" type="submit">
-                                <i class="fa-solid fa-file-export me-2"></i><?php _e('开始备份数据'); ?>
+                        <button class="w-full py-2.5 bg-discord-accent text-white rounded-md font-medium hover:bg-blue-600 transition-colors shadow-sm flex items-center justify-center" type="submit">
+                            <i class="fas fa-download mr-2"></i> <?php _e('开始备份'); ?>
+                        </button>
+                        <input type="hidden" name="do" value="export">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Restore Section -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col h-full" id="backup-secondary">
+                <h3 class="text-lg font-bold text-discord-text mb-4 pb-2 border-b border-gray-100 flex items-center">
+                    <i class="fas fa-cloud-upload-alt mr-2 text-green-500"></i>
+                    <?php _e('恢复数据'); ?>
+                </h3>
+                
+                <div class="flex space-x-1 mb-4 bg-gray-100 p-1 rounded-lg typecho-option-tabs select-none">
+                    <a href="#from-upload" class="flex-1 text-center py-1.5 text-sm font-medium rounded-md transition-all active-tab bg-white text-discord-text shadow-sm" data-target="from-upload"><?php _e('上传文件'); ?></a>
+                    <a href="#from-server" class="flex-1 text-center py-1.5 text-sm font-medium rounded-md text-gray-500 hover:text-discord-text transition-all" data-target="from-server"><?php _e('从服务器'); ?></a>
+                </div>
+
+                <div id="from-upload" class="tab-content flex-1 flex flex-col">
+                    <form action="<?php echo $actionUrl; ?>" method="post" enctype="multipart/form-data" class="flex-1 flex flex-col">
+                        <div class="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 mb-6 hover:bg-gray-50 transition-colors cursor-pointer relative">
+                            <i class="fas fa-file-upload text-4xl text-gray-300 mb-2"></i>
+                            <p class="text-sm text-gray-500 mb-1"><?php _e('点击或拖拽文件至此'); ?></p>
+                            <p class="text-xs text-gray-400"><?php _e('支持 .zip, .dat 等格式'); ?></p>
+                            <input id="backup-upload-file" name="file" type="file" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                            <div id="file-name-display" class="mt-2 text-sm text-discord-accent font-medium hidden"></div>
+                        </div>
+                        <div class="mt-auto">
+                            <button type="submit" class="w-full py-2.5 bg-green-500 text-white rounded-md font-medium hover:bg-green-600 transition-colors shadow-sm flex items-center justify-center">
+                                <i class="fas fa-check mr-2"></i> <?php _e('上传并恢复'); ?>
                             </button>
-                        </form>
-                    </div>
+                            <input type="hidden" name="do" value="import">
+                        </div>
+                    </form>
                 </div>
-            </div>
-        </div>
 
-        <!-- 右侧：恢复数据 (导入) 功能区 -->
-        <div class="col-lg-6">
-            <div class="card-modern h-100">
-                <div class="card-header bg-transparent border-bottom px-4 py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0 text-dark">
-                        <i class="fa-solid fa-rotate-left me-2 text-danger"></i><?php _e('恢复数据'); ?>
-                    </h5>
-                </div>
-                <div class="card-body p-4">
-                    
-                    <!-- Tabs 导航 - 切换本地上传和从服务器选择 -->
-                    <ul class="nav nav-pills nav-fill bg-light p-1 rounded-3 mb-4" id="restoreTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active rounded-pill small fw-bold" id="upload-tab" data-bs-toggle="pill" data-bs-target="#from-upload" type="button" role="tab"><?php _e('本地上传'); ?></button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link rounded-pill small fw-bold" id="server-tab" data-bs-toggle="pill" data-bs-target="#from-server" type="button" role="tab"><?php _e('从服务器选择'); ?></button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content" id="restoreTabContent">
-                        
-                        <!-- Tab 1: 从本地上传备份文件 -->
-                        <div class="tab-pane fade show active" id="from-upload" role="tabpanel">
-                            <div class="text-center py-4 mb-3 border border-2 border-dashed rounded-3">
-                                <i class="fa-solid fa-upload fa-3x text-muted mb-3 opacity-50"></i>
-                                <p class="text-muted small mb-0"><?php _e('请选择本地的 .dat 备份文件'); ?></p>
+                <div id="from-server" class="tab-content hidden flex-1 flex flex-col">
+                    <form action="<?php echo $actionUrl; ?>" method="post" class="flex-1 flex flex-col">
+                        <?php if (empty($backupFiles)): ?>
+                            <div class="flex-1 flex flex-col items-center justify-center text-center p-6 text-gray-500">
+                                <i class="fas fa-folder-open text-4xl text-gray-200 mb-3"></i>
+                                <p class="text-sm"><?php _e('没有找到备份文件'); ?></p>
+                                <p class="text-xs text-gray-400 mt-2"><?php _e('将备份文件手动上传至服务器的 %s 目录下后, 这里会出现文件选项', '<span class="font-mono bg-gray-100 px-1 rounded">/usr/backups</span>'); ?></p>
                             </div>
-
-                            <form action="<?php echo $actionUrl; ?>" method="post" enctype="multipart/form-data" class="restore-form">
-                                <div class="mb-4">
-                                    <input tabindex="2" id="backup-upload-file" name="file" type="file" class="form-control">
-                                </div>
-                                <input type="hidden" name="do" value="import">
-                                <button tabindex="4" type="submit" class="btn btn-danger w-100 py-2 fw-bold">
-                                    <i class="fa-solid fa-cloud-arrow-up me-2"></i><?php _e('上传并恢复'); ?>
+                        <?php else: ?>
+                            <div class="flex-1 mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2" for="backup-select-file"><?php _e('选择一个备份文件'); ?></label>
+                                <select name="file" id="backup-select-file" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:border-discord-accent transition-colors">
+                                    <?php foreach ($backupFiles as $file): ?>
+                                        <option value="<?php echo $file; ?>"><?php echo $file; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="mt-auto">
+                                <button type="submit" class="w-full py-2.5 bg-green-500 text-white rounded-md font-medium hover:bg-green-600 transition-colors shadow-sm flex items-center justify-center">
+                                    <i class="fas fa-history mr-2"></i> <?php _e('选择并恢复'); ?>
                                 </button>
-                            </form>
-                        </div>
-
-                        <!-- Tab 2: 从服务器选择备份文件 -->
-                        <div class="tab-pane fade" id="from-server" role="tabpanel">
-                            <?php if (empty($backupFiles)): // 如果服务器上没有备份文件 ?>
-                                <div class="text-center py-5">
-                                    <i class="fa-regular fa-folder-open fa-3x text-muted mb-3 opacity-50"></i>
-                                    <p class="text-muted small">
-                                        <?php _e('服务器上没有发现备份文件'); ?>
-                                    </p>
-                                    <p class="text-secondary small bg-light p-2 rounded">
-                                        <?php _e('请将备份文件手动上传至服务器的 <br><code>%s</code><br> 目录下', __TYPECHO_BACKUP_DIR__); ?>
-                                    </p>
-                                </div>
-                            <?php else: // 如果服务器上有备份文件，提供选择下拉框 ?>
-                                <form action="<?php echo $actionUrl; ?>" method="post" class="restore-form">
-                                    <div class="mb-4">
-                                        <label class="form-label fw-bold text-dark mb-2" for="backup-select-file"><?php _e('选择一个备份文件'); ?></label>
-                                        <select tabindex="5" name="file" id="backup-select-file" class="form-select form-select-lg">
-                                            <?php foreach ($backupFiles as $file): ?>
-                                                <option value="<?php echo $file; ?>"><?php echo $file; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <input type="hidden" name="do" value="import">
-                                    <button tabindex="7" type="submit" class="btn btn-danger w-100 py-2 fw-bold">
-                                        <i class="fa-solid fa-clock-rotate-left me-2"></i><?php _e('确认恢复数据'); ?>
-                                    </button>
-                                </form>
-                            <?php endif; ?>
-                        </div>
-
-                    </div>
-                    
-                    <!-- 恢复操作的警告提示 -->
-                    <div class="mt-4 pt-3 border-top text-center">
-                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3">
-                            <i class="fa-solid fa-triangle-exclamation me-1"></i> <?php _e('注意'); ?>
-                        </span>
-                        <p class="text-danger small mt-2 mb-0">
-                            <?php _e('恢复操作将清除所有现有数据，且不可撤销！'); ?>
-                        </p>
-                    </div>
-
+                                <input type="hidden" name="do" value="import">
+                            </div>
+                        <?php endif; ?>
+                    </form>
                 </div>
             </div>
         </div>
-
     </div>
-</div>
+</main>
+
+<style>
+/* Custom tab styling logic needs to be handled by JS now as classes changed */
+</style>
 
 <?php
-// 引入版权信息、通用JS和页脚文件
-include 'copyright.php';
 include 'common-js.php';
+include 'form-js.php';
 ?>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 恢复操作的二次确认逻辑
-    const restoreForms = document.querySelectorAll('.restore-form');
-    
-    restoreForms.forEach(form => {
-        form.addEventListener('submit', function(e) {
+    $(document).ready(function() {
+        // Tab switching
+        $('.typecho-option-tabs a').click(function(e) {
+            e.preventDefault();
+            var targetId = $(this).attr('href');
+            
+            // Toggle classes for tabs
+            $('.typecho-option-tabs a').removeClass('bg-white text-discord-text shadow-sm').addClass('text-gray-500 hover:text-discord-text');
+            $(this).removeClass('text-gray-500 hover:text-discord-text').addClass('bg-white text-discord-text shadow-sm');
+            
+            // Toggle content
+            $('.tab-content').addClass('hidden');
+            $(targetId).removeClass('hidden');
+        });
+
+        // File input change
+        $('#backup-upload-file').change(function() {
+            var fileName = $(this).val().split('\\').pop();
+            if (fileName) {
+                $('#file-name-display').text(fileName).removeClass('hidden');
+                $(this).parent().addClass('border-discord-accent bg-blue-50/30').removeClass('border-gray-300');
+            }
+        });
+
+        // Confirmation
+        $('#backup-secondary form').submit(function (e) {
             if (!confirm('<?php _e('恢复操作将清除所有现有数据, 是否继续?'); ?>')) {
-                e.preventDefault(); // 阻止表单提交
                 return false;
             }
         });
     });
-});
 </script>
-
 <?php include 'footer.php'; ?>

@@ -1,249 +1,209 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 
 $stat = \Widget\Stat::alloc();
 $attachments = \Widget\Contents\Attachment\Admin::alloc();
-
-// 定义文件类型图标映射
-function getFileIcon($mime) {
-    if (strpos($mime, 'image/') === 0) return 'fa-regular fa-image';
-    if (strpos($mime, 'video/') === 0) return 'fa-regular fa-file-video text-danger';
-    if (strpos($mime, 'audio/') === 0) return 'fa-regular fa-file-audio text-warning';
-    if (strpos($mime, 'text/') === 0) return 'fa-regular fa-file-lines text-secondary';
-    if (strpos($mime, 'application/pdf') !== false) return 'fa-regular fa-file-pdf text-danger';
-    if (strpos($mime, 'zip') !== false || strpos($mime, 'compressed') !== false) return 'fa-regular fa-file-zipper text-warning';
-    if (strpos($mime, 'word') !== false) return 'fa-regular fa-file-word text-primary';
-    if (strpos($mime, 'excel') !== false || strpos($mime, 'spreadsheet') !== false) return 'fa-regular fa-file-excel text-success';
-    if (strpos($mime, 'powerpoint') !== false || strpos($mime, 'presentation') !== false) return 'fa-regular fa-file-powerpoint text-danger';
-    return 'fa-regular fa-file text-muted';
-}
 ?>
-
-<div class="container-fluid">
-
-    <!-- 顶部操作栏 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body">
-                    <form method="get" class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-
-                        <!-- 批量操作区 -->
-                        <div class="operate d-flex align-items-center gap-2 w-100 w-md-auto">
-                            <div class="form-check me-2">
-                                <input class="form-check-input typecho-table-select-all" type="checkbox" id="selectAll">
-                                <label class="form-check-label fw-bold" for="selectAll"><?php _e('全选'); ?></label>
-                            </div>
-
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-check-double me-2 text-primary"></i><?php _e('选中项'); ?>
-                                </button>
-                                <ul class="dropdown-menu shadow border-0 p-2" style="border-radius: 12px;">
-                                    <li>
-                                        <button type="button" class="dropdown-item rounded-2 text-danger btn-operate" lang="<?php _e('你确认要删除这些文件吗?'); ?>" rel="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>">
-                                            <i class="fa-solid fa-trash me-2"></i><?php _e('删除'); ?>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <a href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"
-                               class="btn btn-outline-danger btn-operate"
-                               lang="<?php _e('您确认要清理未归档的文件吗?'); ?>">
-                               <i class="fa-solid fa-broom me-1"></i> <?php _e('清理未归档'); ?>
-                            </a>
-                        </div>
-
-                        <!-- 搜索框 -->
-                        <div class="input-group w-100 w-md-auto" style="max-width: 300px;">
-                            <?php if ('' != $request->keywords): ?>
-                                <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="btn btn-outline-secondary" title="<?php _e('取消筛选'); ?>">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </a>
-                            <?php endif; ?>
-                            <input type="text" class="form-control" placeholder="<?php _e('搜索文件名...'); ?>" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" name="keywords" />
-                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-images mr-2 hidden md:inline"></i>
+            <span class="font-medium text-discord-text"><?php _e('管理文件'); ?></span>
         </div>
-    </div>
+        
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-    <!-- 媒体网格 -->
-    <form method="post" name="manage_medias" class="operate-form">
-        <div class="row g-3" style="animation-delay: 0.1s;">
-            <?php if($attachments->have()): ?>
-                <?php while($attachments->next()): ?>
-                    <div class="col-6 col-sm-4 col-md-3 col-xl-2 col-xxl-2">
-                        <div class="card h-100 card-modern media-card position-relative border-0 shadow-sm">
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+            
+            <!-- Filters -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                    <?php if ('' != $request->keywords): ?>
+                        <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
+                    <?php endif; ?>
+                </div>
 
-                            <!-- 复选框 (绝对定位) -->
-                            <div class="position-absolute top-0 start-0 p-2 z-2">
-                                <div class="form-check">
-                                    <input type="checkbox" value="<?php $attachments->cid(); ?>" name="cid[]" class="form-check-input border-2 shadow-sm" style="width: 1.2em; height: 1.2em;">
+                <form method="get" class="flex flex-wrap items-center gap-2">
+                     <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                    </div>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                </form>
+            </div>
+
+            <!-- Media List -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <form method="post" name="manage_medias" class="operate-form">
+                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                         <div class="flex items-center space-x-2">
+                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <span><?php _e('全选'); ?></span>
+                             </label>
+                             <div class="relative group">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                </button>
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                    <a lang="<?php _e('你确认要删除这些文件吗?'); ?>" href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                 </div>
-                            </div>
+                             </div>
+                             <button lang="<?php _e('您确认要清理未归档的文件吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 rounded hover:bg-red-100 text-red-600 shadow-sm btn-operate" href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"><?php _e('清理未归档'); ?></button>
+                         </div>
+                    </div>
 
-                            <!-- 所属文章提示 (绝对定位) -->
-                            <?php if ($attachments->parentPost->cid): ?>
-                                <div class="position-absolute top-0 end-0 p-2 z-2" data-bs-toggle="tooltip" title="<?php _e('所属文章: %s', $attachments->parentPost->title); ?>">
-                                    <a href="<?php $options->adminUrl('write-' . (0 === strpos($attachments->parentPost->type, 'post') ? 'post' : 'page') . '.php?cid=' . $attachments->parentPost->cid); ?>" class="badge bg-white text-primary rounded-circle shadow-sm p-2 text-decoration-none">
-                                        <i class="fa-solid fa-link"></i>
-                                    </a>
-                                </div>
+                    <table class="w-full text-left border-collapse typecho-list-table draggable">
+                        <thead>
+                            <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
+                                <th class="w-10 pl-4 py-3"></th>
+                                <th class="w-16 py-3 text-center"><i class="fas fa-comment-alt"></i></th>
+                                <th class="py-3"><?php _e('文件名'); ?></th>
+                                <th class="py-3 hidden md:table-cell"><?php _e('上传者'); ?></th>
+                                <th class="py-3 hidden md:table-cell"><?php _e('所属文章'); ?></th>
+                                <th class="py-3 pr-4 text-right"><?php _e('发布日期'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <?php if ($attachments->have()): ?>
+                                <?php while ($attachments->next()): ?>
+                                    <?php $mime = \Typecho\Common::mimeIconType($attachments->attachment->mime); ?>
+                                    <tr id="<?php $attachments->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
+                                        <td class="pl-4 py-3">
+                                            <input type="checkbox" value="<?php $attachments->cid(); ?>" name="cid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                        </td>
+                                        <td class="py-3 text-center">
+                                            <a href="<?php $options->adminUrl('manage-comments.php?cid=' . $attachments->cid); ?>" 
+                                               class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $attachments->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                                <?php $attachments->commentsNum(); ?>
+                                            </a>
+                                        </td>
+                                        <td class="py-3">
+                                            <div class="flex items-center">
+                                                <span class="mr-2 text-gray-400"><i class="fas fa-<?php echo 'image' == $mime ? 'image' : 'file'; ?>"></i></span>
+                                                <a href="<?php $options->adminUrl('media.php?cid=' . $attachments->cid); ?>" class="text-discord-text font-medium hover:text-discord-accent transition-colors">
+                                                    <?php $attachments->title(); ?>
+                                                </a>
+                                                <a href="<?php $attachments->permalink(); ?>" target="_blank" class="ml-2 text-gray-400 hover:text-discord-accent opacity-0 group-hover:opacity-100 transition-opacity" title="<?php _e('浏览 %s', $attachments->title); ?>"><i class="fas fa-external-link-alt text-xs"></i></a>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 hidden md:table-cell text-sm text-gray-600">
+                                            <?php $attachments->author(); ?>
+                                        </td>
+                                        <td class="py-3 hidden md:table-cell text-sm text-gray-600">
+                                            <?php if ($attachments->parentPost->cid): ?>
+                                                <a href="<?php $options->adminUrl('write-' . (0 === strpos($attachments->parentPost->type, 'post') ? 'post' : 'page') . '.php?cid=' . $attachments->parentPost->cid); ?>" class="text-discord-accent hover:underline"><?php $attachments->parentPost->title(); ?></a>
+                                            <?php else: ?>
+                                                <span class="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-500"><?php _e('未归档'); ?></span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="py-3 pr-4 text-right text-sm text-gray-500">
+                                            <?php $attachments->dateWord(); ?>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
                             <?php else: ?>
-                                <div class="position-absolute top-0 end-0 p-2 z-2">
-                                    <span class="badge bg-warning text-dark shadow-sm"><?php _e('未归档'); ?></span>
-                                </div>
+                                <tr>
+                                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                        <div class="mb-2 text-4xl text-gray-300"><i class="far fa-images"></i></div>
+                                        <?php _e('没有找到任何文件'); ?>
+                                    </td>
+                                </tr>
                             <?php endif; ?>
-
-                            <!-- 缩略图/图标区域 -->
-                            <div class="media-preview bg-light d-flex align-items-center justify-content-center rounded-top-4 overflow-hidden position-relative group-hover-overlay">
-                                <?php if($attachments->attachment->isImage): ?>
-                                    <img src="<?php $attachments->attachment->url(); ?>" class="img-fluid w-100 h-100 object-fit-cover" alt="<?php $attachments->title(); ?>" loading="lazy">
-                                <?php else: ?>
-                                    <i class="<?php echo getFileIcon($attachments->attachment->mime); ?> fa-4x opacity-50"></i>
-                                <?php endif; ?>
-
-                                <!-- 悬停遮罩与操作 -->
-                                <div class="media-overlay d-flex align-items-center justify-content-center gap-2">
-                                    <a href="<?php $options->adminUrl('media.php?cid=' . $attachments->cid); ?>" class="btn btn-light btn-sm shadow-sm" title="<?php _e('编辑'); ?>">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </a>
-                                    <a href="<?php $attachments->attachment->url(); ?>" target="_blank" class="btn btn-light btn-sm shadow-sm" title="<?php _e('查看原图'); ?>">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- 文件信息 -->
-                            <div class="card-body p-2 text-center">
-                                <h6 class="text-truncate mb-1 fw-bold text-dark" title="<?php $attachments->title(); ?>">
-                                    <?php $attachments->title(); ?>
-                                </h6>
-                                <div class="d-flex justify-content-between align-items-center px-1">
-                                    <small class="text-muted font-monospace" style="font-size: 0.7rem;">
-                                        <?php echo number_format(ceil($attachments->attachment->size / 1024)); ?> KB
-                                    </small>
-                                    <small class="text-muted" style="font-size: 0.7rem;">
-                                        <?php $attachments->dateWord(); ?>
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <div class="col-12">
-                    <div class="card-modern text-center py-5">
-                        <div class="text-muted opacity-50">
-                            <i class="fa-regular fa-folder-open fa-4x mb-3"></i>
-                            <h4><?php _e('没有任何文件'); ?></h4>
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            
+            <?php if ($attachments->have()): ?>
+                <div class="mt-4 flex justify-end">
+                     <?php $attachments->pageNav('&laquo;', '&raquo;', 1, '...', array(
+                         'wrapTag' => 'ul', 
+                         'wrapClass' => 'flex items-center space-x-1 typecho-pager list-none', 
+                         'itemTag' => 'li', 
+                         'textTag' => 'span', 
+                         'currentClass' => 'current', 
+                         'prevClass' => 'prev', 
+                         'nextClass' => 'next'
+                     )); ?>
                 </div>
             <?php endif; ?>
         </div>
-    </form>
-
-    <!-- 分页 -->
-    <?php if ($attachments->have()): ?>
-    <div class="mt-4 d-flex justify-content-center">
-        <?php $attachments->pageNav('&laquo;', '&raquo;', 3, '...', array('wrapTag' => 'ul', 'wrapClass' => 'pagination pagination-modern', 'itemTag' => 'li', 'textTag' => 'span', 'currentClass' => 'active', 'prevClass' => 'prev', 'nextClass' => 'next')); ?>
     </div>
-    <?php endif; ?>
-</div>
-
+</main>
 <style>
-/* 媒体网格专用样式 */
-.media-card {
-    transition: transform 0.2s, box-shadow 0.2s;
-    overflow: hidden;
-}
-.media-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
-}
-
-/* 预览区固定高度 */
-.media-preview {
-    height: 160px; /* 默认高度 */
-    background-image: radial-gradient(#e9ecef 1px, transparent 1px);
-    background-size: 10px 10px;
-}
-@media (min-width: 1400px) {
-    .media-preview { height: 180px; }
+.typecho-pager li a, .typecho-pager li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background-color: white;
+    color: #4b5563; /* text-gray-600 */
+    font-size: 0.875rem; /* text-sm */
+    border: 1px solid #e5e7eb; /* border-gray-200 */
+    transition: all 0.2s;
+    text-decoration: none;
 }
 
-.object-fit-cover {
-    object-fit: cover;
+.typecho-pager li a:hover {
+    background-color: #f3f4f6; /* bg-gray-100 */
+    color: #5865F2; /* text-discord-accent */
+    border-color: #d1d5db; /* border-gray-300 */
 }
 
-/* 悬停遮罩 */
-.media-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.4);
-    opacity: 0;
-    transition: opacity 0.2s;
-    backdrop-filter: blur(2px);
-}
-.media-card:hover .media-overlay {
-    opacity: 1;
-}
-
-/* 选中状态高亮 */
-.media-card.selected {
-    border: 2px solid var(--primary-color) !important;
-    background-color: var(--primary-soft);
+.typecho-pager li.current span {
+    background-color: #5865F2; /* bg-discord-accent */
+    color: white;
+    border-color: #5865F2;
+    font-weight: 600;
 }
 </style>
 
 <?php
-include 'copyright.php';
 include 'common-js.php';
+include 'table-js.php';
 ?>
-
 <script type="text/javascript">
-(function () {
-    $(document).ready(function () {
-        // 自定义的全选逻辑 (适配 Grid View)
-        // table-js.php 主要针对 table，这里手动实现更可靠
-        $('.typecho-table-select-all').click(function () {
-            var checked = $(this).prop('checked');
-            $('input[name="cid[]"]').prop('checked', checked).trigger('change');
-        });
-
-        // 选中时高亮卡片
-        $('input[name="cid[]"]').change(function () {
-            var card = $(this).closest('.media-card');
-            if ($(this).prop('checked')) {
-                card.addClass('selected');
-            } else {
-                card.removeClass('selected');
-            }
-        });
-
-        // 批量操作按钮逻辑
-        $('.btn-operate').click(function (e) {
-            e.preventDefault();
-            var href = $(this).attr('href') || $(this).attr('rel'); // 兼容 a 和 button
-            var msg = $(this).attr('lang');
-
-            if (msg && !confirm(msg)) {
-                return false;
-            }
-
-            var form = $('form[name="manage_medias"]');
-            form.attr('action', href).submit();
-        });
+$(document).ready(function () {
+    $('.typecho-list-table').tableSelectable({
+        checkEl     :   'input[type=checkbox]',
+        rowEl       :   'tr',
+        selectAllEl :   '.typecho-table-select-all',
+        actionEl    :   '.dropdown-menu a,button.btn-operate'
     });
-})();
-</script>
 
-<?php include 'footer.php'; ?>
+    $('.btn-dropdown-toggle').dropdownMenu({
+        btnEl       :   '.btn-dropdown-toggle',
+        menuEl      :   '.dropdown-menu'
+    });
+
+    $('.btn-operate').click(function () {
+        var t = $(this), href = t.attr('href');
+        if (confirm(t.attr('lang'))) {
+            window.location.href = href;
+        }
+        return false;
+    });
+});
+</script>
+<?php
+include 'footer.php';
+?>

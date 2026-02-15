@@ -1,217 +1,142 @@
 <?php
-// 引入通用配置、头部和菜单文件
 include 'common.php';
 include 'header.php';
 include 'menu.php';
 ?>
-
-<div class="container-fluid">
-
-    <!-- 顶部操作栏 -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card-modern">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <h4 class="fw-bold text-dark mb-1">
-                            <i class="fa-solid fa-plug me-2 text-primary"></i><?php _e('插件管理'); ?>
-                        </h4>
-                        <p class="text-muted mb-0 small">管理系统的扩展功能</p>
-                    </div>
-                    <div>
-                        <a href="https://typecho.org/plugins" target="_blank" class="btn btn-outline-primary px-4 fw-bold">
-                            <i class="fa-solid fa-cart-plus me-2"></i><?php _e('获取更多插件'); ?>
-                        </a>
-                    </div>
-                </div>
-            </div>
+<main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
+    <!-- Top Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+        <div class="flex items-center text-discord-muted">
+            <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fas fa-plug mr-2 hidden md:inline"></i>
+            <span class="mx-2 hidden md:inline">/</span>
+            <span class="font-medium text-discord-text"><?php _e('插件管理'); ?></span>
         </div>
-    </div>
+        <div class="flex items-center space-x-4">
+            <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
+                <i class="fas fa-globe"></i>
+            </a>
+            <a href="<?php $options->adminUrl('profile.php'); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('个人资料'); ?>">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </header>
 
-    <!-- 插件列表区域 -->
-    <div class="row">
-        <div class="col-12">
+    <!-- Content Area -->
+    <div class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="w-full max-w-none mx-auto">
+            
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-discord-text flex items-center">
+                        <i class="fas fa-cubes text-discord-accent mr-2"></i> <?php _e('插件列表'); ?>
+                    </h2>
+                    <a href="https://typecho.org/plugins" target="_blank" class="text-sm text-discord-accent hover:underline flex items-center">
+                        <i class="fas fa-external-link-alt mr-1"></i> <?php _e('获取更多插件'); ?>
+                    </a>
+                </div>
 
-            <?php \Widget\Plugins\Rows::allocWithAlias('activated', 'activated=1')->to($activatedPlugins); ?>
-
-            <!-- 已启用插件列表 -->
-            <?php if ($activatedPlugins->have() || !empty($activatedPlugins->activatedPlugins)): ?>
-            <div class="d-flex align-items-center mb-3 mt-2">
-                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 me-2">
-                    <i class="fa-solid fa-circle-check me-1"></i> Running
-                </span>
-                <h5 class="fw-bold text-dark mb-0"><?php _e('已启用的插件'); ?></h5>
-            </div>
-
-            <div class="row g-4 mb-5" style="animation-delay: 0.1s;">
-                <?php while ($activatedPlugins->next()): ?>
-                <div class="col-md-6 col-xl-4">
-                    <div class="card-modern h-100 plugin-card active" id="plugin-<?php $activatedPlugins->name(); ?>">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start mb-3">
-                                <div class="plugin-icon bg-light-primary me-3">
-                                    <i class="fa-solid fa-puzzle-piece"></i>
-                                </div>
-                                <div class="flex-grow-1 min-width-0">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <h5 class="fw-bold text-dark mb-1 text-truncate" title="<?php $activatedPlugins->title(); ?>">
-                                            <?php $activatedPlugins->title(); ?>
-                                        </h5>
-                                        <?php if (!$activatedPlugins->dependence): ?>
-                                            <span class="text-danger" data-bs-toggle="tooltip" title="<?php _e('%s 无法在此版本的typecho下正常工作', $activatedPlugins->title); ?>">
-                                                <i class="fa-solid fa-triangle-exclamation"></i>
-                                            </span>
-                                        <?php endif; ?>
+                <div class="p-6">
+                    <?php \Widget\Plugins\Rows::allocWithAlias('activated', 'activated=1')->to($activatedPlugins); ?>
+                    
+                    <?php if ($activatedPlugins->have() || !empty($activatedPlugins->activatedPlugins)): ?>
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-discord-text mb-4 pl-3 border-l-4 border-green-500"><?php _e('已启用插件'); ?></h3>
+                            <div class="grid grid-cols-1 gap-4">
+                                <?php while ($activatedPlugins->next()): ?>
+                                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between hover:shadow-sm transition-shadow" id="plugin-<?php $activatedPlugins->name(); ?>">
+                                        <div class="flex-1 min-w-0 pr-4">
+                                            <div class="flex items-center mb-1">
+                                                <h4 class="text-base font-bold text-discord-text mr-2"><?php $activatedPlugins->title(); ?></h4>
+                                                <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full"><?php $activatedPlugins->version(); ?></span>
+                                                <?php if (!$activatedPlugins->dependence): ?>
+                                                    <span class="ml-2 text-red-500 text-xs" title="<?php _e('无法在此版本的 Typecho 下正常工作'); ?>"><i class="fas fa-exclamation-triangle"></i></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <p class="text-sm text-discord-muted mb-1"><?php $activatedPlugins->description(); ?></p>
+                                            <div class="text-xs text-gray-400">
+                                                <?php _e('作者:'); ?> 
+                                                <?php echo empty($activatedPlugins->homepage) ? $activatedPlugins->author : '<a href="' . $activatedPlugins->homepage . '" target="_blank" class="hover:text-discord-accent">' . $activatedPlugins->author . '</a>'; ?>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 md:mt-0 flex items-center space-x-3 shrink-0">
+                                            <?php if ($activatedPlugins->activate || $activatedPlugins->deactivate || $activatedPlugins->config || $activatedPlugins->personalConfig): ?>
+                                                <?php if ($activatedPlugins->config): ?>
+                                                    <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>" class="flex items-center px-3 py-1.5 bg-discord-light text-discord-text rounded hover:bg-gray-200 transition-colors text-sm font-medium">
+                                                        <i class="fas fa-cog mr-1.5"></i> <?php _e('设置'); ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <a href="<?php $security->index('/action/plugins-edit?deactivate=' . $activatedPlugins->name); ?>" class="flex items-center px-3 py-1.5 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-colors text-sm font-medium">
+                                                    <i class="fas fa-power-off mr-1.5"></i> <?php _e('禁用'); ?>
+                                                </a>
+                                            <?php else: ?>
+                                                <span class="text-green-600 text-sm font-medium flex items-center"><i class="fas fa-check-circle mr-1"></i> <?php _e('即插即用'); ?></span>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
-                                    <div class="small text-muted mb-2">
-                                        <span class="badge bg-light text-secondary border">v<?php $activatedPlugins->version(); ?></span>
-                                        <span class="ms-1">by <?php echo empty($activatedPlugins->homepage) ? $activatedPlugins->author : '<a href="' . $activatedPlugins->homepage . '" target="_blank" class="text-decoration-none">' . $activatedPlugins->author . '</a>'; ?></span>
-                                    </div>
-                                </div>
-                            </div>
+                                <?php endwhile; ?>
 
-                            <p class="text-secondary small mb-4 line-clamp-2" style="min-height: 40px;">
-                                <?php $activatedPlugins->description(); ?>
-                            </p>
-
-                            <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                                <!-- 禁用插件按钮 -->
-                                <a lang="<?php _e('你确认要禁用插件 %s 吗?', $activatedPlugins->name); ?>" href="<?php $security->index('/action/plugins-edit?deactivate=' . $activatedPlugins->name); ?>" class="btn-operate text-decoration-none d-flex align-items-center text-success fw-bold small">
-                                    <i class="fa-solid fa-toggle-on fa-lg me-2"></i> <?php _e('已启用'); ?>
-                                </a>
-
-                                <!-- 插件设置按钮 -->
-                                <?php if ($activatedPlugins->config): ?>
-                                    <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold">
-                                        <i class="fa-solid fa-gear me-1"></i> <?php _e('设置'); ?>
-                                    </a>
-                                <?php else: ?>
-                                    <span class="text-muted small opacity-50"><i class="fa-solid fa-bolt me-1"></i><?php _e('即插即用'); ?></span>
+                                <?php if (!empty($activatedPlugins->activatedPlugins)): ?>
+                                    <?php foreach ($activatedPlugins->activatedPlugins as $key => $val): ?>
+                                        <div class="bg-red-50 rounded-lg p-4 border border-red-200 flex items-center justify-between">
+                                            <div>
+                                                <h4 class="text-base font-bold text-red-700"><?php echo $key; ?></h4>
+                                                <p class="text-sm text-red-600 mt-1"><i class="fas fa-exclamation-circle mr-1"></i> <?php _e('此插件文件已经损坏或者被不安全移除, 强烈建议你禁用它'); ?></p>
+                                            </div>
+                                            <a href="<?php $security->index('/action/plugins-edit?deactivate=' . $key); ?>" class="px-3 py-1.5 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors text-sm font-medium">
+                                                <?php _e('禁用'); ?>
+                                            </a>
+                                        </div>
+                                    <?php endforeach; ?>
                                 <?php endif; ?>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
+
+                    <?php \Widget\Plugins\Rows::allocWithAlias('unactivated', 'activated=0')->to($deactivatedPlugins); ?>
+                    
+                    <?php if ($deactivatedPlugins->have() || !$activatedPlugins->have()): ?>
+                        <div>
+                            <h3 class="text-lg font-semibold text-discord-text mb-4 pl-3 border-l-4 border-gray-300"><?php _e('禁用的插件'); ?></h3>
+                            <div class="grid grid-cols-1 gap-4">
+                                <?php if ($deactivatedPlugins->have()): ?>
+                                    <?php while ($deactivatedPlugins->next()): ?>
+                                        <div class="bg-white rounded-lg p-4 border border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between hover:shadow-sm transition-shadow opacity-75 hover:opacity-100" id="plugin-<?php $deactivatedPlugins->name(); ?>">
+                                            <div class="flex-1 min-w-0 pr-4">
+                                                <div class="flex items-center mb-1">
+                                                    <h4 class="text-base font-bold text-gray-600 mr-2"><?php $deactivatedPlugins->title(); ?></h4>
+                                                    <span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full"><?php $deactivatedPlugins->version(); ?></span>
+                                                </div>
+                                                <p class="text-sm text-gray-500 mb-1"><?php $deactivatedPlugins->description(); ?></p>
+                                                <div class="text-xs text-gray-400">
+                                                    <?php _e('作者:'); ?> 
+                                                    <?php echo empty($deactivatedPlugins->homepage) ? $deactivatedPlugins->author : '<a href="' . $deactivatedPlugins->homepage . '" target="_blank" class="hover:text-discord-accent">' . $deactivatedPlugins->author . '</a>'; ?>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 md:mt-0 shrink-0">
+                                                <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>" class="flex items-center px-4 py-1.5 bg-discord-accent text-white rounded hover:bg-blue-600 transition-colors text-sm font-medium shadow-sm">
+                                                    <i class="fas fa-play mr-1.5"></i> <?php _e('启用'); ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <div class="text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                        <p class="text-gray-500"><?php _e('没有安装插件'); ?></p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                 </div>
-                <?php endwhile; ?>
-
-                <!-- 异常插件处理 -->
-                <?php if (!empty($activatedPlugins->activatedPlugins)): ?>
-                    <?php foreach ($activatedPlugins->activatedPlugins as $key => $val): ?>
-                    <div class="col-md-6 col-xl-4">
-                        <div class="card-modern h-100 plugin-card error border-danger border-start border-4">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="plugin-icon bg-light-danger me-3">
-                                        <i class="fa-solid fa-bug"></i>
-                                    </div>
-                                    <h5 class="fw-bold text-danger mb-0"><?php echo $key; ?></h5>
-                                </div>
-                                <p class="text-danger small mb-3">
-                                    <?php _e('此插件文件已经损坏或者被不安全移除, 强烈建议你禁用它'); ?>
-                                </p>
-                                <a lang="<?php _e('你确认要禁用插件 %s 吗?', $key); ?>" href="<?php $security->index('/action/plugins-edit?deactivate=' . $key); ?>" class="btn btn-sm btn-danger rounded-pill w-100">
-                                    <i class="fa-solid fa-ban me-1"></i> <?php _e('强制禁用'); ?>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
             </div>
-            <?php endif; ?>
-
-            <?php \Widget\Plugins\Rows::allocWithAlias('unactivated', 'activated=0')->to($deactivatedPlugins); ?>
-
-            <!-- 已禁用插件列表 -->
-            <?php if ($deactivatedPlugins->have() || !$activatedPlugins->have()): ?>
-            <div class="d-flex align-items-center mb-3 mt-4" style="animation-delay: 0.2s;">
-                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-2 me-2">
-                    <i class="fa-solid fa-circle-pause me-1"></i> Disabled
-                </span>
-                <h5 class="fw-bold text-muted mb-0"><?php _e('禁用的插件'); ?></h5>
-            </div>
-
-            <div class="row g-4 mb-5" style="animation-delay: 0.3s;">
-                <?php if ($deactivatedPlugins->have()): ?>
-                    <?php while ($deactivatedPlugins->next()): ?>
-                    <div class="col-md-6 col-xl-4">
-                        <div class="card-modern h-100 plugin-card inactive" id="plugin-<?php $deactivatedPlugins->name(); ?>">
-                            <div class="card-body opacity-75 hover-opacity-100 transition-all">
-                                <div class="d-flex align-items-start mb-3">
-                                    <div class="plugin-icon bg-light me-3 text-muted">
-                                        <i class="fa-solid fa-puzzle-piece"></i>
-                                    </div>
-                                    <div class="flex-grow-1 min-width-0">
-                                        <h5 class="fw-bold text-muted mb-1 text-truncate"><?php $deactivatedPlugins->title(); ?></h5>
-                                        <div class="small text-muted mb-2">
-                                            <span class="badge bg-light text-muted border">v<?php $deactivatedPlugins->version(); ?></span>
-                                            <span class="ms-1">by <?php echo empty($deactivatedPlugins->homepage) ? $deactivatedPlugins->author : '<a href="' . $deactivatedPlugins->homepage . '" target="_blank" class="text-muted text-decoration-none">' . $deactivatedPlugins->author . '</a>'; ?></span>
-                                    </div>
-                                    </div>
-                                </div>
-
-                                <p class="text-muted small mb-4 line-clamp-2" style="min-height: 40px;">
-                                    <?php $deactivatedPlugins->description(); ?>
-                                </p>
-
-                                <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                                    <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>" class="text-decoration-none d-flex align-items-center text-muted fw-bold small hover-text-primary">
-                                        <i class="fa-solid fa-toggle-off fa-lg me-2"></i> <?php _e('已禁用'); ?>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <div class="col-12">
-                        <div class="card-modern text-center py-5">
-                            <div class="text-muted opacity-50">
-                                <i class="fa-solid fa-box-open fa-3x mb-3"></i>
-                                <p><?php _e('没有安装插件'); ?></p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <?php endif; ?>
-
         </div>
     </div>
-</div>
-
-<style>
-/* 插件卡片样式 */
-.plugin-card { transition: all 0.3s ease; border: 1px solid transparent; }
-.plugin-card.active { border-color: rgba(108, 92, 231, 0.1); }
-.plugin-card.active:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(108, 92, 231, 0.1) !important; border-color: var(--primary-light); }
-.plugin-card.inactive { background-color: #fcfcfd; border: 1px solid #f1f2f6; }
-.plugin-card.inactive:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; background-color: #fff; opacity: 1 !important; }
-.plugin-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
-.hover-text-primary:hover { color: var(--primary-color) !important; }
-.hover-text-primary:hover i { color: var(--primary-color) !important; transform: scale(1.1); transition: transform 0.2s; }
-</style>
-
+</main>
 <?php
-include 'copyright.php';
 include 'common-js.php';
+include 'footer.php';
 ?>
-
-<script>
-// 插件操作确认逻辑 - 修复 PJAX 绑定问题
-(function() {
-    // 使用 off().on() 防止 PJAX 重复绑定
-    $(document).off('click.pluginAction', '.btn-operate, a[lang]');
-    $(document).on('click.pluginAction', '.btn-operate, a[lang]', function (e) {
-        var t = $(this), msg = t.attr('lang');
-        if (msg && !confirm(msg)) {
-            e.preventDefault(); // 阻止 PJAX 跳转
-            return false;
-        }
-        // 如果 confirm 通过，PJAX 会自动处理 href 跳转
-        // common-js.php 中的 pjax:complete 会负责 checkTypechoNotice 显示成功消息
-    });
-})();
-</script>
-
-<?php include 'footer.php'; ?>
