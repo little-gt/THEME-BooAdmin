@@ -29,6 +29,9 @@ include 'menu.php';
             </div>
         </div>
     </div>
+    
+    <!-- Footer自然跟随内容 -->
+    <?php include 'copyright.php'; ?>
 </main>
 
 <?php

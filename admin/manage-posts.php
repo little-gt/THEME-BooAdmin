@@ -214,6 +214,8 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
             <?php endif; ?>
         </div>
     </div>
+    <!-- Footer在main内部 -->
+    <?php include 'copyright.php'; ?>
 </main>
 <style>
 .typecho-pager li a, .typecho-pager li span {
@@ -249,5 +251,4 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
 <?php
 include 'common-js.php';
 include 'table-js.php';
-include 'footer.php';
 ?>

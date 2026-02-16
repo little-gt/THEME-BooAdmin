@@ -4,6 +4,42 @@ include 'header.php';
 include 'menu.php';
 
 $stat = \Widget\Stat::alloc();
+
+// 获取最近7天的文章和评论数据
+$db = \Typecho\Db::get();
+$days = [];
+$postsData = [];
+$commentsData = [];
+
+for ($i = 6; $i >= 0; $i--) {
+    $date = date('Y-m-d', strtotime("-{$i} days"));
+    $dayName = date('m/d', strtotime("-{$i} days"));
+    $days[] = $dayName;
+    
+    // 当天文章数
+    $startTime = strtotime($date . ' 00:00:00');
+    $endTime = strtotime($date . ' 23:59:59');
+    
+    $postCount = $db->fetchObject($db->select(['COUNT(cid)' => 'num'])
+        ->from('table.contents')
+        ->where('type = ?', 'post')
+        ->where('status = ?', 'publish')
+        ->where('created >= ?', $startTime)
+        ->where('created <= ?', $endTime))->num;
+    $postsData[] = (int)$postCount;
+    
+    // 当天评论数
+    $commentCount = $db->fetchObject($db->select(['COUNT(coid)' => 'num'])
+        ->from('table.comments')
+        ->where('status = ?', 'approved')
+        ->where('created >= ?', $startTime)
+        ->where('created <= ?', $endTime))->num;
+    $commentsData[] = (int)$commentCount;
+}
+
+$chartDays = json_encode($days);
+$chartPosts = json_encode($postsData);
+$chartComments = json_encode($commentsData);
 ?>
 <main class="flex-1 flex flex-col overflow-hidden">
     <!-- Top Header -->
@@ -111,11 +147,11 @@ $stat = \Widget\Stat::alloc();
                     <div class="flex items-center justify-between mb-6">
                          <h3 class="text-lg font-bold text-gray-800 flex items-center">
                             <i class="fas fa-chart-area mr-2 text-discord-accent"></i>
-                            <?php _e('访问趋势'); ?>
+                            <?php _e('内容趋势'); ?>
                         </h3>
-                         <div class="flex space-x-2">
-                            <span class="px-2 py-1 bg-gray-100 text-xs rounded text-gray-500 cursor-pointer hover:bg-gray-200"><?php _e('本周'); ?></span>
-                            <span class="px-2 py-1 bg-white text-xs rounded text-gray-400 cursor-pointer hover:bg-gray-50"><?php _e('本月'); ?></span>
+                         <div class="flex items-center space-x-4 text-xs">
+                            <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-500 mr-1"></span><?php _e('文章'); ?></span>
+                            <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-500 mr-1"></span><?php _e('评论'); ?></span>
                         </div>
                     </div>
                     <div id="activity-chart" style="height: 300px; width: 100%;"></div>
@@ -216,17 +252,28 @@ $stat = \Widget\Stat::alloc();
                 </div>
 
                 <!-- Official Log (Compact) -->
-                 <div class="lg:col-span-3 bg-white rounded-xl shadow-sm p-4 border border-gray-100 mt-2 opacity-75 hover:opacity-100 transition-opacity">
-                    <div class="flex items-center justify-between">
-                         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center">
-                            <i class="fas fa-bullhorn mr-2"></i>
-                            <?php _e('Typecho 动态'); ?>
+                 <div class="lg:col-span-3 bg-gradient-to-r from-indigo-50 via-white to-purple-50 rounded-xl shadow-sm p-5 border border-gray-100 mt-2">
+                    <div class="flex items-center justify-between mb-4">
+                         <h3 class="text-sm font-bold text-gray-700 flex items-center">
+                            <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mr-3 shadow-sm">
+                                <i class="fas fa-bullhorn text-white text-xs"></i>
+                            </span>
+                            <?php _e('Typecho 官方动态'); ?>
                         </h3>
+                        <a href="https://typecho.org" target="_blank" class="text-xs text-indigo-500 hover:text-indigo-700 font-medium flex items-center transition-colors">
+                            <?php _e('访问官网'); ?> <i class="fas fa-external-link-alt ml-1 text-[10px]"></i>
+                        </a>
                     </div>
-                    <div id="typecho-message" class="text-sm text-gray-600 mt-2">
-                        <ul>
-                            <li><?php _e('读取中...'); ?></li>
-                        </ul>
+                    <div id="typecho-message" class="text-sm text-gray-600">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="typecho-news-grid">
+                            <div class="animate-pulse flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-100">
+                                <div class="w-10 h-10 bg-gray-200 rounded-lg"></div>
+                                <div class="flex-1">
+                                    <div class="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
+                                    <div class="h-2 bg-gray-100 rounded w-1/2"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -234,43 +281,84 @@ $stat = \Widget\Stat::alloc();
 
         </div>
     </div>
+    <!-- Footer在main内部 -->
+    <?php include 'copyright.php'; ?>
 </main>
 <?php
 include 'common-js.php';
 ?>
 <script>
     $(document).ready(function () {
-        // Activity Chart Config
+        // Activity Chart Config - 使用真实数据
+        var chartDays = <?php echo $chartDays; ?>;
+        var chartPosts = <?php echo $chartPosts; ?>;
+        var chartComments = <?php echo $chartComments; ?>;
+        
         var activityOption = {
-            grid: { top: 20, right: 20, bottom: 20, left: 40, containLabel: true },
-            tooltip: { trigger: 'axis' },
+            grid: { top: 30, right: 20, bottom: 30, left: 40, containLabel: true },
+            tooltip: { 
+                trigger: 'axis',
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                textStyle: { color: '#374151' },
+                formatter: function(params) {
+                    var result = '<div style="font-weight:600;margin-bottom:8px">' + params[0].axisValue + '</div>';
+                    params.forEach(function(item) {
+                        result += '<div style="display:flex;align-items:center;margin:4px 0">' +
+                            '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + item.color + ';margin-right:8px"></span>' +
+                            item.seriesName + ': <strong style="margin-left:auto">' + item.value + '</strong></div>';
+                    });
+                    return result;
+                }
+            },
             xAxis: {
                 type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                data: chartDays,
                 axisLine: { show: false },
                 axisTick: { show: false },
-                axisLabel: { color: '#9ca3af' }
+                axisLabel: { color: '#9ca3af', fontSize: 11 }
             },
             yAxis: {
                 type: 'value',
+                minInterval: 1,
                 splitLine: { lineStyle: { type: 'dashed', color: '#f3f4f6' } },
                 axisLabel: { color: '#9ca3af' }
             },
-            series: [{
-                data: [15, 23, 18, 28, 20, 35, 42], // Simulated data
-                type: 'line',
-                smooth: true,
-                symbol: 'circle',
-                symbolSize: 8,
-                itemStyle: { color: '#5865F2' },
-                areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        { offset: 0, color: 'rgba(88, 101, 242, 0.3)' },
-                        { offset: 1, color: 'rgba(88, 101, 242, 0.05)' }
-                    ])
+            series: [
+                {
+                    name: '<?php _e('文章'); ?>',
+                    data: chartPosts,
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    itemStyle: { color: '#5865F2' },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(88, 101, 242, 0.3)' },
+                            { offset: 1, color: 'rgba(88, 101, 242, 0.05)' }
+                        ])
+                    },
+                    lineStyle: { width: 3, shadowColor: 'rgba(88, 101, 242, 0.2)', shadowBlur: 10 }
                 },
-                lineStyle: { width: 3, shadowColor: 'rgba(88, 101, 242, 0.2)', shadowBlur: 10 }
-            }]
+                {
+                    name: '<?php _e('评论'); ?>',
+                    data: chartComments,
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    itemStyle: { color: '#3BA55C' },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(59, 165, 92, 0.2)' },
+                            { offset: 1, color: 'rgba(59, 165, 92, 0.02)' }
+                        ])
+                    },
+                    lineStyle: { width: 3, shadowColor: 'rgba(59, 165, 92, 0.2)', shadowBlur: 10 }
+                }
+            ]
         };
 
         // Distribution Chart Config
@@ -315,23 +403,45 @@ include 'common-js.php';
             distributionChart.resize();
         });
 
-        var ul = $('#typecho-message ul'), cache = window.sessionStorage,
-            html = cache ? cache.getItem('feed') : '',
+        var newsGrid = $('#typecho-news-grid'), cache = window.sessionStorage,
+            html = cache ? cache.getItem('feed_v2') : '',
             update = cache ? cache.getItem('update') : '';
+        
+        var newsIcons = ['fa-newspaper', 'fa-code-branch', 'fa-rocket', 'fa-star', 'fa-bolt', 'fa-gift'];
+        var newsColors = [
+            'from-blue-500 to-indigo-500',
+            'from-green-500 to-teal-500', 
+            'from-purple-500 to-pink-500',
+            'from-orange-500 to-red-500',
+            'from-cyan-500 to-blue-500',
+            'from-rose-500 to-pink-500'
+        ];
 
         if (!!html) {
-            ul.html(html);
+            newsGrid.html(html);
         } else {
             html = '';
             $.get('<?php $options->index('/action/ajax?do=feed'); ?>', function (o) {
-                for (var i = 0; i < o.length; i++) {
+                for (var i = 0; i < o.length && i < 6; i++) {
                     var item = o[i];
-                    html += '<li><span>' + item.date + '</span> <a href="' + item.link + '" target="_blank">' + item.title
-                        + '</a></li>';
+                    var icon = newsIcons[i % newsIcons.length];
+                    var color = newsColors[i % newsColors.length];
+                    html += '<a href="' + item.link + '" target="_blank" class="group flex items-center space-x-3 p-3 bg-white hover:bg-gray-50 rounded-lg border border-gray-100 hover:border-indigo-200 transition-all hover:shadow-sm">' +
+                        '<div class="w-10 h-10 rounded-lg bg-gradient-to-br ' + color + ' flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">' +
+                        '<i class="fas ' + icon + ' text-white text-sm"></i></div>' +
+                        '<div class="flex-1 min-w-0">' +
+                        '<p class="text-sm font-medium text-gray-700 group-hover:text-indigo-600 truncate transition-colors">' + item.title + '</p>' +
+                        '<p class="text-xs text-gray-400 mt-0.5">' + item.date + '</p>' +
+                        '</div>' +
+                        '<i class="fas fa-chevron-right text-gray-300 group-hover:text-indigo-400 text-xs transition-colors"></i></a>';
+                }
+                
+                if (o.length === 0) {
+                    html = '<div class="col-span-full text-center py-4 text-gray-400"><i class="fas fa-inbox mr-2"></i><?php _e('暂无动态'); ?></div>';
                 }
 
-                ul.html(html);
-                cache.setItem('feed', html);
+                newsGrid.html(html);
+                cache.setItem('feed_v2', html);
             }, 'json');
         }
 

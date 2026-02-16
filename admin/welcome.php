@@ -82,6 +82,9 @@ include 'menu.php';
             &copy; <?php echo date('Y'); ?> Typecho Team. All Rights Reserved.
         </div>
     </div>
+    
+    <!-- Footer自然跟随内容 -->
+    <?php include 'copyright.php'; ?>
 </main>
 
 <?php

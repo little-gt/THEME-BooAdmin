@@ -54,7 +54,55 @@
                 }
             })();
 
-            if ($('.typecho-login').length == 0) {
+            if ($('.typecho-login').length == 0) {                // 现代化分页样式优化 v2
+                // 查找所有可能的类型，包括直接的 .typecho-pager，或者是包含分页链接的 div/nav
+                var $pagers = $('.typecho-pager');
+                
+                // 如果找不到标准的，尝试寻找包含 li.prev/next 的容器
+                if ($pagers.length === 0) {
+                     // 尝试找到包含分页链接的容器
+                    $pagers = $('li.prev, li.next, li.current').parent();
+                }
+
+                if ($pagers.length > 0) {
+                    $pagers.each(function() {
+                        var $pager = $(this);
+                        
+                        // 1. 容器样式优化
+                        // 移除默认的 list-style，增加 flex 布局
+                        $pager.addClass('flex flex-wrap justify-center items-center gap-2 mt-8 mb-6 pl-0 list-none');
+                        // 强制移除原有样式干扰
+                        $pager.css('list-style', 'none');
+
+                        // 2. 列表项 li 样式优化
+                        var $items = $pager.find('li');
+                        $items.each(function() {
+                            var $li = $(this);
+                            
+                            // 移除 li 的默认圆点
+                            $li.addClass('list-none m-0 p-0 inline-flex');
+                            $li.css('list-style', 'none'); 
+
+                            // 3. 链接/文字内容样式优化
+                            var $child = $li.children('a, span');
+                            
+                            // 基础形状和排版
+                            // min-w-[2rem] h-8: 确保它是至少 32x32 的方块
+                            // px-3: 给文字留出水平空间
+                            $child.addClass('flex items-center justify-center min-w-[2rem] h-8 px-3 rounded-md text-sm font-medium transition-all duration-200 no-underline shadow-sm leading-none');
+                            
+                            // 针对不同状态的样式
+                            if ($li.hasClass('current')) {
+                                // 当前页：高亮背景
+                                $child.addClass('bg-discord-accent text-white border border-discord-accent hover:bg-discord-accent hover:text-white cursor-default');
+                            } else {
+                                // 普通页/前后页：白底灰字，hover变色
+                                $child.addClass('bg-white text-gray-500 hover:text-discord-text hover:bg-discord-light hover:border-discord-light border border-gray-200');
+                            }
+                        });
+                    });
+                }
+                
                 $('a').each(function () {
                     var t = $(this), href = t.attr('href');
 

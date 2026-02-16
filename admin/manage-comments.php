@@ -228,6 +228,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
             <?php endif; ?>
         </div>
     </div>
+    <!-- Footer在main内部 -->
+    <?php include 'copyright.php'; ?>
 </main>
 <style>
 .typecho-pager li a, .typecho-pager li span {
@@ -418,6 +420,4 @@ $(document).ready(function () {
     });
 });
 </script>
-<?php
-include 'footer.php';
-?>
+

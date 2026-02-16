@@ -41,42 +41,10 @@ include 'menu.php';
             </div>
         </div>
     </div>
+    
+    <!-- Footer自然跟随内容 -->
+    <?php include 'copyright.php'; ?>
 </main>
-
-<style>
-/* Discord-style form customization */
-.typecho-option { margin-bottom: 1.5rem; }
-.typecho-option label { display: block; font-weight: 500; color: #4b5563; margin-bottom: 0.5rem; }
-.typecho-option input[type=text], .typecho-option textarea, .typecho-option select {
-    width: 100%;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.375rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    background-color: #f9fafb;
-    transition: all 0.2s;
-}
-.typecho-option input[type=text]:focus, .typecho-option textarea:focus, .typecho-option select:focus {
-    outline: none;
-    border-color: #5865F2;
-    background-color: white;
-    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
-}
-.typecho-option .description { display: block; margin-top: 0.375rem; font-size: 0.75rem; color: #9ca3af; }
-.typecho-option .required { color: #ef4444; margin-left: 0.25rem; }
-.typecho-option-submit button {
-    background-color: #5865F2;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.375rem;
-    font-weight: 500;
-    font-size: 0.875rem;
-    transition: background-color 0.2s;
-    border: none;
-    cursor: pointer;
-}
-.typecho-option-submit button:hover { background-color: #4752c4; }
-</style>
 
 <?php
 include 'common-js.php';

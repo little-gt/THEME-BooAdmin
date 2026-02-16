@@ -183,6 +183,8 @@ $users = \Widget\Users\Admin::alloc();
             <?php endif; ?>
         </div>
     </div>
+    <!-- Footer在main内部 -->
+    <?php include 'copyright.php'; ?>
 </main>
 <style>
 .typecho-pager li a, .typecho-pager li span {
@@ -216,5 +218,4 @@ $users = \Widget\Users\Admin::alloc();
 <?php
 include 'common-js.php';
 include 'table-js.php';
-include 'footer.php';
 ?>

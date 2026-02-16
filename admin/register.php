@@ -13,41 +13,66 @@ $bodyClass = 'body-100';
 
 include 'header.php';
 ?>
-<div class="flex-1 overflow-y-auto w-full" style="background-image: url('https://image.uc.cn/s/uae/g/3n/mos-production/1220/85df1a9657682d1c.jpg'); background-size: cover; background-position: center;">
-    <div class="min-h-full flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-[480px] rounded shadow-2xl p-8 transform transition-all hover:scale-[1.01] duration-300">
-            <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 mb-1 flex items-center justify-center">
-                <?php _e('创建账号'); ?>
-            </h1>
+<div class="min-h-screen flex bg-discord-light text-discord-text">
+    <!-- Left Side: Hero Image -->
+    <div class="hidden md:flex md:w-1/2 flex-col justify-center items-center bg-cover bg-center relative" style="background-image: url('https://image.uc.cn/s/uae/g/3n/mos-production/1220/85df1a9657682d1c.jpg');">
+        <div class="absolute inset-0 bg-gradient-to-br from-discord-accent/80 to-purple-900/80 pointer-events-none"></div>
+        <div class="relative z-10 text-white p-12 text-center">
+            <h1 class="text-4xl font-bold mb-4"><?php _e('加入我们'); ?></h1>
+            <p class="text-lg opacity-90"><?php _e('开启您的创作之旅，记录生活点滴'); ?></p>
         </div>
-
-        <form action="<?php $options->registerAction(); ?>" method="post" name="register" role="form" class="space-y-4">
-            <div>
-                <label for="name" class="block text-xs font-bold text-gray-500 uppercase mb-2"><?php _e('用户名'); ?> <span class="text-red-500">*</span></label>
-                <input type="text" id="name" name="name" placeholder="" value="<?php echo $rememberName; ?>" class="w-full px-3 py-2.5 bg-gray-200 border-none rounded text-sm focus:outline-none focus:ring-0 text-discord-text transition-all" required autofocus />
-            </div>
-            
-            <div>
-                <label for="mail" class="block text-xs font-bold text-gray-500 uppercase mb-2"><?php _e('电子邮箱'); ?> <span class="text-red-500">*</span></label>
-                <input type="email" id="mail" name="mail" placeholder="" value="<?php echo $rememberMail; ?>" class="w-full px-3 py-2.5 bg-gray-200 border-none rounded text-sm focus:outline-none focus:ring-0 text-discord-text transition-all" required />
-            </div>
-
-            <button type="submit" class="w-full py-2.5 bg-discord-accent text-white rounded font-medium hover:bg-blue-600 transition-colors shadow-sm mb-2 mt-4">
-                <?php _e('继续'); ?>
-            </button>
-            
-            <div class="text-sm text-gray-500 mt-2">
-                <a href="<?php $options->adminUrl('login.php'); ?>" class="text-discord-accent hover:underline"><?php _e('已有账号？'); ?></a>
-            </div>
-        </form>
-        
-        <div class="mt-8 text-center text-xs text-gray-400">
+        <div class="absolute bottom-6 text-white/50 text-xs">
             &copy; <?php echo date('Y'); ?> Typecho Team.
         </div>
     </div>
+
+    <!-- Right Side: Register Form -->
+    <div class="w-full md:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-white overflow-y-auto">
+        <div class="w-full max-w-md space-y-8">
+            <div class="text-center md:text-left">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2"><?php _e('创建账号'); ?></h2>
+                <p class="text-gray-500"><?php _e('只需几步即可完成注册'); ?></p>
+            </div>
+
+            <form action="<?php $options->registerAction(); ?>" method="post" name="register" role="form" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('用户名'); ?> <span class="text-red-500">*</span></label>
+                    <input type="text" id="name" name="name" value="<?php echo $rememberName; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required autofocus placeholder="<?php _e('请输入用户名'); ?>" />
+                    <p class="mt-1 text-xs text-gray-400"><?php _e('用于登录和显示的名称'); ?></p>
+                </div>
+                
+                <div>
+                    <label for="mail" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('电子邮箱'); ?> <span class="text-red-500">*</span></label>
+                    <input type="email" id="mail" name="mail" value="<?php echo $rememberMail; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required placeholder="<?php _e('请输入有效的邮箱地址'); ?>" />
+                    <p class="mt-1 text-xs text-gray-400"><?php _e('我们将向此邮箱发送初始密码'); ?></p>
+                </div>
+                
+                <div class="pt-2">
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-discord-accent hover:bg-discord-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-accent transition-all transform hover:-translate-y-0.5">
+                        <?php _e('立即注册'); ?>
+                    </button>
+                    <input type="hidden" name="referer" value="<?php echo htmlspecialchars($request->get('referer')); ?>" />
+                </div>
+            </form>
+
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500"><?php _e('已有账号？'); ?></span>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="<?php $options->adminUrl('login.php'); ?>" class="font-medium text-discord-accent hover:text-discord-accent/80 hover:underline">
+                    <?php _e('直接登录'); ?>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+
 <?php 
 include 'common-js.php';
 ?>

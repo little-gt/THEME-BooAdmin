@@ -47,80 +47,10 @@ include 'menu.php';
             </div>
         </div>
     </div>
+    
+    <!-- Footer自然跟随内容 -->
+    <?php include 'copyright.php'; ?>
 </main>
-
-<style>
-/* Reusing the form styling from profile.php for consistency */
-.typecho-reform-style ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.typecho-reform-style li {
-    margin-bottom: 1.5rem;
-}
-.typecho-reform-style label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #4B5563;
-}
-.typecho-reform-style input[type="text"],
-.typecho-reform-style input[type="password"],
-.typecho-reform-style input[type="email"],
-.typecho-reform-style input[type="url"],
-.typecho-reform-style textarea,
-.typecho-reform-style select {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    background-color: #F9FAFB;
-    border: 1px solid #E5E7EB;
-    border-radius: 0.375rem;
-    font-size: 0.875rem;
-    color: #1F2937;
-    transition: all 0.2s;
-}
-.typecho-reform-style input:focus,
-.typecho-reform-style textarea:focus,
-.typecho-reform-style select:focus {
-    outline: none;
-    border-color: #5865F2;
-    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
-    background-color: #FFFFFF;
-}
-.typecho-reform-style .description {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    color: #9CA3AF;
-}
-.typecho-reform-style button[type="submit"] {
-    background-color: #5865F2;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.375rem;
-    font-weight: 500;
-    font-size: 0.875rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-.typecho-reform-style button[type="submit"]:hover {
-    background-color: #4752C4;
-}
-/* Styling for radio and checkboxes which might be common in plugin settings */
-.typecho-reform-style input[type="radio"],
-.typecho-reform-style input[type="checkbox"] {
-    margin-right: 0.5rem;
-    accent-color: #5865F2;
-}
-.typecho-reform-style .typecho-option span {
-    margin-right: 1.5rem;
-    display: inline-flex;
-    align-items: center;
-}
-</style>
 
 <?php
 include 'common-js.php';

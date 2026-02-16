@@ -154,6 +154,8 @@ $pages = \Widget\Contents\Page\Admin::alloc();
             <?php endif; ?>
         </div>
     </div>
+    <!-- Footer在main内部 -->
+    <?php include 'copyright.php'; ?>
 </main>
 <style>
 .typecho-pager li a, .typecho-pager li span {
@@ -212,4 +214,4 @@ include 'table-js.php';
     </script>
 <?php endif; ?>
 
-<?php include 'footer.php'; ?>
+

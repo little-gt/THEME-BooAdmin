@@ -2,9 +2,9 @@
 
 > **高效 · 现代 · 极简**
 >
-一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.0 版本代表了全新的架构和更高的性能标准。
+一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.1 版本代表了全新的架构和更高的性能标准。
 
-[![Release](https://img.shields.io/badge/Release-v1.1.0-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Release](https://img.shields.io/badge/Release-v1.1.1-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![CDN](https://img.shields.io/badge/CDN-AliYun-ff6900?style=flat-square)](https://www.aliyun.com)
@@ -15,7 +15,7 @@
 ## ✨ 核心更新
 
 ### 🎨 TailwindCSS 完全重构
-BooAdmin v1.1.0 采用业界领先的 **TailwindCSS** 框架进行完全重构，相比传统 CSS 框架提供：
+BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构，相比传统 CSS 框架提供：
 - **更小的文件体积**: 按需生成 CSS，减少 30% 以上的资源大小
 - **更高的开发效率**: 使用 Utility-first 理念，快速构建现代化 UI
 - **完全自定义**: 灵活的配置系统，轻松适配您的品牌风格
@@ -64,7 +64,7 @@ BooAdmin v1.1.0 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ### 从 旧版本 升级
 1.  **强烈建议**删除服务器上旧的 `admin` 目录。
-2.  上传 v1.1.0 版本的 `admin` 目录到网站根目录。
+2.  上传 v1.1.1 版本的 `admin` 目录到网站根目录。
 3.  清理浏览器缓存，以加载最新的 CSS 和 JS 文件。
 4.  如果您使用的是 Typecho 1.3.0 或更高版本，升级后所有功能将自动适配。
 
@@ -72,10 +72,47 @@ BooAdmin v1.1.0 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ## 📸 截图预览
 
+### 登录页面
+<p align="center">
+  <img src="screenshot/screenshot6.png" alt="登录页面" width="100%">
+</p>
 
-![截图](screenshot/screenshot2.png) 
-![截图](screenshot/screenshot4.png) 
-![截图](screenshot/screenshot3.png) 
+全新设计的登录页面，采用现代化渐变背景，提供优雅的用户体验。
+
+### 控制台仪表板
+<p align="center">
+  <img src="screenshot/screenshot1.png" alt="控制台仪表板" width="100%">
+</p>
+
+功能强大的仪表板，实时展示博客统计数据，包括文章数、评论数、待审核数和分类统计，配备内容趋势图表和内容分布饼图。
+
+### 文章管理
+<p align="center">
+  <img src="screenshot/screenshot2.png" alt="文章管理" width="100%">
+</p>
+
+清晰的文章列表视图，支持多种筛选和批量操作，让内容管理变得轻松高效。
+
+### 文件管理
+<p align="center">
+  <img src="screenshot/screenshot3.png" alt="文件管理" width="100%">
+</p>
+
+直观的文件预览界面，支持图片、文档等多种格式，提供便捷的文件管理体验。
+
+### 备份与恢复
+<p align="center">
+  <img src="screenshot/screenshot5.png" alt="备份与恢复" width="100%">
+</p>
+
+专业的数据备份功能，保护您的宝贵数据，支持一键备份和恢复操作。
+
+### 外观管理
+<p align="center">
+  <img src="screenshot/screenshot4.png" alt="外观管理" width="100%">
+</p>
+
+美观的主题管理界面，轻松切换和配置您的博客外观。
 
 ---
 
@@ -110,6 +147,13 @@ BooAdmin v1.1.0 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 ---
 
 ## 📋 更新日志
+
+### v1.1.1 优化版本
+- 🎨 **版权页面优化**: 重新设计版权页面（copyright）的视觉效果，提升专业度
+- 🔄 **页面切换优化**: 优化页面切换动画和过渡效果，提供更流畅的操作体验
+- 📊 **仪表板升级**: 首页仪表板现已使用真实实时数据，提供准确的统计信息
+- 🔐 **登录注册升级**: 全新设计的登录页面和注册页面，提升安全性和用户体验
+- 🐛 **问题修复**: 修复了多个已知问题，提高系统稳定性
 
 ### v1.1.0 TailwindCSS 版本
 - 🎨 **完全重构**: 从 Bootstrap 5 迁移至 TailwindCSS 3.0+，获得更高性能和自定义能力

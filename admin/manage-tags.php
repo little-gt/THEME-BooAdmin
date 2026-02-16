@@ -100,43 +100,11 @@ include 'menu.php';
             </div>
         </div>
     </div>
+    <!-- Footer在main内部 -->
+    <?php include 'copyright.php'; ?>
 </main>
 
 <style>
-/* Discord-style form customization */
-.typecho-option { margin-bottom: 1rem; }
-.typecho-option label { display: block; font-weight: 500; color: #4b5563; margin-bottom: 0.375rem; font-size: 0.875rem; }
-.typecho-option input[type=text], .typecho-option textarea, .typecho-option select {
-    width: 100%;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.375rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    background-color: #f9fafb;
-    transition: all 0.2s;
-}
-.typecho-option input[type=text]:focus, .typecho-option textarea:focus, .typecho-option select:focus {
-    outline: none;
-    border-color: #5865F2;
-    background-color: white;
-    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
-}
-.typecho-option .description { display: block; margin-top: 0.25rem; font-size: 0.75rem; color: #9ca3af; }
-.typecho-option .required { color: #ef4444; margin-left: 0.25rem; }
-.typecho-option-submit button {
-    width: 100%;
-    background-color: #5865F2;
-    color: white;
-    padding: 0.625rem 1.5rem;
-    border-radius: 0.375rem;
-    font-weight: 600;
-    font-size: 0.875rem;
-    transition: background-color 0.2s;
-    border: none;
-    cursor: pointer;
-}
-.typecho-option-submit button:hover { background-color: #4752c4; }
-
 /* Tag selection styling */
 .tag-list li input:checked ~ div {
     background-color: #5865F2;
@@ -191,5 +159,5 @@ include 'form-js.php';
     });
 })();
 </script>
-<?php include 'footer.php'; ?>
+
 

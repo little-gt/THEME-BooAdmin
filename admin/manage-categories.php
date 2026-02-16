@@ -34,7 +34,7 @@ include 'menu.php';
         <div class="w-full max-w-none mx-auto">
 
             <!-- Category List -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-4">
                 <form method="post" name="manage_categories" class="operate-form">
                     <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                          <div class="flex items-center space-x-2">
@@ -132,6 +132,9 @@ include 'menu.php';
             </div>
         </div>
     </div>
+    
+    <!-- Footer自然跟随内容 -->
+    <?php include 'copyright.php'; ?>
 </main>
 
 <?php
@@ -177,5 +180,4 @@ include 'common-js.php';
     });
 })();
 </script>
-<?php include 'footer.php'; ?>
 
