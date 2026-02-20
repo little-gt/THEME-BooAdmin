@@ -72,6 +72,16 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                 </div>
                              </div>
                          </div>
+                         <div class="view-toggle">
+                             <button type="button" class="btn-table-view active" title="<?php _e('表格视图'); ?>">
+                                 <i class="fas fa-table"></i>
+                                 <span class="hidden sm:inline"><?php _e('表格'); ?></span>
+                             </button>
+                             <button type="button" class="btn-card-view" title="<?php _e('卡片视图'); ?>">
+                                 <i class="fas fa-th-large"></i>
+                                 <span class="hidden sm:inline"><?php _e('卡片'); ?></span>
+                             </button>
+                         </div>
                     </div>
 
                     <div class="table-wrapper" data-table-scroll>
@@ -88,7 +98,28 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             <?php if ($pages->have()): ?>
-                                <?php while ($pages->next()): ?>
+                                <?php 
+                                // Store pages data for card view
+                                $pagesData = [];
+                                while ($pages->next()): 
+                                    // Store all necessary data in an array
+                                    $pagesData[] = [
+                                        'cid' => $pages->cid,
+                                        'title' => $pages->title,
+                                        'type' => $pages->type,
+                                        'status' => $pages->status,
+                                        'revision' => $pages->revision,
+                                        'modified' => $pages->modified,
+                                        'created' => $pages->created,
+                                        'commentsNum' => $pages->commentsNum,
+                                        'permalink' => $pages->permalink,
+                                        'author' => [
+                                            'uid' => $pages->author->uid,
+                                            'screenName' => $pages->author->screenName
+                                        ],
+                                        'children' => $pages->children
+                                    ];
+                                ?>
                                     <tr id="<?php $pages->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3">
                                             <input type="checkbox" value="<?php $pages->cid(); ?>" name="cid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
@@ -147,6 +178,83 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                             <?php endif; ?>
                         </tbody>
                     </table>
+                    </div>
+
+                    <!-- Card View Container -->
+                    <div class="card-view-container">
+                        <?php if (!empty($pagesData)): ?>
+                            <?php foreach ($pagesData as $page): ?>
+                                <div class="content-card" id="card-<?php echo $page['cid']; ?>">
+                                    <input type="checkbox" value="<?php echo $page['cid']; ?>" name="cid[]" class="card-checkbox rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                    
+                                    <div class="card-header">
+                                        <div class="flex-1">
+                                            <a href="<?php $options->adminUrl('write-page.php?cid=' . $page['cid']); ?>" class="card-title">
+                                                <?php echo htmlspecialchars($page['title']); ?>
+                                            </a>
+                                            <div class="card-badges">
+                                                <?php
+                                                if ('page_draft' == $page['type']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
+                                                elseif ($page['revision']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
+                                                
+                                                if ('hidden' == $page['status']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <a href="<?php $options->adminUrl('manage-comments.php?cid=' . $page['cid']); ?>" 
+                                           class="card-comment-badge flex-shrink-0 <?php echo $page['commentsNum'] > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                            <?php echo $page['commentsNum']; ?>
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="card-meta">
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-user text-gray-400"></i>
+                                            <span><?php echo htmlspecialchars($page['author']['screenName']); ?></span>
+                                        </div>
+                                        <?php if (count($page['children']) > 0): ?>
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-sitemap text-gray-400"></i>
+                                            <a href="<?php $options->adminUrl('manage-pages.php?parent=' . $page['cid']); ?>" class="hover:text-discord-accent">
+                                                <?php echo sprintf(_n('1 个子页面', '%d 个子页面', count($page['children'])), count($page['children'])); ?>
+                                            </a>
+                                        </div>
+                                        <?php endif; ?>
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-clock text-gray-400"></i>
+                                            <span>
+                                                <?php if ('page_draft' == $page['type'] || $page['revision']): ?>
+                                                    <?php $modifyDate = new \Typecho\Date($page['revision'] ? $page['revision']['modified'] : $page['modified']); echo $modifyDate->word(); ?>
+                                                <?php else: ?>
+                                                    <?php echo (new \Typecho\Date($page['created']))->word(); ?>
+                                                <?php endif; ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-actions">
+                                        <a href="<?php $options->adminUrl('write-page.php?cid=' . $page['cid']); ?>">
+                                            <i class="fas fa-edit"></i> <?php _e('编辑'); ?>
+                                        </a>
+                                        <?php if ('page_draft' != $page['type']): ?>
+                                            <a href="<?php echo $page['permalink']; ?>" target="_blank">
+                                                <i class="fas fa-external-link-alt"></i> <?php _e('查看'); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php if (count($page['children']) === 0): ?>
+                                            <a href="<?php $options->adminUrl('write-page.php?parent=' . $page['cid']); ?>">
+                                                <i class="fas fa-plus"></i> <?php _e('新增子页面'); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="px-4 py-8 text-center text-gray-500">
+                                <div class="mb-2 text-4xl text-gray-300"><i class="far fa-file"></i></div>
+                                <?php _e('没有找到任何页面'); ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </form>
             </div>
@@ -215,5 +323,109 @@ include 'table-js.php';
         })();
     </script>
 <?php endif; ?>
+
+<script>
+// Mobile-aware view mode initialization for manage-pages.php
+$(document).ready(function() {
+    var VIEW_MODE_KEY = 'typecho_list_view_mode';
+    var USER_PREFERENCE_KEY = 'typecho_list_view_user_set';
+    var MOBILE_BREAKPOINT = 768; // 移动端断点：小于 768px 为移动端
+    
+    // 检测是否为移动端
+    function isMobile() {
+        return $(window).width() < MOBILE_BREAKPOINT;
+    }
+    
+    // 获取用户是否手动设置过视图模式
+    function hasUserPreference() {
+        try {
+            return localStorage.getItem(USER_PREFERENCE_KEY) === 'true';
+        } catch(e) {
+            return false;
+        }
+    }
+    
+    // 获取保存的视图模式
+    function getSavedViewMode() {
+        try {
+            return localStorage.getItem(VIEW_MODE_KEY) || null;
+        } catch(e) {
+            return null;
+        }
+    }
+    
+    // 应用视图模式
+    function applyViewMode(mode) {
+        var $container = $('.operate-form').closest('.bg-white');
+        
+        if (mode === 'card') {
+            $container.addClass('view-mode-card');
+            $('.view-toggle .btn-table-view').removeClass('active');
+            $('.view-toggle .btn-card-view').addClass('active');
+        } else {
+            $container.removeClass('view-mode-card');
+            $('.view-toggle .btn-table-view').addClass('active');
+            $('.view-toggle .btn-card-view').removeClass('active');
+        }
+    }
+    
+    // 初始化视图模式
+    function initializeViewMode() {
+        var savedMode = getSavedViewMode();
+        var userHasPreference = hasUserPreference();
+        var mobile = isMobile();
+        
+        // 决策逻辑：
+        // 1. 如果用户手动设置过，使用用户的选择
+        // 2. 如果没有手动设置过，在移动端默认使用卡片模式
+        // 3. 桌面端默认使用表格模式
+        var defaultMode = mobile ? 'card' : 'table';
+        var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
+        
+        console.log('View Mode Init (Pages):', {
+            'Screen Width': $(window).width() + 'px',
+            'Is Mobile': mobile,
+            'User Has Preference': userHasPreference,
+            'Saved Mode': savedMode,
+            'Final Mode': finalMode
+        });
+        
+        applyViewMode(finalMode);
+    }
+    
+    // 监听用户手动切换视图（由 common-js.php 中的代码触发）
+    // 当用户点击切换按钮时，标记为用户已设置偏好
+    $('.view-toggle button').on('click', function() {
+        try {
+            localStorage.setItem(USER_PREFERENCE_KEY, 'true');
+            console.log('User preference saved: User manually switched view mode (Pages)');
+        } catch(e) {
+            // Ignore localStorage errors
+        }
+    });
+    
+    // 执行初始化
+    if ($('.view-toggle').length > 0) {
+        initializeViewMode();
+    }
+    
+    // 监听窗口大小变化（可选）
+    // 只在用户没有手动设置偏好时，根据屏幕大小自动调整
+    var resizeTimer;
+    $(window).on('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            // 只有在用户没有手动设置偏好时才自动调整
+            if (!hasUserPreference() && $('.view-toggle').length > 0) {
+                var mobile = isMobile();
+                var currentMode = mobile ? 'card' : 'table';
+                applyViewMode(currentMode);
+                
+                console.log('Auto-adjusted to', currentMode, 'mode due to window resize (Pages)');
+            }
+        }, 250); // 防抖，250ms 后才执行
+    });
+});
+</script>
 
 

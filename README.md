@@ -4,7 +4,7 @@
 >
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.2 版本带来了移动端深度优化和灵活的视图切换体验。
 
-[![Release](https://img.shields.io/badge/Release-v1.1.2-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Release](https://img.shields.io/badge/Release-v1.1.3-rc1-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![CDN](https://img.shields.io/badge/CDN-AliYun-ff6900?style=flat-square)](https://www.aliyun.com)

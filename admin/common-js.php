@@ -5,7 +5,9 @@
 <script>
     (function () {
         $(document).ready(function() {
-            // 处理消息机制
+            // ========================================
+            // 现代化通知系统
+            // ========================================
             (function () {
                 var prefix = '<?php echo \Typecho\Cookie::getPrefix(); ?>',
                     cookies = {
@@ -17,41 +19,134 @@
                     domain = '<?php echo \Typecho\Cookie::getDomain(); ?>',
                     secure = <?php echo json_encode(\Typecho\Cookie::getSecure()); ?>;
 
-                if (!!cookies.notice && 'success|notice|error'.indexOf(cookies.noticeType) >= 0) {
-                    var head = $('.typecho-head-nav'),
-                        p = $('<div class="message popup ' + cookies.noticeType + '">'
-                        + '<ul><li>' + $.parseJSON(cookies.notice).join('</li><li>') 
-                        + '</li></ul></div>'), offset = 0;
+                // 创建通知容器（如果不存在）
+                if ($('#typecho-notification-container').length === 0) {
+                    $('body').append('<div id="typecho-notification-container"></div>');
+                }
 
-                    if (head.length > 0) {
-                        p.insertAfter(head);
-                    } else {
-                        p.prependTo(document.body);
-                    }
-
-                    p.slideDown(function () {
-                        var t = $(this), color = '#C6D880';
-                        
-                        if (t.hasClass('error')) {
-                            color = '#FBC2C4';
-                        } else if (t.hasClass('notice')) {
-                            color = '#FFD324';
+                // 显示通知函数
+                function showNotification(messages, type) {
+                    type = type || 'info';
+                    
+                    // 图标映射
+                    var icons = {
+                        'success': '<i class="fas fa-check-circle"></i>',
+                        'error': '<i class="fas fa-times-circle"></i>',
+                        'notice': '<i class="fas fa-exclamation-triangle"></i>',
+                        'info': '<i class="fas fa-info-circle"></i>',
+                        'warning': '<i class="fas fa-exclamation-triangle"></i>'
+                    };
+                    
+                    // 标题映射
+                    var titles = {
+                        'success': '<?php _e('操作成功'); ?>',
+                        'error': '<?php _e('出错了'); ?>',
+                        'notice': '<?php _e('注意'); ?>',
+                        'info': '<?php _e('提示'); ?>',
+                        'warning': '<?php _e('警告'); ?>'
+                    };
+                    
+                    // 构建消息列表
+                    var messageHTML = '';
+                    if (Array.isArray(messages)) {
+                        if (messages.length === 1) {
+                            messageHTML = '<div class="typecho-notification-messages">' + messages[0] + '</div>';
+                        } else {
+                            messageHTML = '<ul class="typecho-notification-messages">';
+                            messages.forEach(function(msg) {
+                                messageHTML += '<li>' + msg + '</li>';
+                            });
+                            messageHTML += '</ul>';
                         }
-
-                        t.effect('highlight', {color : color})
-                            .delay(5000).fadeOut(function () {
-                            $(this).remove();
-                        });
+                    } else {
+                        messageHTML = '<div class="typecho-notification-messages">' + messages + '</div>';
+                    }
+                    
+                    // 创建通知元素
+                    var notification = $('<div class="typecho-notification ' + type + '">' +
+                        '<div class="typecho-notification-icon">' + icons[type] + '</div>' +
+                        '<div class="typecho-notification-content">' +
+                            '<div class="typecho-notification-title">' + titles[type] + '</div>' +
+                            messageHTML +
+                        '</div>' +
+                        '<button class="typecho-notification-close" aria-label="关闭">' +
+                            '<i class="fas fa-times"></i>' +
+                        '</button>' +
+                    '</div>');
+                    
+                    // 添加到容器
+                    $('#typecho-notification-container').append(notification);
+                    
+                    // 显示动画
+                    setTimeout(function() {
+                        notification.addClass('show');
+                    }, 10);
+                    
+                    // 关闭按钮事件
+                    notification.find('.typecho-notification-close').on('click', function() {
+                        closeNotification(notification);
                     });
-
+                    
+                    // 5秒后自动关闭
+                    setTimeout(function() {
+                        closeNotification(notification);
+                    }, 5000);
+                }
+                
+                // 关闭通知函数
+                function closeNotification(notification) {
+                    notification.addClass('hide');
+                    setTimeout(function() {
+                        notification.remove();
+                    }, 300);
+                }
+                
+                // 检查并显示Cookie中的通知
+                if (!!cookies.notice && 'success|notice|error|info|warning'.indexOf(cookies.noticeType) >= 0) {
+                    try {
+                        var messages = $.parseJSON(cookies.notice);
+                        showNotification(messages, cookies.noticeType);
+                    } catch(e) {
+                        console.error('通知消息解析失败:', e);
+                    }
+                    
+                    // 清除Cookie
                     $.cookie(prefix + '__typecho_notice', null, {path : path, domain: domain, secure: secure});
                     $.cookie(prefix + '__typecho_notice_type', null, {path : path, domain: domain, secure: secure});
                 }
 
+                // 高亮元素
                 if (cookies.highlight) {
-                    $('#' + cookies.highlight).effect('highlight', 1000);
+                    var $highlightEl = $('#' + cookies.highlight);
+                    if ($highlightEl.length > 0) {
+                        // 使用CSS动画进行高亮
+                        $highlightEl.css({
+                            'animation': 'highlight-flash 1s ease-in-out',
+                            'animation-iteration-count': '2'
+                        });
+                        
+                        // 添加临时样式
+                        if (!$('#highlight-animation-style').length) {
+                            $('<style id="highlight-animation-style">' +
+                                '@keyframes highlight-flash {' +
+                                    '0%, 100% { background-color: transparent; }' +
+                                    '50% { background-color: rgba(88, 101, 242, 0.2); }' +
+                                '}' +
+                            '</style>').appendTo('head');
+                        }
+                    }
                     $.cookie(prefix + '__typecho_notice_highlight', null, {path : path, domain: domain, secure: secure});
                 }
+                
+                // 全局通知方法（供其他脚本调用）
+                window.TypechoNotification = {
+                    show: showNotification,
+                    success: function(messages) { showNotification(messages, 'success'); },
+                    error: function(messages) { showNotification(messages, 'error'); },
+                    notice: function(messages) { showNotification(messages, 'notice'); },
+                    info: function(messages) { showNotification(messages, 'info'); },
+                    warning: function(messages) { showNotification(messages, 'warning'); }
+                };
             })();
 
             if ($('.typecho-login').length == 0) {                // 现代化分页样式优化 v2

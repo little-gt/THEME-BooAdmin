@@ -820,6 +820,200 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
             width: 100%;
         }
     }
+    
+    /* ========================================
+       Modern Notification System (Toast)
+       ======================================== */
+    
+    /* 通知容器 - 固定在右上角 */
+    #typecho-notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 400px;
+        pointer-events: none;
+    }
+    
+    /* 通知卡片 */
+    .typecho-notification {
+        pointer-events: all;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1);
+        padding: 16px 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        width: 100%;
+        min-width: 320px;
+        opacity: 0;
+        transform: translateX(400px);
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        border-left: 4px solid #6b7280;
+    }
+    
+    /* 显示动画 */
+    .typecho-notification.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    /* 隐藏动画 */
+    .typecho-notification.hide {
+        opacity: 0;
+        transform: translateX(400px) scale(0.9);
+        transition: all 0.3s ease-out;
+    }
+    
+    /* 图标样式 */
+    .typecho-notification-icon {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 14px;
+    }
+    
+    /* 内容区域 */
+    .typecho-notification-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    /* 标题 */
+    .typecho-notification-title {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #1f2937;
+    }
+    
+    /* 消息列表 */
+    .typecho-notification-messages {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .typecho-notification-messages li {
+        font-size: 13px;
+        line-height: 1.5;
+        color: #4b5563;
+        margin-bottom: 2px;
+    }
+    
+    .typecho-notification-messages li:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* 关闭按钮 */
+    .typecho-notification-close {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        border: none;
+        background: transparent;
+        color: #9ca3af;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: all 0.2s;
+        font-size: 16px;
+        padding: 0;
+        margin-top: -2px;
+    }
+    
+    .typecho-notification-close:hover {
+        background: #f3f4f6;
+        color: #4b5563;
+    }
+    
+    /* 成功样式 */
+    .typecho-notification.success {
+        border-left-color: #10b981;
+    }
+    
+    .typecho-notification.success .typecho-notification-icon {
+        background: #d1fae5;
+        color: #059669;
+    }
+    
+    .typecho-notification.success .typecho-notification-title {
+        color: #065f46;
+    }
+    
+    /* 错误样式 */
+    .typecho-notification.error {
+        border-left-color: #ef4444;
+    }
+    
+    .typecho-notification.error .typecho-notification-icon {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .typecho-notification.error .typecho-notification-title {
+        color: #991b1b;
+    }
+    
+    /* 警告样式 */
+    .typecho-notification.notice {
+        border-left-color: #f59e0b;
+    }
+    
+    .typecho-notification.notice .typecho-notification-icon {
+        background: #fef3c7;
+        color: #d97706;
+    }
+    
+    .typecho-notification.notice .typecho-notification-title {
+        color: #92400e;
+    }
+    
+    /* 信息样式 */
+    .typecho-notification.info {
+        border-left-color: #3b82f6;
+    }
+    
+    .typecho-notification.info .typecho-notification-icon {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+    
+    .typecho-notification.info .typecho-notification-title {
+        color: #1e40af;
+    }
+    
+    /* 移动端适配 */
+    @media (max-width: 640px) {
+        #typecho-notification-container {
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+        }
+        
+        .typecho-notification {
+            min-width: auto;
+            width: 100%;
+        }
+    }
+    
+    /* 旧版兼容 - 隐藏旧的通知样式 */
+    .message.popup {
+        display: none !important;
+    }
 </style>';
 
 /** 注册一个初始化插件 */
