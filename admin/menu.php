@@ -122,8 +122,6 @@
             <?php endif; ?>
         </ul>
     </nav>
-        </ul>
-    </nav>
 
     <div class="p-4 border-t border-gray-100 bg-white">
         <div class="flex items-center group cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors">
@@ -151,26 +149,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.getElementById('sidebar-overlay');
     const mobileMenuBtn = document.getElementById('mobile-menu-btn'); // Will be added in header
 
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        document.body.classList.add('sidebar-open');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.classList.remove('sidebar-open');
+    }
+
     function toggleSidebar() {
-        sidebar.classList.toggle('-translate-x-full');
-        overlay.classList.toggle('hidden');
+        if (sidebar.classList.contains('-translate-x-full')) {
+            openSidebar();
+        } else {
+            closeSidebar();
+        }
     }
 
     if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
-    if (overlay) overlay.addEventListener('click', toggleSidebar);
+    if (overlay) overlay.addEventListener('click', closeSidebar);
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
 
     // Initial check for mobile
     if (window.innerWidth < 768) {
-        sidebar.classList.add('-translate-x-full');
+        closeSidebar();
     }
 
     window.addEventListener('resize', function() {
         if (window.innerWidth >= 768) {
             sidebar.classList.remove('-translate-x-full');
             overlay.classList.add('hidden');
+            document.body.classList.remove('sidebar-open');
         } else {
-            sidebar.classList.add('-translate-x-full');
+            closeSidebar();
         }
     });
 });

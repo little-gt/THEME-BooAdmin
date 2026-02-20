@@ -52,7 +52,7 @@ $users = \Widget\Users\Admin::alloc();
             <!-- User List -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_users" class="operate-form">
-                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
                              <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
                                  <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
@@ -69,6 +69,7 @@ $users = \Widget\Users\Admin::alloc();
                          </div>
                     </div>
 
+                    <div class="table-wrapper" data-table-scroll>
                     <table class="w-full text-left border-collapse typecho-list-table draggable">
                         <thead>
                             <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
@@ -165,6 +166,7 @@ $users = \Widget\Users\Admin::alloc();
                             <?php endif; ?>
                         </tbody>
                     </table>
+                    </div>
                 </form>
             </div>
             

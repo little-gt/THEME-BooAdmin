@@ -34,7 +34,7 @@ include 'menu.php';
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
                     <form method="post" name="manage_tags" class="operate-form flex flex-col h-full">
-                        <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                        <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                              <div class="flex items-center space-x-2">
                                  <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
                                      <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">

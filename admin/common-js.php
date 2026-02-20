@@ -116,6 +116,133 @@
                         .attr('rel', 'noopener noreferrer');
                 });
             }
+            
+            // Table scroll indicator
+            function updateTableScrollIndicator() {
+                $('.table-wrapper[data-table-scroll]').each(function() {
+                    var $wrapper = $(this);
+                    var scrollLeft = $wrapper.scrollLeft();
+                    var scrollWidth = $wrapper[0].scrollWidth;
+                    var clientWidth = $wrapper[0].clientWidth;
+                    
+                    // 已滚动到最左边
+                    if (scrollLeft <= 1) {
+                        $wrapper.removeClass('scrolled-start');
+                    } else {
+                        $wrapper.addClass('scrolled-start');
+                    }
+                    
+                    // 已滚动到最右边
+                    if (scrollLeft + clientWidth >= scrollWidth - 1) {
+                        $wrapper.removeClass('scrolled-end');
+                        $wrapper.addClass('scrolled-end');
+                    } else {
+                        $wrapper.removeClass('scrolled-end');
+                    }
+                });
+            }
+            
+            // Initialize and bind events
+            $('.table-wrapper[data-table-scroll]').on('scroll', updateTableScrollIndicator);
+            $(window).on('resize', updateTableScrollIndicator);
+            updateTableScrollIndicator(); // Initial check
+
+            // ========================================
+            // View Mode Toggle (Table/Card)
+            // ========================================
+            (function() {
+                // Only initialize if we have the view toggle
+                if ($('.view-toggle').length === 0) {
+                    return;
+                }
+                
+                var VIEW_MODE_KEY = 'typecho_list_view_mode';
+                
+                // Get saved view mode from localStorage
+                function getSavedViewMode() {
+                    try {
+                        return localStorage.getItem(VIEW_MODE_KEY) || 'table';
+                    } catch(e) {
+                        return 'table';
+                    }
+                }
+                
+                // Save view mode to localStorage
+                function saveViewMode(mode) {
+                    try {
+                        localStorage.setItem(VIEW_MODE_KEY, mode);
+                    } catch(e) {
+                        // Ignore localStorage errors
+                    }
+                }
+                
+                // Apply view mode to the page
+                function applyViewMode(mode) {
+                    var $container = $('.operate-form').closest('.bg-white');
+                    
+                    if (mode === 'card') {
+                        $container.addClass('view-mode-card');
+                        $('.view-toggle .btn-table-view').removeClass('active');
+                        $('.view-toggle .btn-card-view').addClass('active');
+                    } else {
+                        $container.removeClass('view-mode-card');
+                        $('.view-toggle .btn-table-view').addClass('active');
+                        $('.view-toggle .btn-card-view').removeClass('active');
+                    }
+                }
+                
+                // Initialize view mode on page load
+                var savedMode = getSavedViewMode();
+                applyViewMode(savedMode);
+                
+                // Handle view toggle button clicks
+                $('.view-toggle button').on('click', function(e) {
+                    e.preventDefault();
+                    var $btn = $(this);
+                    var newMode = $btn.hasClass('btn-table-view') ? 'table' : 'card';
+                    
+                    saveViewMode(newMode);
+                    applyViewMode(newMode);
+                    
+                    return false;
+                });
+                
+                // Sync checkbox state between table and card views
+                $(document).on('change', '.content-card .card-checkbox', function() {
+                    var $checkbox = $(this);
+                    var cid = $checkbox.val();
+                    var isChecked = $checkbox.prop('checked');
+                    
+                    // Update corresponding table checkbox
+                    $('.typecho-list-table input[type="checkbox"][value="' + cid + '"]').prop('checked', isChecked);
+                    
+                    // Update select all checkbox state
+                    updateSelectAllState();
+                });
+                
+                $(document).on('change', '.typecho-list-table input[type="checkbox"]:not(.typecho-table-select-all)', function() {
+                    var $checkbox = $(this);
+                    var cid = $checkbox.val();
+                    var isChecked = $checkbox.prop('checked');
+                    
+                    // Update corresponding card checkbox
+                    $('.content-card .card-checkbox[value="' + cid + '"]').prop('checked', isChecked);
+                });
+                
+                function updateSelectAllState() {
+                    var $allCheckboxes = $('.typecho-list-table input[type="checkbox"]:not(.typecho-table-select-all)');
+                    var $checkedCheckboxes = $allCheckboxes.filter(':checked');
+                    var $selectAll = $('.typecho-table-select-all');
+                    
+                    if ($checkedCheckboxes.length === 0) {
+                        $selectAll.prop('checked', false).prop('indeterminate', false);
+                    } else if ($checkedCheckboxes.length === $allCheckboxes.length) {
+                        $selectAll.prop('checked', true).prop('indeterminate', false);
+                    } else {
+                        $selectAll.prop('checked', false).prop('indeterminate', true);
+                    }
+                }
+            })();
         });
     })();
 </script>

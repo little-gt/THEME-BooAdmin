@@ -36,7 +36,7 @@ include 'menu.php';
             <!-- Category List -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-4">
                 <form method="post" name="manage_categories" class="operate-form">
-                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
                              <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
                                  <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
@@ -66,6 +66,7 @@ include 'menu.php';
                          </div>
                     </div>
 
+                    <div class="table-wrapper" data-table-scroll>
                     <table class="w-full text-left border-collapse typecho-list-table">
                         <thead>
                             <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
@@ -128,6 +129,7 @@ include 'menu.php';
                             <?php endif; ?>
                         </tbody>
                     </table>
+                    </div>
                 </form>
             </div>
         </div>

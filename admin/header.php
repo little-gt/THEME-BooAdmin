@@ -4,8 +4,8 @@ if (!defined('__TYPECHO_ADMIN__')) {
 }
 
 $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?t=202602210101', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=202602210101', true) . '">
 <!-- TailwindCSS -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
 <!-- Font Awesome -->
@@ -70,6 +70,23 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         /* Add left margin to main content to account for fixed sidebar */
         body:not(.body-100) > main {
             margin-left: 16rem; /* w-64 = 16rem */
+        }
+    }
+    
+    /* Mobile layout guardrails */
+    @media (max-width: 767px) {
+        body:not(.body-100) {
+            overflow-x: hidden;
+        }
+        body:not(.body-100).sidebar-open {
+            overflow: hidden;
+        }
+        body:not(.body-100) > main {
+            margin-left: 0 !important;
+            min-height: 100vh;
+        }
+        #sidebar {
+            height: 100vh;
         }
     }
     
@@ -256,6 +273,353 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         background-color: white;
         box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
     }
+
+    @media (max-width: 767px) {
+        select {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .typecho-option input[type="text"],
+        .typecho-option input[type="password"],
+        .typecho-option input[type="email"],
+        .typecho-option input[type="url"],
+        .typecho-option input[type="number"],
+        .typecho-option textarea,
+        .typecho-option select {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+        .typecho-option label:has(input[type="checkbox"]),
+        .typecho-option label:has(input[type="radio"]) {
+            white-space: normal;
+            width: 100%;
+        }
+    }
+    
+    /* ========================================
+       Mobile Optimizations
+       ======================================== */
+    
+    /* 1. Table scroll indicator - gradient masks */
+    @media (max-width: 767px) {
+        .table-wrapper {
+            position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .table-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 40px;
+            background: linear-gradient(to left, rgba(255,255,255,0.95), transparent);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        .table-wrapper.scrolled-end::after {
+            opacity: 0;
+        }
+        .table-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, rgba(255,255,255,0.95), transparent);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1;
+        }
+        .table-wrapper.scrolled-start::before {
+            opacity: 1;
+        }
+    }
+    
+    /* 2. Top operation area - stack vertically on mobile */
+    @media (max-width: 640px) {
+        .operate-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.75rem !important;
+        }
+        .operate-bar > div {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+
+    /* ========================================
+       Touch Target Size Optimization
+       ======================================== */
+    
+    /* Increase touch targets for mobile */
+    @media (max-width: 767px) {
+        /* Table checkboxes */
+        .typecho-list-table input[type="checkbox"] {
+            width: 20px !important;
+            height: 20px !important;
+            min-width: 20px !important;
+            min-height: 20px !important;
+        }
+        
+        /* Table cells padding for easier tapping */
+        .typecho-list-table td {
+            padding: 1rem 0.5rem !important;
+        }
+        
+        /* Buttons minimum height (exclude view-toggle buttons) */
+        button:not(.view-toggle button), 
+        .btn:not(.view-toggle button), 
+        a.btn {
+            min-height: 44px !important;
+            padding-top: 0.625rem !important;
+            padding-bottom: 0.625rem !important;
+        }
+        
+        /* Links in action rows */
+        .typecho-list-table .group a {
+            padding: 0.5rem !important;
+            margin: -0.5rem 0 !important;
+        }
+        
+        /* Dropdown buttons */
+        .btn-dropdown-toggle {
+            min-height: 44px !important;
+        }
+        
+        /* View toggle buttons remain compact */
+        .view-toggle button {
+            min-height: 36px !important;
+            padding: 0.5rem 0.75rem !important;
+        }
+    }
+
+    /* ========================================
+       Card Layout View for List Pages
+       ======================================== */
+    
+    /* Card view container */
+    .card-view-container {
+        display: none;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .card-view-container.active {
+        display: grid;
+    }
+    
+    /* Mobile: 1 column */
+    @media (min-width: 768px) {
+        .card-view-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    /* Desktop: 3 columns */
+    @media (min-width: 1280px) {
+        .card-view-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    /* Individual card styles */
+    .content-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        transition: all 0.2s ease;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .content-card:hover {
+        border-color: #5865F2;
+        box-shadow: 0 4px 12px rgba(88, 101, 242, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .content-card .card-checkbox {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .content-card .card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding-left: 2rem;
+    }
+    
+    .content-card .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2E3338;
+        line-height: 1.4;
+        flex: 1;
+        word-break: break-word;
+    }
+    
+    .content-card .card-title:hover {
+        color: #5865F2;
+    }
+    
+    .content-card .card-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem;
+        margin-top: 0.25rem;
+    }
+    
+    .content-card .card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+        padding-top: 0.75rem;
+        border-top: 1px solid #f3f4f6;
+    }
+    
+    .content-card .card-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+    }
+    
+    .content-card .card-actions {
+        display: flex;
+        gap: 0.75rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid #f3f4f6;
+    }
+    
+    .content-card .card-actions a {
+        font-size: 0.875rem;
+        color: #6b7280;
+        text-decoration: none;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .content-card .card-actions a:hover {
+        color: #5865F2;
+    }
+    
+    .content-card .card-comment-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2rem;
+        height: 2rem;
+        padding: 0 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    
+    /* Hide table when card view is active */
+    .view-mode-card .table-wrapper {
+        display: none !important;
+    }
+    
+    .view-mode-card .card-view-container {
+        display: grid !important;
+    }
+    
+    /* View toggle buttons */
+    .view-toggle {
+        display: inline-flex;
+        gap: 0.25rem;
+        background: #f3f4f6;
+        padding: 0.25rem;
+        border-radius: 0.375rem;
+    }
+    
+    .view-toggle button {
+        padding: 0.375rem 0.75rem;
+        border: none;
+        background: transparent;
+        color: #6b7280;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        min-height: 32px;
+    }
+    
+    .view-toggle button:hover {
+        color: #2E3338;
+    }
+    
+    .view-toggle button.active {
+        background: white;
+        color: #5865F2;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    /* Hide view toggle on very small screens */
+    @media (max-width: 480px) {
+        .view-toggle {
+            display: none;
+        }
+    }
+        }
+    }
+    
+    /* 3. Settings tabs - scroll snap and hint */
+    .settings-tabs {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
+    }
+    .settings-tabs::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+    .settings-tabs > a {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        min-width: 120px;
+    }
+    
+    @media (max-width: 767px) {
+        .settings-tabs-wrapper {
+            position: relative;
+        }
+        .settings-tabs-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 60px;
+            background: linear-gradient(to left, rgba(243,244,246,0.95), transparent);
+            pointer-events: none;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        .settings-tabs > a {
+            min-width: 100px;
+        }
+    }
     
     /* Submit button styling */
     .typecho-option-submit {
@@ -437,6 +801,24 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .typecho-reform-style label:has(input[type="radio"]:checked) {
         background-color: #eef2ff;
         border-color: #c7d2fe;
+    }
+    @media (max-width: 767px) {
+        .typecho-reform-style input[type="text"],
+        .typecho-reform-style input[type="password"],
+        .typecho-reform-style input[type="email"],
+        .typecho-reform-style input[type="url"],
+        .typecho-reform-style input[type="number"],
+        .typecho-reform-style textarea,
+        .typecho-reform-style select {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+        .typecho-reform-style label:has(input[type="checkbox"]),
+        .typecho-reform-style label:has(input[type="radio"]) {
+            white-space: normal;
+            width: 100%;
+        }
     }
 </style>';
 

@@ -2,9 +2,9 @@
 
 > **高效 · 现代 · 极简**
 >
-一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.1 版本代表了全新的架构和更高的性能标准。
+一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.2 版本带来了移动端深度优化和灵活的视图切换体验。
 
-[![Release](https://img.shields.io/badge/Release-v1.1.1-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Release](https://img.shields.io/badge/Release-v1.1.2-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![CDN](https://img.shields.io/badge/CDN-AliYun-ff6900?style=flat-square)](https://www.aliyun.com)
@@ -45,6 +45,8 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 | **TailwindCSS 重构** | 采用现代化 CSS 框架，提供极速响应和卓越性能。 |
 | **国内 CDN 加速** | 所有资源使用阿里云 CDN，国内加载速度提升 3-5 倍。 |
 | **完全响应式** | 完美适配 PC、平板与手机，随时随地管理博客。 |
+| **移动端深度优化** | 🆕 智能识别设备尺寸，移动端自动切换至更友好的卡片视图。 |
+| **灵活视图切换** | 🆕 文章管理页支持表格/卡片视图切换，用户偏好自动保存。 |
 | **Typecho 1.3.0** | 完全兼容最新版本 Typecho，开箱即用无兼容问题。 |
 | **极简设计理念** | 清爽配色与卡片式布局，告别陈旧后台界面，让管理变得优雅。 |
 | **代码高亮支持** | 内置主题编辑器支持代码高亮与行号显示。 |
@@ -64,9 +66,10 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ### 从 旧版本 升级
 1.  **强烈建议**删除服务器上旧的 `admin` 目录。
-2.  上传 v1.1.1 版本的 `admin` 目录到网站根目录。
+2.  上传 v1.1.2 版本的 `admin` 目录到网站根目录。
 3.  清理浏览器缓存，以加载最新的 CSS 和 JS 文件。
 4.  如果您使用的是 Typecho 1.3.0 或更高版本，升级后所有功能将自动适配。
+5.  🆕 移动端访问文章管理页时将自动切换到卡片视图，PC 端保持表格视图。
 
 ---
 
@@ -147,6 +150,15 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 ---
 
 ## 📋 更新日志
+
+### v1.1.2 移动端优化版本
+- 📱 **移动端自适应**: 智能检测设备屏幕尺寸，移动端（<768px）自动切换到卡片视图，提供更友好的浏览体验
+- 🔄 **视图切换功能**: 文章管理页新增表格/卡片视图切换按钮，用户可根据个人喜好自由切换显示方式
+- 💾 **偏好记忆**: 使用 localStorage 自动保存用户选择的视图模式，下次访问自动应用
+- 📐 **响应式调整**: 窗口大小改变时智能调整视图，未设置偏好时自动适配最佳显示模式
+- 🎯 **用户优先**: 一旦用户手动切换视图，系统将记住该偏好，不再自动切换
+- 🚀 **性能优化**: 视图切换采用防抖优化，避免频繁切换造成的性能损耗
+- 📦 **独立模块**: 仅在文章管理页启用视图切换，不影响其他管理页面（后续将逐步扩展到其他页面）
 
 ### v1.1.1 优化版本
 - 🎨 **版权页面优化**: 重新设计版权页面（copyright）的视觉效果，提升专业度
