@@ -105,7 +105,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                 <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 rounded hover:bg-red-100 text-red-600 shadow-sm btn-operate" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>"><?php _e('删除所有垃圾评论'); ?></button>
                              <?php endif; ?>
                          </div>
-                         <div class="flex items-center space-x-4">
                          <?php if($user->pass('editor', true) && !isset($request->cid)): ?>
                             <div class="flex items-center space-x-2 text-xs">
                                 <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=on'); ?>" class="<?php if($isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('所有'); ?></a>
@@ -113,17 +112,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                 <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=off'); ?>" class="<?php if(!$isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('我的'); ?></a>
                             </div>
                          <?php endif; ?>
-                         <div class="view-toggle">
-                             <button type="button" class="btn-table-view active" title="<?php _e('表格视图'); ?>">
-                                 <i class="fas fa-table"></i>
-                                 <span class="hidden sm:inline"><?php _e('表格'); ?></span>
-                             </button>
-                             <button type="button" class="btn-card-view" title="<?php _e('卡片视图'); ?>">
-                                 <i class="fas fa-th-large"></i>
-                                 <span class="hidden sm:inline"><?php _e('卡片'); ?></span>
-                             </button>
-                         </div>
-                         </div>
                     </div>
 
                     <div class="table-wrapper" data-table-scroll>
@@ -139,48 +127,19 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             <?php if($comments->have()): ?>
-                                <?php 
-                                // Store comments data for card view
-                                $commentsData = [];
-                                while($comments->next()): 
+                                <?php while($comments->next()): ?>
+                                    <tr id="<?php $comments->theId(); ?>" data-comment="<?php
                                     $comment = array(
                                         'author'    =>  $comments->author,
                                         'mail'      =>  $comments->mail,
                                         'url'       =>  $comments->url,
                                         'ip'        =>  $comments->ip,
-                                        'type'      =>  $comments->type,
+                                        'type'        =>  $comments->type,
                                         'text'      =>  $comments->text
                                     );
-                                    
-                                    // Capture gravatar URL using output buffering
-                                    ob_start();
-                                    $comments->gravatar(40);
-                                    $gravatarHtml = ob_get_clean();
-                                    // Extract src from img tag
-                                    preg_match('/src="([^"]+)"/', $gravatarHtml, $matches);
-                                    $gravatarUrl = isset($matches[1]) ? $matches[1] : '';
-                                    
-                                    // Store all necessary data in an array
-                                    $commentsData[] = [
-                                        'coid' => $comments->coid,
-                                        'theId' => $comments->theId(),
-                                        'author' => $comments->author,
-                                        'mail' => $comments->mail,
-                                        'url' => $comments->url,
-                                        'ip' => $comments->ip,
-                                        'type' => $comments->type,
-                                        'text' => $comments->text,
-                                        'content' => $comments->content,
-                                        'dateWord' => $comments->dateWord(),
-                                        'created' => $comments->created,
-                                        'status' => $comments->status,
-                                        'permalink' => $comments->permalink,
-                                        'title' => $comments->title,
-                                        'gravatar' => $gravatarUrl,
-                                        'commentJson' => htmlspecialchars(json_encode($comment))
-                                    ];
-                                ?>
-                                    <tr id="<?php $comments->theId(); ?>" data-comment="<?php echo htmlspecialchars(json_encode($comment)); ?>" class="group hover:bg-gray-50 transition-colors">
+
+                                    echo htmlspecialchars(json_encode($comment));
+                                    ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3 align-top">
                                             <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300 mt-1">
                                         </td>
@@ -248,79 +207,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                             <?php endif; ?>
                         </tbody>
                     </table>
-                    </div>
-
-                    <!-- Card View Container -->
-                    <div class="card-view-container">
-                        <?php if (!empty($commentsData)): ?>
-                            <?php foreach ($commentsData as $comment): ?>
-                                <div class="content-card comment-card" id="<?php echo $comment['theId']; ?>" data-comment="<?php echo $comment['commentJson']; ?>">
-                                    <input type="checkbox" value="<?php echo $comment['coid']; ?>" name="coid[]" class="card-checkbox rounded text-discord-accent focus:ring-discord-accent border-gray-300">
-                                    
-                                    <div class="card-header items-start">
-                                        <div class="flex items-center space-x-3 flex-1">
-                                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                                                <?php if ('comment' == $comment['type']): ?>
-                                                    <img src="<?php echo $comment['gravatar']; ?>" alt="Avatar" class="w-full h-full object-cover">
-                                                <?php else: ?>
-                                                    <div class="flex items-center justify-center w-full h-full text-gray-500"><i class="fas fa-quote-right"></i></div>
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <div class="font-medium text-discord-text truncate">
-                                                    <?php if($comment['url']): ?>
-                                                        <a href="<?php echo $comment['url']; ?>" target="_blank" class="hover:underline"><?php echo htmlspecialchars($comment['author']); ?></a>
-                                                    <?php else: ?>
-                                                        <?php echo htmlspecialchars($comment['author']); ?>
-                                                    <?php endif; ?>
-                                                </div>
-                                                <div class="text-xs text-gray-400 mt-0.5">
-                                                    <?php if($comment['mail']): ?>
-                                                        <a href="mailto:<?php echo $comment['mail']; ?>" class="hover:text-discord-accent"><?php echo htmlspecialchars($comment['mail']); ?></a>
-                                                    <?php endif; ?>
-                                                    <span class="ml-2"><?php echo $comment['ip']; ?></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="card-meta text-xs text-gray-400 -mt-2 mb-2">
-                                        <?php echo $comment['dateWord']; ?> 于 <a href="<?php echo $comment['permalink']; ?>" class="text-discord-accent hover:underline"><?php echo htmlspecialchars($comment['title']); ?></a>
-                                    </div>
-                                    
-                                    <div class="comment-content prose prose-sm max-w-none text-gray-700 mb-3">
-                                        <?php echo $comment['content']; ?>
-                                    </div>
-                                    
-                                    <div class="card-actions">
-                                        <a href="#<?php echo $comment['theId']; ?>" rel="<?php $security->index('/action/comments-edit?do=reply&coid=' . $comment['coid']); ?>" class="operate-reply">
-                                            <i class="fas fa-reply"></i> <?php _e('回复'); ?>
-                                        </a>
-                                        <a href="#<?php echo $comment['theId']; ?>" rel="<?php $security->index('/action/comments-edit?do=edit&coid=' . $comment['coid']); ?>" class="operate-edit">
-                                            <i class="fas fa-edit"></i> <?php _e('编辑'); ?>
-                                        </a>
-                                        <?php if('approved' != $comment['status']): ?>
-                                            <a href="<?php $security->index('/action/comments-edit?do=approved&coid=' . $comment['coid']); ?>" class="operate-approved text-green-600">
-                                                <i class="fas fa-check"></i> <?php _e('通过'); ?>
-                                            </a>
-                                        <?php endif; ?>
-                                        <?php if('spam' != $comment['status']): ?>
-                                            <a href="<?php $security->index('/action/comments-edit?do=spam&coid=' . $comment['coid']); ?>" class="operate-spam text-orange-500">
-                                                <i class="fas fa-exclamation-triangle"></i> <?php _e('标为垃圾'); ?>
-                                            </a>
-                                        <?php endif; ?>
-                                        <a lang="<?php echo _e('你确认要删除%s的评论吗?', htmlspecialchars($comment['author'])); ?>" href="<?php $security->index('/action/comments-edit?do=delete&coid=' . $comment['coid']); ?>" class="operate-delete text-red-500">
-                                            <i class="fas fa-trash-alt"></i> <?php _e('删除'); ?>
-                                        </a>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="px-4 py-8 text-center text-gray-500">
-                                <div class="mb-2 text-4xl text-gray-300"><i class="far fa-comments"></i></div>
-                                <?php _e('没有找到任何评论'); ?>
-                            </div>
-                        <?php endif; ?>
                     </div>
                     
                     <?php if(isset($request->cid)): ?>
@@ -533,110 +419,6 @@ $(document).ready(function () {
         });
 
         return false;
-    });
-});
-</script>
-
-<script>
-// Mobile-aware view mode initialization for manage-comments.php
-$(document).ready(function() {
-    var VIEW_MODE_KEY = 'typecho_list_view_mode';
-    var USER_PREFERENCE_KEY = 'typecho_list_view_user_set';
-    var MOBILE_BREAKPOINT = 768; // 移动端断点：小于 768px 为移动端
-    
-    // 检测是否为移动端
-    function isMobile() {
-        return $(window).width() < MOBILE_BREAKPOINT;
-    }
-    
-    // 获取用户是否手动设置过视图模式
-    function hasUserPreference() {
-        try {
-            return localStorage.getItem(USER_PREFERENCE_KEY) === 'true';
-        } catch(e) {
-            return false;
-        }
-    }
-    
-    // 获取保存的视图模式
-    function getSavedViewMode() {
-        try {
-            return localStorage.getItem(VIEW_MODE_KEY) || null;
-        } catch(e) {
-            return null;
-        }
-    }
-    
-    // 应用视图模式
-    function applyViewMode(mode) {
-        var $container = $('.operate-form').closest('.bg-white');
-        
-        if (mode === 'card') {
-            $container.addClass('view-mode-card');
-            $('.view-toggle .btn-table-view').removeClass('active');
-            $('.view-toggle .btn-card-view').addClass('active');
-        } else {
-            $container.removeClass('view-mode-card');
-            $('.view-toggle .btn-table-view').addClass('active');
-            $('.view-toggle .btn-card-view').removeClass('active');
-        }
-    }
-    
-    // 初始化视图模式
-    function initializeViewMode() {
-        var savedMode = getSavedViewMode();
-        var userHasPreference = hasUserPreference();
-        var mobile = isMobile();
-        
-        // 决策逻辑：
-        // 1. 如果用户手动设置过，使用用户的选择
-        // 2. 如果没有手动设置过，在移动端默认使用卡片模式
-        // 3. 桌面端默认使用表格模式
-        var defaultMode = mobile ? 'card' : 'table';
-        var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
-        
-        console.log('View Mode Init (Comments):', {
-            'Screen Width': $(window).width() + 'px',
-            'Is Mobile': mobile,
-            'User Has Preference': userHasPreference,
-            'Saved Mode': savedMode,
-            'Final Mode': finalMode
-        });
-        
-        applyViewMode(finalMode);
-    }
-    
-    // 监听用户手动切换视图（由 common-js.php 中的代码触发）
-    // 当用户点击切换按钮时，标记为用户已设置偏好
-    $('.view-toggle button').on('click', function() {
-        try {
-            localStorage.setItem(USER_PREFERENCE_KEY, 'true');
-            console.log('User preference saved: User manually switched view mode (Comments)');
-        } catch(e) {
-            // Ignore localStorage errors
-        }
-    });
-    
-    // 执行初始化
-    if ($('.view-toggle').length > 0) {
-        initializeViewMode();
-    }
-    
-    // 监听窗口大小变化（可选）
-    // 只在用户没有手动设置偏好时，根据屏幕大小自动调整
-    var resizeTimer;
-    $(window).on('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            // 只有在用户没有手动设置偏好时才自动调整
-            if (!hasUserPreference() && $('.view-toggle').length > 0) {
-                var mobile = isMobile();
-                var currentMode = mobile ? 'card' : 'table';
-                applyViewMode(currentMode);
-                
-                console.log('Auto-adjusted to', currentMode, 'mode due to window resize (Comments)');
-            }
-        }, 250); // 防抖，250ms 后才执行
     });
 });
 </script>

@@ -66,6 +66,16 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                              </div>
                              <button lang="<?php _e('您确认要清理未归档的文件吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 rounded hover:bg-red-100 text-red-600 shadow-sm btn-operate" href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"><?php _e('清理未归档'); ?></button>
                          </div>
+                         <div class="view-toggle">
+                             <button type="button" class="btn-table-view active" title="<?php _e('表格视图'); ?>">
+                                 <i class="fas fa-table"></i>
+                                 <span class="hidden sm:inline"><?php _e('表格'); ?></span>
+                             </button>
+                             <button type="button" class="btn-card-view" title="<?php _e('卡片视图'); ?>">
+                                 <i class="fas fa-th-large"></i>
+                                 <span class="hidden sm:inline"><?php _e('卡片'); ?></span>
+                             </button>
+                         </div>
                     </div>
 
                     <div class="table-wrapper" data-table-scroll>
@@ -82,8 +92,30 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             <?php if ($attachments->have()): ?>
-                                <?php while ($attachments->next()): ?>
-                                    <?php $mime = \Typecho\Common::mimeIconType($attachments->attachment->mime); ?>
+                                <?php 
+                                // Store attachments data for card view
+                                $attachmentsData = [];
+                                while ($attachments->next()): 
+                                    $mime = \Typecho\Common::mimeIconType($attachments->attachment->mime);
+                                    // Store all necessary data in an array
+                                    $attachmentsData[] = [
+                                        'cid' => $attachments->cid,
+                                        'title' => $attachments->title,
+                                        'mime' => $mime,
+                                        'isImage' => $attachments->attachment->isImage,
+                                        'url' => $attachments->attachment->url,
+                                        'commentsNum' => $attachments->commentsNum,
+                                        'author' => [
+                                            'screenName' => $attachments->author->screenName
+                                        ],
+                                        'parentPost' => [
+                                            'cid' => $attachments->parentPost->cid ?? null,
+                                            'type' => $attachments->parentPost->type ?? null,
+                                            'title' => $attachments->parentPost->title ?? null
+                                        ],
+                                        'created' => $attachments->created
+                                    ];
+                                ?>
                                     <tr id="<?php $attachments->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3">
                                             <input type="checkbox" value="<?php $attachments->cid(); ?>" name="cid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
@@ -128,6 +160,79 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                             <?php endif; ?>
                         </tbody>
                     </table>
+                    </div>
+
+                    <!-- Card View Container -->
+                    <div class="card-view-container">
+                        <?php if (!empty($attachmentsData)): ?>
+                            <?php foreach ($attachmentsData as $attachment): ?>
+                                <div class="content-card media-card" id="card-<?php echo $attachment['cid']; ?>">
+                                    <input type="checkbox" value="<?php echo $attachment['cid']; ?>" name="cid[]" class="card-checkbox rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                    
+                                    <!-- Media Preview -->
+                                    <div class="card-media-preview">
+                                        <?php if ($attachment['isImage']): ?>
+                                            <a href="<?php $options->adminUrl('media.php?cid=' . $attachment['cid']); ?>" class="media-preview-link">
+                                                <img src="<?php echo $attachment['url']; ?>" alt="<?php echo htmlspecialchars($attachment['title']); ?>" class="media-preview-image">
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="<?php $options->adminUrl('media.php?cid=' . $attachment['cid']); ?>" class="media-preview-link media-preview-icon">
+                                                <i class="fas fa-file text-6xl text-gray-300"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                        <a href="<?php $options->adminUrl('manage-comments.php?cid=' . $attachment['cid']); ?>" 
+                                           class="card-comment-badge flex-shrink-0 <?php echo $attachment['commentsNum'] > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                            <?php echo $attachment['commentsNum']; ?>
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="card-header">
+                                        <div class="flex-1">
+                                            <a href="<?php $options->adminUrl('media.php?cid=' . $attachment['cid']); ?>" class="card-title">
+                                                <i class="fas fa-<?php echo $attachment['isImage'] ? 'image' : 'file'; ?> mr-2 text-gray-400"></i>
+                                                <?php echo htmlspecialchars($attachment['title']); ?>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-meta">
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-user text-gray-400"></i>
+                                            <span><?php echo htmlspecialchars($attachment['author']['screenName']); ?></span>
+                                        </div>
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-folder text-gray-400"></i>
+                                            <span>
+                                                <?php if ($attachment['parentPost']['cid']): ?>
+                                                    <a href="<?php $options->adminUrl('write-' . (0 === strpos($attachment['parentPost']['type'], 'post') ? 'post' : 'page') . '.php?cid=' . $attachment['parentPost']['cid']); ?>" class="hover:text-discord-accent"><?php echo htmlspecialchars($attachment['parentPost']['title']); ?></a>
+                                                <?php else: ?>
+                                                    <span class="text-gray-400"><?php _e('未归档'); ?></span>
+                                                <?php endif; ?>
+                                            </span>
+                                        </div>
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-clock text-gray-400"></i>
+                                            <span><?php echo (new \Typecho\Date($attachment['created']))->word(); ?></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-actions">
+                                        <a href="<?php $options->adminUrl('media.php?cid=' . $attachment['cid']); ?>">
+                                            <i class="fas fa-edit"></i> <?php _e('编辑'); ?>
+                                        </a>
+                                        <a href="<?php echo $attachment['url']; ?>" target="_blank">
+                                            <i class="fas fa-external-link-alt"></i> <?php _e('查看'); ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <!-- Empty state -->
+                            <div class="col-span-full px-4 py-8 text-center text-gray-500">
+                                <div class="mb-2 text-4xl text-gray-300"><i class="far fa-images"></i></div>
+                                <?php _e('没有找到任何文件'); ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </form>
             </div>
@@ -179,6 +284,81 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
     border-color: #5865F2;
     font-weight: 600;
 }
+
+/* Media Card Styles */
+.media-card {
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.media-card .card-checkbox {
+    z-index: 10;
+}
+
+.card-media-preview {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.media-preview-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+.media-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.media-card:hover .media-preview-image {
+    transform: scale(1.05);
+}
+
+.media-preview-icon {
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+}
+
+.media-card .card-comment-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.media-card .card-header {
+    padding: 1rem 1.25rem 0.5rem;
+}
+
+.media-card .card-title {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: start;
+}
+
+.media-card .card-meta {
+    padding: 0.5rem 1.25rem 0.75rem;
+    border-top: none;
+}
+
+.media-card .card-actions {
+    padding: 0.75rem 1.25rem 1rem;
+    border-top: 1px solid #f3f4f6;
+}
 </style>
 
 <?php
@@ -208,4 +388,134 @@ $(document).ready(function () {
     });
 });
 </script>
-
+<script>
+// Mobile-aware view mode for manage-medias.php (独立存储)
+$(document).ready(function() {
+    var VIEW_MODE_KEY = 'typecho_media_view_mode';
+    var USER_PREFERENCE_KEY = 'typecho_media_view_user_set';
+    var MOBILE_BREAKPOINT = 768; // 移动端断点：小于 768px 为移动端
+    
+    // 检测是否为移动端
+    function isMobile() {
+        return $(window).width() < MOBILE_BREAKPOINT;
+    }
+    
+    // 获取用户是否手动设置过视图模式
+    function hasUserPreference() {
+        try {
+            return localStorage.getItem(USER_PREFERENCE_KEY) === 'true';
+        } catch(e) {
+            return false;
+        }
+    }
+    
+    // 保存视图模式
+    function saveViewMode(mode) {
+        try {
+            localStorage.setItem(VIEW_MODE_KEY, mode);
+            console.log('Media view mode saved:', mode);
+        } catch(e) {
+            console.error('Failed to save view mode:', e);
+        }
+    }
+    
+    // 获取保存的视图模式
+    function getSavedViewMode() {
+        try {
+            return localStorage.getItem(VIEW_MODE_KEY) || null;
+        } catch(e) {
+            return null;
+        }
+    }
+    
+    // 应用视图模式
+    function applyViewMode(mode) {
+        var $container = $('.operate-form').closest('.bg-white');
+        
+        if (mode === 'card') {
+            $container.addClass('view-mode-card');
+            $('.view-toggle .btn-table-view').removeClass('active');
+            $('.view-toggle .btn-card-view').addClass('active');
+        } else {
+            $container.removeClass('view-mode-card');
+            $('.view-toggle .btn-table-view').addClass('active');
+            $('.view-toggle .btn-card-view').removeClass('active');
+        }
+    }
+    
+    // 初始化视图模式
+    function initializeViewMode() {
+        var savedMode = getSavedViewMode();
+        var userHasPreference = hasUserPreference();
+        var mobile = isMobile();
+        
+        // 决策逻辑：
+        // 1. 如果用户手动设置过，使用用户的选择
+        // 2. 如果没有手动设置过，在移动端默认使用卡片模式
+        // 3. 桌面端默认使用表格模式
+        var defaultMode = mobile ? 'card' : 'table';
+        var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
+        
+        console.log('📱 Media View Mode Init:', {
+            'Screen Width': $(window).width() + 'px',
+            'Is Mobile': mobile,
+            'User Has Preference': userHasPreference,
+            'Saved Mode': savedMode,
+            'Final Mode': finalMode
+        });
+        
+        applyViewMode(finalMode);
+    }
+    
+    // 监听用户手动切换视图（覆盖 common-js.php 的通用处理）
+    $('.view-toggle button').off('click').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var $btn = $(this);
+        var newMode = $btn.hasClass('btn-table-view') ? 'table' : 'card';
+        
+        // 保存到独立的 localStorage
+        saveViewMode(newMode);
+        
+        // 标记用户已手动设置
+        try {
+            localStorage.setItem(USER_PREFERENCE_KEY, 'true');
+            console.log('✅ User manually switched to', newMode, 'view');
+        } catch(e) {
+            console.error('Failed to save user preference:', e);
+        }
+        
+        // 应用视图模式
+        applyViewMode(newMode);
+        
+        return false;
+    });
+    
+    // 执行初始化
+    if ($('.view-toggle').length > 0) {
+        initializeViewMode();
+    }
+    
+    // 监听窗口大小变化
+    // 只在用户没有手动设置偏好时，根据屏幕大小自动调整
+    var resizeTimer;
+    $(window).on('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (!hasUserPreference() && $('.view-toggle').length > 0) {
+                var mobile = isMobile();
+                var currentMode = mobile ? 'card' : 'table';
+                
+                // 自动切换时也保存到 localStorage
+                var savedMode = getSavedViewMode();
+                if (savedMode !== currentMode) {
+                    saveViewMode(currentMode);
+                    applyViewMode(currentMode);
+                    console.log('📐 Auto-switched to', currentMode, 'view due to window resize');
+                }
+            }
+        }, 250); // 防抖，250ms 后才执行
+    });
+});
+</script>

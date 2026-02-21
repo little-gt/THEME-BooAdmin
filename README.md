@@ -2,9 +2,9 @@
 
 > **高效 · 现代 · 极简**
 >
-一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.2 版本带来了移动端深度优化和灵活的视图切换体验。
+一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.3 版本全面优化了管理页面的视图体验，支持多种内容类型的灵活视图切换。
 
-[![Release](https://img.shields.io/badge/Release-v1.1.3--rc2-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Release](https://img.shields.io/badge/Release-v1.1.3-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![CDN](https://img.shields.io/badge/CDN-AliYun-ff6900?style=flat-square)](https://www.aliyun.com)
@@ -66,7 +66,7 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ### 从 旧版本 升级
 1.  **强烈建议**删除服务器上旧的 `admin` 目录。
-2.  上传 v1.1.2 版本的 `admin` 目录到网站根目录。
+2.  上传 v1.1.3 版本的 `admin` 目录到网站根目录。
 3.  清理浏览器缓存，以加载最新的 CSS 和 JS 文件。
 4.  如果您使用的是 Typecho 1.3.0 或更高版本，升级后所有功能将自动适配。
 5.  🆕 移动端访问文章管理页时将自动切换到卡片视图，PC 端保持表格视图。
@@ -151,10 +151,17 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ## 📋 更新日志
 
-### v1.1.3 版本
-- 优化了通知样式兼容性的问题，适配整体的风格设计，同时保留兼容设计，确保旧插件的兼容性。
-- 管理独立页面支持切换卡片视图。
-- 管理评论页面支持切换卡片视图（注：管理评论的卡片视图暂不支持回复评论等操作）。
+### v1.1.3 版本（2026-02-22）
+- 🎨 **全局通知系统优化**: 重构通知组件样式，采用现代化设计语言，提供更好的视觉反馈和用户体验
+- 🔄 **多页面视图扩展**: 在 v1.1.2 文章管理的基础上，扩展卡片视图到更多管理页面
+  - 📝 **独立页面管理**: 支持表格/卡片视图切换，优化页面层级展示
+  - 💬 **评论管理**: 支持表格/卡片视图切换，更直观地查看评论内容和状态
+  - 📁 **文件管理**: 支持表格/卡片视图切换，提供更好的媒体文件预览体验
+- 💾 **视图偏好持久化**: 所有管理页面的视图选择都会自动保存，跨页面保持一致性
+- 📱 **移动端智能适配**: 各管理页面在移动设备上自动切换到卡片视图，触控操作更友好
+- 🔌 **向后兼容**: 保留对旧版插件和自定义通知的完整兼容性支持
+- 🎯 **用户体验提升**: 统一各管理页面的交互逻辑，提供一致的操作体验
+- 🚀 **性能优化**: 优化视图切换动画和数据渲染性能，确保流畅的使用体验
 
 ### v1.1.2 版本
 - 📱 **移动端自适应**: 智能检测设备屏幕尺寸，移动端（<768px）自动切换到卡片视图，提供更友好的浏览体验

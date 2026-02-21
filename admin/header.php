@@ -4,8 +4,8 @@ if (!defined('__TYPECHO_ADMIN__')) {
 }
 
 $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?t=202602210101', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=202602210101', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?t=202602220101', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=202602220101', true) . '">
 <!-- TailwindCSS -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
 <!-- Font Awesome -->
@@ -531,6 +531,11 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         border-radius: 9999px;
         font-size: 0.875rem;
         font-weight: 600;
+    }
+    
+    /* Card view container - hidden by default */
+    .card-view-container {
+        display: none !important;
     }
     
     /* Hide table when card view is active */
