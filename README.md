@@ -4,7 +4,7 @@
 >
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.3 版本全面优化了管理页面的视图体验，支持多种内容类型的灵活视图切换。
 
-[![Release](https://img.shields.io/badge/Release-v1.1.3-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Release](https://img.shields.io/badge/Release-v1.1.4--rc1-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![CDN](https://img.shields.io/badge/CDN-AliYun-ff6900?style=flat-square)](https://www.aliyun.com)
@@ -151,7 +151,11 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ## 📋 更新日志
 
-### v1.1.3 版本（2026-02-22）
+### v1.1.4 版本
+
+- 优化了主页和菜单的头像展示，修复了特殊字符渲染异常的问题；
+
+### v1.1.3 版本
 - 🎨 **全局通知系统优化**: 重构通知组件样式，采用现代化设计语言，提供更好的视觉反馈和用户体验
 - 🔄 **多页面视图扩展**: 在 v1.1.2 文章管理的基础上，扩展卡片视图到更多管理页面
   - 📝 **独立页面管理**: 支持表格/卡片视图切换，优化页面层级展示

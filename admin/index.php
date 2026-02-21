@@ -225,9 +225,16 @@ $chartComments = json_encode($commentsData);
                             <?php while ($comments->next()): ?>
                                 <div class="p-4 hover:bg-gray-50 transition-colors">
                                     <div class="flex items-start space-x-3">
-                                        <div class="w-8 h-8 rounded-full bg-discord-accent text-white flex-shrink-0 flex items-center justify-center text-xs font-bold">
-                                            <?php echo strtoupper(substr($comments->author, 0, 1)); ?>
-                                        </div>
+                                        <?php 
+                                        $gravatarUrl = \Typecho\Common::gravatarUrl($comments->mail, 32);
+                                        $authorName = $comments->author(false);
+                                        $firstChar = mb_substr($authorName, 0, 1, 'UTF-8');
+                                        ?>
+                                        <img src="<?php echo $gravatarUrl; ?>" 
+                                             alt="<?php echo htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?>" 
+                                             class="comment-avatar w-8 h-8 rounded-full flex-shrink-0 border border-gray-200"
+                                             data-fallback="<?php echo htmlspecialchars($firstChar, ENT_QUOTES, 'UTF-8'); ?>"
+                                             onerror="generateFallbackAvatar(this, this.dataset.fallback, '#5865F2', 32);" />
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center justify-between mb-1">
                                                 <p class="text-sm font-bold text-gray-800 truncate"><?php $comments->author(false); ?></p>
@@ -288,6 +295,19 @@ $chartComments = json_encode($commentsData);
 include 'common-js.php';
 ?>
 <script>
+    // 生成降级头像的通用函数
+    function generateFallbackAvatar(img, text, color, size) {
+        if (!text) text = '?';
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+            <rect width="${size}" height="${size}" fill="${color}"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+                  fill="white" font-size="${Math.floor(size * 0.45)}" font-weight="bold" 
+                  font-family="sans-serif">${text.toUpperCase()}</text>
+        </svg>`;
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        img.onerror = null;
+    }
+    
     $(document).ready(function () {
         // Activity Chart Config - 使用真实数据
         var chartDays = <?php echo $chartDays; ?>;

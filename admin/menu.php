@@ -125,9 +125,16 @@
 
     <div class="p-4 border-t border-gray-100 bg-white">
         <div class="flex items-center group cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors">
-            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-discord-accent to-blue-400 flex items-center justify-center text-white font-bold shrink-0 shadow-sm">
-                <?php echo strtoupper(substr($user->screenName, 0, 1)); ?>
-            </div>
+            <?php 
+            $userAvatarUrl = \Typecho\Common::gravatarUrl($user->mail, 36);
+            $userName = $user->screenName;
+            $userFirstChar = mb_substr($userName, 0, 1, 'UTF-8');
+            ?>
+            <img src="<?php echo $userAvatarUrl; ?>" 
+                 alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" 
+                 class="user-avatar w-9 h-9 rounded-full shrink-0 shadow-sm border border-gray-200"
+                 data-fallback="<?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?>"
+                 onerror="generateUserFallbackAvatar(this);" />
             <div class="ml-3 overflow-hidden sidebar-text">
                 <p class="text-sm font-semibold text-gray-800 truncate"><a href="<?php $options->adminUrl('profile.php'); ?>"><?php $user->screenName(); ?></a></p>
                 <p class="text-xs text-gray-500 truncate"><?php echo $user->group; ?></p>
@@ -143,6 +150,38 @@
 <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden md:hidden"></div>
 
 <script>
+// 生成用户头像降级（带渐变）
+function generateUserFallbackAvatar(img) {
+    const text = img.dataset.fallback || '?';
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+        <defs>
+            <linearGradient id="grad-${Date.now()}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#5865F2"/>
+                <stop offset="100%" style="stop-color:#60A5FA"/>
+            </linearGradient>
+        </defs>
+        <rect width="36" height="36" fill="url(#grad-${Date.now()})"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+              fill="white" font-size="16" font-weight="bold" 
+              font-family="sans-serif">${text.toUpperCase()}</text>
+    </svg>`;
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    img.onerror = null;
+}
+
+// 生成评论头像降级（纯色）
+function generateFallbackAvatar(img, text, color, size) {
+    if (!text) text = '?';
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+        <rect width="${size}" height="${size}" fill="${color}"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+              fill="white" font-size="${Math.floor(size * 0.45)}" font-weight="bold" 
+              font-family="sans-serif">${text.toUpperCase()}</text>
+    </svg>`;
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    img.onerror = null;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('sidebar-toggle');
