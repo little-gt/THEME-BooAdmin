@@ -84,8 +84,8 @@ $(document).ready(function() {
     });
 
     function fileUploadStart (file) {
-        $('<li id="' + file.id + '" class="loading group flex items-center justify-between p-2 bg-white rounded border border-gray-200 shadow-sm">'
-            + '<span class="text-sm text-gray-500 flex items-center"><i class="fas fa-spinner fa-spin mr-2 text-discord-accent"></i> ' + file.name + '</span></li>').appendTo('#file-list');
+        $('<li id="' + file.id + '" class="loading group flex items-center justify-between p-2 bg-white border border-gray-200">' +
+            '<span class="text-sm text-gray-500 flex items-center"><i class="fas fa-spinner fa-spin mr-2 text-discord-accent"></i> ' + file.name + '</span></li>').appendTo('#file-list');
     }
 
     function fileUploadError (type, file) {
@@ -112,7 +112,7 @@ $(document).ready(function() {
         if (exist.length > 0) {
             li = exist.removeClass('loading').html('<span class="text-red-500 text-sm">' + fileError + '</span><span class="text-xs text-gray-400 ml-2">' + word + '</span>');
         } else {
-            li = $('<li class="p-2 bg-red-50 border border-red-200 rounded text-sm">' + fileError + '<br /><span class="text-xs text-gray-500">' + word + '</span></li>').appendTo('#file-list');
+            li = $('<li class="p-2 bg-red-50 border border-red-200 text-sm">' + fileError + '<br /><span class="text-xs text-gray-500">' + word + '</span></li>').appendTo('#file-list');
         }
 
         li.effect('highlight', {color : '#FBC2C4'}, 2000, function () {
@@ -121,16 +121,16 @@ $(document).ready(function() {
     }
 
     function fileUploadComplete (file, attachment) {
-        const li = $('#' + file.id).removeClass('loading').addClass('group flex items-center justify-between p-2 bg-white rounded border border-gray-200 hover:border-discord-accent transition-colors shadow-sm').data('cid', attachment.cid)
+        const li = $('#' + file.id).removeClass('loading').addClass('group flex items-center justify-between p-2 bg-white border border-gray-200 hover:border-discord-accent transition-colors').data('cid', attachment.cid)
             .data('url', attachment.url)
             .data('image', attachment.isImage)
-            .html('<input type="hidden" name="attachment[]" value="' + attachment.cid + '" />'
-                + '<a class="insert flex-1 text-sm text-discord-text hover:text-discord-accent truncate mr-2" target="_blank" href="###" title="<?php _e('点击插入文件'); ?>">'
-                + '<i class="far fa-file mr-2 text-gray-400"></i>' + attachment.title + '</a>'
-                + '<div class="info text-xs text-gray-400 flex items-center space-x-2">' + attachment.bytes
-                + ' <a class="file text-gray-400 hover:text-discord-accent" target="_blank" href="<?php $options->adminUrl('media.php'); ?>?cid=' 
-                + attachment.cid + '" title="<?php _e('编辑'); ?>"><i class="fas fa-edit"></i></a>'
-                + ' <a class="delete text-gray-400 hover:text-red-500" href="###" title="<?php _e('删除'); ?>"><i class="fas fa-trash-alt"></i></a></div>')
+            .html('<input type="hidden" name="attachment[]" value="' + attachment.cid + '" />' +
+                '<a class="insert flex-1 text-sm text-discord-text hover:text-discord-accent truncate mr-2" target="_blank" href="###" title="<?php _e('点击插入文件'); ?>">' +
+                '<i class="far fa-file mr-2 text-gray-400"></i>' + attachment.title + '</a>' +
+                '<div class="info text-xs text-gray-400 flex items-center space-x-2">' + attachment.bytes +
+                ' <a class="file text-gray-400 hover:text-discord-accent" target="_blank" href="<?php $options->adminUrl('media.php'); ?>?cid=' +
+                attachment.cid + '" title="<?php _e('编辑'); ?>"><i class="fas fa-edit"></i></a>' +
+                ' <a class="delete text-gray-400 hover:text-red-500" href="###" title="<?php _e('删除'); ?>"><i class="fas fa-trash-alt"></i></a></div>')
             .effect('highlight', 1000);
 
         attachInsertEvent(li);

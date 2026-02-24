@@ -1,14 +1,11 @@
-# 👻 BooAdmin Theme for Typecho
+# BooAdmin Theme for Typecho
 
 > **高效 · 现代 · 极简**
->
-一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.3 版本全面优化了管理页面的视图体验，支持多种内容类型的灵活视图切换。
 
-[![Release](https://img.shields.io/badge/Release-v1.1.4--rc2-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
-[![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
-[![CDN](https://img.shields.io/badge/CDN-AliYun-ff6900?style=flat-square)](https://www.aliyun.com)
-[![License](https://img.shields.io/badge/License-GPLv3-green?style=flat-square)](LICENSE)
+一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
+
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.4-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 
 ---
 
@@ -21,26 +18,12 @@
 
 全新设计的登录页面，采用现代化渐变背景，提供优雅的用户体验。
 
-### 控制台仪表板
+### 控制台仪表
 <p align="center">
   <img src="screenshot/screenshot1.png" alt="控制台仪表板" width="100%">
 </p>
 
 功能强大的仪表板，实时展示博客统计数据，包括文章数、评论数、待审核数和分类统计，配备内容趋势图表和内容分布饼图。
-
-### 文章管理
-<p align="center">
-  <img src="screenshot/screenshot2.png" alt="文章管理" width="100%">
-</p>
-
-清晰的文章列表视图，支持多种筛选和批量操作，让内容管理变得轻松高效。
-
-### 文件管理
-<p align="center">
-  <img src="screenshot/screenshot3.png" alt="文件管理" width="100%">
-</p>
-
-直观的文件预览界面，支持图片、文档等多种格式，提供便捷的文件管理体验。
 
 ### 备份与恢复
 <p align="center">
@@ -55,6 +38,20 @@
 </p>
 
 美观的主题管理界面，轻松切换和配置您的博客外观。
+
+### 文章管理
+<p align="center">
+  <img src="screenshot/screenshot2.png" alt="文章管理" width="100%">
+</p>
+
+清晰的文章列表视图，支持多种筛选和批量操作，让内容管理变得轻松高效。
+
+### 文件管理
+<p align="center">
+  <img src="screenshot/screenshot3.png" alt="文件管理" width="100%">
+</p>
+
+直观的文件预览界面，支持图片、文档等多种格式，提供便捷的文件管理体验。
 
 ---
 

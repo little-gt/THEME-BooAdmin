@@ -8,7 +8,7 @@ include 'menu.php';
 
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -18,7 +18,7 @@ include 'menu.php';
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="<?php $options->adminUrl('category.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+            <a href="<?php $options->adminUrl('category.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white text-sm font-medium hover:bg-blue-600 transition-colors">
                 <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -34,26 +34,26 @@ include 'menu.php';
         <div class="w-full max-w-none mx-auto">
 
             <!-- Category List -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-4">
+            <div class="bg-white border border-gray-200 overflow-hidden mb-4">
                 <form method="post" name="manage_categories" class="operate-form">
                     <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
                              <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
-                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                     <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
                                     <a lang="<?php _e('此分类下的所有内容将被删除, 你确认要删除这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                     <a lang="<?php _e('刷新分类可能需要等待较长时间, 你确认要刷新这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=refresh'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('刷新'); ?></a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <div class="px-4 py-2">
                                         <div class="flex items-center space-x-2">
-                                            <button type="submit" lang="<?php _e('你确认要合并这些分类吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white rounded hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
-                                            <select name="merge" class="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-discord-accent w-24">
+                                            <button type="submit" lang="<?php _e('你确认要合并这些分类吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
+                                            <select name="merge" class="text-xs border border-gray-300 px-2 py-1 focus:outline-none focus:border-discord-accent w-24">
                                                 <?php $categories->parse('<option value="{mid}">{name}</option>'); ?>
                                             </select>
                                         </div>
@@ -83,20 +83,20 @@ include 'menu.php';
                                 <?php while ($categories->next()): ?>
                                     <tr id="mid-<?php $categories->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3">
-                                            <input type="checkbox" value="<?php $categories->mid(); ?>" name="mid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                            <input type="checkbox" value="<?php $categories->mid(); ?>" name="mid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300">
                                         </td>
                                         <td class="py-3">
                                             <div class="flex items-center">
                                                 <a href="<?php $options->adminUrl('category.php?mid=' . $categories->mid); ?>" class="font-medium text-discord-text hover:text-discord-accent transition-colors"><?php $categories->name(); ?></a>
                                                 <?php if ($options->defaultCategory == $categories->mid): ?>
-                                                    <span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-gray-200 text-gray-600"><?php _e('默认'); ?></span>
+                                                    <span class="ml-2 px-1.5 py-0.5 text-xs bg-gray-200 text-gray-600"><?php _e('默认'); ?></span>
                                                 <?php endif; ?>
                                                 <a href="<?php $categories->permalink(); ?>" target="_blank" class="ml-2 text-gray-400 hover:text-discord-accent opacity-0 group-hover:opacity-100 transition-opacity" title="<?php _e('浏览 %s', $categories->name); ?>"><i class="fas fa-external-link-alt text-xs"></i></a>
                                             </div>
                                         </td>
                                         <td class="py-3 hidden md:table-cell text-sm text-gray-600">
                                             <?php if (count($categories->children) > 0): ?>
-                                                <a href="<?php $options->adminUrl('manage-categories.php?parent=' . $categories->mid); ?>" class="text-discord-accent hover:underline bg-discord-light px-2 py-0.5 rounded-full text-xs font-medium"><?php echo _n('1', '%d', count($categories->children)); ?></a>
+                                                <a href="<?php $options->adminUrl('manage-categories.php?parent=' . $categories->mid); ?>" class="text-discord-accent hover:underline bg-discord-light px-2 py-0.5 text-xs font-medium"><?php echo _n('1', '%d', count($categories->children)); ?></a>
                                             <?php else: ?>
                                                 <a href="<?php $options->adminUrl('category.php?parent=' . $categories->mid); ?>" class="text-gray-400 hover:text-discord-accent text-xs"><i class="fas fa-plus"></i> <?php echo _e('新增'); ?></a>
                                             <?php endif; ?>
@@ -105,7 +105,7 @@ include 'menu.php';
                                             <?php $categories->slug(); ?>
                                         </td>
                                         <td class="py-3 text-center">
-                                            <a href="<?php $options->adminUrl('manage-posts.php?category=' . $categories->mid); ?>" class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $categories->count > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?> hover:bg-blue-600 transition-colors">
+                                            <a href="<?php $options->adminUrl('manage-posts.php?category=' . $categories->mid); ?>" class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium <?php echo $categories->count > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?> hover:bg-blue-600 transition-colors">
                                                 <?php $categories->count(); ?>
                                             </a>
                                         </td>

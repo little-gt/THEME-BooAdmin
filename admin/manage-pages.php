@@ -8,7 +8,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
 ?>
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -18,7 +18,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
         </div>
         
         <div class="flex items-center space-x-4">
-             <a href="<?php $options->adminUrl('write-page.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+             <a href="<?php $options->adminUrl('write-page.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white text-sm font-medium hover:bg-blue-600 transition-colors">
                 <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -38,33 +38,33 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                 <div class="flex items-center space-x-2 text-sm text-gray-500">
                     <?php $pages->backLink(); ?>
                     <?php if ('' != $request->keywords): ?>
-                        <a href="<?php $options->adminUrl('manage-pages.php'); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
+                        <a href="<?php $options->adminUrl('manage-pages.php'); ?>" class="px-2 py-1 bg-gray-200 hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
                     <?php endif; ?>
                 </div>
 
                 <form method="get" class="flex flex-wrap items-center gap-2">
                      <div class="relative">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 text-sm focus:outline-none focus:border-discord-accent w-48 md:w-64">
                     </div>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
                 </form>
             </div>
 
             <!-- Page List -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_pages" class="operate-form">
                     <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
                              <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
-                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                     <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
                                     <a href="<?php $security->index('/action/contents-page-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=publish'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记为公开'); ?></a>
@@ -122,11 +122,11 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                 ?>
                                     <tr id="<?php $pages->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3">
-                                            <input type="checkbox" value="<?php $pages->cid(); ?>" name="cid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                            <input type="checkbox" value="<?php $pages->cid(); ?>" name="cid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300">
                                         </td>
                                         <td class="py-3 text-center">
                                             <a href="<?php $options->adminUrl('manage-comments.php?cid=' . $pages->cid); ?>" 
-                                               class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $pages->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                               class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium <?php echo $pages->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
                                                 <?php $pages->commentsNum(); ?>
                                             </a>
                                         </td>
@@ -136,10 +136,10 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                                     <?php $pages->title(); ?>
                                                 </a>
                                                 <?php
-                                                if ('page_draft' == $pages->type) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
-                                                elseif ($pages->revision) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
+                                                if ('page_draft' == $pages->type) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
+                                                elseif ($pages->revision) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
                                                 
-                                                if ('hidden' == $pages->status) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
+                                                if ('hidden' == $pages->status) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
                                                 ?>
                                             </div>
                                             <div class="mt-1 flex items-center space-x-3 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -151,7 +151,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                         </td>
                                         <td class="py-3 text-sm text-gray-600">
                                             <?php if (count($pages->children) > 0): ?>
-                                                <a href="<?php $options->adminUrl('manage-pages.php?parent=' . $pages->cid); ?>" class="text-discord-accent hover:underline bg-discord-light px-2 py-0.5 rounded-full text-xs font-medium"><?php echo _n('1', '%d', count($pages->children)); ?></a>
+                                                <a href="<?php $options->adminUrl('manage-pages.php?parent=' . $pages->cid); ?>" class="text-discord-accent hover:underline bg-discord-light px-2 py-0.5 text-xs font-medium"><?php echo _n('1', '%d', count($pages->children)); ?></a>
                                             <?php else: ?>
                                                 <a href="<?php $options->adminUrl('write-page.php?parent=' . $pages->cid); ?>" class="text-gray-400 hover:text-discord-accent text-xs"><i class="fas fa-plus"></i> <?php echo _e('新增'); ?></a>
                                             <?php endif; ?>
@@ -185,7 +185,7 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                         <?php if (!empty($pagesData)): ?>
                             <?php foreach ($pagesData as $page): ?>
                                 <div class="content-card" id="card-<?php echo $page['cid']; ?>">
-                                    <input type="checkbox" value="<?php echo $page['cid']; ?>" name="cid[]" class="card-checkbox rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                    <input type="checkbox" value="<?php echo $page['cid']; ?>" name="cid[]" class="card-checkbox text-discord-accent focus:ring-discord-accent border-gray-300">
                                     
                                     <div class="card-header">
                                         <div class="flex-1">
@@ -194,10 +194,10 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                                             </a>
                                             <div class="card-badges">
                                                 <?php
-                                                if ('page_draft' == $page['type']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
-                                                elseif ($page['revision']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
+                                                if ('page_draft' == $page['type']) echo '<span class="px-1.5 py-0.5 text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
+                                                elseif ($page['revision']) echo '<span class="px-1.5 py-0.5 text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
                                                 
-                                                if ('hidden' == $page['status']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
+                                                if ('hidden' == $page['status']) echo '<span class="px-1.5 py-0.5 text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
                                                 ?>
                                             </div>
                                         </div>
@@ -275,7 +275,6 @@ $pages = \Widget\Contents\Page\Admin::alloc();
     min-width: 32px;
     height: 32px;
     padding: 0 8px;
-    border-radius: 6px;
     background-color: white;
     color: #4b5563; /* text-gray-600 */
     font-size: 0.875rem; /* text-sm */

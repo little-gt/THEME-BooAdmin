@@ -6,7 +6,7 @@ include 'menu.php';
 
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -30,7 +30,7 @@ include 'menu.php';
     <!-- Content Area -->
     <div class="flex-1 overflow-y-auto p-4 md:p-8">
         <div class="w-full max-w-none mx-auto">
-             <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+             <div class="bg-white border border-gray-100 overflow-hidden">
                  <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                     <h2 class="text-lg font-bold text-discord-text flex items-center">
                         <i class="fas fa-sliders-h text-discord-accent mr-2"></i> <?php _e('插件设置'); ?>

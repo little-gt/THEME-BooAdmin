@@ -8,7 +8,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 ?>
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -34,37 +34,37 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                 <div class="flex items-center space-x-2 text-sm text-gray-500">
                     <?php if ('' != $request->keywords): ?>
-                        <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
+                        <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="px-2 py-1 bg-gray-200 hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
                     <?php endif; ?>
                 </div>
 
                 <form method="get" class="flex flex-wrap items-center gap-2">
                      <div class="relative">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 text-sm focus:outline-none focus:border-discord-accent w-48 md:w-64">
                     </div>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
                 </form>
             </div>
 
             <!-- Media List -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_medias" class="operate-form">
                     <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
                              <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
-                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                     <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
                                     <a lang="<?php _e('你确认要删除这些文件吗?'); ?>" href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                 </div>
                              </div>
-                             <button lang="<?php _e('您确认要清理未归档的文件吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 rounded hover:bg-red-100 text-red-600 shadow-sm btn-operate" href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"><?php _e('清理未归档'); ?></button>
+                             <button lang="<?php _e('您确认要清理未归档的文件吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 btn-operate" href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"><?php _e('清理未归档'); ?></button>
                          </div>
                          <div class="view-toggle">
                              <button type="button" class="btn-table-view active" title="<?php _e('表格视图'); ?>">
@@ -118,11 +118,11 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                                 ?>
                                     <tr id="<?php $attachments->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3">
-                                            <input type="checkbox" value="<?php $attachments->cid(); ?>" name="cid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                            <input type="checkbox" value="<?php $attachments->cid(); ?>" name="cid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300">
                                         </td>
                                         <td class="py-3 text-center">
                                             <a href="<?php $options->adminUrl('manage-comments.php?cid=' . $attachments->cid); ?>" 
-                                               class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $attachments->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                               class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium <?php echo $attachments->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
                                                 <?php $attachments->commentsNum(); ?>
                                             </a>
                                         </td>
@@ -142,7 +142,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                                             <?php if ($attachments->parentPost->cid): ?>
                                                 <a href="<?php $options->adminUrl('write-' . (0 === strpos($attachments->parentPost->type, 'post') ? 'post' : 'page') . '.php?cid=' . $attachments->parentPost->cid); ?>" class="text-discord-accent hover:underline"><?php $attachments->parentPost->title(); ?></a>
                                             <?php else: ?>
-                                                <span class="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-500"><?php _e('未归档'); ?></span>
+                                                <span class="px-2 py-0.5 text-xs bg-gray-100 text-gray-500"><?php _e('未归档'); ?></span>
                                             <?php endif; ?>
                                         </td>
                                         <td class="py-3 pr-4 text-right text-sm text-gray-500">
@@ -167,7 +167,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                         <?php if (!empty($attachmentsData)): ?>
                             <?php foreach ($attachmentsData as $attachment): ?>
                                 <div class="content-card media-card" id="card-<?php echo $attachment['cid']; ?>">
-                                    <input type="checkbox" value="<?php echo $attachment['cid']; ?>" name="cid[]" class="card-checkbox rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                    <input type="checkbox" value="<?php echo $attachment['cid']; ?>" name="cid[]" class="card-checkbox text-discord-accent focus:ring-discord-accent border-gray-300">
                                     
                                     <!-- Media Preview -->
                                     <div class="card-media-preview">
@@ -263,7 +263,6 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
     min-width: 32px;
     height: 32px;
     padding: 0 8px;
-    border-radius: 6px;
     background-color: white;
     color: #4b5563; /* text-gray-600 */
     font-size: 0.875rem; /* text-sm */
@@ -336,7 +335,6 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
     top: 0.75rem;
     right: 0.75rem;
     z-index: 5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .media-card .card-header {

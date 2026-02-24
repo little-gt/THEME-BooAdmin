@@ -8,7 +8,7 @@ $stat = \Widget\Stat::alloc();
 
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -34,12 +34,12 @@ $stat = \Widget\Stat::alloc();
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Sidebar / User Info Card -->
                 <div class="lg:col-span-4 xl:col-span-3">
-                    <div class="bg-white rounded-lg shadow-sm p-6 text-center border border-gray-100">
+                    <div class="bg-white p-6 text-center border border-gray-100">
                         <div class="relative inline-block mb-4 group">
-                            <div class="w-32 h-32 rounded-full overflow-hidden mx-auto border-4 border-discord-light">
+                            <div class="w-32 h-32 overflow-hidden mx-auto border-4 border-discord-light">
                                 <img src="<?php echo \Typecho\Common::gravatarUrl($user->mail, 220, 'X', 'mm', $request->isSecure()); ?>" alt="<?php $user->screenName(); ?>" class="w-full h-full object-cover">
                             </div>
-                            <a href="https://gravatar.com/" target="_blank" class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm font-medium">
+                            <a href="https://gravatar.com/" target="_blank" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm font-medium">
                                 <i class="fas fa-camera mr-1"></i> <?php _e('修改头像'); ?>
                             </a>
                         </div>
@@ -50,7 +50,7 @@ $stat = \Widget\Stat::alloc();
                         <div class="mt-6 border-t border-gray-100 pt-4 text-left space-y-3">
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-discord-muted"><?php _e('用户组'); ?></span>
-                                <span class="bg-discord-accent text-white px-2 py-0.5 rounded text-xs font-medium capitalize"><?php echo $user->group; ?></span>
+                                <span class="bg-discord-accent text-white px-2 py-0.5 text-xs font-medium capitalize"><?php echo $user->group; ?></span>
                             </div>
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-discord-muted"><?php _e('文章'); ?></span>
@@ -76,7 +76,7 @@ $stat = \Widget\Stat::alloc();
                 <div class="lg:col-span-8 xl:col-span-9 space-y-6">
                     
                     <!-- Profile Settings -->
-                    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="bg-white p-6 border border-gray-100">
                         <div class="flex items-center mb-6 pb-4 border-b border-gray-100">
                             <i class="fas fa-id-card text-discord-accent mr-3 text-lg"></i>
                             <h3 class="text-lg font-bold text-discord-text"><?php _e('个人资料'); ?></h3>
@@ -89,7 +89,7 @@ $stat = \Widget\Stat::alloc();
 
                     <?php if ($user->pass('contributor', true)): ?>
                     <!-- Writing Settings -->
-                    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="bg-white p-6 border border-gray-100">
                          <div class="flex items-center mb-6 pb-4 border-b border-gray-100">
                             <i class="fas fa-pen-fancy text-green-500 mr-3 text-lg"></i>
                             <h3 class="text-lg font-bold text-discord-text"><?php _e('撰写设置'); ?></h3>
@@ -101,7 +101,7 @@ $stat = \Widget\Stat::alloc();
                     <?php endif; ?>
 
                     <!-- Password Settings -->
-                    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="bg-white p-6 border border-gray-100">
                          <div class="flex items-center mb-6 pb-4 border-b border-gray-100">
                             <i class="fas fa-lock text-red-500 mr-3 text-lg"></i>
                             <h3 class="text-lg font-bold text-discord-text"><?php _e('密码修改'); ?></h3>
@@ -127,7 +127,6 @@ $stat = \Widget\Stat::alloc();
 .typecho-reform-style .message {
     padding: 0.75rem;
     margin-bottom: 1rem;
-    border-radius: 0.375rem;
     font-size: 0.875rem;
 }
 .typecho-reform-style .message.success {

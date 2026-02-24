@@ -4,8 +4,8 @@ if (!defined('__TYPECHO_ADMIN__')) {
 }
 
 $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?t=202602220101', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=202602220101', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?t=202602242330', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=202602242330', true) . '">
 <!-- TailwindCSS -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
 <!-- Font Awesome -->
@@ -45,7 +45,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         line-height: 1.5 !important;
         background-color: #fff;
         border-color: #e5e7eb; /* Tailwind gray-200 */
-        border-radius: 0.375rem; /* Tailwind rounded-md */
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -55,7 +54,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     select:focus {
         border-color: #5865F2 !important; /* Discord accent */
         outline: none !important;
-        box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.2);
     }
     
     /* Sidebar fixed positioning on desktop */
@@ -175,7 +173,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         max-width: 600px;
         min-width: 200px;
         border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
         padding: 0.625rem 0.875rem;
         font-size: 0.875rem;
         background-color: #f9fafb;
@@ -192,7 +189,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         outline: none;
         border-color: #5865F2;
         background-color: white;
-        box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
     }
     
     /* Checkbox and Radio - keep on same line */
@@ -213,7 +209,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         padding: 0.5rem 0.75rem;
         margin-bottom: 0.375rem;
         margin-right: 0.5rem;
-        border-radius: 0.375rem;
         background-color: #f9fafb;
         border: 1px solid transparent;
         transition: all 0.15s;
@@ -256,7 +251,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         min-width: 200px;
         max-width: 600px;
         border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
         padding: 0.625rem 0.875rem;
         font-size: 0.875rem;
         background-color: #f9fafb;
@@ -271,7 +265,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         outline: none;
         border-color: #5865F2;
         background-color: white;
-        box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
     }
 
     @media (max-width: 767px) {
@@ -434,7 +427,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .content-card {
         background: white;
         border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
         padding: 1.25rem;
         transition: all 0.2s ease;
         position: relative;
@@ -445,7 +437,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     
     .content-card:hover {
         border-color: #5865F2;
-        box-shadow: 0 4px 12px rgba(88, 101, 242, 0.15);
         transform: translateY(-2px);
     }
     
@@ -528,7 +519,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         min-width: 2rem;
         height: 2rem;
         padding: 0 0.5rem;
-        border-radius: 9999px;
         font-size: 0.875rem;
         font-weight: 600;
     }
@@ -553,7 +543,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         gap: 0.25rem;
         background: #f3f4f6;
         padding: 0.25rem;
-        border-radius: 0.375rem;
     }
     
     .view-toggle button {
@@ -561,7 +550,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         border: none;
         background: transparent;
         color: #6b7280;
-        border-radius: 0.25rem;
         cursor: pointer;
         transition: all 0.2s;
         font-size: 0.875rem;
@@ -578,7 +566,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .view-toggle button.active {
         background: white;
         color: #5865F2;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     
     /* Hide view toggle on very small screens */
@@ -619,7 +606,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
             width: 60px;
             background: linear-gradient(to left, rgba(243,244,246,0.95), transparent);
             pointer-events: none;
-            border-radius: 0 0.5rem 0.5rem 0;
+
         }
         .settings-tabs > a {
             min-width: 100px;
@@ -638,13 +625,11 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
         color: white;
         padding: 0.75rem 2rem;
-        border-radius: 0.5rem;
         font-weight: 600;
         font-size: 0.875rem;
         border: none;
         cursor: pointer;
         transition: all 0.2s;
-        box-shadow: 0 2px 4px rgba(88, 101, 242, 0.3);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -656,7 +641,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .typecho-option-submit button:hover,
     .typecho-option-submit input[type="submit"]:hover {
         background: linear-gradient(135deg, #4752c4 0%, #3c45a5 100%);
-        box-shadow: 0 4px 8px rgba(88, 101, 242, 0.4);
         transform: translateY(-1px);
     }
     
@@ -701,7 +685,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         max-width: 600px;
         min-width: 200px;
         border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
         padding: 0.625rem 0.875rem;
         font-size: 0.875rem;
         background-color: #f9fafb;
@@ -714,7 +697,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         min-width: 200px;
         max-width: 600px;
         border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
         padding: 0.625rem 0.875rem;
         font-size: 0.875rem;
         background-color: #f9fafb;
@@ -731,7 +713,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         outline: none;
         border-color: #5865F2;
         background-color: white;
-        box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
     }
     .typecho-reform-style .description {
         display: block;
@@ -745,13 +726,11 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
         color: white;
         padding: 0.75rem 2rem;
-        border-radius: 0.5rem;
         font-weight: 600;
         font-size: 0.875rem;
         border: none;
         cursor: pointer;
         transition: all 0.2s;
-        box-shadow: 0 2px 4px rgba(88, 101, 242, 0.3);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -763,7 +742,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .typecho-reform-style button[type="submit"]:hover,
     .typecho-reform-style input[type="submit"]:hover {
         background: linear-gradient(135deg, #4752c4 0%, #3c45a5 100%);
-        box-shadow: 0 4px 8px rgba(88, 101, 242, 0.4);
         transform: translateY(-1px);
     }
     /* Radio and checkbox styling for reform style */
@@ -788,7 +766,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         padding: 0.5rem 0.75rem;
         margin-bottom: 0.375rem;
         margin-right: 0.5rem;
-        border-radius: 0.375rem;
         background-color: #f9fafb;
         border: 1px solid transparent;
         transition: all 0.15s;
@@ -847,8 +824,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .typecho-notification {
         pointer-events: all;
         background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1);
         padding: 16px 20px;
         display: flex;
         align-items: flex-start;
@@ -859,6 +834,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         transform: translateX(400px);
         transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         border-left: 4px solid #6b7280;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加轻微阴影 */
     }
     
     /* 显示动画 */
@@ -882,7 +858,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
         font-size: 14px;
     }
     
@@ -932,7 +907,6 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 4px;
         transition: all 0.2s;
         font-size: 16px;
         padding: 0;

@@ -7,7 +7,7 @@ include 'menu.php';
 
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -28,16 +28,16 @@ include 'menu.php';
 
     <div class="flex-1 overflow-y-auto p-4 md:p-8">
         <div class="w-full max-w-none mx-auto">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden mb-8">
+            <div class="bg-white border border-gray-100 overflow-hidden mb-8">
                 <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <h2 class="text-xl font-bold text-discord-text flex items-center">
                         <i class="fas fa-swatchbook text-discord-accent mr-2"></i><?php _e('主题列表'); ?>
                     </h2>
                     <div class="flex flex-wrap gap-2">
-                        <a href="<?php $options->adminUrl('theme-editor.php'); ?>" class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded text-discord-text hover:bg-gray-50 transition-colors shadow-sm text-sm font-medium">
+                        <a href="<?php $options->adminUrl('theme-editor.php'); ?>" class="flex items-center px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
                             <i class="fas fa-code mr-1"></i> <?php _e('编辑当前主题'); ?>
                         </a>
-                        <a href="<?php $options->adminUrl('options-theme.php'); ?>" class="flex items-center px-4 py-2 bg-discord-accent text-white rounded hover:bg-blue-600 transition-colors shadow-sm text-sm font-medium">
+                        <a href="<?php $options->adminUrl('options-theme.php'); ?>" class="flex items-center px-4 py-2 bg-discord-accent text-white hover:bg-blue-600 transition-colors text-sm font-medium">
                             <i class="fas fa-cog mr-1"></i> <?php _e('主题设置'); ?>
                         </a>
                     </div>
@@ -47,8 +47,8 @@ include 'menu.php';
                         <?php \Widget\Themes\Rows::alloc()->to($themes); ?>
                         <?php if ($themes->have()): ?>
                             <?php while ($themes->next()): ?>
-                                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 flex flex-col group transition-transform transform hover:-translate-y-1 hover:shadow-md <?php if ($themes->activated): ?>ring-2 ring-discord-accent<?php endif; ?>">
-                                    <div class="relative h-44 bg-gray-200 overflow-hidden rounded-md">
+                                <div class="bg-gray-50 p-4 border border-gray-200 flex flex-col group transition-transform transform hover:-translate-y-1 <?php if ($themes->activated): ?>ring-2 ring-discord-accent<?php endif; ?>">
+                                    <div class="relative h-44 bg-gray-200 overflow-hidden">
                                         <?php if ($themes->screen): ?>
                                             <img src="<?php $themes->screen(); ?>" alt="<?php $themes->name(); ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                         <?php else: ?>
@@ -57,7 +57,7 @@ include 'menu.php';
                                             </div>
                                         <?php endif; ?>
                                         <?php if ($themes->activated): ?>
-                                            <div class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
+                                            <div class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1">
                                                 <i class="fas fa-check mr-1"></i> <?php _e('使用中'); ?>
                                             </div>
                                         <?php endif; ?>
@@ -65,7 +65,7 @@ include 'menu.php';
                                     <div class="flex-1 flex flex-col mt-4">
                                         <div class="flex justify-between items-start mb-2">
                                             <h3 class="text-base font-bold text-discord-text truncate" title="<?php $themes->title(); ?>"><?php $themes->title(); ?></h3>
-                                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full"><?php $themes->version(); ?></span>
+                                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5"><?php $themes->version(); ?></span>
                                         </div>
                                         <p class="text-sm text-discord-muted mb-4 line-clamp-2 flex-1"><?php echo strip_tags($themes->description); ?></p>
                                         <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
@@ -74,11 +74,11 @@ include 'menu.php';
                                             </div>
                                             <div class="flex space-x-2">
                                                 <?php if (!$themes->activated): ?>
-                                                    <a href="<?php $security->index('/action/themes-edit?change=' . $themes->name); ?>" class="flex items-center px-3 py-1.5 bg-discord-accent text-white rounded text-xs font-medium hover:bg-blue-600 transition-colors">
+                                                    <a href="<?php $security->index('/action/themes-edit?change=' . $themes->name); ?>" class="flex items-center px-3 py-1.5 bg-discord-accent text-white text-xs font-medium hover:bg-blue-600 transition-colors">
                                                         <i class="fas fa-check mr-1"></i> <?php _e('启用'); ?>
                                                     </a>
                                                 <?php else: ?>
-                                                    <a href="<?php $options->adminUrl('options-theme.php'); ?>" class="flex items-center px-3 py-1.5 bg-gray-100 text-discord-text rounded text-xs font-medium hover:bg-gray-200 transition-colors">
+                                                    <a href="<?php $options->adminUrl('options-theme.php'); ?>" class="flex items-center px-3 py-1.5 bg-gray-100 text-discord-text text-xs font-medium hover:bg-gray-200 transition-colors">
                                                         <i class="fas fa-cog mr-1"></i> <?php _e('设置'); ?>
                                                     </a>
                                                 <?php endif; ?>
@@ -88,9 +88,9 @@ include 'menu.php';
                                 </div>
                             <?php endwhile; ?>
                         <?php else: ?>
-                            <div class="col-span-full text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                            <div class="col-span-full text-center py-10 bg-gray-50 border border-dashed border-gray-300">
                                 <p class="text-gray-500 text-lg mb-2 flex items-center justify-center"><i class="fas fa-info-circle mr-2"></i><?php _e('没有可用主题'); ?></p>
-                                <p class="text-gray-400 text-sm"><?php _e('请上传主题到 <span class=\"font-mono bg-gray-100 px-1 rounded\">/usr/themes</span> 目录'); ?></p>
+                                <p class="text-gray-400 text-sm"><?php _e('请上传主题到 <span class="font-mono bg-gray-100 px-1">/usr/themes</span> 目录'); ?></p>
                             </div>
                         <?php endif; ?>
                     </div>

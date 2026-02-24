@@ -1,9 +1,9 @@
 <?php if (!defined('__TYPECHO_ADMIN__')) exit; ?>
 <!-- Sidebar -->
-<aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300 transform md:translate-x-0 fixed md:relative z-20 h-full shadow-sm" id="sidebar">
+<aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300 transform md:translate-x-0 fixed md:relative z-20 h-full" id="sidebar">
     <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100 bg-white">
         <h1 class="text-xl font-bold text-discord-accent flex items-center">
-             <div class="w-8 h-8 rounded bg-discord-accent text-white flex items-center justify-center mr-2">
+             <div class="w-8 h-8 bg-discord-accent text-white flex items-center justify-center mr-2">
                  <i class="fas fa-pen-nib text-sm"></i>
              </div>
             <span class="sidebar-text text-gray-800 tracking-tight">Typecho</span>
@@ -17,7 +17,7 @@
         <ul class="space-y-1 px-3">
             <!-- Dashboard -->
             <li>
-                <a href="<?php $options->adminUrl('index.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 <?php if($menu->current == 'index.php') echo 'bg-blue-50 text-discord-accent'; else echo 'hover:bg-gray-100 hover:text-gray-900'; ?> rounded-md font-medium transition-all group">
+                <a href="<?php $options->adminUrl('index.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 <?php if($menu->current == 'index.php') echo 'bg-blue-50 text-discord-accent'; else echo 'hover:bg-gray-100 hover:text-gray-900'; ?> font-medium transition-all group">
                     <i class="fas fa-tachometer-alt w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('控制台'); ?></span>
                 </a>
@@ -26,13 +26,13 @@
             <!-- Create -->
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('撰写'); ?></li>
             <li>
-                <a href="<?php $options->adminUrl('write-post.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'write-post.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('write-post.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'write-post.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-pen-fancy w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('撰写文章'); ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('write-page.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'write-page.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('write-page.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'write-page.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-file-alt w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('创建页面'); ?></span>
                 </a>
@@ -41,25 +41,25 @@
             <!-- Content -->
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('管理'); ?></li>
             <li>
-                <a href="<?php $options->adminUrl('manage-posts.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'manage-posts.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('manage-posts.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-posts.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-layer-group w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('文章'); ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('manage-pages.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'manage-pages.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('manage-pages.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-pages.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-file w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('页面'); ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('manage-comments.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'manage-comments.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('manage-comments.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-comments.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-comments w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('评论'); ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'manage-medias.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-medias.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-images w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('文件'); ?></span>
                 </a>
@@ -68,19 +68,19 @@
             <!-- Data -->
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('数据'); ?></li>
             <li>
-                <a href="<?php $options->adminUrl('manage-categories.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'manage-categories.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('manage-categories.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-categories.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-folder w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('分类'); ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('manage-tags.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'manage-tags.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('manage-tags.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-tags.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-tags w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('标签'); ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'manage-users.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-users.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-users w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('用户'); ?></span>
                 </a>
@@ -113,7 +113,7 @@
                         $isActive = (isset($_GET['panel']) && strpos($href, $_GET['panel']) !== false);
                         
                         echo '<li>';
-                        echo '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors';
+                        echo '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors';
                         if ($isActive) echo ' bg-blue-50 text-discord-accent';
                         echo '">';
                         echo '<i class="fas fa-plug w-5 text-center mr-3 text-sm opacity-80"></i>';
@@ -129,20 +129,20 @@
             <?php if ($user->pass('administrator', true)): ?>
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('系统'); ?></li>
             <li>
-                <a href="<?php $options->adminUrl('themes.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'themes.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('themes.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'themes.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-paint-brush w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('外观'); ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('plugins.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'plugins.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('plugins.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'plugins.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-plug w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('插件'); ?></span>
                 </a>
             </li>
             <li>
                  <div class="relative group-settings">
-                    <button class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors focus:outline-none justify-between <?php if(in_array($menu->current, ['options-general.php', 'options-discussion.php', 'options-reading.php', 'options-permalink.php', 'backup.php'])) echo 'bg-blue-50 text-discord-accent'; ?>" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.fa-chevron-right').classList.toggle('rotate-90')">
+                    <button class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors focus:outline-none justify-between <?php if(in_array($menu->current, ['options-general.php', 'options-discussion.php', 'options-reading.php', 'options-permalink.php', 'backup.php'])) echo 'bg-blue-50 text-discord-accent'; ?>" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.fa-chevron-right').classList.toggle('rotate-90')">
                         <div class="flex items-center">
                             <i class="fas fa-cog w-5 text-center mr-3 text-sm opacity-80"></i>
                             <span class="sidebar-text"><?php _e('设置'); ?></span>
@@ -158,7 +158,7 @@
                  </div>
             </li>
             <li>
-                <a href="<?php $options->adminUrl('backup.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'backup.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                <a href="<?php $options->adminUrl('backup.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'backup.php') echo 'bg-blue-50 text-discord-accent'; ?>">
                     <i class="fas fa-download w-5 text-center mr-3 text-sm opacity-80"></i>
                     <span class="sidebar-text"><?php _e('备份'); ?></span>
                 </a>
@@ -168,7 +168,7 @@
     </nav>
 
     <div class="p-4 border-t border-gray-100 bg-white">
-        <div class="flex items-center group cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors">
+        <div class="flex items-center group cursor-pointer hover:bg-gray-50 p-2 transition-colors">
             <?php 
             $userAvatarUrl = \Typecho\Common::gravatarUrl($user->mail, 36);
             $userName = $user->screenName;
@@ -176,7 +176,7 @@
             ?>
             <img src="<?php echo $userAvatarUrl; ?>" 
                  alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" 
-                 class="user-avatar w-9 h-9 rounded-full shrink-0 shadow-sm border border-gray-200"
+                 class="user-avatar w-9 h-9 shrink-0 border border-gray-200"
                  data-fallback="<?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?>"
                  onerror="generateUserFallbackAvatar(this);" />
             <div class="ml-3 overflow-hidden sidebar-text">
@@ -186,7 +186,7 @@
             <!-- Plugin Injection Point -->
             <span class="ml-auto flex items-center space-x-2">
                 <?php \Typecho\Plugin::factory('admin/menu.php')->call('navBar'); ?>
-                <a href="<?php $options->logoutUrl(); ?>" class="text-gray-400 hover:text-red-500 sidebar-text p-2 rounded-full hover:bg-red-50 transition-colors" title="<?php _e('登出'); ?>">
+                <a href="<?php $options->logoutUrl(); ?>" class="text-gray-400 hover:text-red-500 sidebar-text p-2 hover:bg-red-50 transition-colors" title="<?php _e('登出'); ?>">
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             </span>

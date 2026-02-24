@@ -6,7 +6,7 @@ include 'menu.php';
 
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -30,15 +30,15 @@ include 'menu.php';
             
             <!-- Settings Tabs -->
             <div class="settings-tabs-wrapper">
-            <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg select-none overflow-x-auto settings-tabs">
-                <a href="<?php $options->adminUrl('options-general.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('基本设置'); ?></a>
-                <a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('评论设置'); ?></a>
-                <a href="<?php $options->adminUrl('options-reading.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm bg-white text-discord-text"><?php _e('阅读设置'); ?></a>
-                <a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium rounded-md transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('永久链接'); ?></a>
+            <div class="flex space-x-1 mb-6 bg-gray-100 p-1 select-none overflow-x-auto settings-tabs">
+                <a href="<?php $options->adminUrl('options-general.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('基本设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('评论设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-reading.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all bg-white text-discord-text"><?php _e('阅读设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('永久链接'); ?></a>
             </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="bg-white border border-gray-200 p-6">
                 <?php \Widget\Options\Reading::alloc()->form()->render(); ?>
             </div>
         </div>

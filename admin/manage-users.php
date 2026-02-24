@@ -7,7 +7,7 @@ $users = \Widget\Users\Admin::alloc();
 ?>
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -17,7 +17,7 @@ $users = \Widget\Users\Admin::alloc();
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="<?php $options->adminUrl('user.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white rounded hover:bg-discord-accent-hover transition-colors text-sm font-medium">
+            <a href="<?php $options->adminUrl('user.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white hover:bg-discord-accent-hover transition-colors text-sm font-medium">
                 <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -36,37 +36,37 @@ $users = \Widget\Users\Admin::alloc();
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                 <div class="flex items-center space-x-2 text-sm text-gray-500">
                     <?php if ('' != $request->keywords): ?>
-                        <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
+                        <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="px-2 py-1 bg-gray-200 hover:bg-gray-300 transition-colors"><?php _e('&laquo; 取消筛选'); ?></a>
                     <?php endif; ?>
                 </div>
 
                 <form method="get" class="flex flex-wrap items-center gap-2">
                      <div class="relative">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 text-sm focus:outline-none focus:border-discord-accent w-48 md:w-64">
                     </div>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
                 </form>
             </div>
 
             <!-- User List -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_users" class="operate-form">
                     <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
-                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
-                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
-                                 <span><?php _e('全选'); ?></span>
-                             </label>
-                             <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
-                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
-                                </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
-                                    <a lang="<?php _e('你确认要删除这些用户吗?'); ?>" href="<?php $security->index('/action/users-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
-                                </div>
+                                 <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                                     <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
+                                     <span><?php _e('全选'); ?></span>
+                                 </label>
+                                 <div class="relative group">
+                                    <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
+                                        <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                    </button>
+                                    <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
+                                        <a lang="<?php _e('你确认要删除这些用户吗?'); ?>" href="<?php $security->index('/action/users-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
+                                    </div>
+                                 </div>
                              </div>
-                         </div>
                     </div>
 
                     <div class="table-wrapper" data-table-scroll>
@@ -86,17 +86,17 @@ $users = \Widget\Users\Admin::alloc();
                                 <?php while ($users->next()): ?>
                                     <tr id="user-<?php $users->uid(); ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3">
-                                            <input type="checkbox" value="<?php $users->uid(); ?>" name="uid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                            <input type="checkbox" value="<?php $users->uid(); ?>" name="uid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300">
                                         </td>
                                         <td class="py-3 text-center">
                                             <a href="<?php $options->adminUrl('manage-posts.php?__typecho_all_posts=off&uid=' . $users->uid); ?>" 
-                                               class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $users->postsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                               class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium <?php echo $users->postsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
                                                 <?php $users->postsNum(); ?>
                                             </a>
                                         </td>
                                         <td class="py-3">
                                             <div class="flex items-center">
-                                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3 text-gray-500 text-xs font-bold overflow-hidden">
+                                                <div class="w-8 h-8 bg-gray-200 flex items-center justify-center mr-3 text-gray-500 text-xs font-bold overflow-hidden">
                                                     <?php if ($users->mail): ?>
                                                         <img src="<?php echo \Typecho\Common::gravatarUrl($users->mail, 64, 'X', 'mm', $request->isSecure()); ?>" alt="<?php $users->screenName(); ?>" class="w-full h-full object-cover">
                                                     <?php else: ?>
@@ -152,7 +152,7 @@ $users = \Widget\Users\Admin::alloc();
                                                     break;
                                             } 
                                             ?>
-                                            <span class="px-2 py-0.5 rounded text-xs font-medium <?php echo $groupClass; ?>"><?php echo $groupName; ?></span>
+                                            <span class="px-2 py-0.5 text-xs font-medium <?php echo $groupClass; ?>"><?php echo $groupName; ?></span>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
@@ -196,7 +196,6 @@ $users = \Widget\Users\Admin::alloc();
     min-width: 32px;
     height: 32px;
     padding: 0 8px;
-    border-radius: 6px;
     background-color: white;
     color: #4b5563;
     font-size: 0.875rem;

@@ -37,18 +37,18 @@ include 'header.php';
             <form action="<?php $options->registerAction(); ?>" method="post" name="register" role="form" class="space-y-6">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('用户名'); ?> <span class="text-red-500">*</span></label>
-                    <input type="text" id="name" name="name" value="<?php echo $rememberName; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required autofocus placeholder="<?php _e('请输入用户名'); ?>" />
+                    <input type="text" id="name" name="name" value="<?php echo $rememberName; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required autofocus placeholder="<?php _e('请输入用户名'); ?>" />
                     <p class="mt-1 text-xs text-gray-400"><?php _e('用于登录和显示的名称'); ?></p>
                 </div>
                 
                 <div>
                     <label for="mail" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('电子邮箱'); ?> <span class="text-red-500">*</span></label>
-                    <input type="email" id="mail" name="mail" value="<?php echo $rememberMail; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required placeholder="<?php _e('请输入有效的邮箱地址'); ?>" />
+                    <input type="email" id="mail" name="mail" value="<?php echo $rememberMail; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required placeholder="<?php _e('请输入有效的邮箱地址'); ?>" />
                     <p class="mt-1 text-xs text-gray-400"><?php _e('我们将向此邮箱发送初始密码'); ?></p>
                 </div>
                 
                 <div class="pt-2">
-                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-discord-accent hover:bg-discord-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-accent transition-all transform hover:-translate-y-0.5">
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium text-white bg-discord-accent hover:bg-discord-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-accent transition-all transform hover:-translate-y-0.5">
                         <?php _e('立即注册'); ?>
                     </button>
                     <input type="hidden" name="referer" value="<?php echo htmlspecialchars($request->get('referer')); ?>" />

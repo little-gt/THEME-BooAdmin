@@ -184,7 +184,7 @@
                             // 基础形状和排版
                             // min-w-[2rem] h-8: 确保它是至少 32x32 的方块
                             // px-3: 给文字留出水平空间
-                            $child.addClass('flex items-center justify-center min-w-[2rem] h-8 px-3 rounded-md text-sm font-medium transition-all duration-200 no-underline shadow-sm leading-none');
+                            $child.addClass('flex items-center justify-center min-w-[2rem] h-8 px-3 text-sm font-medium transition-all duration-200 no-underline leading-none');
                             
                             // 针对不同状态的样式
                             if ($li.hasClass('current')) {

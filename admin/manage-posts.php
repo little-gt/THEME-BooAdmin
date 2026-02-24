@@ -9,7 +9,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
 ?>
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -19,7 +19,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
         </div>
         
         <div class="flex items-center space-x-4">
-             <a href="<?php $options->adminUrl('write-post.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm">
+             <a href="<?php $options->adminUrl('write-post.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white text-sm font-medium hover:bg-blue-600 transition-colors">
                 <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -36,31 +36,31 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
             
             <!-- Tabs & Filters -->
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <div class="flex items-center bg-gray-100 p-1 rounded-lg select-none self-start">
+                <div class="flex items-center bg-gray-100 p-1 select-none self-start">
                      <a href="<?php $options->adminUrl('manage-posts.php' . (isset($request->uid) ? '?uid=' . $request->filter('encode')->uid : '')); ?>" 
-                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if (!isset($request->status) || 'all' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        class="px-4 py-1.5 text-sm font-medium transition-all duration-200 <?php if (!isset($request->status) || 'all' == $request->get('status')): ?>bg-white text-discord-text<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
                         <?php _e('可用'); ?>
                      </a>
                      <a href="<?php $options->adminUrl('manage-posts.php?status=waiting' . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>" 
-                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if ('waiting' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        class="px-4 py-1.5 text-sm font-medium transition-all duration-200 <?php if ('waiting' == $request->get('status')): ?>bg-white text-discord-text<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
                         <?php _e('待审核'); ?>
                         <?php if (!$isAllPosts && $stat->myWaitingPostsNum > 0 && !isset($request->uid)): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->myWaitingPostsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->myWaitingPostsNum(); ?></span>
                         <?php elseif ($isAllPosts && $stat->waitingPostsNum > 0 && !isset($request->uid)): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->waitingPostsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->waitingPostsNum(); ?></span>
                         <?php elseif (isset($request->uid) && $stat->currentWaitingPostsNum > 0): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->currentWaitingPostsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->currentWaitingPostsNum(); ?></span>
                         <?php endif; ?>
                      </a>
                      <a href="<?php $options->adminUrl('manage-posts.php?status=draft' . (isset($request->uid) ? '&uid=' . $request->filter('encode')->uid : '')); ?>" 
-                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if ('draft' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        class="px-4 py-1.5 text-sm font-medium transition-all duration-200 <?php if ('draft' == $request->get('status')): ?>bg-white text-discord-text<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
                         <?php _e('草稿'); ?>
                         <?php if (!$isAllPosts && $stat->myDraftPostsNum > 0 && !isset($request->uid)): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-yellow-100 text-yellow-600 rounded-full text-xs"><?php $stat->myDraftPostsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-yellow-100 text-yellow-600 text-xs"><?php $stat->myDraftPostsNum(); ?></span>
                         <?php elseif ($isAllPosts && $stat->draftPostsNum > 0 && !isset($request->uid)): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-yellow-100 text-yellow-600 rounded-full text-xs"><?php $stat->draftPostsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-yellow-100 text-yellow-600 text-xs"><?php $stat->draftPostsNum(); ?></span>
                         <?php elseif (isset($request->uid) && $stat->currentDraftPostsNum > 0): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-yellow-100 text-yellow-600 rounded-full text-xs"><?php $stat->currentDraftPostsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-yellow-100 text-yellow-600 text-xs"><?php $stat->currentDraftPostsNum(); ?></span>
                         <?php endif; ?>
                      </a>
                 </div>
@@ -68,16 +68,16 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                 <form method="get" class="flex flex-wrap items-center gap-2">
                      <div class="relative">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 text-sm focus:outline-none focus:border-discord-accent w-48 md:w-64">
                     </div>
-                    <select name="category" class="pl-3 pr-8 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm">
+                    <select name="category" class="pl-3 pr-8 py-1.5 bg-white border border-gray-300 text-sm focus:outline-none focus:border-discord-accent">
                         <option value=""><?php _e('所有分类'); ?></option>
                         <?php \Widget\Metas\Category\Rows::alloc()->to($category); ?>
                         <?php while ($category->next()): ?>
                             <option value="<?php $category->mid(); ?>"<?php if ($request->get('category') == $category->mid): ?> selected="true"<?php endif; ?>><?php $category->name(); ?></option>
                         <?php endwhile; ?>
                     </select>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
                     
                     <?php if (isset($request->uid)): ?>
                         <input type="hidden" value="<?php echo htmlspecialchars($request->uid); ?>" name="uid"/>
@@ -89,19 +89,19 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
             </div>
 
             <!-- Post List -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_posts" class="operate-form">
                     <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
                              <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
-                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                     <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
                                     <a href="<?php $security->index('/action/contents-post-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                     <?php if ($user->pass('editor', true)): ?>
                                         <div class="border-t border-gray-100 my-1"></div>
@@ -173,11 +173,11 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                 ?>
                                     <tr id="<?php $posts->theId(); ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3">
-                                            <input type="checkbox" value="<?php $posts->cid(); ?>" name="cid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                            <input type="checkbox" value="<?php $posts->cid(); ?>" name="cid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300">
                                         </td>
                                         <td class="py-3 text-center">
                                             <a href="<?php $options->adminUrl('manage-comments.php?cid=' . ($posts->parentId ? $posts->parentId : $posts->cid)); ?>" 
-                                               class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $posts->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
+                                               class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium <?php echo $posts->commentsNum > 0 ? 'bg-discord-accent text-white' : 'bg-gray-100 text-gray-500'; ?>">
                                                 <?php $posts->commentsNum(); ?>
                                             </a>
                                         </td>
@@ -187,13 +187,13 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                                     <?php $posts->title(); ?>
                                                 </a>
                                                 <?php
-                                                if ('post_draft' == $posts->type) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
-                                                elseif ($posts->revision) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
+                                                if ('post_draft' == $posts->type) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
+                                                elseif ($posts->revision) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
                                                 
-                                                if ('hidden' == $posts->status) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
-                                                elseif ('waiting' == $posts->status) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-red-100 text-red-700">' . _t('待审') . '</span>';
-                                                elseif ('private' == $posts->status) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-purple-100 text-purple-700">' . _t('私密') . '</span>';
-                                                elseif ($posts->password) echo '<span class="ml-2 px-1.5 py-0.5 rounded text-xs bg-gray-600 text-white">' . _t('加密') . '</span>';
+                                                if ('hidden' == $posts->status) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
+                                                elseif ('waiting' == $posts->status) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-red-100 text-red-700">' . _t('待审') . '</span>';
+                                                elseif ('private' == $posts->status) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-purple-100 text-purple-700">' . _t('私密') . '</span>';
+                                                elseif ($posts->password) echo '<span class="ml-2 px-1.5 py-0.5 text-xs bg-gray-600 text-white">' . _t('加密') . '</span>';
                                                 ?>
                                             </div>
                                             <div class="mt-1 flex items-center space-x-3 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -239,7 +239,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                         <?php if (!empty($postsData)): ?>
                             <?php foreach ($postsData as $post): ?>
                                 <div class="content-card" id="card-<?php echo $post['cid']; ?>">
-                                    <input type="checkbox" value="<?php echo $post['cid']; ?>" name="cid[]" class="card-checkbox rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                    <input type="checkbox" value="<?php echo $post['cid']; ?>" name="cid[]" class="card-checkbox text-discord-accent focus:ring-discord-accent border-gray-300">
                                     
                                     <div class="card-header">
                                         <div class="flex-1">
@@ -248,13 +248,13 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                                             </a>
                                             <div class="card-badges">
                                                 <?php
-                                                if ('post_draft' == $post['type']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
-                                                elseif ($post['revision']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
+                                                if ('post_draft' == $post['type']) echo '<span class="px-1.5 py-0.5 text-xs bg-yellow-100 text-yellow-700">' . _t('草稿') . '</span>';
+                                                elseif ($post['revision']) echo '<span class="px-1.5 py-0.5 text-xs bg-green-100 text-green-700">' . _t('有修订') . '</span>';
                                                 
-                                                if ('hidden' == $post['status']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
-                                                elseif ('waiting' == $post['status']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-red-100 text-red-700">' . _t('待审') . '</span>';
-                                                elseif ('private' == $post['status']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-purple-100 text-purple-700">' . _t('私密') . '</span>';
-                                                elseif ($post['password']) echo '<span class="px-1.5 py-0.5 rounded text-xs bg-gray-600 text-white">' . _t('加密') . '</span>';
+                                                if ('hidden' == $post['status']) echo '<span class="px-1.5 py-0.5 text-xs bg-gray-200 text-gray-600">' . _t('隐藏') . '</span>';
+                                                elseif ('waiting' == $post['status']) echo '<span class="px-1.5 py-0.5 text-xs bg-red-100 text-red-700">' . _t('待审') . '</span>';
+                                                elseif ('private' == $post['status']) echo '<span class="px-1.5 py-0.5 text-xs bg-purple-100 text-purple-700">' . _t('私密') . '</span>';
+                                                elseif ($post['password']) echo '<span class="px-1.5 py-0.5 text-xs bg-gray-600 text-white">' . _t('加密') . '</span>';
                                                 ?>
                                             </div>
                                         </div>
@@ -344,7 +344,6 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
     min-width: 32px;
     height: 32px;
     padding: 0 8px;
-    border-radius: 6px;
     background-color: white;
     color: #4b5563; /* text-gray-600 */
     font-size: 0.875rem; /* text-sm */

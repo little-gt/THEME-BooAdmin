@@ -43,7 +43,7 @@ $chartComments = json_encode($commentsData);
 ?>
 <main class="flex-1 flex flex-col overflow-hidden">
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -67,14 +67,14 @@ $chartComments = json_encode($commentsData);
         <div class="w-full max-w-none mx-auto">
             
             <!-- Welcome Section -->
-            <div class="bg-white rounded-lg shadow-sm p-6 mb-6 flex items-center justify-between border-l-4 border-discord-accent">
+            <div class="bg-white p-6 mb-6 flex items-center justify-between border-l-4 border-discord-accent">
                 <div>
                     <h2 class="text-2xl font-bold text-discord-text mb-2"><?php _e('欢迎回来, %s!', $user->screenName); ?></h2>
                     <p class="text-discord-muted"><?php _e('目前有 <strong>%s</strong> 篇文章, 并有 <strong>%s</strong> 条关于你的评论在 <strong>%s</strong> 个分类中.',
                         $stat->myPublishedPostsNum, $stat->myPublishedCommentsNum, $stat->categoriesNum); ?></p>
                 </div>
                 <div class="flex space-x-3">
-                    <a href="<?php $options->adminUrl('write-post.php'); ?>" class="bg-discord-accent hover:bg-blue-600 text-white px-4 py-2 rounded-md font-medium transition-colors shadow-sm text-sm">
+                    <a href="<?php $options->adminUrl('write-post.php'); ?>" class="bg-discord-accent hover:bg-blue-600 text-white px-4 py-2 font-medium transition-colors text-sm">
                         <i class="fas fa-pen mr-2"></i> <?php _e('撰写新文章'); ?>
                     </a>
                 </div>
@@ -83,11 +83,11 @@ $chartComments = json_encode($commentsData);
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Card 1 -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div class="flex items-center justify-between mb-4 relative z-10">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('总文章数'); ?></h3>
-                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                        <div class="w-10 h-10 bg-blue-100 flex items-center justify-center text-blue-500">
                             <i class="fas fa-file-alt text-lg"></i>
                         </div>
                     </div>
@@ -97,11 +97,11 @@ $chartComments = json_encode($commentsData);
                     </div>
                 </div>
                 <!-- Card 2 -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div class="flex items-center justify-between mb-4 relative z-10">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('总评论数'); ?></h3>
-                         <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                         <div class="w-10 h-10 bg-green-100 flex items-center justify-center text-green-500">
                             <i class="fas fa-comments text-lg"></i>
                         </div>
                     </div>
@@ -111,11 +111,11 @@ $chartComments = json_encode($commentsData);
                     </div>
                 </div>
                  <!-- Card 3 -->
-                 <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                 <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-yellow-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div class="flex items-center justify-between mb-4 relative z-10">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('待审核'); ?></h3>
-                         <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500">
+                         <div class="w-10 h-10 bg-yellow-100 flex items-center justify-center text-yellow-500">
                             <i class="fas fa-hourglass-half text-lg"></i>
                         </div>
                     </div>
@@ -125,11 +125,11 @@ $chartComments = json_encode($commentsData);
                     </div>
                 </div>
                  <!-- Card 4 -->
-                 <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                 <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div class="flex items-center justify-between mb-4 relative z-10">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('分类数量'); ?></h3>
-                         <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-500">
+                         <div class="w-10 h-10 bg-purple-100 flex items-center justify-center text-purple-500">
                             <i class="fas fa-folder text-lg"></i>
                         </div>
                     </div>
@@ -143,7 +143,7 @@ $chartComments = json_encode($commentsData);
             <!-- Charts Section -->
              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <!-- Main Activity Chart -->
-                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="lg:col-span-2 bg-white p-6 border border-gray-100">
                     <div class="flex items-center justify-between mb-6">
                          <h3 class="text-lg font-bold text-gray-800 flex items-center">
                             <i class="fas fa-chart-area mr-2 text-discord-accent"></i>
@@ -158,7 +158,7 @@ $chartComments = json_encode($commentsData);
                 </div>
                 
                 <!-- Distribution Chart -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white p-6 border border-gray-100">
                     <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
                          <i class="fas fa-chart-pie mr-2 text-green-500"></i>
                         <?php _e('内容分布'); ?>
@@ -171,7 +171,7 @@ $chartComments = json_encode($commentsData);
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 <!-- Recent Posts -->
-                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-0 border border-gray-100 overflow-hidden">
+                <div class="lg:col-span-2 bg-white p-0 border border-gray-100 overflow-hidden">
                     <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                         <h3 class="text-lg font-bold text-gray-800 flex items-center">
                             <i class="fas fa-newspaper mr-2 text-gray-400"></i>
@@ -198,7 +198,7 @@ $chartComments = json_encode($commentsData);
                                             </td>
                                             <td class="py-3 px-6 text-gray-400 text-xs"><?php $posts->date('Y-m-d'); ?></td>
                                             <td class="py-3 px-6 text-right">
-                                                <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>" class="text-gray-400 hover:text-discord-accent transition-colors p-2 rounded-full hover:bg-gray-100" title="<?php _e('编辑'); ?>"><i class="fas fa-pencil-alt"></i></a>
+                                                <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>" class="text-gray-400 hover:text-discord-accent transition-colors p-2 hover:bg-gray-100" title="<?php _e('编辑'); ?>"><i class="fas fa-pencil-alt"></i></a>
                                             </td>
                                         </tr>
                                     <?php endwhile; ?>
@@ -211,7 +211,7 @@ $chartComments = json_encode($commentsData);
                 </div>
 
                 <!-- Recent Comments -->
-                <div class="bg-white rounded-xl shadow-sm p-0 border border-gray-100 overflow-hidden flex flex-col">
+                <div class="bg-white p-0 border border-gray-100 overflow-hidden flex flex-col">
                      <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                         <h3 class="text-lg font-bold text-gray-800 flex items-center">
                             <i class="fas fa-comments mr-2 text-gray-400"></i>
@@ -227,23 +227,21 @@ $chartComments = json_encode($commentsData);
                                     <div class="flex items-start space-x-3">
                                         <?php 
                                         $gravatarUrl = \Typecho\Common::gravatarUrl($comments->mail, 32);
-                                        $authorName = $comments->author(false);
-                                        $firstChar = mb_substr($authorName, 0, 1, 'UTF-8');
                                         ?>
                                         <img src="<?php echo $gravatarUrl; ?>" 
-                                             alt="<?php echo htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?>" 
-                                             class="comment-avatar w-8 h-8 rounded-full flex-shrink-0 border border-gray-200"
-                                             data-fallback="<?php echo htmlspecialchars($firstChar, ENT_QUOTES, 'UTF-8'); ?>"
+                                             alt="<?php echo htmlspecialchars($comments->author() ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
+                                             class="comment-avatar w-8 h-8 flex-shrink-0 border border-gray-200"
+                                             data-fallback="<?php echo htmlspecialchars($comments->author() ?? '', ENT_QUOTES, 'UTF-8')[0]; ?>"
                                              onerror="generateFallbackAvatar(this, this.dataset.fallback, '#5865F2', 32);" />
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center justify-between mb-1">
-                                                <p class="text-sm font-bold text-gray-800 truncate"><?php $comments->author(false); ?></p>
+                                                <p class="text-sm font-bold text-gray-800 truncate"><?php echo htmlspecialchars($comments->author() ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
                                                 <span class="text-xs text-gray-400"><?php $comments->date('m-d'); ?></span>
                                             </div>
                                             <div class="text-xs text-gray-500 mb-1">
                                                 <?php _e('在'); ?> <a href="<?php $comments->permalink(); ?>" class="text-discord-accent hover:underline"><?php $comments->title(); ?></a>
                                             </div>
-                                            <div class="text-sm text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 mt-1 line-clamp-2">
+                                            <div class="text-sm text-gray-600 bg-gray-50 p-2 border border-gray-100 mt-1 line-clamp-2">
                                                 <?php $comments->excerpt(60, '...'); ?>
                                             </div>
                                         </div>
@@ -259,10 +257,10 @@ $chartComments = json_encode($commentsData);
                 </div>
 
                 <!-- Official Log (Compact) -->
-                 <div class="lg:col-span-3 bg-gradient-to-r from-indigo-50 via-white to-purple-50 rounded-xl shadow-sm p-5 border border-gray-100 mt-2">
+                 <div class="lg:col-span-3 bg-gradient-to-r from-indigo-50 via-white to-purple-50 p-5 border border-gray-100 mt-2">
                     <div class="flex items-center justify-between mb-4">
                          <h3 class="text-sm font-bold text-gray-700 flex items-center">
-                            <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mr-3 shadow-sm">
+                            <span class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mr-3">
                                 <i class="fas fa-bullhorn text-white text-xs"></i>
                             </span>
                             <?php _e('Typecho 官方动态'); ?>
@@ -273,11 +271,11 @@ $chartComments = json_encode($commentsData);
                     </div>
                     <div id="typecho-message" class="text-sm text-gray-600">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="typecho-news-grid">
-                            <div class="animate-pulse flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-100">
-                                <div class="w-10 h-10 bg-gray-200 rounded-lg"></div>
+                            <div class="flex items-center space-x-3 p-3 bg-white border border-gray-100">
+                                <div class="w-10 h-10 bg-gray-200"></div>
                                 <div class="flex-1">
-                                    <div class="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
-                                    <div class="h-2 bg-gray-100 rounded w-1/2"></div>
+                                    <div class="h-3 bg-gray-200 w-3/4 mb-2"></div>
+                                    <div class="h-2 bg-gray-100 w-1/2"></div>
                                 </div>
                             </div>
                         </div>
@@ -326,7 +324,7 @@ include 'common-js.php';
                     var result = '<div style="font-weight:600;margin-bottom:8px">' + params[0].axisValue + '</div>';
                     params.forEach(function(item) {
                         result += '<div style="display:flex;align-items:center;margin:4px 0">' +
-                            '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + item.color + ';margin-right:8px"></span>' +
+                            '<span style="display:inline-block;width:10px;height:10px;background:' + item.color + ';margin-right:8px"></span>' +
                             item.seriesName + ': <strong style="margin-left:auto">' + item.value + '</strong></div>';
                     });
                     return result;
@@ -360,7 +358,7 @@ include 'common-js.php';
                             { offset: 1, color: 'rgba(88, 101, 242, 0.05)' }
                         ])
                     },
-                    lineStyle: { width: 3, shadowColor: 'rgba(88, 101, 242, 0.2)', shadowBlur: 10 }
+                    lineStyle: { width: 3 }
                 },
                 {
                     name: '<?php _e('评论'); ?>',
@@ -376,7 +374,7 @@ include 'common-js.php';
                             { offset: 1, color: 'rgba(59, 165, 92, 0.02)' }
                         ])
                     },
-                    lineStyle: { width: 3, shadowColor: 'rgba(59, 165, 92, 0.2)', shadowBlur: 10 }
+                    lineStyle: { width: 3 }
                 }
             ]
         };
@@ -392,10 +390,10 @@ include 'common-js.php';
                      radius: ['40%', '70%'],
                      avoidLabelOverlap: false,
                      itemStyle: {
-                         borderRadius: 10,
                          borderColor: '#fff',
                          borderWidth: 2
                      },
+
                      label: { show: false, position: 'center' },
                      emphasis: {
                          label: { show: true, fontSize: '18', fontWeight: 'bold' }
@@ -446,14 +444,15 @@ include 'common-js.php';
                     var item = o[i];
                     var icon = newsIcons[i % newsIcons.length];
                     var color = newsColors[i % newsColors.length];
-                    html += '<a href="' + item.link + '" target="_blank" class="group flex items-center space-x-3 p-3 bg-white hover:bg-gray-50 rounded-lg border border-gray-100 hover:border-indigo-200 transition-all hover:shadow-sm">' +
-                        '<div class="w-10 h-10 rounded-lg bg-gradient-to-br ' + color + ' flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">' +
+                    html += '<a href="' + item.link + '" target="_blank" class="group flex items-center space-x-3 p-3 bg-white hover:bg-gray-50 border border-gray-100 hover:border-indigo-200 transition-all">' +
+                        '<div class="w-10 h-10 bg-gradient-to-br ' + color + ' flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">' +
                         '<i class="fas ' + icon + ' text-white text-sm"></i></div>' +
                         '<div class="flex-1 min-w-0">' +
                         '<p class="text-sm font-medium text-gray-700 group-hover:text-indigo-600 truncate transition-colors">' + item.title + '</p>' +
                         '<p class="text-xs text-gray-400 mt-0.5">' + item.date + '</p>' +
                         '</div>' +
                         '<i class="fas fa-chevron-right text-gray-300 group-hover:text-indigo-400 text-xs transition-colors"></i></a>';
+
                 }
                 
                 if (o.length === 0) {
@@ -467,7 +466,7 @@ include 'common-js.php';
 
         function applyUpdate(update) {
             if (update.available) {
-                $('<div class="bg-blue-50 text-blue-700 p-3 rounded-md mb-4 text-sm"><i class="fas fa-info-circle mr-1"></i> '
+                $('<div class="bg-blue-50 text-blue-700 p-3 mb-4 text-sm"><i class="fas fa-info-circle mr-1"></i> '
                     + '<?php _e('您当前使用的版本是 %s'); ?>'.replace('%s', update.current) 
                     + ' <a href="' + update.link + '" target="_blank" class="font-bold underline ml-2">'
                     + '<?php _e('官方最新版本是 %s'); ?>'.replace('%s', update.latest) + '</a></div>')

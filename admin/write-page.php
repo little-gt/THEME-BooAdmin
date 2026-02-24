@@ -18,7 +18,7 @@ while ($parents->next()) {
 ?>
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -44,7 +44,7 @@ while ($parents->next()) {
                 <!-- Main Editor Area -->
                 <div class="flex-1 flex flex-col min-h-0 overflow-y-auto lg:overflow-visible">
                     <?php if ($page->draft): ?>
-                        <div class="mb-4 bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-md text-sm">
+                        <div class="mb-4 bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 text-sm">
                             <?php if ($page->draft['cid'] != $page->cid): ?>
                                 <?php $pageModifyDate = new \Typecho\Date($page->draft['modified']); ?>
                                 <cite><?php _e('你正在编辑的是保存于 %s 的修订版, 你也可以 <a href="%s" class="underline">删除它</a>', $pageModifyDate->word(),
@@ -56,7 +56,7 @@ while ($parents->next()) {
                         </div>
                     <?php endif; ?>
 
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mb-6">
+                    <div class="bg-white border border-gray-100 p-6 mb-6">
                         <label for="title" class="sr-only"><?php _e('标题'); ?></label>
                         <input type="text" id="title" name="title" autocomplete="off" value="<?php $page->title(); ?>"
                                placeholder="<?php _e('在此输入标题'); ?>" class="w-full text-2xl font-bold border-none focus:outline-none focus:ring-0 placeholder-gray-300 text-discord-text mb-4 p-0"/>
@@ -111,13 +111,13 @@ while ($parents->next()) {
                                 <input type="hidden" name="markdown" value="1"/>
                             <?php endif; ?>
 
-                            <button type="button" id="btn-preview" class="px-4 py-2 bg-white border border-gray-300 rounded text-discord-text hover:bg-gray-50 transition-colors shadow-sm text-sm font-medium">
+                            <button type="button" id="btn-preview" class="px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
                                 <i class="fas fa-eye mr-1"></i> <?php _e('预览'); ?>
                             </button>
-                            <button type="submit" name="do" value="save" id="btn-save" class="px-4 py-2 bg-gray-100 text-discord-text rounded hover:bg-gray-200 transition-colors text-sm font-medium">
+                            <button type="submit" name="do" value="save" id="btn-save" class="px-4 py-2 bg-gray-100 text-discord-text hover:bg-gray-200 transition-colors text-sm font-medium">
                                 <?php _e('保存草稿'); ?>
                             </button>
-                            <button type="submit" name="do" value="publish" id="btn-submit" class="px-6 py-2 bg-discord-accent text-white rounded font-medium hover:bg-blue-600 transition-colors shadow-sm text-sm">
+                            <button type="submit" name="do" value="publish" id="btn-submit" class="px-6 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
                                 <i class="fas fa-paper-plane mr-1"></i> <?php _e('发布页面'); ?>
                             </button>
                         </div>
@@ -129,19 +129,19 @@ while ($parents->next()) {
                 <!-- Sidebar Options -->
                 <div class="lg:w-96 flex-shrink-0 flex flex-col">
                     <!-- Tabs Header -->
-                    <div class="flex items-center space-x-1 mb-4 typecho-option-tabs bg-gray-100 p-1 rounded-lg select-none">
-                         <button type="button" class="flex-1 py-2 text-sm font-medium text-discord-text bg-white shadow-sm rounded-md focus:outline-none transition-all duration-200" data-target="#tab-advance"><?php _e('设置'); ?></button>
+                    <div class="flex items-center space-x-1 mb-4 typecho-option-tabs bg-gray-100 p-1 select-none">
+                         <button type="button" class="flex-1 py-2 text-sm font-medium text-discord-text bg-white focus:outline-none transition-all duration-200" data-target="#tab-advance"><?php _e('设置'); ?></button>
                          <button type="button" class="flex-1 py-2 text-sm font-medium text-gray-500 hover:text-discord-text focus:outline-none transition-all duration-200" id="tab-files-btn" data-target="#tab-files"><?php _e('附件'); ?></button>
                     </div>
 
                     <!-- Tab Content Container -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex-1">
+                    <div class="bg-white border border-gray-100 overflow-hidden flex-1">
                         <div id="tab-advance" class="p-6 space-y-6 tab-content h-full overflow-y-auto custom-scrollbar">
                             <!-- Date -->
                             <div class="group">
                                 <label for="date" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-discord-accent transition-colors"><?php _e('发布日期'); ?></label>
                                 <div class="relative">
-                                    <input class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-md text-sm text-discord-text focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all shadow-sm" type="text" name="date" id="date" autocomplete="off"
+                                    <input class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-sm text-discord-text focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all" type="text" name="date" id="date" autocomplete="off"
                                           value="<?php $page->have() && $page->created > 0 ? $page->date('Y-m-d H:i') : ''; ?>"/>
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                         <i class="far fa-calendar-alt"></i>
@@ -152,7 +152,7 @@ while ($parents->next()) {
                             <!-- Order -->
                             <div class="group">
                                 <label for="order" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-discord-accent transition-colors"><?php _e('页面顺序'); ?></label>
-                                <input type="number" id="order" name="order" value="<?php $page->order(); ?>" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all shadow-sm"/>
+                                <input type="number" id="order" name="order" value="<?php $page->order(); ?>" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all"/>
                                 <p class="text-xs text-gray-400 mt-1 flex items-center"><i class="fas fa-info-circle mr-1"></i> <?php _e('数字越小越靠前'); ?></p>
                             </div>
 
@@ -160,7 +160,7 @@ while ($parents->next()) {
                             <div class="group">
                                 <label for="template" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-discord-accent transition-colors"><?php _e('自定义模板'); ?></label>
                                 <div class="relative">
-                                    <select name="template" id="template" class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all shadow-sm appearance-none">
+                                    <select name="template" id="template" class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all appearance-none">
                                         <option value=""><?php _e('不选择'); ?></option>
                                         <?php $templates = $page->getTemplates();
                                         foreach ($templates as $template => $name): ?>
@@ -177,7 +177,7 @@ while ($parents->next()) {
                             <div class="group">
                                 <label for="parent" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-discord-accent transition-colors"><?php _e('父级页面'); ?></label>
                                 <div class="relative">
-                                    <select name="parent" id="parent" class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all shadow-sm appearance-none">
+                                    <select name="parent" id="parent" class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all appearance-none">
                                         <?php foreach ($parentPages as $pageId => $pageTitle): ?>
                                             <option value="<?php echo $pageId; ?>"<?php if ($pageId == ($page->parent ?? $parentPageId)): ?> selected="true"<?php endif; ?>><?php echo $pageTitle; ?></option>
                                         <?php endforeach; ?>
@@ -192,8 +192,8 @@ while ($parents->next()) {
 
                             <!-- Advanced Toggle -->
                             <details id="advance-panel" class="group border-t border-gray-100 pt-4">
-                                <summary class="flex items-center cursor-pointer text-sm text-discord-accent font-medium select-none py-2 hover:bg-gray-50 rounded px-2 -mx-2 transition-colors">
-                                    <span class="bg-discord-accent/10 text-discord-accent rounded p-1 mr-2 group-open:rotate-90 transition-transform duration-200">
+                                <summary class="flex items-center cursor-pointer text-sm text-discord-accent font-medium select-none py-2 hover:bg-gray-50 px-2 -mx-2 transition-colors">
+                                    <span class="bg-discord-accent/10 text-discord-accent p-1 mr-2 group-open:rotate-90 transition-transform duration-200">
                                         <i class="fas fa-chevron-right text-xs"></i>
                                     </span>
                                     <?php _e('高级选项'); ?>
@@ -202,7 +202,7 @@ while ($parents->next()) {
                                 <div class="space-y-6 pt-4 px-2">
                                      <div>
                                         <label for="visibility" class="block text-sm font-bold text-discord-text mb-2"><?php _e('公开度'); ?></label>
-                                        <select id="visibility" name="visibility" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm focus:outline-none focus:border-discord-accent transition-colors">
+                                        <select id="visibility" name="visibility" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent transition-colors">
                                             <option value="publish"<?php if ($page->status == 'publish' || !$page->status): ?> selected<?php endif; ?>><?php _e('公开'); ?></option>
                                             <option value="hidden"<?php if ($page->status == 'hidden'): ?> selected<?php endif; ?>><?php _e('隐藏'); ?></option>
                                         </select>
@@ -212,15 +212,15 @@ while ($parents->next()) {
                                         <label class="block text-sm font-bold text-discord-text mb-2"><?php _e('权限控制'); ?></label>
                                         <ul class="space-y-2">
                                             <li class="flex items-center">
-                                                <input id="allowComment" name="allowComment" type="checkbox" value="1" class="mr-2 rounded text-discord-accent focus:ring-discord-accent" <?php if ($page->allow('comment')): ?>checked="true"<?php endif; ?> />
+                                                <input id="allowComment" name="allowComment" type="checkbox" value="1" class="mr-2 text-discord-accent focus:ring-discord-accent" <?php if ($page->allow('comment')): ?>checked="true"<?php endif; ?> />
                                                 <label for="allowComment" class="text-sm text-discord-text"><?php _e('允许评论'); ?></label>
                                             </li>
                                             <li class="flex items-center">
-                                                <input id="allowPing" name="allowPing" type="checkbox" value="1" class="mr-2 rounded text-discord-accent focus:ring-discord-accent" <?php if ($page->allow('ping')): ?>checked="true"<?php endif; ?> />
+                                                <input id="allowPing" name="allowPing" type="checkbox" value="1" class="mr-2 text-discord-accent focus:ring-discord-accent" <?php if ($page->allow('ping')): ?>checked="true"<?php endif; ?> />
                                                 <label for="allowPing" class="text-sm text-discord-text"><?php _e('允许被引用'); ?></label>
                                             </li>
                                             <li class="flex items-center">
-                                                <input id="allowFeed" name="allowFeed" type="checkbox" value="1" class="mr-2 rounded text-discord-accent focus:ring-discord-accent" <?php if ($page->allow('feed')): ?>checked="true"<?php endif; ?> />
+                                                <input id="allowFeed" name="allowFeed" type="checkbox" value="1" class="mr-2 text-discord-accent focus:ring-discord-accent" <?php if ($page->allow('feed')): ?>checked="true"<?php endif; ?> />
                                                 <label for="allowFeed" class="text-sm text-discord-text"><?php _e('允许在聚合中出现'); ?></label>
                                             </li>
                                         </ul>

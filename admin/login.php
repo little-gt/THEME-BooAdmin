@@ -9,6 +9,13 @@ $rememberName = htmlspecialchars(\Typecho\Cookie::get('__typecho_remember_name',
 
 $bodyClass = 'body-100';
 
+// 检测 Passkey 插件是否已安装激活
+$activates = \Typecho\Plugin::export();
+$hasPasskey = isset($activates['activated']) && in_array('Passkey', array_keys($activates['activated']));
+
+// 生成分钟级时间戳用于缓存破坏
+$cacheTs = floor(time() / 60);
+
 include 'header.php';
 ?>
 <div class="min-h-screen flex bg-discord-light text-discord-text">
@@ -35,7 +42,7 @@ include 'header.php';
             <form action="<?php $options->loginAction(); ?>" method="post" name="login" role="form" class="space-y-6">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('用户名'); ?></label>
-                    <input type="text" id="name" name="name" value="<?php echo $rememberName; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required autofocus placeholder="<?php _e('请输入用户名或邮箱'); ?>" />
+                    <input type="text" id="name" name="name" value="<?php echo $rememberName; ?>" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required autofocus placeholder="<?php _e('请输入用户名或邮箱'); ?>" />
                 </div>
                 
                 <div>
@@ -43,7 +50,6 @@ include 'header.php';
                         <label for="password" class="block text-sm font-medium text-gray-700"><?php _e('密码'); ?></label>
                         <div class="text-sm">
                             <?php 
-                            $activates = \Typecho\Plugin::export();
                             $hasPassport = false;
                             if (isset($activates['activated']) && in_array('Passport', array_keys($activates['activated']))) {
                                 $hasPassport = true;
@@ -52,30 +58,99 @@ include 'header.php';
                             ?>
                         </div>
                     </div>
-                    <input type="password" id="password" name="password" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required placeholder="<?php _e('请输入密码'); ?>" />
+                    <input type="password" id="password" name="password" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-discord-accent/50 focus:border-discord-accent transition-all" required placeholder="<?php _e('请输入密码'); ?>" />
                     
                     <?php if (!$hasPassport): ?>
                     <p class="mt-2 text-xs text-gray-400">
-                        <?php _e('未安装找回密码插件？'); ?> 
+                        <?php _e('未安装找回密码插件？点此了解 Passport 插件。'); ?> 
                         <a href="https://github.com/little-gt/PLUGION-Passport" target="_blank" class="text-discord-accent hover:underline"><?php _e('点击获取 Passport'); ?></a>
                     </p>
                     <?php endif; ?>
                 </div>
 
                 <div class="flex items-center">
-                    <input id="remember" name="remember" type="checkbox" value="1" class="h-4 w-4 text-discord-accent focus:ring-discord-accent border-gray-300 rounded">
+                    <input id="remember" name="remember" type="checkbox" value="1" class="h-4 w-4 text-discord-accent focus:ring-discord-accent border-gray-300">
                     <label for="remember" class="ml-2 block text-sm text-gray-900">
                         <?php _e('下次自动登录'); ?>
                     </label>
                 </div>
 
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-discord-accent hover:bg-discord-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-accent transition-all transform hover:-translate-y-0.5">
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium text-white bg-discord-accent hover:bg-discord-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-accent transition-all transform hover:-translate-y-0.5">
                         <?php _e('登 录'); ?>
                     </button>
                     <input type="hidden" name="referer" value="<?php echo htmlspecialchars($request->get('referer')); ?>" />
                 </div>
             </form>
+
+            <!-- Passkey 登录区域 -->
+            <?php if ($hasPasskey): ?>
+            <link rel="stylesheet" href="<?php echo \Typecho\Common::url('usr/plugins/Passkey/assist/css/style.css?t=' . $cacheTs, $options->rootUrl); ?>">
+            <script>var PASSKEY_ACTION_URL = "<?php echo \Typecho\Common::url('action/passkey', $options->index); ?>";</script>
+            <script src="<?php echo \Typecho\Common::url('usr/plugins/Passkey/assist/js/passkey.js?t=' . $cacheTs, $options->rootUrl); ?>"></script>
+
+            <div id="passkey-login-container">
+                <button type="button" id="passkey-login-btn"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium text-white bg-discord-accent hover:bg-discord-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-accent transition-all transform hover:-translate-y-0.5">
+                    <span id="passkey-btn-text"><?php _e('使用 Passkey 登录'); ?></span>
+                </button>
+            </div>
+
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var btn = document.getElementById('passkey-login-btn');
+                var btnText = document.getElementById('passkey-btn-text');
+                if (!btn) return;
+
+                btn.addEventListener('click', function () {
+                    if (btn.disabled) return;
+                    btn.disabled = true;
+                    btn.classList.add('opacity-60', 'cursor-not-allowed');
+                    btnText.textContent = '<?php _e('正在验证...'); ?>';
+
+                    PasskeyManager.login()
+                        .catch(function (err) {
+                            console.error('Passkey login failed:', err);
+                        })
+                        .finally(function () {
+                            btn.disabled = false;
+                            btn.classList.remove('opacity-60', 'cursor-not-allowed');
+                            btnText.textContent = '<?php _e('使用 Passkey 登录'); ?>';
+                        });
+                });
+            });
+            </script>
+
+            <?php else: ?>
+            <!-- Passkey 插件未安装提示 -->
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500"><?php _e('Passkey 登录'); ?></span>
+                </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-none text-sm text-amber-800">
+                <!-- 警告图标 -->
+                <svg class="flex-shrink-0 mt-0.5 text-amber-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <div>
+                    <?php _e('未检测到 Passkey 插件，如需使用生物识别快速登录，请'); ?>
+                    <a href="https://github.com/little-gt/PLUGION-Passkey"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="font-medium underline text-amber-900 hover:text-discord-accent transition-colors">
+                        <?php _e('点此了解免费的 Passkey 插件'); ?>
+                    </a>
+                    <?php _e('。'); ?>
+                </div>
+            </div>
+            <?php endif; ?>
 
             <?php if ($options->allowRegister): ?>
             <div class="relative">
@@ -103,6 +178,22 @@ include 'common-js.php';
 <script>
 $(document).ready(function () {
     $('#name').focus();
+});
+document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('passkey-login-btn');
+    if (!btn) return;
+    // 强制修正按钮样式
+    btn.style.setProperty('background-color', '#5865f2', 'important');
+    btn.style.setProperty('color', '#ffffff', 'important');
+    btn.style.setProperty('font-size', '14px', 'important');
+    btn.style.setProperty('font-weight', '500', 'important');
+    // 悬停时保持颜色一致
+    btn.addEventListener('mouseenter', function () {
+        btn.style.setProperty('background-color', '#4752c4', 'important');
+    });
+    btn.addEventListener('mouseleave', function () {
+        btn.style.setProperty('background-color', '#5865f2', 'important');
+    });
 });
 </script>
 <?php

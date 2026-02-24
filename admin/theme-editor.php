@@ -8,7 +8,7 @@ include 'menu.php';
 
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -43,14 +43,14 @@ include 'menu.php';
 
             <div class="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
                 <!-- File List Sidebar -->
-                <div class="lg:w-64 bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col overflow-hidden">
+                <div class="lg:w-64 bg-white border border-gray-100 flex flex-col overflow-hidden">
                     <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-discord-text text-sm">
                         <?php _e('模板文件'); ?>
                     </div>
                     <ul class="overflow-y-auto flex-1 p-2 space-y-1">
                         <?php while ($files->next()): ?>
                             <li>
-                                <a href="<?php $options->adminUrl('theme-editor.php?theme=' . $files->currentTheme() . '&file=' . $files->file); ?>" class="block px-3 py-2 rounded text-sm truncate transition-colors <?php if ($files->current): ?>bg-discord-light text-discord-accent font-medium<?php else: ?>text-discord-muted hover:bg-gray-50 hover:text-discord-text<?php endif; ?>">
+                                <a href="<?php $options->adminUrl('theme-editor.php?theme=' . $files->currentTheme() . '&file=' . $files->file); ?>" class="block px-3 py-2 text-sm truncate transition-colors <?php if ($files->current): ?>bg-discord-light text-discord-accent font-medium<?php else: ?>text-discord-muted hover:bg-gray-50 hover:text-discord-text<?php endif; ?>">
                                     <i class="fas fa-file-code mr-2 opacity-50"></i><?php $files->file(); ?>
                                 </a>
                             </li>
@@ -59,11 +59,11 @@ include 'menu.php';
                 </div>
 
                 <!-- Editor Area -->
-                <div class="flex-1 bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col overflow-hidden">
+                <div class="flex-1 bg-white border border-gray-100 flex flex-col overflow-hidden">
                      <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                         <span class="font-mono text-sm text-discord-text font-medium"><?php echo $files->currentFile(); ?></span>
                         <?php if (!$files->currentIsWriteable()): ?>
-                            <span class="text-xs text-red-500 bg-red-50 px-2 py-1 rounded border border-red-100"><i class="fas fa-lock mr-1"></i> <?php _e('只读'); ?></span>
+                            <span class="text-xs text-red-500 bg-red-50 px-2 py-1 border border-red-100"><i class="fas fa-lock mr-1"></i> <?php _e('只读'); ?></span>
                         <?php endif; ?>
                     </div>
                     
@@ -74,11 +74,11 @@ include 'menu.php';
                             <?php if ($files->currentIsWriteable()): ?>
                                 <input type="hidden" name="theme" value="<?php echo $files->currentTheme(); ?>"/>
                                 <input type="hidden" name="edit" value="<?php echo $files->currentFile(); ?>"/>
-                                <button type="submit" class="px-6 py-2 bg-discord-accent text-white rounded font-medium hover:bg-blue-600 transition-colors shadow-sm text-sm">
+                                <button type="submit" class="px-6 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
                                     <i class="fas fa-save mr-1"></i> <?php _e('保存文件'); ?>
                                 </button>
                             <?php else: ?>
-                                <button type="button" disabled class="px-6 py-2 bg-gray-300 text-gray-500 rounded font-medium cursor-not-allowed text-sm">
+                                <button type="button" disabled class="px-6 py-2 bg-gray-300 text-gray-500 font-medium cursor-not-allowed text-sm">
                                     <?php _e('无法保存'); ?>
                                 </button>
                             <?php endif; ?>

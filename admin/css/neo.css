@@ -30,7 +30,7 @@ body.neo-admin {
     width: 280px;
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border-right: 1px solid var(--neo-border);
-    box-shadow: 8px 0 30px rgba(15, 23, 42, 0.05);
+    
     display: flex;
     flex-direction: column;
     z-index: 120;
@@ -59,7 +59,7 @@ body.neo-admin {
     padding: 2px 10px;
     background: rgba(37, 99, 235, 0.12);
     color: var(--neo-primary);
-    border-radius: 999px;
+    ;
     font-size: 12px;
     font-weight: 600;
 }
@@ -70,11 +70,11 @@ body.neo-admin {
     border: none;
     width: 38px;
     height: 38px;
-    border-radius: 12px;
+    ;
     display: grid;
     place-items: center;
     cursor: pointer;
-    box-shadow: var(--neo-shadow);
+    
 }
 
 .neo-user-card {
@@ -88,9 +88,9 @@ body.neo-admin {
 .neo-user-card img {
     width: 52px;
     height: 52px;
-    border-radius: 14px;
+    ;
     object-fit: cover;
-    box-shadow: var(--neo-shadow);
+    
 }
 
 .neo-user-name {
@@ -126,7 +126,7 @@ body.neo-admin {
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
-    border-radius: 12px;
+    ;
     color: #0f172a;
     font-weight: 600;
     transition: background .2s ease, color .2s ease, transform .2s ease;
@@ -166,7 +166,7 @@ body.neo-admin {
     justify-content: center;
     gap: 8px;
     padding: 10px 12px;
-    border-radius: 12px;
+    ;
     background: #0f172a;
     color: #fff;
     font-weight: 600;
@@ -187,7 +187,7 @@ body.neo-admin {
 
 .neo-plugin-nav a {
     padding: 6px 10px;
-    border-radius: 10px;
+    ;
     background: rgba(15, 23, 42, 0.06);
     color: #0f172a;
 }
@@ -226,7 +226,7 @@ body.neo-admin {
     align-items: center;
     gap: 6px;
     padding: 6px 10px;
-    border-radius: 999px;
+    ;
     background: rgba(37, 99, 235, 0.12);
     color: var(--neo-primary);
     font-weight: 600;
@@ -234,7 +234,7 @@ body.neo-admin {
 
 .neo-topbar .neo-quick a {
     padding: 8px 12px;
-    border-radius: 12px;
+    ;
     background: var(--neo-surface);
     border: 1px solid var(--neo-border);
     color: #0f172a;
@@ -256,9 +256,9 @@ main.main {
 .neo-card {
     background: var(--neo-surface);
     border: 1px solid var(--neo-border);
-    border-radius: 16px;
+    ;
     padding: 18px 20px;
-    box-shadow: var(--neo-shadow);
+    
 }
 
 .neo-grid {
@@ -295,11 +295,11 @@ main.main {
 .neo-hero {
     background: linear-gradient(120deg, rgba(37, 99, 235, 0.12), rgba(249, 115, 22, 0.12));
     border: 1px solid var(--neo-border);
-    border-radius: 18px;
+    ;
     padding: 20px;
     display: grid;
     gap: 12px;
-    box-shadow: var(--neo-shadow);
+    
 }
 
 .neo-hero h3 {
@@ -320,7 +320,7 @@ main.main {
 
 .neo-hero .neo-cta a {
     padding: 10px 14px;
-    border-radius: 12px;
+    ;
     background: #0f172a;
     color: #fff;
     font-weight: 700;
@@ -347,7 +347,7 @@ main.main {
     justify-content: space-between;
     gap: 10px;
     padding: 10px 12px;
-    border-radius: 12px;
+    ;
     border: 1px solid var(--neo-border);
     background: var(--neo-surface);
 }
@@ -394,7 +394,7 @@ main.main {
 .typecho-page-title a {
     background: var(--neo-primary);
     color: #fff;
-    border-radius: 10px;
+    ;
     border: none;
     padding: 8px 12px;
 }
@@ -405,8 +405,8 @@ main.main {
 .primary,
 .primary:hover,
 .primary:active {
-    border-radius: 10px;
-    transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+    ;
+    transition: transform .15s ease, background-color .15s ease;
 }
 
 .btn,
@@ -421,7 +421,7 @@ main.main {
 .primary:active {
     background: var(--neo-primary);
     color: #fff;
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+    
 }
 
 .btn:hover,
@@ -440,11 +440,11 @@ input[type=email],
 input[type=number],
 textarea,
 select {
-    border-radius: 10px;
+    ;
     border: 1px solid var(--neo-border);
     background: #fff;
     padding: 10px 12px;
-    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+    
 }
 
 .typecho-list-table {
@@ -471,13 +471,13 @@ select {
 }
 
 .typecho-option-tabs li a {
-    border-radius: 10px;
+    ;
     border-color: var(--neo-border);
 }
 
 .message {
-    border-radius: 12px;
-    box-shadow: var(--neo-shadow);
+    ;
+    
 }
 
 .typecho-foot {
@@ -494,10 +494,10 @@ select {
 
 .typecho-dashboard .latest-link li {
     padding: 10px 12px;
-    border-radius: 12px;
+    ;
     border: 1px solid var(--neo-border);
     background: var(--neo-surface);
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+    
 }
 
 .typecho-dashboard .latest-link span {

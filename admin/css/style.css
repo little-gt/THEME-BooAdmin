@@ -36,7 +36,7 @@ a.balloon-button {
 	text-align:center;
 	text-decoration:none;
 	zoom:1;
-	border-radius:30px;
+	;
 	white-space:nowrap
 }
 a.button:hover,a.balloon-button:hover {
@@ -48,7 +48,7 @@ input[type=text],input[type=url],input[type=password],input[type=email],input[ty
 	background:#FFF;
 	border:1px solid #D9D9D6;
 	padding:7px;
-	border-radius:2px;
+	;
 	box-sizing:border-box
 }
 input[type=text]:disabled,input[type=text]:read-only,input[type=url]:disabled,input[type=url]:read-only,input[type=password]:disabled,input[type=password]:read-only,input[type=email]:disabled,input[type=email]:read-only,input[type=number]:disabled,input[type=number]:read-only,textarea:disabled,textarea:read-only {
@@ -109,7 +109,7 @@ select {
 	border:none;
 	background-color:#E9E9E6;
 	cursor:pointer;
-	border-radius:2px;
+	;
 	display:inline-block;
 	padding:0 12px;
 	height:32px;
@@ -148,7 +148,7 @@ select {
 	border:none;
 	background-color:#467B96;
 	cursor:pointer;
-	border-radius:2px;
+	;
 	color:#FFF
 }
 .primary:hover {
@@ -169,7 +169,7 @@ select {
 	border:none;
 	background-color:#B94A48;
 	cursor:pointer;
-	border-radius:2px;
+	;
 	color:#FFF
 }
 .btn-warn:hover {
@@ -222,7 +222,7 @@ select {
 }
 .message {
 	padding:8px 10px;
-	border-radius:2px
+	
 }
 .message a {
 	font-weight:bold;
@@ -263,7 +263,7 @@ select {
 	text-align:center;
 	font-size:12px;
 	color:#FFF;
-	border-radius:20px
+	
 }
 .popup {
 	display:none;
@@ -274,7 +274,6 @@ select {
 	width:100%;
 	z-index:10;
 	text-align:center;
-	border-radius:0
 }
 .popup ul {
 	list-style:none;
@@ -305,7 +304,7 @@ select {
 .typecho-pager li a {
 	display:block;
 	padding:0 10px;
-	border-radius:2px
+	
 }
 .typecho-pager li a:hover {
 	text-decoration:none;
@@ -466,10 +465,10 @@ select {
 	margin:1em 0
 }
 .typecho-option-tabs li:first-child a {
-	border-radius:2px 0 0 2px
+	 0 0 2px
 }
 .typecho-option-tabs li:last-child a {
-	border-radius:0 2px 2px 0
+
 }
 .typecho-option-tabs li.current a,.typecho-option-tabs li.active a {
 	background-color:#E9E9E6
@@ -697,7 +696,7 @@ select {
 	max-height:240px;
 	overflow:auto;
 	background-color:#FFF;
-	border-radius:2px
+	
 }
 .typecho-post-area #edit-secondary .category-option ul li {
 	margin:3px 0
@@ -954,7 +953,7 @@ body:has(.menu-bar[open]) {
 .profile-avatar {
 	width:220px;
 	height:220px;
-	border-radius:10px
+	
 }
 #typecho-welcome {
 	margin:1em 0;
@@ -1041,7 +1040,7 @@ body:has(.menu-bar[open]) {
 	background:#E9E9E6;
 	font-size:.8em;
 	font-weight:bold;
-	border-radius:2px
+	
 }
 .typecho-page-title a:hover {
 	text-decoration:none
@@ -1664,7 +1663,7 @@ body:has(.menu-bar[open]) {
 	padding:3px;
 	cursor:pointer;
 	vertical-align:middle;
-	border-radius:2px
+	
 }
 #wmd-button-bar .wmd-button-row li:hover {
 	background-color:#E9E9E6
@@ -1800,7 +1799,7 @@ body:has(.menu-bar[open]) {
 	padding:0 15px;
 	word-wrap:break-word;
 	overflow:auto;
-	border-radius:2px
+	
 }
 #wmd-preview img {
 	max-width:100%
@@ -1884,7 +1883,6 @@ body:has(.menu-bar[open]) {
 	background:#FFF;
 	z-index:999;
 	box-sizing:border-box;
-	border-radius:0
 }
 .fullscreen #wmd-button-bar {
 	left:0;
@@ -1916,8 +1914,8 @@ body:has(.menu-bar[open]) {
 	border-bottom:1px solid #F3F3F0
 }
 .fullscreen #upload-panel {
-	-webkit-box-shadow:0 4px 16px rgba(0,0,0,0.225);
-	box-shadow:0 4px 16px rgba(0,0,0,0.225);
+	
+	
 	border-style:solid
 }
 .fullscreen #tab-files {
@@ -2075,7 +2073,7 @@ ul.token-input-list {
 	z-index:999;
 	background-color:#FFF;
 	clear:left;
-	border-radius:2px;
+	;
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	box-sizing:border-box

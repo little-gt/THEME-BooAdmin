@@ -5,7 +5,7 @@ include 'menu.php';
 ?>
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
             <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -28,7 +28,7 @@ include 'menu.php';
     <div class="flex-1 overflow-y-auto p-4 md:p-8">
         <div class="w-full max-w-none mx-auto">
             
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-white border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                     <h2 class="text-xl font-bold text-discord-text flex items-center">
                         <i class="fas fa-cubes text-discord-accent mr-2"></i> <?php _e('插件列表'); ?>
@@ -46,11 +46,11 @@ include 'menu.php';
                             <h3 class="text-lg font-semibold text-discord-text mb-4 pl-3 border-l-4 border-green-500"><?php _e('已启用插件'); ?></h3>
                             <div class="grid grid-cols-1 gap-4">
                                 <?php while ($activatedPlugins->next()): ?>
-                                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between hover:shadow-sm transition-shadow" id="plugin-<?php $activatedPlugins->name(); ?>">
+                                    <div class="bg-gray-50 p-4 border border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between" id="plugin-<?php $activatedPlugins->name(); ?>">
                                         <div class="flex-1 min-w-0 pr-4">
                                             <div class="flex items-center mb-1">
                                                 <h4 class="text-base font-bold text-discord-text mr-2"><?php $activatedPlugins->title(); ?></h4>
-                                                <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full"><?php $activatedPlugins->version(); ?></span>
+                                                <span class="bg-gray-200 text-gray-600 text-xs px-2 py-0.5"><?php $activatedPlugins->version(); ?></span>
                                                 <?php if (!$activatedPlugins->dependence): ?>
                                                     <span class="ml-2 text-red-500 text-xs" title="<?php _e('无法在此版本的 Typecho 下正常工作'); ?>"><i class="fas fa-exclamation-triangle"></i></span>
                                                 <?php endif; ?>
@@ -64,11 +64,11 @@ include 'menu.php';
                                         <div class="mt-4 md:mt-0 flex items-center space-x-3 shrink-0">
                                             <?php if ($activatedPlugins->activate || $activatedPlugins->deactivate || $activatedPlugins->config || $activatedPlugins->personalConfig): ?>
                                                 <?php if ($activatedPlugins->config): ?>
-                                                    <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>" class="flex items-center px-3 py-1.5 bg-discord-light text-discord-text rounded hover:bg-gray-200 transition-colors text-sm font-medium">
+                                                    <a href="<?php $options->adminUrl('options-plugin.php?config=' . $activatedPlugins->name); ?>" class="flex items-center px-3 py-1.5 bg-discord-light text-discord-text hover:bg-gray-200 transition-colors text-sm font-medium">
                                                         <i class="fas fa-cog mr-1.5"></i> <?php _e('设置'); ?>
                                                     </a>
                                                 <?php endif; ?>
-                                                <a href="<?php $security->index('/action/plugins-edit?deactivate=' . $activatedPlugins->name); ?>" class="flex items-center px-3 py-1.5 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-colors text-sm font-medium">
+                                                <a href="<?php $security->index('/action/plugins-edit?deactivate=' . $activatedPlugins->name); ?>" class="flex items-center px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-sm font-medium">
                                                     <i class="fas fa-power-off mr-1.5"></i> <?php _e('禁用'); ?>
                                                 </a>
                                             <?php else: ?>
@@ -80,12 +80,12 @@ include 'menu.php';
 
                                 <?php if (!empty($activatedPlugins->activatedPlugins)): ?>
                                     <?php foreach ($activatedPlugins->activatedPlugins as $key => $val): ?>
-                                        <div class="bg-red-50 rounded-lg p-4 border border-red-200 flex items-center justify-between">
+                                        <div class="bg-red-50 p-4 border border-red-200 flex items-center justify-between">
                                             <div>
                                                 <h4 class="text-base font-bold text-red-700"><?php echo $key; ?></h4>
                                                 <p class="text-sm text-red-600 mt-1"><i class="fas fa-exclamation-circle mr-1"></i> <?php _e('此插件文件已经损坏或者被不安全移除, 强烈建议你禁用它'); ?></p>
                                             </div>
-                                            <a href="<?php $security->index('/action/plugins-edit?deactivate=' . $key); ?>" class="px-3 py-1.5 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors text-sm font-medium">
+                                            <a href="<?php $security->index('/action/plugins-edit?deactivate=' . $key); ?>" class="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 transition-colors text-sm font-medium">
                                                 <?php _e('禁用'); ?>
                                             </a>
                                         </div>
@@ -103,11 +103,11 @@ include 'menu.php';
                             <div class="grid grid-cols-1 gap-4">
                                 <?php if ($deactivatedPlugins->have()): ?>
                                     <?php while ($deactivatedPlugins->next()): ?>
-                                        <div class="bg-white rounded-lg p-4 border border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between hover:shadow-sm transition-shadow opacity-75 hover:opacity-100" id="plugin-<?php $deactivatedPlugins->name(); ?>">
+                                        <div class="bg-white p-4 border border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between opacity-75 hover:opacity-100" id="plugin-<?php $deactivatedPlugins->name(); ?>">
                                             <div class="flex-1 min-w-0 pr-4">
                                                 <div class="flex items-center mb-1">
                                                     <h4 class="text-base font-bold text-gray-600 mr-2"><?php $deactivatedPlugins->title(); ?></h4>
-                                                    <span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full"><?php $deactivatedPlugins->version(); ?></span>
+                                                    <span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5"><?php $deactivatedPlugins->version(); ?></span>
                                                 </div>
                                                 <p class="text-sm text-gray-500 mb-1"><?php $deactivatedPlugins->description(); ?></p>
                                                 <div class="text-xs text-gray-400">
@@ -116,14 +116,14 @@ include 'menu.php';
                                                 </div>
                                             </div>
                                             <div class="mt-4 md:mt-0 shrink-0">
-                                                <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>" class="flex items-center px-4 py-1.5 bg-discord-accent text-white rounded hover:bg-blue-600 transition-colors text-sm font-medium shadow-sm">
+                                                <a href="<?php $security->index('/action/plugins-edit?activate=' . $deactivatedPlugins->name); ?>" class="flex items-center px-4 py-1.5 bg-discord-accent text-white hover:bg-blue-600 transition-colors text-sm font-medium">
                                                     <i class="fas fa-play mr-1.5"></i> <?php _e('启用'); ?>
                                                 </a>
                                             </div>
                                         </div>
                                     <?php endwhile; ?>
                                 <?php else: ?>
-                                    <div class="text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                    <div class="text-center py-10 bg-gray-50 border border-dashed border-gray-300">
                                         <p class="text-gray-500"><?php _e('没有安装插件'); ?></p>
                                     </div>
                                 <?php endif; ?>

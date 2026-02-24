@@ -8,7 +8,7 @@ include 'menu.php';
 
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -32,26 +32,26 @@ include 'menu.php';
             
             <!-- Tag List -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
+                <div class="bg-white border border-gray-200 overflow-hidden h-full flex flex-col">
                     <form method="post" name="manage_tags" class="operate-form flex flex-col h-full">
                         <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                              <div class="flex items-center space-x-2">
                                  <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
-                                     <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                     <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                      <span><?php _e('全选'); ?></span>
                                  </label>
                                  <div class="relative group">
-                                    <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                    <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                         <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                     </button>
-                                    <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                    <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
                                         <a lang="<?php _e('你确认要删除这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                         <a lang="<?php _e('刷新标签可能需要等待较长时间, 你确认要刷新这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=refresh'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('刷新'); ?></a>
                                         <div class="border-t border-gray-100 my-1"></div>
                                         <div class="px-4 py-2">
                                             <div class="flex items-center space-x-2">
-                                                <button type="submit" lang="<?php _e('你确认要合并这些标签吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white rounded hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-tag-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
-                                                <input type="text" name="merge" class="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:border-discord-accent w-24" placeholder="<?php _e('标签名'); ?>">
+                                                <button type="submit" lang="<?php _e('你确认要合并这些标签吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-tag-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
+                                                <input type="text" name="merge" class="text-xs border border-gray-300 px-2 py-1 focus:outline-none focus:border-discord-accent w-24" placeholder="<?php _e('标签名'); ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -65,9 +65,9 @@ include 'menu.php';
                                     <?php while ($tags->next()): ?>
                                         <li class="relative group" id="<?php $tags->theId(); ?>">
                                             <input type="checkbox" value="<?php $tags->mid(); ?>" name="mid[]" class="absolute opacity-0 pointer-events-none peer">
-                                            <div class="flex items-center px-3 py-1.5 bg-gray-100 rounded-full border border-gray-200 hover:border-discord-accent hover:bg-blue-50 transition-all cursor-pointer peer-checked:bg-discord-accent peer-checked:text-white peer-checked:border-discord-accent select-none">
+                                            <div class="flex items-center px-3 py-1.5 bg-gray-100 border border-gray-200 hover:border-discord-accent hover:bg-blue-50 transition-all cursor-pointer peer-checked:bg-discord-accent peer-checked:text-white peer-checked:border-discord-accent select-none">
                                                 <span class="text-sm font-medium mr-1" rel="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>"><?php $tags->name(); ?></span>
-                                                <span class="text-xs opacity-60 bg-gray-200 px-1.5 rounded-full text-gray-600 ml-1 group-hover:bg-white peer-checked:text-discord-accent"><?php $tags->count(); ?></span>
+                                                <span class="text-xs opacity-60 bg-gray-200 px-1.5 text-gray-600 ml-1 group-hover:bg-white peer-checked:text-discord-accent"><?php $tags->count(); ?></span>
                                                 <a class="ml-2 text-gray-400 hover:text-discord-accent peer-checked:text-white peer-checked:hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" href="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>" title="<?php _e('编辑'); ?>"><i class="fas fa-edit"></i></a>
                                             </div>
                                             <!-- Checkbox logic via JS needs to toggle checked state on click of the div -->
@@ -88,7 +88,7 @@ include 'menu.php';
 
             <!-- Edit Form -->
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-4">
+                <div class="bg-white border border-gray-200 p-6 sticky top-4">
                     <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e(isset($request->mid) ? '编辑标签' : '新增标签'); ?></h3>
                     <?php \Widget\Metas\Tag\Edit::alloc()->form()->render(); ?>
                     <?php if (isset($request->mid)): ?>

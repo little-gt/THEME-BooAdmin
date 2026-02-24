@@ -9,7 +9,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 ?>
 <main class="flex-1 flex flex-col overflow-hidden bg-discord-light">
     <!-- Header -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
         <div class="flex items-center text-discord-muted">
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -33,31 +33,31 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
             
             <!-- Tabs & Filters -->
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <div class="flex items-center bg-gray-100 p-1 rounded-lg select-none self-start">
+                <div class="flex items-center bg-gray-100 p-1 select-none self-start">
                      <a href="<?php $options->adminUrl('manage-comments.php' . (isset($request->cid) ? '?cid=' . $request->filter('encode')->cid : '')); ?>" 
-                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if (!isset($request->status) || 'approved' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        class="px-4 py-1.5 text-sm font-medium transition-all duration-200 <?php if (!isset($request->status) || 'approved' == $request->get('status')): ?>bg-white text-discord-text<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
                         <?php _e('已通过'); ?>
                      </a>
                      <a href="<?php $options->adminUrl('manage-comments.php?status=waiting' . (isset($request->cid) ? '&cid=' . $request->filter('encode')->cid : '')); ?>" 
-                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if ('waiting' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        class="px-4 py-1.5 text-sm font-medium transition-all duration-200 <?php if ('waiting' == $request->get('status')): ?>bg-white text-discord-text<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
                         <?php _e('待审核'); ?>
                         <?php if(!$isAllComments && $stat->myWaitingCommentsNum > 0 && !isset($request->cid)): ?> 
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->myWaitingCommentsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->myWaitingCommentsNum(); ?></span>
                         <?php elseif($isAllComments && $stat->waitingCommentsNum > 0 && !isset($request->cid)): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->waitingCommentsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->waitingCommentsNum(); ?></span>
                         <?php elseif(isset($request->cid) && $stat->currentWaitingCommentsNum > 0): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->currentWaitingCommentsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->currentWaitingCommentsNum(); ?></span>
                         <?php endif; ?>
                      </a>
                      <a href="<?php $options->adminUrl('manage-comments.php?status=spam' . (isset($request->cid) ? '&cid=' . $request->filter('encode')->cid : '')); ?>" 
-                        class="px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-200 <?php if ('spam' == $request->get('status')): ?>bg-white text-discord-text shadow-sm<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
+                        class="px-4 py-1.5 text-sm font-medium transition-all duration-200 <?php if ('spam' == $request->get('status')): ?>bg-white text-discord-text<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>">
                         <?php _e('垃圾'); ?>
                         <?php if(!$isAllComments && $stat->mySpamCommentsNum > 0 && !isset($request->cid)): ?> 
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->mySpamCommentsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->mySpamCommentsNum(); ?></span>
                         <?php elseif($isAllComments && $stat->spamCommentsNum > 0 && !isset($request->cid)): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->spamCommentsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->spamCommentsNum(); ?></span>
                         <?php elseif(isset($request->cid) && $stat->currentSpamCommentsNum > 0): ?>
-                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-xs"><?php $stat->currentSpamCommentsNum(); ?></span>
+                            <span class="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 text-xs"><?php $stat->currentSpamCommentsNum(); ?></span>
                         <?php endif; ?>
                      </a>
                 </div>
@@ -65,7 +65,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                 <form method="get" class="flex flex-wrap items-center gap-2">
                      <div class="relative">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent shadow-sm w-48 md:w-64">
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 text-sm focus:outline-none focus:border-discord-accent w-48 md:w-64">
                     </div>
                     <?php if(isset($request->status)): ?>
                         <input type="hidden" value="<?php echo $request->filter('html')->status; ?>" name="status" />
@@ -73,27 +73,27 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                     <?php if(isset($request->cid)): ?>
                         <input type="hidden" value="<?php echo $request->filter('html')->cid; ?>" name="cid" />
                     <?php endif; ?>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
                     <?php if ('' != $request->keywords || '' != $request->category): ?>
-                        <a href="<?php $options->adminUrl('manage-comments.php' . (isset($request->status) || isset($request->cid) ? '?' . (isset($request->status) ? 'status=' . $request->filter('encode')->status : '') . (isset($request->cid) ? (isset($request->status) ? '&' : '') . 'cid=' . $request->filter('encode')->cid : '') : '')); ?>" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors text-xs text-gray-600"><?php _e('取消筛选'); ?></a>
+                        <a href="<?php $options->adminUrl('manage-comments.php' . (isset($request->status) || isset($request->cid) ? '?' . (isset($request->status) ? 'status=' . $request->filter('encode')->status : '') . (isset($request->cid) ? (isset($request->status) ? '&' : '') . 'cid=' . $request->filter('encode')->cid : '') : '')); ?>" class="px-2 py-1 bg-gray-200 hover:bg-gray-300 transition-colors text-xs text-gray-600"><?php _e('取消筛选'); ?></a>
                     <?php endif; ?>
                 </form>
             </div>
 
             <!-- Comment List -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_comments" class="operate-form">
                     <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
                          <div class="flex items-center space-x-2">
                              <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
-                                 <input type="checkbox" class="typecho-table-select-all rounded text-discord-accent focus:ring-discord-accent border-gray-300">
+                                 <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-700 shadow-sm flex items-center">
+                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                     <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-100 py-1 hidden group-hover:block z-50">
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
                                     <a href="<?php $security->index('/action/comments-edit?do=approved'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('通过'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=waiting'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('待审核'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=spam'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记垃圾'); ?></a>
@@ -102,7 +102,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                 </div>
                              </div>
                              <?php if('spam' == $request->get('status')): ?>
-                                <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 rounded hover:bg-red-100 text-red-600 shadow-sm btn-operate" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>"><?php _e('删除所有垃圾评论'); ?></button>
+                                <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 btn-operate" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>"><?php _e('删除所有垃圾评论'); ?></button>
                              <?php endif; ?>
                          </div>
                          <?php if($user->pass('editor', true) && !isset($request->cid)): ?>
@@ -141,10 +141,10 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                     echo htmlspecialchars(json_encode($comment));
                                     ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3 align-top">
-                                            <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="rounded text-discord-accent focus:ring-discord-accent border-gray-300 mt-1">
+                                            <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300 mt-1">
                                         </td>
                                         <td class="py-3 text-center align-top">
-                                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 mx-auto">
+                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 mx-auto">
                                                 <?php if ('comment' == $comments->type): ?>
                                                     <?php $comments->gravatar(40, null, true); ?>
                                                 <?php else: ?>
@@ -241,7 +241,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     min-width: 32px;
     height: 32px;
     padding: 0 8px;
-    border-radius: 6px;
     background-color: white;
     color: #4b5563; /* text-gray-600 */
     font-size: 0.875rem; /* text-sm */
@@ -265,7 +264,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 .comment-content img {
     max-width: 100%;
-    border-radius: 4px;
 }
 </style>
 <?php
@@ -317,9 +315,9 @@ $(document).ready(function () {
             $('.comment-reply').remove();
         } else {
             var form = $('<form method="post" action="'
-                + t.attr('rel') + '" class="comment-reply mt-2 p-3 bg-gray-50 rounded border border-gray-200">'
-                + '<p><label for="text" class="sr-only"><?php _e('内容'); ?></label><textarea id="text" name="text" class="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" rows="3"></textarea></p>'
-                + '<p class="mt-2 flex space-x-2"><button type="submit" class="px-3 py-1 bg-discord-accent text-white rounded text-sm hover:bg-blue-600 transition-colors"><?php _e('回复'); ?></button> <button type="button" class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300 transition-colors cancel"><?php _e('取消'); ?></button></p>'
+                + t.attr('rel') + '" class="comment-reply mt-2 p-3 bg-gray-50 border border-gray-200">'
+                + '<p><label for="text" class="sr-only"><?php _e('内容'); ?></label><textarea id="text" name="text" class="w-full p-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" rows="3"></textarea></p>'
+                + '<p class="mt-2 flex space-x-2"><button type="submit" class="px-3 py-1 bg-discord-accent text-white text-sm hover:bg-blue-600 transition-colors"><?php _e('回复'); ?></button> <button type="button" class="px-3 py-1 bg-gray-200 text-gray-700 text-sm hover:bg-gray-300 transition-colors cancel"><?php _e('取消'); ?></button></p>'
                 + '</form>').appendTo($('.comment-content', t.parents('tr')));
 
             $('.cancel', form).click(function () {
@@ -330,7 +328,7 @@ $(document).ready(function () {
 
             form.submit(function () {
                 var t = $(this), tr = t.parents('tr'), 
-                    reply = $('<div class="comment-reply-content mt-2 p-2 bg-blue-50 text-blue-800 text-sm rounded border border-blue-100"></div>').insertAfter($('.comment-content', tr));
+                    reply = $('<div class="comment-reply-content mt-2 p-2 bg-blue-50 text-blue-800 text-sm border border-blue-100"></div>').insertAfter($('.comment-content', tr));
 
                 var html = DOMPurify.sanitize(textarea.val(), {USE_PROFILES: {html: true}});
                 reply.html('<p>' + html + '</p>');
@@ -355,13 +353,13 @@ $(document).ready(function () {
         var edit = $('<tr class="comment-edit bg-white"><td colspan="5" class="p-4 border-b border-gray-200">'
                         + '<form method="post" action="' + t.attr('rel') + '" class="comment-edit-info space-y-4">'
                         + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4">'
-                        + '<div><label for="' + id + '-author" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('用户名'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" id="' + id + '-author" name="author" type="text"></div>'
-                        + '<div><label for="' + id + '-mail" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('电子邮箱'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" type="email" name="mail" id="' + id + '-mail"></div>'
-                        + '<div><label for="' + id + '-url" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('个人主页'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent" type="text" name="url" id="' + id + '-url"></div>'
+                        + '<div><label for="' + id + '-author" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('用户名'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" id="' + id + '-author" name="author" type="text"></div>'
+                        + '<div><label for="' + id + '-mail" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('电子邮箱'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" type="email" name="mail" id="' + id + '-mail"></div>'
+                        + '<div><label for="' + id + '-url" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('个人主页'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" type="text" name="url" id="' + id + '-url"></div>'
                         + '</div>'
-                        + '<div><label for="' + id + '-text" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('内容'); ?></label><textarea name="text" id="' + id + '-text" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-discord-accent"></textarea></div>'
-                        + '<div class="flex space-x-2"><button type="submit" class="px-4 py-2 bg-discord-accent text-white rounded hover:bg-blue-600 transition-colors text-sm"><?php _e('提交'); ?></button> '
-                        + '<button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors text-sm cancel"><?php _e('取消'); ?></button></div>'
+                        + '<div><label for="' + id + '-text" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('内容'); ?></label><textarea name="text" id="' + id + '-text" rows="6" class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent"></textarea></div>'
+                        + '<div class="flex space-x-2"><button type="submit" class="px-4 py-2 bg-discord-accent text-white hover:bg-blue-600 transition-colors text-sm"><?php _e('提交'); ?></button> '
+                        + '<button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors text-sm cancel"><?php _e('取消'); ?></button></div>'
                         + '</form></td></tr>')
                         .data('id', id).data('comment', comment).insertAfter(tr);
 
