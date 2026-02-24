@@ -7,6 +7,12 @@
 [![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.4-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 
+参与讨论：https://forum.typecho.org/viewtopic.php?p=62494#p62494
+
+了解找回密码：https://github.com/little-gt/PLUGION-Passport
+
+了解通行秘钥：https://github.com/little-gt/PLUGION-Passkey
+
 ---
 
 ## 📸 截图预览

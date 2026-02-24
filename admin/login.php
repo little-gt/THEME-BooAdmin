@@ -140,7 +140,7 @@ include 'header.php';
                     <line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
                 <div>
-                    <?php _e('未检测到 Passkey 插件，如需使用生物识别快速登录，请'); ?>
+                    <?php _e('未检测到 Passkey 插件，如需使用通行秘钥技术，以实现无密码快速登录，请'); ?>
                     <a href="https://github.com/little-gt/PLUGION-Passkey"
                        target="_blank"
                        rel="noopener noreferrer"
