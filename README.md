@@ -4,13 +4,59 @@
 >
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0+，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。v1.1.3 版本全面优化了管理页面的视图体验，支持多种内容类型的灵活视图切换。
 
-[![Release](https://img.shields.io/badge/Release-v1.1.4--rc1-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![Release](https://img.shields.io/badge/Release-v1.1.4--rc2-blue?style=flat-square)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![Typecho](https://img.shields.io/badge/Typecho-1.3+-orange?style=flat-square&logo=typecho)](https://typecho.org)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06b6d4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![CDN](https://img.shields.io/badge/CDN-AliYun-ff6900?style=flat-square)](https://www.aliyun.com)
 [![License](https://img.shields.io/badge/License-GPLv3-green?style=flat-square)](LICENSE)
 
-![预览图](screenshot/screenshot1.png)
+---
+
+## 📸 截图预览
+
+### 登录页面
+<p align="center">
+  <img src="screenshot/screenshot6.png" alt="登录页面" width="100%">
+</p>
+
+全新设计的登录页面，采用现代化渐变背景，提供优雅的用户体验。
+
+### 控制台仪表板
+<p align="center">
+  <img src="screenshot/screenshot1.png" alt="控制台仪表板" width="100%">
+</p>
+
+功能强大的仪表板，实时展示博客统计数据，包括文章数、评论数、待审核数和分类统计，配备内容趋势图表和内容分布饼图。
+
+### 文章管理
+<p align="center">
+  <img src="screenshot/screenshot2.png" alt="文章管理" width="100%">
+</p>
+
+清晰的文章列表视图，支持多种筛选和批量操作，让内容管理变得轻松高效。
+
+### 文件管理
+<p align="center">
+  <img src="screenshot/screenshot3.png" alt="文件管理" width="100%">
+</p>
+
+直观的文件预览界面，支持图片、文档等多种格式，提供便捷的文件管理体验。
+
+### 备份与恢复
+<p align="center">
+  <img src="screenshot/screenshot5.png" alt="备份与恢复" width="100%">
+</p>
+
+专业的数据备份功能，保护您的宝贵数据，支持一键备份和恢复操作。
+
+### 外观管理
+<p align="center">
+  <img src="screenshot/screenshot4.png" alt="外观管理" width="100%">
+</p>
+
+美观的主题管理界面，轻松切换和配置您的博客外观。
+
+---
 
 ## ✨ 核心更新
 
@@ -73,52 +119,6 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ---
 
-## 📸 截图预览
-
-### 登录页面
-<p align="center">
-  <img src="screenshot/screenshot6.png" alt="登录页面" width="100%">
-</p>
-
-全新设计的登录页面，采用现代化渐变背景，提供优雅的用户体验。
-
-### 控制台仪表板
-<p align="center">
-  <img src="screenshot/screenshot1.png" alt="控制台仪表板" width="100%">
-</p>
-
-功能强大的仪表板，实时展示博客统计数据，包括文章数、评论数、待审核数和分类统计，配备内容趋势图表和内容分布饼图。
-
-### 文章管理
-<p align="center">
-  <img src="screenshot/screenshot2.png" alt="文章管理" width="100%">
-</p>
-
-清晰的文章列表视图，支持多种筛选和批量操作，让内容管理变得轻松高效。
-
-### 文件管理
-<p align="center">
-  <img src="screenshot/screenshot3.png" alt="文件管理" width="100%">
-</p>
-
-直观的文件预览界面，支持图片、文档等多种格式，提供便捷的文件管理体验。
-
-### 备份与恢复
-<p align="center">
-  <img src="screenshot/screenshot5.png" alt="备份与恢复" width="100%">
-</p>
-
-专业的数据备份功能，保护您的宝贵数据，支持一键备份和恢复操作。
-
-### 外观管理
-<p align="center">
-  <img src="screenshot/screenshot4.png" alt="外观管理" width="100%">
-</p>
-
-美观的主题管理界面，轻松切换和配置您的博客外观。
-
----
-
 ## 🧱 技术栈
 
 ### 前端框架与样式
@@ -154,6 +154,9 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 ### v1.1.4 版本
 
 - 优化了主页和菜单的头像展示，修复了特殊字符渲染异常的问题；
+- 提升菜单兼容性，优化第三方插件注入和第三方主题注入的兼容；
+- 优化主题管理页面的设计，使得和插件、备份页面的设计相一致；
+- 将备份从设置中移出，并且优化了备份页面的设计。
 
 ### v1.1.3 版本
 - 🎨 **全局通知系统优化**: 重构通知组件样式，采用现代化设计语言，提供更好的视觉反馈和用户体验

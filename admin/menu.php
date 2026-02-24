@@ -86,6 +86,45 @@
                 </a>
             </li>
 
+            <!-- Dynamic Plugin Menu Items -->
+            <?php 
+            // 捕获原始菜单输出
+            ob_start();
+            $menu->output();
+            $menuOutput = ob_get_clean();
+            
+            // 使用 DOMDocument 解析菜单
+            if (!empty($menuOutput)) {
+                $dom = new DOMDocument();
+                @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $menuOutput, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                $xpath = new DOMXPath($dom);
+                
+                // 查找所有带有 extending.php 的链接（插件菜单）
+                $pluginLinks = $xpath->query('//a[contains(@href, "extending.php")]');
+                
+                if ($pluginLinks->length > 0) {
+                    echo '<li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text">';
+                    _e('扩展');
+                    echo '</li>';
+                    
+                    foreach ($pluginLinks as $link) {
+                        $href = $link->getAttribute('href');
+                        $text = trim($link->textContent);
+                        $isActive = (isset($_GET['panel']) && strpos($href, $_GET['panel']) !== false);
+                        
+                        echo '<li>';
+                        echo '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors';
+                        if ($isActive) echo ' bg-blue-50 text-discord-accent';
+                        echo '">';
+                        echo '<i class="fas fa-plug w-5 text-center mr-3 text-sm opacity-80"></i>';
+                        echo '<span class="sidebar-text">' . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</span>';
+                        echo '</a>';
+                        echo '</li>';
+                    }
+                }
+            }
+            ?>
+
             <!-- Settings -->
             <?php if ($user->pass('administrator', true)): ?>
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('系统'); ?></li>
@@ -115,9 +154,14 @@
                         <li><a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'options-discussion.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('评论'); ?></a></li>
                         <li><a href="<?php $options->adminUrl('options-reading.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'options-reading.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('阅读'); ?></a></li>
                         <li><a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'options-permalink.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('永久链接'); ?></a></li>
-                         <li><a href="<?php $options->adminUrl('backup.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'backup.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('备份'); ?></a></li>
                     </ul>
                  </div>
+            </li>
+            <li>
+                <a href="<?php $options->adminUrl('backup.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors <?php if($menu->current == 'backup.php') echo 'bg-blue-50 text-discord-accent'; ?>">
+                    <i class="fas fa-download w-5 text-center mr-3 text-sm opacity-80"></i>
+                    <span class="sidebar-text"><?php _e('备份'); ?></span>
+                </a>
             </li>
             <?php endif; ?>
         </ul>
@@ -139,9 +183,13 @@
                 <p class="text-sm font-semibold text-gray-800 truncate"><a href="<?php $options->adminUrl('profile.php'); ?>"><?php $user->screenName(); ?></a></p>
                 <p class="text-xs text-gray-500 truncate"><?php echo $user->group; ?></p>
             </div>
-            <a href="<?php $options->logoutUrl(); ?>" class="ml-auto text-gray-400 hover:text-red-500 sidebar-text p-2 rounded-full hover:bg-red-50 transition-colors" title="<?php _e('登出'); ?>">
-                <i class="fas fa-sign-out-alt"></i>
-            </a>
+            <!-- Plugin Injection Point -->
+            <span class="ml-auto flex items-center space-x-2">
+                <?php \Typecho\Plugin::factory('admin/menu.php')->call('navBar'); ?>
+                <a href="<?php $options->logoutUrl(); ?>" class="text-gray-400 hover:text-red-500 sidebar-text p-2 rounded-full hover:bg-red-50 transition-colors" title="<?php _e('登出'); ?>">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </span>
         </div>
     </div>
 </aside>
