@@ -137,6 +137,90 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         margin-top: auto; /* Push to bottom when content is short */
     }
     
+    /* Plugin page banner */
+    .plugin-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%);
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        transition: all 0.3s ease;
+    }
+    
+    .plugin-banner-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .plugin-banner-avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .plugin-banner-text {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .plugin-banner-username {
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+    
+    .plugin-banner-role {
+        font-size: 0.75rem;
+        opacity: 0.9;
+    }
+    
+    .plugin-banner-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .plugin-banner-button {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .plugin-banner-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+    }
+    
+    .plugin-banner-button.primary {
+        background: white;
+        color: #5865F2;
+    }
+    
+    .plugin-banner-button.primary:hover {
+        background: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Adjust main content for plugin banner */
+    .has-plugin-banner main {
+        padding-bottom: 5rem;
+    }
+    
     /* ========================================
        Global Form Styling for Settings Pages
        ======================================== */

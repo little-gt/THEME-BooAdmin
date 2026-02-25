@@ -1,6 +1,19 @@
 <?php if (!defined('__TYPECHO_ADMIN__')) exit; ?>
+<?php
+// 检测当前页面是否在插件菜单中
+$isPluginPage = false;
+$currentUrl = $_SERVER['REQUEST_URI'];
+if (strpos($currentUrl, 'extending.php') !== false) {
+    $isPluginPage = true;
+}
+
+// 用户信息变量
+$userAvatarUrl = \Typecho\Common::gravatarUrl($user->mail, 36);
+$userName = $user->screenName;
+$userFirstChar = mb_substr($userName, 0, 1, 'UTF-8');
+?>
 <!-- Sidebar -->
-<aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300 transform md:translate-x-0 fixed md:relative z-20 h-full" id="sidebar">
+<aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300 transform md:translate-x-0 fixed md:relative z-20 h-full <?php if($isPluginPage) echo 'md:translate-x-[-100%] md:opacity-0 pointer-events-none'; ?>" id="sidebar">
     <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100 bg-white">
         <h1 class="text-xl font-bold text-discord-accent flex items-center">
              <div class="w-8 h-8 bg-discord-accent text-white flex items-center justify-center mr-2">
@@ -116,7 +129,7 @@
                         echo '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors';
                         if ($isActive) echo ' bg-blue-50 text-discord-accent';
                         echo '">';
-                        echo '<i class="fas fa-plug w-5 text-center mr-3 text-sm opacity-80"></i>';
+                        echo '<i class="fas fa-dice-d6 w-5 text-center mr-3 text-sm opacity-80"></i>';
                         echo '<span class="sidebar-text">' . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</span>';
                         echo '</a>';
                         echo '</li>';
@@ -169,11 +182,6 @@
 
     <div class="p-4 border-t border-gray-100 bg-white">
         <div class="flex items-center group cursor-pointer hover:bg-gray-50 p-2 transition-colors">
-            <?php 
-            $userAvatarUrl = \Typecho\Common::gravatarUrl($user->mail, 36);
-            $userName = $user->screenName;
-            $userFirstChar = mb_substr($userName, 0, 1, 'UTF-8');
-            ?>
             <img src="<?php echo $userAvatarUrl; ?>" 
                  alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" 
                  class="user-avatar w-9 h-9 shrink-0 border border-gray-200"
@@ -276,4 +284,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<?php if($isPluginPage): ?>
+<!-- Plugin page banner -->
+<div class="plugin-banner">
+    <div class="plugin-banner-content">
+        <img src="<?php echo $userAvatarUrl; ?>" 
+             alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" 
+             class="plugin-banner-avatar"
+             data-fallback="<?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?>"
+             onerror="generateUserFallbackAvatar(this);" />
+        <div class="plugin-banner-text">
+            <div class="plugin-banner-username"><?php $user->screenName(); ?></div>
+            <div class="plugin-banner-role"><?php echo $user->group; ?></div>
+        </div>
+    </div>
+    <div class="plugin-banner-actions">
+        <a href="<?php $options->adminUrl('index.php'); ?>" class="plugin-banner-button primary">
+            <i class="fas fa-arrow-left mr-1"></i>
+            返回控制台
+        </a>
+    </div>
+</div>
+<script>
+// 添加插件页面的 body 类
+document.body.classList.add('has-plugin-banner');
+
+// 调整主内容区域的左边距，因为侧边栏已经隐藏
+if (window.innerWidth >= 768) {
+    document.querySelector('main').style.marginLeft = '0';
+}
+</script>
+<?php endif; ?>
 
