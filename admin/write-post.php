@@ -74,7 +74,7 @@ $post = \Widget\Contents\Post\Edit::alloc()->prepare();
                         </p>
 
                         <!-- Editor -->
-                        <div class="editor-container border-t border-gray-100 pt-4">
+                        <div class="editor-container pt-4">
                              <label for="text" class="sr-only"><?php _e('文章内容'); ?></label>
                             <textarea style="height: <?php $options->editorSize(); ?>px" autocomplete="off" id="text"
                                       name="text" class="w-full mono border-none focus:outline-none focus:ring-0 resize-none text-discord-text bg-transparent" placeholder="<?php _e('开始撰写...'); ?>"><?php echo htmlspecialchars($post->text); ?></textarea>

@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.5--pr1-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.5-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 
 参与讨论：https://forum.typecho.org/viewtopic.php?p=62494#p62494
@@ -17,47 +17,29 @@
 
 ## 📸 截图预览
 
-### 登录页面
-<p align="center">
-  <img src="screenshot/screenshot6.png" alt="登录页面" width="100%">
-</p>
+### 控制台仪表盘
+![控制台仪表盘](screenshot/screenshot1.png)
 
-全新设计的登录页面，采用现代化渐变背景，提供优雅的用户体验。
+### 撰写文章
+![撰写文章页面](screenshot/screenshot2.png)
 
-### 控制台仪表
-<p align="center">
-  <img src="screenshot/screenshot1.png" alt="控制台仪表板" width="100%">
-</p>
+### 管理文章
+![管理文章页面）](screenshot/screenshot3.png)
 
-功能强大的仪表板，实时展示博客统计数据，包括文章数、评论数、待审核数和分类统计，配备内容趋势图表和内容分布饼图。
+### 管理文件
+![管理文件页面](screenshot/screenshot4.png)
 
-### 备份与恢复
-<p align="center">
-  <img src="screenshot/screenshot5.png" alt="备份与恢复" width="100%">
-</p>
+### 管理标签
+![管理标签页面](screenshot/screenshot5.png)
 
-专业的数据备份功能，保护您的宝贵数据，支持一键备份和恢复操作。
+### 主题设置
+![主题设置](screenshot/screenshot6.png)
 
-### 外观管理
-<p align="center">
-  <img src="screenshot/screenshot4.png" alt="外观管理" width="100%">
-</p>
+### 插件设置
+![插件设置](screenshot/screenshot7.png)
 
-美观的主题管理界面，轻松切换和配置您的博客外观。
-
-### 文章管理
-<p align="center">
-  <img src="screenshot/screenshot2.png" alt="文章管理" width="100%">
-</p>
-
-清晰的文章列表视图，支持多种筛选和批量操作，让内容管理变得轻松高效。
-
-### 文件管理
-<p align="center">
-  <img src="screenshot/screenshot3.png" alt="文件管理" width="100%">
-</p>
-
-直观的文件预览界面，支持图片、文档等多种格式，提供便捷的文件管理体验。
+### 系统设置页面
+![系统设置页面](screenshot/screenshot8.png)
 
 ---
 
@@ -156,6 +138,11 @@ BooAdmin v1.1.1 采用业界领先的 **TailwindCSS** 框架进行完全重构�
 
 ### v1.1.5 版本
 - 🔌 **插件页面优化**: 处于第三方拓展页面时，侧边栏会自动取消显示，以免破坏布局；
+- 🎨 **搜索框图标样式**: 优化管理页面搜索框的图标样式，提升视觉一致性；
+- ⚙️ **设置页面优化**: 改进设置页面的切换设置样式，提供更清晰的视觉反馈；
+- 🔧 **Header 统一设计**: 统一各管理页面的 Header 设计，增强整体一致性；
+- 📐 **间距调整**: 优化各个属性的间距以及 ul 列表的间距，提升页面布局美观度；
+- ✂️ **分割线移除**: 移除多处可能影响视觉的分割线，使界面更加简洁现代。
 
 ### v1.1.4 版本
 - 🎨 **主页和菜单优化**: 优化了主页和菜单的头像展示，修复了特殊字符渲染异常的问题；

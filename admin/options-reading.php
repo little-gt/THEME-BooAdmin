@@ -29,12 +29,12 @@ include 'menu.php';
         <div class="w-full max-w-none mx-auto">
             
             <!-- Settings Tabs -->
-            <div class="settings-tabs-wrapper">
-            <div class="flex space-x-1 mb-6 bg-gray-100 p-1 select-none overflow-x-auto settings-tabs">
-                <a href="<?php $options->adminUrl('options-general.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('基本设置'); ?></a>
-                <a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('评论设置'); ?></a>
-                <a href="<?php $options->adminUrl('options-reading.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all bg-white text-discord-text"><?php _e('阅读设置'); ?></a>
-                <a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="flex-1 text-center px-4 py-2 text-sm font-medium transition-all text-gray-500 hover:text-discord-text hover:bg-gray-50"><?php _e('永久链接'); ?></a>
+            <div class="settings-tabs-wrapper mb-6">
+            <div class="flex bg-white select-none overflow-x-auto settings-tabs">
+                <a href="<?php $options->adminUrl('options-general.php'); ?>" class="flex-1 text-center px-4 py-3 text-sm font-medium transition-all text-gray-500 hover:text-discord-text"><?php _e('基本设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="flex-1 text-center px-4 py-3 text-sm font-medium transition-all text-gray-500 hover:text-discord-text"><?php _e('评论设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-reading.php'); ?>" class="flex-1 text-center px-4 py-3 text-sm font-medium transition-all active"><?php _e('阅读设置'); ?></a>
+                <a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="flex-1 text-center px-4 py-3 text-sm font-medium transition-all text-gray-500 hover:text-discord-text"><?php _e('永久链接'); ?></a>
             </div>
             </div>
 

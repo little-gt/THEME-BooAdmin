@@ -3,7 +3,7 @@
 > 感谢您对 **BooAdmin** 的关注与支持！我们致力于为 Typecho 用户提供既美观又安全的现代化后台环境。
 > 虽然这是一个由社区维护的开源项目，但我们**非常重视每一个安全反馈**。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.4-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.5-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 
 ---

@@ -1734,10 +1734,11 @@ body:has(.menu-bar[open]) {
 	padding:0 8px;
 	margin-left:5px;
 	height:20px;
-	line-height:20px
+	line-height:20px;
+	text-decoration:none!important
 }
 #wmd-button-bar .wmd-edittab a:hover {
-	text-decoration:none
+	text-decoration:none!important
 }
 #wmd-button-bar .wmd-edittab a.active {
 	background:#E9E9E6;

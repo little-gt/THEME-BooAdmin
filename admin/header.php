@@ -4,8 +4,8 @@ if (!defined('__TYPECHO_ADMIN__')) {
 }
 
 $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?t=202602242330', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?t=202602242330', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.5', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?V=1.1.5', true) . '">
 <!-- TailwindCSS -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
 <!-- Font Awesome -->
@@ -227,14 +227,9 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     
     /* Form container */
     .typecho-option {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #f3f4f6;
-    }
-    .typecho-option:last-child {
-        border-bottom: none;
         margin-bottom: 0;
         padding-bottom: 0;
+        border-bottom: none;
     }
     
     /* Labels */
@@ -243,7 +238,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         font-weight: 600;
         font-size: 0.875rem;
         color: #374151;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
     
     /* Text inputs */
@@ -263,6 +258,13 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         transition: all 0.15s ease;
         color: #1f2937;
         box-sizing: border-box;
+    }
+    
+    /* Search input specific styles */
+    .search-input-container input[type="text"] {
+        border: 0 !important;
+        background-color: white !important;
+        padding: 0.375rem 0.75rem !important;
     }
     .typecho-option input[type="text"]:focus,
     .typecho-option input[type="password"]:focus,
@@ -565,8 +567,8 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         gap: 1rem;
         font-size: 0.875rem;
         color: #6b7280;
-        padding-top: 0.75rem;
-        border-top: 1px solid #f3f4f6;
+        padding-top: 0.5rem;
+        border-top: none;
     }
     
     .content-card .card-meta-item {
@@ -578,8 +580,8 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .content-card .card-actions {
         display: flex;
         gap: 0.75rem;
-        padding-top: 0.75rem;
-        border-top: 1px solid #f3f4f6;
+        padding-top: 0.5rem;
+        border-top: none;
     }
     
     .content-card .card-actions a {
@@ -667,6 +669,8 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none; /* IE/Edge */
+        background-color: white;
+        border: 1px solid #e5e7eb;
     }
     .settings-tabs::-webkit-scrollbar {
         display: none; /* Chrome/Safari */
@@ -675,6 +679,22 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         scroll-snap-align: start;
         flex-shrink: 0;
         min-width: 120px;
+        position: relative;
+        transition: all 0.2s ease;
+    }
+    .settings-tabs > a.active {
+        color: #5865F2;
+        font-weight: 600;
+    }
+    .settings-tabs > a.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: #5865F2;
+        border-radius: 0;
     }
     
     @media (max-width: 767px) {
@@ -688,7 +708,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
             right: 0;
             bottom: 0;
             width: 60px;
-            background: linear-gradient(to left, rgba(243,244,246,0.95), transparent);
+            background: linear-gradient(to left, rgba(255,255,255,0.95), transparent);
             pointer-events: none;
 
         }
@@ -700,9 +720,9 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     /* Submit button styling */
     .typecho-option-submit {
         display: block !important;
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #e5e7eb;
+        margin-top: 1.5rem;
+        padding-top: 0;
+        border-top: none;
     }
     .typecho-option-submit button,
     .typecho-option-submit input[type="submit"] {
@@ -740,17 +760,12 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .typecho-reform-style ul {
         list-style: none;
         padding: 0;
-        margin: 0;
+        margin: 0 0 1rem 0;
     }
     .typecho-reform-style li {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #f3f4f6;
-    }
-    .typecho-reform-style li:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
+        margin-bottom: 0.5rem;
         padding-bottom: 0;
+        border-bottom: none;
     }
     .typecho-reform-style label {
         display: block;

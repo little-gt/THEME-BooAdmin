@@ -39,9 +39,11 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                 </div>
 
                 <form method="get" class="flex flex-wrap items-center gap-2">
-                     <div class="relative">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pl-9 pr-3 py-1.5 bg-white border border-gray-300 text-sm focus:outline-none focus:border-discord-accent w-48 md:w-64">
+                    <div class="flex items-center bg-white border border-gray-100 focus-within:border-discord-accent transition-colors search-input-container">
+                        <div class="px-3 flex items-center">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pr-3 py-1.5 bg-white text-sm focus:outline-none w-48 md:w-64 border-0">
                     </div>
                     <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
                 </form>
