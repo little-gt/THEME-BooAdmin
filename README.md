@@ -6,8 +6,9 @@
 
 [![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.5-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
+![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
-参与讨论：https://forum.typecho.org/viewtopic.php?p=62494#p62494
+参与讨论：https://forum.typecho.org/viewtopic.php?p=62503#p62503
 
 了解找回密码：https://github.com/little-gt/PLUGION-Passport
 
