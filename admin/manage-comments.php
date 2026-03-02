@@ -96,7 +96,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                 <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                     <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
                                     <a href="<?php $security->index('/action/comments-edit?do=approved'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('通过'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=waiting'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('待审核'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=spam'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记垃圾'); ?></a>

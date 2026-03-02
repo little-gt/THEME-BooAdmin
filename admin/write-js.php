@@ -166,6 +166,7 @@ $(document).ready(function() {
 
     $('button[name=do]').click(function () {
         $('input[name=do]').val($(this).val());
+        form.addClass('submitting');
     });
 
     // 自动检测离开页

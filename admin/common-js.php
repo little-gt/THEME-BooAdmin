@@ -243,6 +243,79 @@
             updateTableScrollIndicator(); // Initial check
 
             // ========================================
+            // Dropdown Menu Enhancement
+            // ========================================
+            (function() {
+                // Override dropdownMenu plugin behavior
+                // Store original dropdownMenu if needed
+                var $doc = $(document);
+                var activeDropdown = null;
+
+                // Override the dropdownMenu plugin
+                $.fn.dropdownMenu = function(options) {
+                    return this.each(function() {
+                        var $container = $(this).closest('.relative, .group');
+                        var $btn = $(this);
+                        var $menu = $container.find('.dropdown-menu');
+                        
+                        // Remove group-hover based display - use JS only
+                        $menu.css('display', '');
+                        
+                        $btn.off('click.dropdown').on('click.dropdown', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            var isVisible = $menu.is(':visible');
+                            
+                            // Close all other dropdowns first
+                            $('.dropdown-menu').not($menu).hide();
+                            $('.btn-dropdown-toggle').not($btn).removeClass('active');
+                            
+                            if (isVisible) {
+                                $menu.hide();
+                                $btn.removeClass('active');
+                                activeDropdown = null;
+                            } else {
+                                $menu.show();
+                                $btn.addClass('active');
+                                activeDropdown = $container;
+                            }
+                            
+                            return false;
+                        });
+                    });
+                };
+
+                // Close dropdown when clicking outside
+                $doc.on('click.dropdown', function(e) {
+                    if (activeDropdown && !$(e.target).closest(activeDropdown).length) {
+                        $('.dropdown-menu').hide();
+                        $('.btn-dropdown-toggle').removeClass('active');
+                        activeDropdown = null;
+                    }
+                });
+
+                // Close dropdown when clicking on a menu item
+                $doc.on('click.dropdown', '.dropdown-menu a', function() {
+                    $('.dropdown-menu').hide();
+                    $('.btn-dropdown-toggle').removeClass('active');
+                    activeDropdown = null;
+                });
+
+                // Initialize dropdowns on page load
+                $(function() {
+                    $('.btn-dropdown-toggle').each(function() {
+                        var $btn = $(this);
+                        var $container = $btn.closest('.relative, .group');
+                        var $menu = $container.find('.dropdown-menu');
+                        
+                        // Ensure menu is initially hidden and not controlled by CSS hover
+                        $menu.hide();
+                    });
+                });
+            })();
+
+            // ========================================
             // View Mode Toggle (Table/Card)
             // ========================================
             (function() {

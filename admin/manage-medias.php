@@ -63,7 +63,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                                 <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
                                     <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden group-hover:block z-50">
+                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
                                     <a lang="<?php _e('你确认要删除这些文件吗?'); ?>" href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
                                 </div>
                              </div>
