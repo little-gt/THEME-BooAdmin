@@ -189,7 +189,7 @@ $chartComments = json_encode($commentsData);
                                 </tr>
                             </thead>
                             <tbody class="text-gray-700">
-                                <?php \Widget\Contents\Post\Recent::alloc('pageSize=5')->to($posts); ?>
+                                <?php \Widget\Contents\Post\Recent::alloc('pageSize=8')->to($posts); ?>
                                 <?php if ($posts->have()): ?>
                                     <?php while ($posts->next()): ?>
                                         <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors group">
@@ -225,9 +225,8 @@ $chartComments = json_encode($commentsData);
                             <?php while ($comments->next()): ?>
                                 <div class="p-4 hover:bg-gray-50 transition-colors">
                                     <div class="flex items-start space-x-3">
-                                        <div class="w-8 h-8 flex items-center justify-center shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-xs border border-gray-200">
-                                            <?php echo htmlspecialchars((mb_substr($comments->author() ?? '', 0, 1, 'UTF-8')), ENT_QUOTES, 'UTF-8'); ?>
-                                        </div>
+                                        <?php $gravatarUrl = \Typecho\Common::gravatarUrl($comments->mail, 32); $authorName = htmlspecialchars($comments->author ?? '', ENT_QUOTES, 'UTF-8'); $commentAuthorFirstChar = $authorName ? mb_substr($authorName, 0, 1, 'UTF-8') : '?'; ?>
+                                        <div class="relative w-8 h-8 flex-shrink-0"><img src="<?php echo $gravatarUrl; ?>" alt="<?php echo htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?>" class="comment-avatar w-8 h-8 border border-gray-200 rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-xs border border-gray-200 absolute inset-0 hidden"><?php echo htmlspecialchars($commentAuthorFirstChar, ENT_QUOTES, 'UTF-8'); ?></div></div>
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center justify-between mb-1">
                                                 <p class="text-sm font-bold text-gray-800 truncate"><?php echo htmlspecialchars($comments->author() ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
