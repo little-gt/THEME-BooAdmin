@@ -11,8 +11,11 @@ include 'menu.php';
              <button id="mobile-menu-btn" class="mr-4 md:hidden text-discord-text focus:outline-none">
                 <i class="fas fa-bars"></i>
             </button>
-            <i class="fas fa-edit mr-2 hidden md:inline"></i>
-            <span class="font-medium text-discord-text"><?php _e('编辑分类'); ?></span>
+            <i class="fas fa-folder mr-2 hidden md:inline"></i>
+            <span class="mx-2 hidden md:inline">/</span>
+            <span class="font-medium text-discord-text"><?php _e('管理分类'); ?></span>
+            <span class="mx-2 hidden md:inline">/</span>
+            <span class="font-medium text-discord-text"><?php _e('编辑'); ?></span>
         </div>
         
         <div class="flex items-center space-x-4">

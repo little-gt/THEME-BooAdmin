@@ -13,7 +13,7 @@ include 'menu.php';
             </button>
             <i class="fas fa-paint-brush mr-2 hidden md:inline"></i>
             <span class="mx-2 hidden md:inline">/</span>
-            <span class="font-medium text-discord-text"><?php _e('外观'); ?></span>
+            <span class="font-medium text-discord-text"><?php _e('外观管理'); ?></span>
             <span class="mx-2 hidden md:inline">/</span>
             <span class="font-medium text-discord-text"><?php _e('设置'); ?></span>
         </div>

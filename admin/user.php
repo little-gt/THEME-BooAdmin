@@ -12,7 +12,10 @@ include 'menu.php';
                 <i class="fas fa-bars"></i>
             </button>
             <i class="fas fa-user-edit mr-2 hidden md:inline"></i>
-            <span class="font-medium text-discord-text"><?php _e('编辑用户'); ?></span>
+            <span class="mx-2 hidden md:inline">/</span>
+            <span class="font-medium text-discord-text"><?php _e('管理用户'); ?></span>
+            <span class="mx-2 hidden md:inline">/</span>
+            <span class="font-medium text-discord-text"><?php _e('编辑'); ?></span>
         </div>
         
         <div class="flex items-center space-x-4">

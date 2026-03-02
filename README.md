@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.5-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.6--PRE-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -41,6 +41,14 @@
 
 ### 系统设置页面
 ![系统设置页面](screenshot/screenshot8.png)
+
+---
+
+## 🚀 更新速递
+
+1. 统一了所有页面的 header 导航条显示内容，更加统一和自然；
+2. 优化了编辑主题页面的设计，使得和设置主题的样式一致；
+3. 修复了copyright弹窗点击转跳到GitHub仓库没有反应的问题。
 
 ---
 

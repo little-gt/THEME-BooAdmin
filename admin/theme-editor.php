@@ -15,7 +15,7 @@ include 'menu.php';
             </button>
             <i class="fas fa-paint-brush mr-2 hidden md:inline"></i>
             <span class="mx-2 hidden md:inline">/</span>
-            <span class="font-medium text-discord-text"><?php _e('外观'); ?></span>
+            <span class="font-medium text-discord-text"><?php _e('外观管理'); ?></span>
             <span class="mx-2 hidden md:inline">/</span>
             <span class="font-medium text-discord-text"><?php _e('编辑'); ?></span>
         </div>
@@ -32,58 +32,63 @@ include 'menu.php';
     <!-- Content Area -->
     <div class="flex-1 overflow-y-auto p-4 md:p-8">
         <div class="w-full max-w-none mx-auto h-full flex flex-col">
-             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-discord-text">
-                    <i class="fas fa-code text-discord-accent mr-2"></i><?php _e('编辑外观文件'); ?>
-                </h2>
-                <a href="<?php $options->adminUrl('themes.php'); ?>" class="text-sm text-discord-muted hover:text-discord-accent">
-                    <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回外观列表'); ?>
-                </a>
-            </div>
 
-            <div class="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
-                <!-- File List Sidebar -->
-                <div class="lg:w-64 bg-white border border-gray-100 flex flex-col overflow-hidden">
-                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-discord-text text-sm">
-                        <?php _e('模板文件'); ?>
-                    </div>
-                    <ul class="overflow-y-auto flex-1 p-2 space-y-1">
-                        <?php while ($files->next()): ?>
-                            <li>
-                                <a href="<?php $options->adminUrl('theme-editor.php?theme=' . $files->currentTheme() . '&file=' . $files->file); ?>" class="block px-3 py-2 text-sm truncate transition-colors <?php if ($files->current): ?>bg-discord-light text-discord-accent font-medium<?php else: ?>text-discord-muted hover:bg-gray-50 hover:text-discord-text<?php endif; ?>">
-                                    <i class="fas fa-file-code mr-2 opacity-50"></i><?php $files->file(); ?>
-                                </a>
-                            </li>
-                        <?php endwhile; ?>
-                    </ul>
+
+            <div class="bg-white border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <h2 class="text-lg font-bold text-discord-text flex items-center">
+                        <i class="fas fa-code text-discord-accent mr-2"></i> <?php _e('编辑外观文件'); ?>
+                    </h2>
+                    <a href="<?php $options->adminUrl('themes.php'); ?>" class="text-sm text-discord-muted hover:text-discord-accent">
+                        <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回外观列表'); ?>
+                    </a>
                 </div>
-
-                <!-- Editor Area -->
-                <div class="flex-1 bg-white border border-gray-100 flex flex-col overflow-hidden">
-                     <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                        <span class="font-mono text-sm text-discord-text font-medium"><?php echo $files->currentFile(); ?></span>
-                        <?php if (!$files->currentIsWriteable()): ?>
-                            <span class="text-xs text-red-500 bg-red-50 px-2 py-1 border border-red-100"><i class="fas fa-lock mr-1"></i> <?php _e('只读'); ?></span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <form method="post" name="theme" id="theme" action="<?php $security->index('/action/themes-edit'); ?>" class="flex-1 flex flex-col p-0 m-0">
-                        <textarea name="content" id="content" class="flex-1 w-full p-4 font-mono text-sm bg-gray-900 text-gray-200 border-none resize-none focus:outline-none" spellcheck="false" <?php if (!$files->currentIsWriteable()): ?>readonly<?php endif; ?>><?php echo $files->currentContent(); ?></textarea>
-                        
-                        <div class="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
-                            <?php if ($files->currentIsWriteable()): ?>
-                                <input type="hidden" name="theme" value="<?php echo $files->currentTheme(); ?>"/>
-                                <input type="hidden" name="edit" value="<?php echo $files->currentFile(); ?>"/>
-                                <button type="submit" class="px-6 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
-                                    <i class="fas fa-save mr-1"></i> <?php _e('保存文件'); ?>
-                                </button>
-                            <?php else: ?>
-                                <button type="button" disabled class="px-6 py-2 bg-gray-300 text-gray-500 font-medium cursor-not-allowed text-sm">
-                                    <?php _e('无法保存'); ?>
-                                </button>
-                            <?php endif; ?>
+                <div class="p-6">
+                    <div class="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
+                        <!-- File List Sidebar -->
+                        <div class="lg:w-64 bg-gray-50 border border-gray-100 flex flex-col overflow-hidden">
+                            <div class="p-4 bg-gray-100 border-b border-gray-200 font-bold text-discord-text text-sm">
+                                <?php _e('模板文件'); ?>
+                            </div>
+                            <ul class="overflow-y-auto flex-1 p-2 space-y-1">
+                                <?php while ($files->next()): ?>
+                                    <li>
+                                        <a href="<?php $options->adminUrl('theme-editor.php?theme=' . $files->currentTheme() . '&file=' . $files->file); ?>" class="block px-3 py-2 text-sm truncate transition-colors <?php if ($files->current): ?>bg-discord-light text-discord-accent font-medium<?php else: ?>text-discord-muted hover:bg-gray-200 hover:text-discord-text<?php endif; ?>">
+                                            <i class="fas fa-file-code mr-2 opacity-50"></i><?php $files->file(); ?>
+                                        </a>
+                                    </li>
+                                <?php endwhile; ?>
+                            </ul>
                         </div>
-                    </form>
+
+                        <!-- Editor Area -->
+                        <div class="flex-1 bg-gray-50 border border-gray-100 flex flex-col overflow-hidden">
+                             <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-100">
+                                <span class="font-mono text-sm text-discord-text font-medium"><?php echo $files->currentFile(); ?></span>
+                                <?php if (!$files->currentIsWriteable()): ?>
+                                    <span class="text-xs text-red-500 bg-red-50 px-2 py-1 border border-red-100"><i class="fas fa-lock mr-1"></i> <?php _e('只读'); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <form method="post" name="theme" id="theme" action="<?php $security->index('/action/themes-edit'); ?>" class="flex-1 flex flex-col p-0 m-0">
+                                <textarea name="content" id="content" class="flex-1 w-full p-4 font-mono text-sm bg-gray-900 text-gray-200 border-none resize-none focus:outline-none" spellcheck="false" <?php if (!$files->currentIsWriteable()): ?>readonly<?php endif; ?>><?php echo $files->currentContent(); ?></textarea>
+                                
+                                <div class="p-4 border-t border-gray-200 bg-gray-100 flex justify-end">
+                                    <?php if ($files->currentIsWriteable()): ?>
+                                        <input type="hidden" name="theme" value="<?php echo $files->currentTheme(); ?>"/>
+                                        <input type="hidden" name="edit" value="<?php echo $files->currentFile(); ?>"/>
+                                        <button type="submit" class="px-6 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                                            <i class="fas fa-save mr-1"></i> <?php _e('保存文件'); ?>
+                                        </button>
+                                    <?php else: ?>
+                                        <button type="button" disabled class="px-6 py-2 bg-gray-300 text-gray-500 font-medium cursor-not-allowed text-sm">
+                                            <?php _e('无法保存'); ?>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

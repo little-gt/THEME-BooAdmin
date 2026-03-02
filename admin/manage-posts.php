@@ -15,6 +15,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                 <i class="fas fa-bars"></i>
             </button>
             <i class="fas fa-layer-group mr-2 hidden md:inline"></i>
+            <span class="mx-2 hidden md:inline">/</span>
             <span class="font-medium text-discord-text"><?php _e('管理文章'); ?></span>
         </div>
         

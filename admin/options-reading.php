@@ -12,6 +12,9 @@ include 'menu.php';
                 <i class="fas fa-bars"></i>
             </button>
             <i class="fas fa-book-open mr-2 hidden md:inline"></i>
+            <span class="mx-2 hidden md:inline">/</span>
+            <span class="font-medium text-discord-text"><?php _e('设置'); ?></span>
+            <span class="mx-2 hidden md:inline">/</span>
             <span class="font-medium text-discord-text"><?php _e('阅读设置'); ?></span>
         </div>
         

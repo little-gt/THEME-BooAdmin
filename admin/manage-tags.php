@@ -14,6 +14,7 @@ include 'menu.php';
                 <i class="fas fa-bars"></i>
             </button>
             <i class="fas fa-tags mr-2 hidden md:inline"></i>
+            <span class="mx-2 hidden md:inline">/</span>
             <span class="font-medium text-discord-text"><?php _e('管理标签'); ?></span>
         </div>
         
