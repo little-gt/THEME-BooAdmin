@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.7-PRE-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.7--PRE-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -51,6 +51,8 @@
 > **⚠️ PRE 版本说明：** 这是一个预发布版本，包含了即将发布的正式版本的功能预览。PRE 版本可能存在一些未完全测试的功能，建议在测试环境中使用，不推荐在生产环境中部署。
 
 - 🎯 **Permalink 输入框优化**: 优化了撰写页面中 Permalink 输入框的样式和间距，解决了输入框被遮挡的问题
+- 🎨 **输入框和选择框优化**: 使用自适应宽度，避免固定宽度导致的视觉不协调问题，确保在不同屏幕尺寸下都能良好显示
+- 📐 **模板和父级页面选择优化**: 优化了撰写页面中模板选择和父级页面选择的下拉框样式，使其能够自适应宽度，提升整体布局一致性
 
 ---
 

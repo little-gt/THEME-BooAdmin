@@ -4,8 +4,8 @@ if (!defined('__TYPECHO_ADMIN__')) {
 }
 
 $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.5', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?V=1.1.5', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.7-PRE1', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?V=1.1.7-PRE1', true) . '">
 <!-- TailwindCSS -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
 <!-- Font Awesome -->

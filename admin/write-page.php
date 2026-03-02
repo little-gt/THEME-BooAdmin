@@ -159,8 +159,8 @@ while ($parents->next()) {
                             <!-- Template -->
                             <div class="group">
                                 <label for="template" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-discord-accent transition-colors"><?php _e('自定义模板'); ?></label>
-                                <div class="relative">
-                                    <select name="template" id="template" class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all appearance-none">
+                                <div class="relative flex">
+                                    <select name="template" id="template" class="flex-1 min-w-0 pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all appearance-none">
                                         <option value=""><?php _e('不选择'); ?></option>
                                         <?php $templates = $page->getTemplates();
                                         foreach ($templates as $template => $name): ?>
@@ -176,8 +176,8 @@ while ($parents->next()) {
                             <!-- Parent Page -->
                             <div class="group">
                                 <label for="parent" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-discord-accent transition-colors"><?php _e('父级页面'); ?></label>
-                                <div class="relative">
-                                    <select name="parent" id="parent" class="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all appearance-none">
+                                <div class="relative flex">
+                                    <select name="parent" id="parent" class="flex-1 min-w-0 pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent focus:bg-white focus:ring-2 focus:ring-discord-accent/10 transition-all appearance-none">
                                         <?php foreach ($parentPages as $pageId => $pageTitle): ?>
                                             <option value="<?php echo $pageId; ?>"<?php if ($pageId == ($page->parent ?? $parentPageId)): ?> selected="true"<?php endif; ?>><?php echo $pageTitle; ?></option>
                                         <?php endforeach; ?>

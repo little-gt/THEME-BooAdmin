@@ -103,7 +103,9 @@ input.text-l,textarea.text-l {
 }
 select {
 	border:1px solid #CCC;
-	height:28px
+	height:28px;
+	width:100%;
+	box-sizing:border-box
 }
 .btn,#ui-datepicker-div .ui-datepicker-current,#ui-datepicker-div .ui-datepicker-close {
 	border:none;
@@ -662,7 +664,8 @@ select {
 }
 .typecho-post-area #custom-field .fields .field .field-name input[name="fieldNames[]"] {
 	height:27px;
-	width:150px;
+	width:100%;
+	max-width:200px;
 	margin-right:10px
 }
 .typecho-post-area #custom-field .fields .field .field-value {
@@ -741,7 +744,8 @@ select {
 	width:100%
 }
 .typecho-option input.num {
-	width:60px
+	width:100%;
+	max-width:120px
 }
 .typecho-option textarea {
 	width:100%;
