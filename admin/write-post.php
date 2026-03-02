@@ -65,7 +65,7 @@ $post = \Widget\Contents\Post\Edit::alloc()->prepare();
                                 $permalink
                             );
                         }
-                        $input = '<input type="text" id="slug" name="slug" autocomplete="off" value="' . htmlspecialchars($post->slug ?? '') . '" class="mono border-b border-gray-300 focus:border-discord-accent focus:outline-none px-1 py-0.5 text-sm w-32" />';
+                        $input = '<input type="text" id="slug" name="slug" autocomplete="off" value="' . htmlspecialchars($post->slug ?? '') . '" class="mono border-b border-gray-300 focus:border-discord-accent focus:outline-none px-2 py-2 text-sm w-48" style="min-height: 28px;" />';
                         ?>
                         <p class="text-sm text-discord-muted flex items-center mb-4 font-mono">
                              <i class="fas fa-link mr-2 text-gray-400"></i>
