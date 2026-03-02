@@ -193,9 +193,11 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                             <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300 mt-1">
                                         </td>
                                         <td class="py-3 text-center align-top">
-                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 mx-auto">
+                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 mx-auto relative">
                                                 <?php if ('comment' == $comments->type): ?>
-                                                    <?php $comments->gravatar(40, null, true); ?>
+                                                    <?php $gravatarUrl = \Typecho\Common::gravatarUrl($comments->mail, 40); $authorName = $comments->author; $authorFirstChar = $authorName ? mb_substr($authorName, 0, 1, 'UTF-8') : '?'; ?>
+                                                    <img src="<?php echo $gravatarUrl; ?>" alt="<?php echo htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?>" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-sm absolute inset-0 hidden"><?php echo htmlspecialchars($authorFirstChar, ENT_QUOTES, 'UTF-8'); ?></div>
                                                 <?php else: ?>
                                                     <div class="flex items-center justify-center w-full h-full text-gray-500"><i class="fas fa-quote-right"></i></div>
                                                 <?php endif; ?>
@@ -267,9 +269,11 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                     
                                     <div class="card-header">
                                         <div class="flex items-center space-x-3 flex-1">
-                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 flex-shrink-0">
+                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 flex-shrink-0 relative">
                                                 <?php if ('comment' == $commentData['type'] && $commentData['gravatar']): ?>
-                                                    <?php echo $commentData['gravatar']; ?>
+                                                    <?php $gravatarUrl = \Typecho\Common::gravatarUrl($commentData['mail'], 40); $authorName = $commentData['author']; $authorFirstChar = $authorName ? mb_substr($authorName, 0, 1, 'UTF-8') : '?'; ?>
+                                                    <img src="<?php echo $gravatarUrl; ?>" alt="<?php echo htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?>" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-sm absolute inset-0 hidden"><?php echo htmlspecialchars($authorFirstChar, ENT_QUOTES, 'UTF-8'); ?></div>
                                                 <?php else: ?>
                                                     <div class="flex items-center justify-center w-full h-full text-gray-500"><i class="fas fa-quote-right"></i></div>
                                                 <?php endif; ?>
@@ -868,26 +872,34 @@ var currentDeleteTarget = null;
 function openReplyModal(commentData, actionUrl) {
     currentReplyUrl = actionUrl;
     
-    // Build original comment HTML
     var gravatarHtml = '';
     if (commentData.type === 'comment') {
+        var authorFirstChar = commentData.author ? commentData.author.charAt(0) : '?';
+        var gravatarUrl = '';
+        
         // Try to get gravatar from the row
         var $row = $('#' + commentData.id);
         if ($row.length > 0) {
             var $gravatar = $row.find('td:eq(1) img');
             if ($gravatar.length > 0) {
-                gravatarHtml = '<img src="' + $gravatar.attr('src') + '" alt="' + commentData.author + '">';
+                gravatarUrl = $gravatar.attr('src');
             }
         }
         // If not found in table, try card view
-        if (!gravatarHtml) {
+        if (!gravatarUrl) {
             var $card = $('.content-card[data-comment*=\'"author":"' + commentData.author + '"\']').first();
             if ($card.length > 0) {
                 var $cardGravatar = $card.find('.card-header img');
                 if ($cardGravatar.length > 0) {
-                    gravatarHtml = '<img src="' + $cardGravatar.attr('src') + '" alt="' + commentData.author + '">';
+                    gravatarUrl = $cardGravatar.attr('src');
                 }
             }
+        }
+        
+        if (gravatarUrl) {
+            gravatarHtml = '<div class="relative w-8 h-8"><img src="' + gravatarUrl + '" alt="' + commentData.author + '" class="w-full h-full object-cover" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" /><div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-xs absolute inset-0 hidden">' + authorFirstChar + '</div></div>';
+        } else {
+            gravatarHtml = '<div class="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-xs">' + authorFirstChar + '</div>';
         }
     }
     
