@@ -182,11 +182,9 @@ $userFirstChar = mb_substr($userName, 0, 1, 'UTF-8');
 
     <div class="p-4 border-t border-gray-100 bg-white">
         <div class="flex items-center group cursor-pointer hover:bg-gray-50 p-2 transition-colors">
-            <img src="<?php echo $userAvatarUrl; ?>" 
-                 alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" 
-                 class="user-avatar w-9 h-9 shrink-0 border border-gray-200"
-                 data-fallback="<?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?>"
-                 onerror="generateUserFallbackAvatar(this);" />
+            <div class="w-9 h-9 flex items-center justify-center shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-sm border border-gray-200">
+                <?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
             <div class="ml-3 overflow-hidden sidebar-text">
                 <p class="text-sm font-semibold text-gray-800 truncate"><a href="<?php $options->adminUrl('profile.php'); ?>"><?php $user->screenName(); ?></a></p>
                 <p class="text-xs text-gray-500 truncate"><?php echo $user->group; ?></p>
@@ -206,38 +204,6 @@ $userFirstChar = mb_substr($userName, 0, 1, 'UTF-8');
 <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden md:hidden"></div>
 
 <script>
-// 生成用户头像降级（带渐变）
-function generateUserFallbackAvatar(img) {
-    const text = img.dataset.fallback || '?';
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-        <defs>
-            <linearGradient id="grad-${Date.now()}" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#5865F2"/>
-                <stop offset="100%" style="stop-color:#60A5FA"/>
-            </linearGradient>
-        </defs>
-        <rect width="36" height="36" fill="url(#grad-${Date.now()})"/>
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-              fill="white" font-size="16" font-weight="bold" 
-              font-family="sans-serif">${text.toUpperCase()}</text>
-    </svg>`;
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    img.onerror = null;
-}
-
-// 生成评论头像降级（纯色）
-function generateFallbackAvatar(img, text, color, size) {
-    if (!text) text = '?';
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
-        <rect width="${size}" height="${size}" fill="${color}"/>
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-              fill="white" font-size="${Math.floor(size * 0.45)}" font-weight="bold" 
-              font-family="sans-serif">${text.toUpperCase()}</text>
-    </svg>`;
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    img.onerror = null;
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('sidebar-toggle');
@@ -289,11 +255,9 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Plugin page banner -->
 <div class="plugin-banner">
     <div class="plugin-banner-content">
-        <img src="<?php echo $userAvatarUrl; ?>" 
-             alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" 
-             class="plugin-banner-avatar"
-             data-fallback="<?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?>"
-             onerror="generateUserFallbackAvatar(this);" />
+        <div class="w-10 h-10 flex items-center justify-center shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-lg border border-gray-200">
+            <?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?>
+        </div>
         <div class="plugin-banner-text">
             <div class="plugin-banner-username"><?php $user->screenName(); ?></div>
             <div class="plugin-banner-role"><?php echo $user->group; ?></div>

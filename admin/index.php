@@ -225,14 +225,9 @@ $chartComments = json_encode($commentsData);
                             <?php while ($comments->next()): ?>
                                 <div class="p-4 hover:bg-gray-50 transition-colors">
                                     <div class="flex items-start space-x-3">
-                                        <?php 
-                                        $gravatarUrl = \Typecho\Common::gravatarUrl($comments->mail, 32);
-                                        ?>
-                                        <img src="<?php echo $gravatarUrl; ?>" 
-                                             alt="<?php echo htmlspecialchars($comments->author() ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
-                                             class="comment-avatar w-8 h-8 flex-shrink-0 border border-gray-200"
-                                             data-fallback="<?php echo htmlspecialchars($comments->author() ?? '', ENT_QUOTES, 'UTF-8')[0]; ?>"
-                                             onerror="generateFallbackAvatar(this, this.dataset.fallback, '#5865F2', 32);" />
+                                        <div class="w-8 h-8 flex items-center justify-center shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-xs border border-gray-200">
+                                            <?php echo htmlspecialchars((mb_substr($comments->author() ?? '', 0, 1, 'UTF-8')), ENT_QUOTES, 'UTF-8'); ?>
+                                        </div>
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center justify-between mb-1">
                                                 <p class="text-sm font-bold text-gray-800 truncate"><?php echo htmlspecialchars($comments->author() ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
@@ -293,19 +288,6 @@ $chartComments = json_encode($commentsData);
 include 'common-js.php';
 ?>
 <script>
-    // 生成降级头像的通用函数
-    function generateFallbackAvatar(img, text, color, size) {
-        if (!text) text = '?';
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
-            <rect width="${size}" height="${size}" fill="${color}"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-                  fill="white" font-size="${Math.floor(size * 0.45)}" font-weight="bold" 
-                  font-family="sans-serif">${text.toUpperCase()}</text>
-        </svg>`;
-        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-        img.onerror = null;
-    }
-    
     $(document).ready(function () {
         // Activity Chart Config - 使用真实数据
         var chartDays = <?php echo $chartDays; ?>;
