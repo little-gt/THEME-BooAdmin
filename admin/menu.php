@@ -207,6 +207,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleBtn = document.getElementById('sidebar-toggle');
     const overlay = document.getElementById('sidebar-overlay');
     const mobileMenuBtn = document.getElementById('mobile-menu-btn'); // Will be added in header
+    const nav = sidebar.querySelector('nav');
+    const SIDEBAR_SCROLL_KEY = 'typecho_sidebar_scroll';
+    const SETTINGS_EXPANDED_KEY = 'typecho_settings_expanded';
 
     function openSidebar() {
         sidebar.classList.remove('-translate-x-full');
@@ -228,9 +231,78 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // 保存滚动位置
+    function saveScrollPosition() {
+        if (nav) {
+            try {
+                localStorage.setItem(SIDEBAR_SCROLL_KEY, nav.scrollTop);
+            } catch(e) {
+                // 忽略 localStorage 错误
+            }
+        }
+    }
+
+    // 恢复滚动位置
+    function restoreScrollPosition() {
+        if (nav) {
+            try {
+                const scrollTop = localStorage.getItem(SIDEBAR_SCROLL_KEY);
+                if (scrollTop !== null) {
+                    nav.scrollTop = parseInt(scrollTop);
+                }
+            } catch(e) {
+                // 忽略 localStorage 错误
+            }
+        }
+    }
+
+    // 保存设置菜单的展开/折叠状态
+    function saveSettingsExpanded(expanded) {
+        try {
+            localStorage.setItem(SETTINGS_EXPANDED_KEY, expanded ? 'true' : 'false');
+        } catch(e) {
+            // 忽略 localStorage 错误
+        }
+    }
+
+    // 恢复设置菜单的展开/折叠状态
+    function restoreSettingsExpanded() {
+        try {
+            const expanded = localStorage.getItem(SETTINGS_EXPANDED_KEY);
+            if (expanded === 'true') {
+                const settingsSubmenu = document.querySelector('.group-settings ul');
+                const chevron = document.querySelector('.group-settings .fa-chevron-right');
+                if (settingsSubmenu) settingsSubmenu.classList.remove('hidden');
+                if (chevron) chevron.classList.add('rotate-90');
+            }
+        } catch(e) {
+            // 忽略 localStorage 错误
+        }
+    }
+
     if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
+
+    // 监听滚动事件，保存位置
+    if (nav) {
+        nav.addEventListener('scroll', saveScrollPosition);
+    }
+
+    // 监听设置菜单的点击事件，保存展开/折叠状态
+    const settingsButton = document.querySelector('.group-settings > button');
+    if (settingsButton) {
+        settingsButton.addEventListener('click', function() {
+            const settingsSubmenu = this.nextElementSibling;
+            const chevron = this.querySelector('.fa-chevron-right');
+            const isExpanded = !settingsSubmenu.classList.contains('hidden');
+            saveSettingsExpanded(!isExpanded);
+        });
+    }
+
+    // 页面加载时恢复滚动位置和设置菜单状态
+    restoreScrollPosition();
+    restoreSettingsExpanded();
 
     // Initial check for mobile
     if (window.innerWidth < 768) {

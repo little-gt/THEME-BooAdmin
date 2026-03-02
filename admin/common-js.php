@@ -6,6 +6,49 @@
     (function () {
         $(document).ready(function() {
             // ========================================
+            // Page Loading Progress Bar
+            // ========================================
+            (function() {
+                // 检查 NProgress 元素是否已存在于 HTML 中（避免重复创建）
+                var nprogressExists = document.getElementById('nprogress') !== null;
+                
+                // 配置 NProgress 使用主题色
+                NProgress.configure({
+                    minimum: 0.1,
+                    trickleSpeed: 200,
+                    showSpinner: true,
+                    speed: 300,
+                    easing: 'ease',
+                    parent: nprogressExists ? 'body' : 'body'
+                });
+                
+                // 启动进度条（默认加载状态）
+                NProgress.start();
+                
+                // 页面完全加载后完成进度条
+                $(window).on('load', function() {
+                    setTimeout(function() {
+                        NProgress.done();
+                    }, 100);
+                });
+                
+                // 监听页面内的链接点击，显示进度条
+                $(document).on('click', 'a[href]:not([href^="#"]):not([href^="javascript:"]):not([target="_blank"]):not([href^="mailto:"])', function(e) {
+                    var href = $(this).attr('href');
+                    
+                    // 只对同域链接启用进度条
+                    if (href && (href.indexOf('http') !== 0 || href.indexOf(window.location.hostname) !== -1)) {
+                        NProgress.start();
+                    }
+                });
+                
+                // 页面卸载时保持加载状态
+                $(window).on('beforeunload', function() {
+                    // 页面跳转时保持加载状态，不隐藏
+                });
+            })();
+
+            // ========================================
             // 现代化通知系统
             // ========================================
             (function () {

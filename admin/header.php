@@ -4,8 +4,9 @@ if (!defined('__TYPECHO_ADMIN__')) {
 }
 
 $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.8-PRE2', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?V=1.1.8-PRE2', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.8', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.8', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.8', true) . '">
 <!-- TailwindCSS -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
 <!-- Font Awesome -->
@@ -13,6 +14,8 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
 <link href="https://image.uc.cn/s/uae/g/3n/mos-production/fontawesome-free-7.1.0-web/css/fontawesome.min.css" rel="stylesheet">
 <!-- ECharts -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/cdn-staticfile-net/echarts/5.4.3/echarts.min.js"></script>
+<!-- NProgress -->
+<script src="' . $options->adminStaticUrl('js', 'nprogress.js', true) . '"></script>
 <script>
     tailwind.config = {
         theme: {
@@ -1108,3 +1111,11 @@ $header = \Typecho\Plugin::factory('admin/header.php')->filter('header', $header
         <?php echo $header; ?>
     </head>
     <body class="<?php echo isset($bodyClass) ? $bodyClass : ''; ?>">
+        <!-- NProgress Loading Indicator -->
+        <div id="nprogress">
+            <div class="bar" role="bar"></div>
+            <div class="peg"></div>
+            <div class="spinner">
+                <div class="spinner-icon"></div>
+            </div>
+        </div>
