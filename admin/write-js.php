@@ -120,7 +120,7 @@ $(document).ready(function() {
         justifySlug = $('<pre />').css({
             'display'   :   'block',
             'visibility':   'hidden',
-            'height'    :   '40px',
+            'height'    :   '38px',
             'padding'   :   '8px 8px',
             'margin'    :   0
         }).insertAfter(slug.wrap(wrap).css({

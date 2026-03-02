@@ -97,8 +97,8 @@ $post = \Widget\Contents\Post\Edit::alloc()->prepare();
                             <button type="button" id="btn-preview" class="px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
                                 <i class="fas fa-eye mr-1"></i> <?php _e('预览'); ?>
                             </button>
-                            <button type="submit" name="do" value="save" id="btn-save" class="px-4 py-2 bg-gray-100 text-discord-text hover:bg-gray-200 transition-colors text-sm font-medium">
-                                <?php _e('保存草稿'); ?>
+                            <button type="submit" name="do" value="save" id="btn-save" class="px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
+                                <i class="fas fa-save mr-1"></i> <?php _e('保存草稿'); ?>
                             </button>
                             <button type="submit" name="do" value="publish" id="btn-submit" class="px-6 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
                                 <i class="fas fa-paper-plane mr-1"></i> <?php _e('发布文章'); ?>
