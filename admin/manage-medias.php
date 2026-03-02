@@ -390,10 +390,10 @@ $(document).ready(function () {
 });
 </script>
 <script>
-// Mobile-aware view mode for manage-medias.php (独立存储)
+// Mobile-aware view mode for manage-medias.php
 $(document).ready(function() {
-    var VIEW_MODE_KEY = 'typecho_media_view_mode';
-    var USER_PREFERENCE_KEY = 'typecho_media_view_user_set';
+    var VIEW_MODE_KEY = 'typecho_list_view_mode';
+    var USER_PREFERENCE_KEY = 'typecho_list_view_user_set';
     var MOBILE_BREAKPOINT = 768; // 移动端断点：小于 768px 为移动端
     
     // 检测是否为移动端
@@ -414,9 +414,8 @@ $(document).ready(function() {
     function saveViewMode(mode) {
         try {
             localStorage.setItem(VIEW_MODE_KEY, mode);
-            console.log('Media view mode saved:', mode);
         } catch(e) {
-            console.error('Failed to save view mode:', e);
+            // Ignore localStorage errors
         }
     }
     
@@ -457,14 +456,6 @@ $(document).ready(function() {
         var defaultMode = mobile ? 'card' : 'table';
         var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
         
-        console.log('📱 Media View Mode Init:', {
-            'Screen Width': $(window).width() + 'px',
-            'Is Mobile': mobile,
-            'User Has Preference': userHasPreference,
-            'Saved Mode': savedMode,
-            'Final Mode': finalMode
-        });
-        
         applyViewMode(finalMode);
     }
     
@@ -482,9 +473,8 @@ $(document).ready(function() {
         // 标记用户已手动设置
         try {
             localStorage.setItem(USER_PREFERENCE_KEY, 'true');
-            console.log('✅ User manually switched to', newMode, 'view');
         } catch(e) {
-            console.error('Failed to save user preference:', e);
+            // Ignore localStorage errors
         }
         
         // 应用视图模式
@@ -513,7 +503,6 @@ $(document).ready(function() {
                 if (savedMode !== currentMode) {
                     saveViewMode(currentMode);
                     applyViewMode(currentMode);
-                    console.log('📐 Auto-switched to', currentMode, 'view due to window resize');
                 }
             }
         }, 250); // 防抖，250ms 后才执行

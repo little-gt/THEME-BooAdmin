@@ -108,13 +108,25 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                 <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 btn-operate" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>"><?php _e('删除所有垃圾评论'); ?></button>
                              <?php endif; ?>
                          </div>
-                         <?php if($user->pass('editor', true) && !isset($request->cid)): ?>
-                            <div class="flex items-center space-x-2 text-xs">
-                                <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=on'); ?>" class="<?php if($isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('所有'); ?></a>
-                                <span class="text-gray-300">|</span>
-                                <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=off'); ?>" class="<?php if(!$isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('我的'); ?></a>
-                            </div>
-                         <?php endif; ?>
+                         <div class="flex items-center space-x-4">
+                             <?php if($user->pass('editor', true) && !isset($request->cid)): ?>
+                                <div class="flex items-center space-x-2 text-xs">
+                                    <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=on'); ?>" class="<?php if($isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('所有'); ?></a>
+                                    <span class="text-gray-300">|</span>
+                                    <a href="<?php echo $request->makeUriByRequest('__typecho_all_comments=off'); ?>" class="<?php if(!$isAllComments): ?>text-discord-accent font-bold<?php else: ?>text-gray-500 hover:text-discord-text<?php endif; ?>"><?php _e('我的'); ?></a>
+                                </div>
+                             <?php endif; ?>
+                             <div class="view-toggle">
+                                 <button type="button" class="btn-table-view active" title="<?php _e('表格视图'); ?>">
+                                     <i class="fas fa-table"></i>
+                                     <span class="hidden sm:inline"><?php _e('表格'); ?></span>
+                                 </button>
+                                 <button type="button" class="btn-card-view" title="<?php _e('卡片视图'); ?>">
+                                     <i class="fas fa-th-large"></i>
+                                     <span class="hidden sm:inline"><?php _e('卡片'); ?></span>
+                                 </button>
+                             </div>
+                         </div>
                     </div>
 
                     <div class="table-wrapper" data-table-scroll>
@@ -130,8 +142,10 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             <?php if($comments->have()): ?>
-                                <?php while($comments->next()): ?>
-                                    <tr id="<?php $comments->theId(); ?>" data-comment="<?php
+                                <?php 
+                                // Store comments data for card view
+                                $commentsData = [];
+                                while($comments->next()): 
                                     $comment = array(
                                         'author'    =>  $comments->author,
                                         'mail'      =>  $comments->mail,
@@ -140,8 +154,40 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                         'type'        =>  $comments->type,
                                         'text'      =>  $comments->text
                                     );
-
-                                    echo htmlspecialchars(json_encode($comment));
+                                    
+                                    // Capture gravatar output using output buffering
+                                    $gravatarHtml = '';
+                                    if ('comment' == $comments->type) {
+                                        ob_start();
+                                        $comments->gravatar(40, null, true);
+                                        $gravatarHtml = ob_get_clean();
+                                    }
+                                    
+                                    // Store data for card view
+                                    $commentsData[] = [
+                                        'coid' => $comments->coid,
+                                        'id' => $comments->theId,
+                                        'author' => $comments->author,
+                                        'mail' => $comments->mail,
+                                        'url' => $comments->url,
+                                        'ip' => $comments->ip,
+                                        'type' => $comments->type,
+                                        'text' => $comments->text,
+                                        'content' => $comments->content,
+                                        'dateWord' => $comments->dateWord,
+                                        'title' => $comments->title,
+                                        'permalink' => $comments->permalink,
+                                        'status' => $comments->status,
+                                        'gravatar' => $gravatarHtml,
+                                        'replyUrl' => $security->getIndex('/action/comments-edit?do=reply&coid=' . $comments->coid),
+                                        'editUrl' => $security->getIndex('/action/comments-edit?do=edit&coid=' . $comments->coid),
+                                        'approvedUrl' => $security->getIndex('/action/comments-edit?do=approved&coid=' . $comments->coid),
+                                        'spamUrl' => $security->getIndex('/action/comments-edit?do=spam&coid=' . $comments->coid),
+                                        'deleteUrl' => $security->getIndex('/action/comments-edit?do=delete&coid=' . $comments->coid),
+                                        'comment' => $comment
+                                    ];
+                                ?>
+                                    <tr id="<?php $comments->theId(); ?>" data-comment="<?php echo htmlspecialchars(json_encode($comment));
                                     ?>" class="group hover:bg-gray-50 transition-colors">
                                         <td class="pl-4 py-3 align-top">
                                             <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300 mt-1">
@@ -211,6 +257,87 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                         </tbody>
                     </table>
                     </div>
+
+                    <!-- Card View Container -->
+                    <div class="card-view-container">
+                        <?php if (!empty($commentsData)): ?>
+                            <?php foreach ($commentsData as $commentData): ?>
+                                <div class="content-card" id="card-<?php echo $commentData['coid']; ?>" data-comment='<?php echo htmlspecialchars(json_encode($commentData['comment'])); ?>'>
+                                    <input type="checkbox" value="<?php echo $commentData['coid']; ?>" name="coid[]" class="card-checkbox text-discord-accent focus:ring-discord-accent border-gray-300">
+                                    
+                                    <div class="card-header">
+                                        <div class="flex items-center space-x-3 flex-1">
+                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 flex-shrink-0">
+                                                <?php if ('comment' == $commentData['type'] && $commentData['gravatar']): ?>
+                                                    <?php echo $commentData['gravatar']; ?>
+                                                <?php else: ?>
+                                                    <div class="flex items-center justify-center w-full h-full text-gray-500"><i class="fas fa-quote-right"></i></div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="card-title font-medium text-discord-text">
+                                                    <?php if($commentData['url']): ?>
+                                                        <a href="<?php echo $commentData['url']; ?>" target="_blank" class="hover:underline"><?php echo htmlspecialchars($commentData['author']); ?></a>
+                                                    <?php else: ?>
+                                                        <?php echo htmlspecialchars($commentData['author']); ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php if($commentData['mail']): ?>
+                                                    <div class="text-xs text-gray-400 truncate">
+                                                        <a href="mailto:<?php echo $commentData['mail']; ?>" class="hover:text-discord-accent"><?php echo htmlspecialchars($commentData['mail']); ?></a>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-meta">
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-clock text-gray-400"></i>
+                                            <span><?php echo $commentData['dateWord']; ?></span>
+                                        </div>
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-file-alt text-gray-400"></i>
+                                            <a href="<?php echo $commentData['permalink']; ?>" class="hover:text-discord-accent truncate" target="_blank"><?php echo htmlspecialchars($commentData['title']); ?></a>
+                                        </div>
+                                        <?php if($commentData['ip']): ?>
+                                        <div class="card-meta-item">
+                                            <i class="fas fa-map-marker-alt text-gray-400"></i>
+                                            <span><?php echo htmlspecialchars($commentData['ip']); ?></span>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                    <div class="card-content comment-content prose prose-sm max-w-none text-gray-700">
+                                        <?php echo $commentData['content']; ?>
+                                    </div>
+                                    
+                                    <div class="card-actions">
+                                        <a href="#" class="operate-reply" data-coid="<?php echo $commentData['coid']; ?>" data-rel="<?php echo $commentData['replyUrl']; ?>">
+                                            <i class="fas fa-reply"></i> <?php _e('回复'); ?>
+                                        </a>
+                                        <a href="#" class="operate-edit" data-coid="<?php echo $commentData['coid']; ?>" data-rel="<?php echo $commentData['editUrl']; ?>">
+                                            <i class="fas fa-edit"></i> <?php _e('编辑'); ?>
+                                        </a>
+                                        <?php if('approved' != $commentData['status']): ?>
+                                            <a href="<?php echo $commentData['approvedUrl']; ?>" class="operate-approved text-green-600"><?php _e('通过'); ?></a>
+                                        <?php endif; ?>
+                                        <?php if('spam' != $commentData['status']): ?>
+                                            <a href="<?php echo $commentData['spamUrl']; ?>" class="operate-spam text-orange-500"><?php _e('标为垃圾'); ?></a>
+                                        <?php endif; ?>
+                                        <a href="<?php echo $commentData['deleteUrl']; ?>" class="operate-delete text-red-500" lang="<?php _e('你确认要删除%s的评论吗?', htmlspecialchars($commentData['author'])); ?>">
+                                            <i class="fas fa-trash-alt"></i> <?php _e('删除'); ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="px-4 py-8 text-center text-gray-500">
+                                <div class="mb-2 text-4xl text-gray-300"><i class="far fa-comments"></i></div>
+                                <?php _e('没有找到任何评论'); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                     
                     <?php if(isset($request->cid)): ?>
                     <input type="hidden" value="<?php echo $request->filter('html')->cid; ?>" name="cid" />
@@ -236,6 +363,89 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     <!-- Footer在main内部 -->
     <?php include 'copyright.php'; ?>
 </main>
+
+<!-- Comment Reply Modal -->
+<div id="replyModal" class="comment-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><?php _e('回复评论'); ?></h3>
+            <button type="button" class="modal-close" onclick="closeReplyModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="originalCommentArea" class="original-comment"></div>
+            <form id="replyForm" class="modal-form" method="post">
+                <div class="form-group">
+                    <label for="replyText"><?php _e('回复内容'); ?></label>
+                    <textarea id="replyText" name="text" required></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeReplyModal()"><?php _e('取消'); ?></button>
+            <button type="button" class="btn btn-primary" onclick="submitReply()"><?php _e('提交回复'); ?></button>
+        </div>
+    </div>
+</div>
+
+<!-- Comment Edit Modal -->
+<div id="editModal" class="comment-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><?php _e('编辑评论'); ?></h3>
+            <button type="button" class="modal-close" onclick="closeEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="editForm" class="modal-form" method="post">
+                <div class="form-group">
+                    <label for="editAuthor"><?php _e('用户名'); ?></label>
+                    <input type="text" id="editAuthor" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMail"><?php _e('电子邮箱'); ?></label>
+                    <input type="email" id="editMail" name="mail">
+                </div>
+                <div class="form-group">
+                    <label for="editUrl"><?php _e('个人主页'); ?></label>
+                    <input type="url" id="editUrl" name="url">
+                </div>
+                <div class="form-group">
+                    <label for="editText"><?php _e('内容'); ?></label>
+                    <textarea id="editText" name="text" required></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeEditModal()"><?php _e('取消'); ?></button>
+            <button type="button" class="btn btn-primary" onclick="submitEdit()"><?php _e('保存'); ?></button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="comment-modal">
+    <div class="modal-content modal-content-small">
+        <div class="modal-header">
+            <h3><?php _e('确认删除'); ?></h3>
+            <button type="button" class="modal-close" onclick="closeDeleteModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="delete-warning">
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="warning-text">
+                    <p class="warning-title" id="deleteAuthorName"><?php _e('确认删除此评论？'); ?></p>
+                    <p class="warning-message"><?php _e('此操作不可逆，删除后无法恢复评论内容。'); ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()"><?php _e('取消'); ?></button>
+            <button type="button" class="btn btn-danger" onclick="confirmDelete()"><?php _e('确认删除'); ?></button>
+        </div>
+    </div>
+</div>
+
 <style>
 .typecho-pager li a, .typecho-pager li span {
     display: inline-flex;
@@ -268,12 +478,624 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 .comment-content img {
     max-width: 100%;
 }
+
+/* 确保操作链接的点击事件正常工作 */
+.operate-reply, .operate-edit, .operate-delete, .operate-approved, .operate-spam {
+    cursor: pointer;
+}
+
+.operate-reply svg, .operate-edit svg, .operate-delete svg, 
+.operate-approved svg, .operate-spam svg,
+.operate-reply i, .operate-edit i, .operate-delete i,
+.operate-approved i, .operate-spam i {
+    pointer-events: none;
+}
+
+/* Card View Styles */
+.card-view-container {
+    display: none;
+    padding: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+.view-mode-card .table-wrapper {
+    display: none !important;
+}
+
+.view-mode-card .card-view-container {
+    display: grid;
+}
+
+.content-card {
+    position: relative;
+    background: white;
+    border: 1px solid #e5e7eb;
+    padding: 1rem;
+    transition: all 0.2s;
+}
+
+.content-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #5865F2;
+}
+
+.card-checkbox {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    padding-right: 1.5rem;
+}
+
+.card-header .w-10.h-10 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.card-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.card-meta-item i {
+    font-size: 0.7rem;
+}
+
+.card-content {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    background: #f9fafb;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.card-actions a {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #6b7280;
+    transition: color 0.2s;
+}
+
+.card-actions a:hover {
+    color: #5865F2;
+}
+
+.card-actions a i {
+    font-size: 0.7rem;
+}
+
+.card-comment-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Modal Styles */
+.comment-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.comment-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: #f3f4f6;
+    color: #1f2937;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.original-comment {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.original-comment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.original-comment-header img {
+    width: 32px;
+    height: 32px;
+}
+
+.original-comment-author {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.original-comment-meta {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.original-comment-content {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #4b5563;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #5865F2;
+    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-primary {
+    background: #5865F2;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #4752C4;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.modal-content-small {
+    max-width: 450px;
+}
+
+.delete-warning {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.warning-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fef2f2;
+    color: #ef4444;
+    font-size: 1.5rem;
+}
+
+.warning-text {
+    flex: 1;
+}
+
+.warning-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+}
+
+.warning-message {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .card-view-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        max-width: 100%;
+    }
+}
 </style>
 <?php
 include 'common-js.php';
 include 'table-js.php';
 ?>
 <script type="text/javascript">
+// Global variables for modal state
+var currentReplyUrl = '';
+var currentEditUrl = '';
+var currentEditRowId = '';
+var currentEditCardId = '';
+var currentDeleteUrl = '';
+var currentDeleteTarget = null;
+
+// Modal control functions
+function openReplyModal(commentData, actionUrl) {
+    currentReplyUrl = actionUrl;
+    
+    // Build original comment HTML
+    var gravatarHtml = '';
+    if (commentData.type === 'comment') {
+        // Try to get gravatar from the row
+        var $row = $('#' + commentData.id);
+        if ($row.length > 0) {
+            var $gravatar = $row.find('td:eq(1) img');
+            if ($gravatar.length > 0) {
+                gravatarHtml = '<img src="' + $gravatar.attr('src') + '" alt="' + commentData.author + '">';
+            }
+        }
+        // If not found in table, try card view
+        if (!gravatarHtml) {
+            var $card = $('.content-card[data-comment*=\'"author":"' + commentData.author + '"\']').first();
+            if ($card.length > 0) {
+                var $cardGravatar = $card.find('.card-header img');
+                if ($cardGravatar.length > 0) {
+                    gravatarHtml = '<img src="' + $cardGravatar.attr('src') + '" alt="' + commentData.author + '">';
+                }
+            }
+        }
+    }
+    
+    if (!gravatarHtml) {
+        gravatarHtml = '<div class="flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-500"><i class="fas fa-quote-right"></i></div>';
+    }
+    
+    var originalCommentHtml = '<div class="original-comment-header">'
+        + gravatarHtml
+        + '<div>'
+        + '<div class="original-comment-author">' + commentData.author + '</div>'
+        + '<div class="original-comment-meta">';
+    
+    if (commentData.mail) {
+        originalCommentHtml += commentData.mail + ' · ';
+    }
+    if (commentData.ip) {
+        originalCommentHtml += commentData.ip;
+    }
+    
+    originalCommentHtml += '</div></div></div>'
+        + '<div class="original-comment-content">' + DOMPurify.sanitize(commentData.text, {USE_PROFILES: {html: true}}) + '</div>';
+    
+    $('#originalCommentArea').html(originalCommentHtml);
+    $('#replyText').val('');
+    $('#replyModal').addClass('active');
+    $('#replyText').focus();
+}
+
+function closeReplyModal() {
+    $('#replyModal').removeClass('active');
+    currentReplyUrl = '';
+}
+
+function submitReply() {
+    var text = $('#replyText').val().trim();
+    if (!text) {
+        alert('<?php _e('请输入回复内容'); ?>');
+        return;
+    }
+    
+    $.post(currentReplyUrl, {text: text}, function(o) {
+        if (o && o.comment) {
+            closeReplyModal();
+            alert('<?php _e('回复成功'); ?>');
+            window.location.reload();
+        }
+    }, 'json').fail(function() {
+        alert('<?php _e('回复失败，请重试'); ?>');
+    });
+}
+
+function openEditModal(commentData, actionUrl, rowId, cardId) {
+    currentEditUrl = actionUrl;
+    currentEditRowId = rowId;
+    currentEditCardId = cardId;
+    
+    $('#editAuthor').val(commentData.author);
+    $('#editMail').val(commentData.mail || '');
+    $('#editUrl').val(commentData.url || '');
+    $('#editText').val(commentData.text);
+    
+    $('#editModal').addClass('active');
+    $('#editAuthor').focus();
+}
+
+function closeEditModal() {
+    $('#editModal').removeClass('active');
+    currentEditUrl = '';
+    currentEditRowId = '';
+    currentEditCardId = '';
+}
+
+function openDeleteModal(authorName, deleteUrl, $target) {
+    currentDeleteUrl = deleteUrl;
+    currentDeleteTarget = $target;
+    
+    var confirmText = '<?php _e('确认删除来自「%s」的评论？'); ?>';
+    confirmText = confirmText.replace('%s', authorName);
+    $('#deleteAuthorName').text(confirmText);
+    
+    $('#deleteModal').addClass('active');
+}
+
+function closeDeleteModal() {
+    $('#deleteModal').removeClass('active');
+    currentDeleteUrl = '';
+    currentDeleteTarget = null;
+}
+
+function confirmDelete() {
+    if (!currentDeleteUrl) return;
+    
+    var $target = currentDeleteTarget;
+    var $tr = $target.closest('tr');
+    var $card = $target.closest('.content-card');
+    
+    function rememberScroll () {
+        $(window).bind('beforeunload', function () {
+            $.cookie('__typecho_comments_scroll', $('body').scrollTop());
+        });
+    }
+    
+    if ($tr.length > 0) {
+        $tr.fadeOut(function () {
+            rememberScroll();
+            window.location.href = currentDeleteUrl;
+        });
+    } else if ($card.length > 0) {
+        $card.fadeOut(function () {
+            rememberScroll();
+            window.location.href = currentDeleteUrl;
+        });
+    } else {
+        rememberScroll();
+        window.location.href = currentDeleteUrl;
+    }
+    
+    closeDeleteModal();
+}
+
+function submitEdit() {
+    var formData = {
+        author: $('#editAuthor').val().trim(),
+        mail: $('#editMail').val().trim(),
+        url: $('#editUrl').val().trim(),
+        text: $('#editText').val().trim()
+    };
+    
+    if (!formData.author || !formData.text) {
+        alert('<?php _e('用户名和内容不能为空'); ?>');
+        return;
+    }
+    
+    $.post(currentEditUrl, formData, function(o) {
+        if (o && o.comment) {
+            // Update table row if exists
+            if (currentEditRowId) {
+                var $row = $('#' + currentEditRowId);
+                if ($row.length > 0) {
+                    // Update data attribute
+                    var oldComment = $row.data('comment');
+                    oldComment.author = formData.author;
+                    oldComment.mail = formData.mail;
+                    oldComment.url = formData.url;
+                    oldComment.text = formData.text;
+                    $row.data('comment', oldComment);
+                    
+                    // Update author info column
+                    var authorHtml = '<div class="font-medium text-discord-text">'
+                        + (formData.url ? '<a target="_blank" href="' + formData.url + '" class="hover:underline">' + formData.author + '</a>' : formData.author)
+                        + '</div><div class="text-xs text-gray-400 mt-0.5">';
+                    
+                    if (formData.mail) {
+                        authorHtml += '<a href="mailto:' + formData.mail + '" class="hover:text-discord-accent block">' + formData.mail + '</a>';
+                    }
+                    
+                    if (oldComment.ip) {
+                        authorHtml += '<span class="block mt-0.5">' + oldComment.ip + '</span>';
+                    }
+                    
+                    authorHtml += '</div>';
+                    
+                    $row.find('td:eq(2)').html(authorHtml).effect('highlight');
+                    
+                    // Update content
+                    var content = DOMPurify.sanitize(o.comment.content, {USE_PROFILES: {html: true}});
+                    $row.find('.comment-content').html(content).effect('highlight');
+                }
+            }
+            
+            // Update card if exists
+            if (currentEditCardId) {
+                var $card = $('#' + currentEditCardId);
+                if ($card.length > 0) {
+                    // Update data attribute
+                    var oldComment = JSON.parse($card.attr('data-comment'));
+                    oldComment.author = formData.author;
+                    oldComment.mail = formData.mail;
+                    oldComment.url = formData.url;
+                    oldComment.text = formData.text;
+                    $card.attr('data-comment', JSON.stringify(oldComment));
+                    
+                    // Update author info
+                    var authorHtml = formData.url ? 
+                        '<a href="' + formData.url + '" target="_blank" class="hover:underline">' + formData.author + '</a>' : 
+                        formData.author;
+                    $card.find('.card-title').html(authorHtml);
+                    
+                    if (formData.mail) {
+                        $card.find('.card-header .text-xs').html('<a href="mailto:' + formData.mail + '" class="hover:text-discord-accent">' + formData.mail + '</a>');
+                    } else {
+                        $card.find('.card-header .text-xs').html('');
+                    }
+                    
+                    // Update content
+                    var content = DOMPurify.sanitize(o.comment.content, {USE_PROFILES: {html: true}});
+                    $card.find('.card-content').html(content).effect('highlight');
+                }
+            }
+            
+            closeEditModal();
+        }
+    }, 'json').fail(function() {
+        alert('<?php _e('保存失败，请重试'); ?>');
+    });
+}
+
 $(document).ready(function () {
     // 记住滚动条
     function rememberScroll () {
@@ -285,141 +1107,254 @@ $(document).ready(function () {
     // 自动滚动
     (function () {
         var scroll = $.cookie('__typecho_comments_scroll');
-
         if (scroll) {
             $.cookie('__typecho_comments_scroll', null);
             $('html, body').scrollTop(scroll);
         }
     })();
 
-    $('.operate-delete').click(function () {
-        var t = $(this), href = t.attr('href'), tr = t.parents('tr');
-
-        if (confirm(t.attr('lang'))) {
-            tr.fadeOut(function () {
-                rememberScroll();
-                window.location.href = href;
-            });
+    // ===== 直接劫持所有操作按钮的点击事件 =====
+    // 使用捕获阶段优先拦截所有点击
+    document.addEventListener('click', function(e) {
+        var target = e.target;
+        
+        // 向上查找a标签
+        while (target && target.tagName !== 'A' && target !== document.body) {
+            target = target.parentElement;
         }
-
-        return false;
-    });
-
-    $('.operate-approved, .operate-waiting, .operate-spam').click(function () {
-        rememberScroll();
-        window.location.href = $(this).attr('href');
-        return false;
-    });
-
-    $('.operate-reply').click(function () {
-        var td = $(this).parents('td'), t = $(this);
-
-        if ($('.comment-reply', td).length > 0) {
-            $('.comment-reply').remove();
-        } else {
-            var form = $('<form method="post" action="'
-                + t.attr('rel') + '" class="comment-reply mt-2 p-3 bg-gray-50 border border-gray-200">'
-                + '<p><label for="text" class="sr-only"><?php _e('内容'); ?></label><textarea id="text" name="text" class="w-full p-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" rows="3"></textarea></p>'
-                + '<p class="mt-2 flex space-x-2"><button type="submit" class="px-3 py-1 bg-discord-accent text-white text-sm hover:bg-blue-600 transition-colors"><?php _e('回复'); ?></button> <button type="button" class="px-3 py-1 bg-gray-200 text-gray-700 text-sm hover:bg-gray-300 transition-colors cancel"><?php _e('取消'); ?></button></p>'
-                + '</form>').appendTo($('.comment-content', t.parents('tr')));
-
-            $('.cancel', form).click(function () {
-                $(this).parents('.comment-reply').remove();
-            });
-
-            var textarea = $('textarea', form).focus();
-
-            form.submit(function () {
-                var t = $(this), tr = t.parents('tr'), 
-                    reply = $('<div class="comment-reply-content mt-2 p-2 bg-blue-50 text-blue-800 text-sm border border-blue-100"></div>').insertAfter($('.comment-content', tr));
-
-                var html = DOMPurify.sanitize(textarea.val(), {USE_PROFILES: {html: true}});
-                reply.html('<p>' + html + '</p>');
-                $.post(t.attr('action'), t.serialize(), function (o) {
-                    var html = DOMPurify.sanitize(o.comment.content, {USE_PROFILES: {html: true}});
-                    reply.html(html)
-                        .effect('highlight');
-                }, 'json');
-
-                t.remove();
-                return false;
-            });
-        }
-
-        return false;
-    });
-
-    $('.operate-edit').click(function () {
-        var tr = $(this).parents('tr'), t = $(this), id = tr.attr('id'), comment = tr.data('comment');
-        tr.hide();
-
-        var edit = $('<tr class="comment-edit bg-white"><td colspan="5" class="p-4 border-b border-gray-200">'
-                        + '<form method="post" action="' + t.attr('rel') + '" class="comment-edit-info space-y-4">'
-                        + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4">'
-                        + '<div><label for="' + id + '-author" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('用户名'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" id="' + id + '-author" name="author" type="text"></div>'
-                        + '<div><label for="' + id + '-mail" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('电子邮箱'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" type="email" name="mail" id="' + id + '-mail"></div>'
-                        + '<div><label for="' + id + '-url" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('个人主页'); ?></label><input class="w-full px-3 py-1.5 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" type="text" name="url" id="' + id + '-url"></div>'
-                        + '</div>'
-                        + '<div><label for="' + id + '-text" class="block text-sm font-medium text-gray-700 mb-1"><?php _e('内容'); ?></label><textarea name="text" id="' + id + '-text" rows="6" class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent"></textarea></div>'
-                        + '<div class="flex space-x-2"><button type="submit" class="px-4 py-2 bg-discord-accent text-white hover:bg-blue-600 transition-colors text-sm"><?php _e('提交'); ?></button> '
-                        + '<button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors text-sm cancel"><?php _e('取消'); ?></button></div>'
-                        + '</form></td></tr>')
-                        .data('id', id).data('comment', comment).insertAfter(tr);
-
-        $('input[name=author]', edit).val(comment.author);
-        $('input[name=mail]', edit).val(comment.mail);
-        $('input[name=url]', edit).val(comment.url);
-        $('textarea[name=text]', edit).val(comment.text).focus();
-
-        $('.cancel', edit).click(function () {
-            var tr = $(this).parents('tr');
-
-            $('#' + tr.data('id')).show();
-            tr.remove();
-        });
-
-        $('form', edit).submit(function () {
-            var t = $(this), tr = t.parents('tr'),
-                oldTr = $('#' + tr.data('id')),
-                comment = oldTr.data('comment');
-
-            $('form', tr).each(function () {
-                var items  = $(this).serializeArray();
-
-                for (var i = 0; i < items.length; i ++) {
-                    var item = items[i];
-                    comment[item.name] = item.value;
-                }
-            });
-
-            var unsafeHTML = '<div class="font-medium text-discord-text">'
-                + (comment.url ? '<a target="_blank" href="' + comment.url + '" class="hover:underline">'
-                + comment.author + '</a>' : comment.author) + '</div>'
-                + '<div class="text-xs text-gray-400 mt-0.5">'
-                + (comment.mail ? '<a href="mailto:' + comment.mail + '" class="hover:text-discord-accent block">'
-                + comment.mail + '</a>' : '')
-                + (comment.ip ? '<span class="block mt-0.5">' + comment.ip + '</span>' : '') + '</div>';
-
-            var html = DOMPurify.sanitize(unsafeHTML, {USE_PROFILES: {html: true}});
-            var content = DOMPurify.sanitize(comment.text, {USE_PROFILES: {html: true}});
-            // Update the author info column (3rd column)
-            oldTr.find('td:eq(2)').html(html).effect('highlight');
-            // Update content
-            oldTr.find('.comment-content').html(content);
-            oldTr.data('comment', comment);
-
-            $.post(t.attr('action'), comment, function (o) {
-                var content = DOMPurify.sanitize(o.comment.content, {USE_PROFILES: {html: true}});
-                oldTr.find('.comment-content').html(content).effect('highlight');
-            }, 'json');
+        
+        if (!target || target.tagName !== 'A') return;
+        
+        var $target = $(target);
+        
+        // 处理回复按钮
+        if ($target.hasClass('operate-reply')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
             
-            oldTr.show();
-            tr.remove();
-
+            var actionUrl = $target.attr('rel') || $target.data('rel');
+            var $tr = $target.closest('tr');
+            var $card = $target.closest('.content-card');
+            var commentData = null;
+            
+            if ($tr.length > 0) {
+                commentData = $tr.data('comment');
+                if (commentData) {
+                    commentData.id = $tr.attr('id');
+                }
+            } else if ($card.length > 0) {
+                commentData = JSON.parse($card.attr('data-comment'));
+                commentData.id = $card.attr('id');
+            }
+            
+            if (commentData && actionUrl) {
+                openReplyModal(commentData, actionUrl);
+            }
             return false;
-        });
+        }
+        
+        // 处理编辑按钮
+        if ($target.hasClass('operate-edit')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            var actionUrl = $target.attr('rel') || $target.data('rel');
+            var $tr = $target.closest('tr');
+            var $card = $target.closest('.content-card');
+            var commentData = null;
+            var rowId = '';
+            var cardId = '';
+            
+            if ($tr.length > 0) {
+                commentData = $tr.data('comment');
+                rowId = $tr.attr('id');
+            } else if ($card.length > 0) {
+                commentData = JSON.parse($card.attr('data-comment'));
+                cardId = $card.attr('id');
+            }
+            
+            if (commentData && actionUrl) {
+                openEditModal(commentData, actionUrl, rowId, cardId);
+            }
+            return false;
+        }
+        
+        // 处理删除按钮
+        if ($target.hasClass('operate-delete')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            var href = $target.attr('href');
+            var authorName = '';
+            
+            // 获取作者名称
+            var $tr = $target.closest('tr');
+            var $card = $target.closest('.content-card');
+            
+            if ($tr.length > 0) {
+                var commentData = $tr.data('comment');
+                if (commentData) {
+                    authorName = commentData.author;
+                }
+            } else if ($card.length > 0) {
+                var commentData = JSON.parse($card.attr('data-comment'));
+                if (commentData) {
+                    authorName = commentData.author;
+                }
+            }
+            
+            openDeleteModal(authorName || '<?php _e('该用户'); ?>', href, $target);
+            return false;
+        }
+        
+        // 处理通过/待审核/垃圾标记按钮
+        if ($target.hasClass('operate-approved') || $target.hasClass('operate-waiting') || $target.hasClass('operate-spam')) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            rememberScroll();
+            window.location.href = $target.attr('href');
+            return false;
+        }
+    }, true); // 使用捕获阶段
+    
+    // Modal close on background click
+    $('.comment-modal').on('click', function(e) {
+        if ($(e.target).hasClass('comment-modal')) {
+            if ($(this).attr('id') === 'replyModal') {
+                closeReplyModal();
+            } else if ($(this).attr('id') === 'editModal') {
+                closeEditModal();
+            } else if ($(this).attr('id') === 'deleteModal') {
+                closeDeleteModal();
+            }
+        }
+    });
+    
+    // Enter key in reply textarea submits
+    $('#replyText').on('keydown', function(e) {
+        if (e.ctrlKey && e.keyCode === 13) {
+            submitReply();
+        }
+    });
+    
+    // ESC key closes modals
+    $(document).on('keydown', function(e) {
+        if (e.keyCode === 27) { // ESC key
+            if ($('#replyModal').hasClass('active')) {
+                closeReplyModal();
+            }
+            if ($('#editModal').hasClass('active')) {
+                closeEditModal();
+            }
+            if ($('#deleteModal').hasClass('active')) {
+                closeDeleteModal();
+            }
+        }
+    });
+});
+</script>
 
-        return false;
+<script>
+// Mobile-aware view mode initialization for manage-comments.php
+$(document).ready(function() {
+    var VIEW_MODE_KEY = 'typecho_list_view_mode';
+    var USER_PREFERENCE_KEY = 'typecho_list_view_user_set';
+    var MOBILE_BREAKPOINT = 768;
+    
+    function isMobile() {
+        return $(window).width() < MOBILE_BREAKPOINT;
+    }
+    
+    function hasUserPreference() {
+        try {
+            return localStorage.getItem(USER_PREFERENCE_KEY) === 'true';
+        } catch(e) {
+            return false;
+        }
+    }
+    
+    function saveViewMode(mode) {
+        try {
+            localStorage.setItem(VIEW_MODE_KEY, mode);
+        } catch(e) {
+            // Ignore localStorage errors
+        }
+    }
+    
+    function getSavedViewMode() {
+        try {
+            return localStorage.getItem(VIEW_MODE_KEY) || null;
+        } catch(e) {
+            return null;
+        }
+    }
+    
+    function applyViewMode(mode) {
+        var $container = $('.operate-form').closest('.bg-white');
+        
+        if (mode === 'card') {
+            $container.addClass('view-mode-card');
+            $('.view-toggle .btn-table-view').removeClass('active');
+            $('.view-toggle .btn-card-view').addClass('active');
+        } else {
+            $container.removeClass('view-mode-card');
+            $('.view-toggle .btn-table-view').addClass('active');
+            $('.view-toggle .btn-card-view').removeClass('active');
+        }
+    }
+    
+    function initializeViewMode() {
+        var savedMode = getSavedViewMode();
+        var userHasPreference = hasUserPreference();
+        var mobile = isMobile();
+        
+        var defaultMode = mobile ? 'card' : 'table';
+        var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
+        
+        applyViewMode(finalMode);
+    }
+    
+    // 监听用户手动切换视图
+    $('.view-toggle button').on('click', function() {
+        var $btn = $(this);
+        var newMode = $btn.hasClass('btn-table-view') ? 'table' : 'card';
+        
+        // 保存视图模式
+        saveViewMode(newMode);
+        
+        // 标记用户已手动设置
+        try {
+            localStorage.setItem(USER_PREFERENCE_KEY, 'true');
+        } catch(e) {
+            // Ignore localStorage errors
+        }
+    });
+    
+    if ($('.view-toggle').length > 0) {
+        initializeViewMode();
+    }
+    
+    var resizeTimer;
+    $(window).on('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (!hasUserPreference() && $('.view-toggle').length > 0) {
+                var mobile = isMobile();
+                var currentMode = mobile ? 'card' : 'table';
+                
+                // 自动切换时也保存到 localStorage
+                var savedMode = getSavedViewMode();
+                if (savedMode !== currentMode) {
+                    saveViewMode(currentMode);
+                    applyViewMode(currentMode);
+                }
+            }
+        }, 250);
     });
 });
 </script>

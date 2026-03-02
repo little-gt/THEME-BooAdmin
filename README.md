@@ -34,10 +34,10 @@
 ![管理标签页面](screenshot/screenshot5.png)
 
 ### 主题设置
-![主题设置](screenshot/screenshot6.png)
+![主题设置页面](screenshot/screenshot6.png)
 
-### 插件设置
-![插件设置](screenshot/screenshot7.png)
+### 管理评论
+![管理评论页面](screenshot/screenshot7.png)
 
 ### 系统设置页面
 ![系统设置页面](screenshot/screenshot8.png)
@@ -49,6 +49,8 @@
 1. 统一了所有页面的 header 导航条显示内容，更加统一和自然；
 2. 优化了编辑主题页面的设计，使得和设置主题的样式一致；
 3. 修复了copyright弹窗点击转跳到GitHub仓库没有反应的问题。
+4. 新增支持评论管理页面的卡片视图。
+5. 统一所有卡片视图的存储逻辑和切换逻辑，保持一致性体验。
 
 ---
 

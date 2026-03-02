@@ -394,6 +394,15 @@ $(document).ready(function() {
         }
     }
     
+    // 保存视图模式
+    function saveViewMode(mode) {
+        try {
+            localStorage.setItem(VIEW_MODE_KEY, mode);
+        } catch(e) {
+            // Ignore localStorage errors
+        }
+    }
+    
     // 获取保存的视图模式
     function getSavedViewMode() {
         try {
@@ -431,23 +440,20 @@ $(document).ready(function() {
         var defaultMode = mobile ? 'card' : 'table';
         var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
         
-        console.log('View Mode Init:', {
-            'Screen Width': $(window).width() + 'px',
-            'Is Mobile': mobile,
-            'User Has Preference': userHasPreference,
-            'Saved Mode': savedMode,
-            'Final Mode': finalMode
-        });
-        
         applyViewMode(finalMode);
     }
     
-    // 监听用户手动切换视图（由 common-js.php 中的代码触发）
-    // 当用户点击切换按钮时，标记为用户已设置偏好
+    // 监听用户手动切换视图
     $('.view-toggle button').on('click', function() {
+        var $btn = $(this);
+        var newMode = $btn.hasClass('btn-table-view') ? 'table' : 'card';
+        
+        // 保存视图模式
+        saveViewMode(newMode);
+        
+        // 标记用户已手动设置
         try {
             localStorage.setItem(USER_PREFERENCE_KEY, 'true');
-            console.log('User preference saved: User manually switched view mode');
         } catch(e) {
             // Ignore localStorage errors
         }
@@ -458,7 +464,7 @@ $(document).ready(function() {
         initializeViewMode();
     }
     
-    // 监听窗口大小变化（可选）
+    // 监听窗口大小变化
     // 只在用户没有手动设置偏好时，根据屏幕大小自动调整
     var resizeTimer;
     $(window).on('resize', function() {
@@ -468,9 +474,13 @@ $(document).ready(function() {
             if (!hasUserPreference() && $('.view-toggle').length > 0) {
                 var mobile = isMobile();
                 var currentMode = mobile ? 'card' : 'table';
-                applyViewMode(currentMode);
                 
-                console.log('Auto-adjusted to', currentMode, 'mode due to window resize');
+                // 自动切换时也保存到 localStorage
+                var savedMode = getSavedViewMode();
+                if (savedMode !== currentMode) {
+                    saveViewMode(currentMode);
+                    applyViewMode(currentMode);
+                }
             }
         }, 250); // 防抖，250ms 后才执行
     });
