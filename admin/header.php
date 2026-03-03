@@ -4,9 +4,9 @@ if (!defined('__TYPECHO_ADMIN__')) {
 }
 
 $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.8', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.8', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.8', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.9-PRE3', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.9-PRE3', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.9-PRE3', true) . '">
 <!-- TailwindCSS -->
 <script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
 <!-- Font Awesome -->
@@ -1117,5 +1117,6 @@ $header = \Typecho\Plugin::factory('admin/header.php')->filter('header', $header
             <div class="peg"></div>
             <div class="spinner">
                 <div class="spinner-icon"></div>
+                <span class="spinner-text"><?php _e('正在加载'); ?></span>
             </div>
         </div>

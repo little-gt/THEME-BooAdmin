@@ -9,18 +9,34 @@
             // Page Loading Progress Bar
             // ========================================
             (function() {
-                // 检查 NProgress 元素是否已存在于 HTML 中（避免重复创建）
-                var nprogressExists = document.getElementById('nprogress') !== null;
+                // 确保nprogress元素存在且结构完整
+                function ensureNProgressStructure() {
+                    var $nprogress = $('#nprogress');
+                    if ($nprogress.length === 0) {
+                        $nprogress = $('<div id="nprogress"><div class="spinner"><div class="spinner-icon"></div><span class="spinner-text"><?php _e('正在加载'); ?></span></div></div>').appendTo('body');
+                    } else {
+                        var $spinner = $nprogress.find('.spinner');
+                        if ($spinner.length === 0) {
+                            $spinner = $('<div class="spinner"><div class="spinner-icon"></div><span class="spinner-text"><?php _e('正在加载'); ?></span></div>').appendTo($nprogress);
+                        } else if ($spinner.find('.spinner-text').length === 0) {
+                            $spinner.append('<span class="spinner-text"><?php _e('正在加载'); ?></span>');
+                        }
+                    }
+                    return $nprogress.find('.spinner');
+                }
                 
-                // 配置 NProgress 使用主题色
+                // 配置 NProgress
                 NProgress.configure({
                     minimum: 0.1,
                     trickleSpeed: 200,
                     showSpinner: true,
                     speed: 300,
                     easing: 'ease',
-                    parent: nprogressExists ? 'body' : 'body'
+                    parent: 'body'
                 });
+                
+                // 初始化spinner
+                var $spinner = ensureNProgressStructure();
                 
                 // 启动进度条（默认加载状态）
                 NProgress.start();
@@ -28,6 +44,7 @@
                 // 页面完全加载后完成进度条
                 $(window).on('load', function() {
                     setTimeout(function() {
+                        $spinner.addClass('hide');
                         NProgress.done();
                     }, 100);
                 });
@@ -38,6 +55,10 @@
                     
                     // 只对同域链接启用进度条
                     if (href && (href.indexOf('http') !== 0 || href.indexOf(window.location.hostname) !== -1)) {
+                        // 确保结构完整
+                        $spinner = ensureNProgressStructure();
+                        // 移除 hide 类以显示加载指示器
+                        $spinner.removeClass('hide');
                         NProgress.start();
                     }
                 });

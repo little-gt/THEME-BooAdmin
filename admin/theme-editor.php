@@ -62,12 +62,17 @@ include 'menu.php';
                         </div>
 
                         <!-- Editor Area -->
-                        <div class="flex-1 bg-gray-50 border border-gray-100 flex flex-col overflow-hidden">
+                        <div class="flex-1 bg-gray-50 border border-gray-100 flex flex-col overflow-hidden" id="editor-container">
                              <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-100">
                                 <span class="font-mono text-sm text-discord-text font-medium"><?php echo $files->currentFile(); ?></span>
-                                <?php if (!$files->currentIsWriteable()): ?>
-                                    <span class="text-xs text-red-500 bg-red-50 px-2 py-1 border border-red-100"><i class="fas fa-lock mr-1"></i> <?php _e('只读'); ?></span>
-                                <?php endif; ?>
+                                <div class="flex items-center space-x-3">
+                                    <button id="fullscreen-btn" class="text-discord-muted hover:text-discord-accent transition-colors p-1 rounded hover:bg-gray-200">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                    <?php if (!$files->currentIsWriteable()): ?>
+                                        <span class="text-xs text-red-500 bg-red-50 px-2 py-1 border border-red-100"><i class="fas fa-lock mr-1"></i> <?php _e('只读'); ?></span>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             
                             <form method="post" name="theme" id="theme" action="<?php $security->index('/action/themes-edit'); ?>" class="flex-1 flex flex-col p-0 m-0">
@@ -77,7 +82,7 @@ include 'menu.php';
                                     <?php if ($files->currentIsWriteable()): ?>
                                         <input type="hidden" name="theme" value="<?php echo $files->currentTheme(); ?>"/>
                                         <input type="hidden" name="edit" value="<?php echo $files->currentFile(); ?>"/>
-                                        <button type="submit" class="px-6 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                                        <button type="button" id="save-btn" class="px-6 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
                                             <i class="fas fa-save mr-1"></i> <?php _e('保存文件'); ?>
                                         </button>
                                     <?php else: ?>
@@ -87,6 +92,22 @@ include 'menu.php';
                                     <?php endif; ?>
                                 </div>
                             </form>
+                        </div>
+
+                        <!-- 保存确认提示框 -->
+                        <div id="save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                            <div class="bg-white shadow-xl max-w-md w-full p-6">
+                                <h3 class="text-lg font-bold text-discord-text mb-4">确认保存</h3>
+                                <p class="text-discord-muted mb-6">您确定要保存此文件吗？此操作不可逆。</p>
+                                <div class="flex justify-end space-x-3">
+                                    <button id="cancel-save" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                                        取消
+                                    </button>
+                                    <button id="confirm-save" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                                        确认保存
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,6 +121,84 @@ include 'menu.php';
 
 <?php
 include 'common-js.php';
+?>
+
+<script>
+// 全屏切换功能
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+const editorContainer = document.getElementById('editor-container');
+
+fullscreenBtn.addEventListener('click', function() {
+    if (!document.fullscreenElement) {
+        if (editorContainer.requestFullscreen) {
+            editorContainer.requestFullscreen();
+        } else if (editorContainer.mozRequestFullScreen) {
+            editorContainer.mozRequestFullScreen();
+        } else if (editorContainer.webkitRequestFullscreen) {
+            editorContainer.webkitRequestFullscreen();
+        } else if (editorContainer.msRequestFullscreen) {
+            editorContainer.msRequestFullscreen();
+        }
+        fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+    }
+});
+
+// 监听全屏状态变化
+document.addEventListener('fullscreenchange', function() {
+    if (!document.fullscreenElement) {
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+    } else {
+        fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+    }
+});
+
+// 保存确认提示框
+const saveBtn = document.getElementById('save-btn');
+const saveConfirmModal = document.getElementById('save-confirm-modal');
+const cancelSave = document.getElementById('cancel-save');
+const confirmSave = document.getElementById('confirm-save');
+const themeForm = document.getElementById('theme');
+
+if (saveBtn) {
+    saveBtn.addEventListener('click', function() {
+        saveConfirmModal.classList.remove('hidden');
+    });
+}
+
+if (cancelSave) {
+    cancelSave.addEventListener('click', function() {
+        saveConfirmModal.classList.add('hidden');
+    });
+}
+
+if (confirmSave) {
+    confirmSave.addEventListener('click', function() {
+        themeForm.submit();
+    });
+}
+
+// 点击模态框外部关闭
+if (saveConfirmModal) {
+    saveConfirmModal.addEventListener('click', function(e) {
+        if (e.target === saveConfirmModal) {
+            saveConfirmModal.classList.add('hidden');
+        }
+    });
+}
+</script>
+
+<?php
 \Typecho\Plugin::factory('admin/theme-editor.php')->call('bottom', $files);
 include 'footer.php';
 ?>
