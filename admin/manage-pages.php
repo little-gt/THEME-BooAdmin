@@ -50,7 +50,9 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                         </div>
                         <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pr-3 py-1.5 bg-white text-sm focus:outline-none w-48 md:w-64 border-0">
                     </div>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium flex items-center">
+                        <i class="fas fa-filter mr-1"></i><?php _e('筛选'); ?>
+                    </button>
                 </form>
             </div>
 
@@ -65,13 +67,13 @@ $pages = \Widget\Contents\Page\Admin::alloc();
                              </label>
                              <div class="relative group">
                                 <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
-                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                    <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
                                 <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
-                                    <a href="<?php $security->index('/action/contents-page-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
                                     <div class="border-t border-gray-100 my-1"></div>
-                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=publish'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记为公开'); ?></a>
-                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=hidden'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记为隐藏'); ?></a>
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=publish'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-eye mr-1"></i><?php _e('标记为公开'); ?></a>
+                                    <a href="<?php $security->index('/action/contents-page-edit?do=mark&status=hidden'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-eye-slash mr-1"></i><?php _e('标记为隐藏'); ?></a>
                                 </div>
                              </div>
                          </div>
@@ -297,6 +299,43 @@ $pages = \Widget\Contents\Page\Admin::alloc();
     color: white;
     border-color: #5865F2;
     font-weight: 600;
+}
+
+.content-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 240px;
+    max-height: 320px;
+}
+
+.card-header {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.card-title {
+    display: block;
+    max-height: 5rem;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+.card-badges {
+    max-height: 2.5rem;
+    overflow-y: auto;
+}
+
+.card-meta {
+    flex: 0 0 auto;
+    min-height: 0;
+    max-height: 88px;
+    overflow-y: auto;
+}
+
+.card-actions {
+    margin-top: 0.25rem;
+    flex-shrink: 0;
 }
 </style>
 

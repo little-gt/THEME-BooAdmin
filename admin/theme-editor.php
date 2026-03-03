@@ -44,7 +44,7 @@ include 'menu.php';
                     </a>
                 </div>
                 <div class="p-6">
-                    <div class="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
+                    <div id="editor-fullscreen-container" class="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
                         <!-- File List Sidebar -->
                         <div class="lg:w-64 bg-gray-50 border border-gray-100 flex flex-col overflow-hidden">
                             <div class="p-4 bg-gray-100 border-b border-gray-200 font-bold text-discord-text text-sm">
@@ -62,7 +62,7 @@ include 'menu.php';
                         </div>
 
                         <!-- Editor Area -->
-                        <div class="flex-1 bg-gray-50 border border-gray-100 flex flex-col overflow-hidden" id="editor-container">
+                                <div class="flex-1 bg-gray-50 border border-gray-100 flex flex-col overflow-hidden" id="editor-container">
                              <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-100">
                                 <span class="font-mono text-sm text-discord-text font-medium"><?php echo $files->currentFile(); ?></span>
                                 <div class="flex items-center space-x-3">
@@ -92,20 +92,20 @@ include 'menu.php';
                                     <?php endif; ?>
                                 </div>
                             </form>
-                        </div>
 
-                        <!-- 保存确认提示框 -->
-                        <div id="save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-                            <div class="bg-white shadow-xl max-w-md w-full p-6">
-                                <h3 class="text-lg font-bold text-discord-text mb-4">确认保存</h3>
-                                <p class="text-discord-muted mb-6">您确定要保存此文件吗？此操作不可逆。</p>
-                                <div class="flex justify-end space-x-3">
-                                    <button id="cancel-save" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
-                                        取消
-                                    </button>
-                                    <button id="confirm-save" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
-                                        确认保存
-                                    </button>
+                            <!-- 保存确认提示框 -->
+                            <div id="save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                                <div class="bg-white shadow-xl max-w-md w-full p-6">
+                                    <h3 class="text-lg font-bold text-discord-text mb-4">确认保存</h3>
+                                    <p class="text-discord-muted mb-6">您确定要保存此文件吗？此操作不可逆。</p>
+                                    <div class="flex justify-end space-x-3">
+                                        <button id="cancel-save" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                                            取消
+                                        </button>
+                                        <button id="confirm-save" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                                            确认保存
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +129,9 @@ const fullscreenBtn = document.getElementById('fullscreen-btn');
 const editorContainer = document.getElementById('editor-container');
 
 fullscreenBtn.addEventListener('click', function() {
-    if (!document.fullscreenElement) {
+    const isEditorFullscreen = document.fullscreenElement === editorContainer;
+
+    if (!isEditorFullscreen) {
         if (editorContainer.requestFullscreen) {
             editorContainer.requestFullscreen();
         } else if (editorContainer.mozRequestFullScreen) {
@@ -156,10 +158,10 @@ fullscreenBtn.addEventListener('click', function() {
 
 // 监听全屏状态变化
 document.addEventListener('fullscreenchange', function() {
-    if (!document.fullscreenElement) {
-        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-    } else {
+    if (document.fullscreenElement === editorContainer) {
         fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+    } else {
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
     }
 });
 

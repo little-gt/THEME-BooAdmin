@@ -76,7 +76,9 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                     <?php if(isset($request->cid)): ?>
                         <input type="hidden" value="<?php echo $request->filter('html')->cid; ?>" name="cid" />
                     <?php endif; ?>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium flex items-center">
+                        <i class="fas fa-filter mr-1"></i><?php _e('筛选'); ?>
+                    </button>
                     <?php if ('' != $request->keywords || '' != $request->category): ?>
                         <a href="<?php $options->adminUrl('manage-comments.php' . (isset($request->status) || isset($request->cid) ? '?' . (isset($request->status) ? 'status=' . $request->filter('encode')->status : '') . (isset($request->cid) ? (isset($request->status) ? '&' : '') . 'cid=' . $request->filter('encode')->cid : '') : '')); ?>" class="px-2 py-1 bg-gray-200 hover:bg-gray-300 transition-colors text-xs text-gray-600"><?php _e('取消筛选'); ?></a>
                     <?php endif; ?>
@@ -94,18 +96,18 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                              </label>
                              <div class="relative group">
                                 <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
-                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                    <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
                                 <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
-                                    <a href="<?php $security->index('/action/comments-edit?do=approved'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('通过'); ?></a>
-                                    <a href="<?php $security->index('/action/comments-edit?do=waiting'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('待审核'); ?></a>
-                                    <a href="<?php $security->index('/action/comments-edit?do=spam'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('标记垃圾'); ?></a>
+                                    <a href="<?php $security->index('/action/comments-edit?do=approved'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-check mr-1 text-green-600"></i><?php _e('通过'); ?></a>
+                                    <a href="<?php $security->index('/action/comments-edit?do=waiting'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-clock mr-1 text-yellow-600"></i><?php _e('待审核'); ?></a>
+                                    <a href="<?php $security->index('/action/comments-edit?do=spam'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-ban mr-1 text-orange-500"></i><?php _e('标记垃圾'); ?></a>
                                     <div class="border-t border-gray-100 my-1"></div>
-                                    <a href="<?php $security->index('/action/comments-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
+                                    <a href="<?php $security->index('/action/comments-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
                                 </div>
                              </div>
                              <?php if('spam' == $request->get('status')): ?>
-                                <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 btn-operate" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>"><?php _e('删除所有垃圾评论'); ?></button>
+                                <button lang="<?php _e('你确认要删除所有垃圾评论吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 btn-operate flex items-center" href="<?php $security->index('/action/comments-edit?do=delete-spam'); ?>"><i class="fas fa-trash mr-1"></i><?php _e('删除所有垃圾评论'); ?></button>
                              <?php endif; ?>
                          </div>
                          <div class="flex items-center space-x-4">
@@ -234,13 +236,13 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                                 <?php if('approved' == $comments->status): ?>
                                                     <!-- Current status approved -->
                                                 <?php else: ?>
-                                                    <a href="<?php $security->index('/action/comments-edit?do=approved&coid=' . $comments->coid); ?>" class="operate-approved text-green-600 hover:underline"><?php _e('通过'); ?></a>
+                                                    <a href="<?php $security->index('/action/comments-edit?do=approved&coid=' . $comments->coid); ?>" class="operate-approved text-green-600 hover:underline"><i class="fas fa-check mr-1"></i><?php _e('通过'); ?></a>
                                                 <?php endif; ?>
                                                 
                                                 <?php if('spam' == $comments->status): ?>
                                                     <!-- Current status spam -->
                                                 <?php else: ?>
-                                                    <a href="<?php $security->index('/action/comments-edit?do=spam&coid=' . $comments->coid); ?>" class="operate-spam text-orange-500 hover:underline"><?php _e('标为垃圾'); ?></a>
+                                                    <a href="<?php $security->index('/action/comments-edit?do=spam&coid=' . $comments->coid); ?>" class="operate-spam text-orange-500 hover:underline"><i class="fas fa-ban mr-1"></i><?php _e('标为垃圾'); ?></a>
                                                 <?php endif; ?>
                                                 
                                                 <a lang="<?php _e('你确认要删除%s的评论吗?', htmlspecialchars($comments->author)); ?>" href="<?php $security->index('/action/comments-edit?do=delete&coid=' . $comments->coid); ?>" class="operate-delete text-red-500 hover:underline"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
@@ -251,8 +253,10 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                             <?php else: ?>
                                 <tr>
                                     <td colspan="5" class="px-4 py-8 text-center text-gray-500">
-                                        <div class="mb-2 text-4xl text-gray-300"><i class="far fa-comments"></i></div>
-                                        <?php _e('没有找到任何评论'); ?>
+                                        <div class="min-h-[260px] flex flex-col items-center justify-center">
+                                            <div class="mb-3 text-5xl text-gray-300"><i class="far fa-comments"></i></div>
+                                            <p class="text-sm text-gray-500"><?php _e('没有找到任何评论'); ?></p>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endif; ?>
@@ -324,10 +328,10 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                             <i class="fas fa-edit"></i> <?php _e('编辑'); ?>
                                         </a>
                                         <?php if('approved' != $commentData['status']): ?>
-                                            <a href="<?php echo $commentData['approvedUrl']; ?>" class="operate-approved text-green-600"><?php _e('通过'); ?></a>
+                                            <a href="<?php echo $commentData['approvedUrl']; ?>" class="operate-approved text-green-600"><i class="fas fa-check"></i> <?php _e('通过'); ?></a>
                                         <?php endif; ?>
                                         <?php if('spam' != $commentData['status']): ?>
-                                            <a href="<?php echo $commentData['spamUrl']; ?>" class="operate-spam text-orange-500"><?php _e('标为垃圾'); ?></a>
+                                            <a href="<?php echo $commentData['spamUrl']; ?>" class="operate-spam text-orange-500"><i class="fas fa-ban"></i> <?php _e('标为垃圾'); ?></a>
                                         <?php endif; ?>
                                         <a href="<?php echo $commentData['deleteUrl']; ?>" class="operate-delete text-red-500" lang="<?php _e('你确认要删除%s的评论吗?', htmlspecialchars($commentData['author'])); ?>">
                                             <i class="fas fa-trash-alt"></i> <?php _e('删除'); ?>
@@ -336,9 +340,9 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                 </div>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <div class="px-4 py-8 text-center text-gray-500">
-                                <div class="mb-2 text-4xl text-gray-300"><i class="far fa-comments"></i></div>
-                                <?php _e('没有找到任何评论'); ?>
+                            <div class="px-4 py-8 text-center text-gray-500 min-h-[260px] flex flex-col items-center justify-center">
+                                <div class="mb-3 text-5xl text-gray-300"><i class="far fa-comments"></i></div>
+                                <p class="text-sm text-gray-500"><?php _e('没有找到任何评论'); ?></p>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -370,82 +374,68 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Comment Reply Modal -->
 <div id="replyModal" class="comment-modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3><?php _e('回复评论'); ?></h3>
-            <button type="button" class="modal-close" onclick="closeReplyModal()">&times;</button>
+    <div class="bg-white shadow-xl w-full max-w-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-discord-text"><?php _e('回复评论'); ?></h3>
+            <button type="button" class="text-gray-400 hover:text-discord-text text-xl leading-none" onclick="closeReplyModal()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="modal-body">
-            <div id="originalCommentArea" class="original-comment"></div>
-            <form id="replyForm" class="modal-form" method="post">
-                <div class="form-group">
-                    <label for="replyText"><?php _e('回复内容'); ?></label>
-                    <textarea id="replyText" name="text" required></textarea>
-                </div>
-            </form>
+        <div class="mb-4">
+            <div id="originalCommentArea" class="bg-gray-50 border border-gray-100 p-4"></div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closeReplyModal()"><?php _e('取消'); ?></button>
-            <button type="button" class="btn btn-primary" onclick="submitReply()"><?php _e('提交回复'); ?></button>
+        <form id="replyForm" method="post">
+            <div>
+                <label for="replyText" class="block text-sm font-medium text-discord-text mb-2"><?php _e('回复内容'); ?></label>
+                <textarea id="replyText" name="text" required class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" rows="6"></textarea>
+            </div>
+        </form>
+        <div class="flex justify-end space-x-3 mt-6">
+            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeReplyModal()"><i class="fas fa-times mr-1"></i><?php _e('取消'); ?></button>
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitReply()"><i class="fas fa-paper-plane mr-1"></i><?php _e('提交回复'); ?></button>
         </div>
     </div>
 </div>
 
 <!-- Comment Edit Modal -->
 <div id="editModal" class="comment-modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3><?php _e('编辑评论'); ?></h3>
-            <button type="button" class="modal-close" onclick="closeEditModal()">&times;</button>
+    <div class="bg-white shadow-xl w-full max-w-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-discord-text"><?php _e('编辑评论'); ?></h3>
+            <button type="button" class="text-gray-400 hover:text-discord-text text-xl leading-none" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="modal-body">
-            <form id="editForm" class="modal-form" method="post">
-                <div class="form-group">
-                    <label for="editAuthor"><?php _e('用户名'); ?></label>
-                    <input type="text" id="editAuthor" name="author" required>
-                </div>
-                <div class="form-group">
-                    <label for="editMail"><?php _e('电子邮箱'); ?></label>
-                    <input type="email" id="editMail" name="mail">
-                </div>
-                <div class="form-group">
-                    <label for="editUrl"><?php _e('个人主页'); ?></label>
-                    <input type="url" id="editUrl" name="url">
-                </div>
-                <div class="form-group">
-                    <label for="editText"><?php _e('内容'); ?></label>
-                    <textarea id="editText" name="text" required></textarea>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closeEditModal()"><?php _e('取消'); ?></button>
-            <button type="button" class="btn btn-primary" onclick="submitEdit()"><?php _e('保存'); ?></button>
+        <form id="editForm" method="post" class="space-y-4">
+            <div>
+                <label for="editAuthor" class="block text-sm font-medium text-discord-text mb-2"><?php _e('用户名'); ?></label>
+                <input type="text" id="editAuthor" name="author" required class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent">
+            </div>
+            <div>
+                <label for="editMail" class="block text-sm font-medium text-discord-text mb-2"><?php _e('电子邮箱'); ?></label>
+                <input type="email" id="editMail" name="mail" class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent">
+            </div>
+            <div>
+                <label for="editUrl" class="block text-sm font-medium text-discord-text mb-2"><?php _e('个人主页'); ?></label>
+                <input type="url" id="editUrl" name="url" class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent">
+            </div>
+            <div>
+                <label for="editText" class="block text-sm font-medium text-discord-text mb-2"><?php _e('内容'); ?></label>
+                <textarea id="editText" name="text" required class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-discord-accent" rows="7"></textarea>
+            </div>
+        </form>
+        <div class="flex justify-end space-x-3 mt-6">
+            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeEditModal()"><i class="fas fa-times mr-1"></i><?php _e('取消'); ?></button>
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitEdit()"><i class="fas fa-save mr-1"></i><?php _e('保存'); ?></button>
         </div>
     </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="comment-modal">
-    <div class="modal-content modal-content-small">
-        <div class="modal-header">
-            <h3><?php _e('确认删除'); ?></h3>
-            <button type="button" class="modal-close" onclick="closeDeleteModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="delete-warning">
-                <div class="warning-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="warning-text">
-                    <p class="warning-title" id="deleteAuthorName"><?php _e('确认删除此评论？'); ?></p>
-                    <p class="warning-message"><?php _e('此操作不可逆，删除后无法恢复评论内容。'); ?></p>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()"><?php _e('取消'); ?></button>
-            <button type="button" class="btn btn-danger" onclick="confirmDelete()"><?php _e('确认删除'); ?></button>
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
+        <p class="text-discord-muted mb-2" id="deleteAuthorName"><?php _e('确认删除此评论？'); ?></p>
+        <p class="text-discord-muted mb-6"><?php _e('此操作不可逆，删除后无法恢复评论内容。'); ?></p>
+        <div class="flex justify-end space-x-3">
+            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeDeleteModal()"><i class="fas fa-times mr-1"></i><?php _e('取消'); ?></button>
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="confirmDelete()"><i class="fas fa-trash-alt mr-1"></i><?php _e('确认删除'); ?></button>
         </div>
     </div>
 </div>
@@ -513,9 +503,12 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 .content-card {
     position: relative;
+    display: flex;
+    flex-direction: column;
     background: white;
     border: 1px solid #e5e7eb;
     padding: 1rem;
+    min-height: 340px;
     transition: all 0.2s;
 }
 
@@ -550,13 +543,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     margin-bottom: 0.25rem;
 }
 
-.card-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    margin-top: 0.25rem;
-}
-
 .card-meta {
     display: flex;
     flex-wrap: wrap;
@@ -577,7 +563,9 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 }
 
 .card-content {
+    flex: 1;
     margin-bottom: 0.75rem;
+    min-height: 100px;
     padding: 0.75rem;
     background: #f9fafb;
     font-size: 0.875rem;
@@ -590,6 +578,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+    margin-top: auto;
     font-size: 0.75rem;
     padding-top: 0.75rem;
     border-top: 1px solid #e5e7eb;
@@ -611,15 +600,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     font-size: 0.7rem;
 }
 
-.card-comment-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
 /* Modal Styles */
 .comment-modal {
     display: none;
@@ -637,54 +617,6 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 .comment-modal.active {
     display: flex;
-}
-
-.modal-content {
-    background: white;
-    width: 100%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-}
-
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-header h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    color: #6b7280;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-.modal-close:hover {
-    background: #f3f4f6;
-    color: #1f2937;
-}
-
-.modal-body {
-    padding: 1.5rem;
 }
 
 .original-comment {
@@ -722,136 +654,10 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     color: #4b5563;
 }
 
-.modal-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-group label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #d1d5db;
-    font-size: 0.875rem;
-    transition: border-color 0.2s;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #5865F2;
-    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    padding: 1rem 1.5rem;
-    border-top: 1px solid #e5e7eb;
-}
-
-.btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
-}
-
-.btn-primary {
-    background: #5865F2;
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #4752C4;
-}
-
-.btn-secondary {
-    background: #e5e7eb;
-    color: #374151;
-}
-
-.btn-secondary:hover {
-    background: #d1d5db;
-}
-
-.btn-danger {
-    background: #ef4444;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #dc2626;
-}
-
-.modal-content-small {
-    max-width: 450px;
-}
-
-.delete-warning {
-    display: flex;
-    gap: 1rem;
-    padding: 0.5rem 0;
-}
-
-.warning-icon {
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fef2f2;
-    color: #ef4444;
-    font-size: 1.5rem;
-}
-
-.warning-text {
-    flex: 1;
-}
-
-.warning-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 0.5rem 0;
-}
-
-.warning-message {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin: 0;
-    line-height: 1.5;
-}
 
 @media (max-width: 768px) {
     .card-view-container {
         grid-template-columns: 1fr;
-    }
-    
-    .modal-content {
-        max-width: 100%;
     }
 }
 </style>

@@ -46,7 +46,9 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                         </div>
                         <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pr-3 py-1.5 bg-white text-sm focus:outline-none w-48 md:w-64 border-0">
                     </div>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium flex items-center">
+                        <i class="fas fa-filter mr-1"></i><?php _e('筛选'); ?>
+                    </button>
                 </form>
             </div>
 
@@ -61,13 +63,13 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                              </label>
                              <div class="relative group">
                                 <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
-                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                    <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
                                 <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
-                                    <a lang="<?php _e('你确认要删除这些文件吗?'); ?>" href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
+                                    <a lang="<?php _e('你确认要删除这些文件吗?'); ?>" href="<?php $security->index('/action/contents-attachment-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
                                 </div>
                              </div>
-                             <button lang="<?php _e('您确认要清理未归档的文件吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 btn-operate" href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"><?php _e('清理未归档'); ?></button>
+                             <button lang="<?php _e('您确认要清理未归档的文件吗?'); ?>" class="px-3 py-1 text-xs font-medium bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 btn-operate flex items-center" href="<?php $security->index('/action/contents-attachment-edit?do=clear'); ?>"><i class="fas fa-broom mr-1"></i><?php _e('清理未归档'); ?></button>
                          </div>
                          <div class="view-toggle">
                              <button type="button" class="btn-table-view active" title="<?php _e('表格视图'); ?>">
@@ -289,6 +291,9 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 
 /* Media Card Styles */
 .media-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
     padding: 0 !important;
     overflow: hidden;
 }
@@ -341,6 +346,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 }
 
 .media-card .card-header {
+    flex: 1;
     padding: 1rem 1.25rem 0.5rem;
 }
 
@@ -357,6 +363,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 }
 
 .media-card .card-actions {
+    margin-top: auto;
     padding: 0.75rem 1.25rem 1rem;
     border-top: 1px solid #f3f4f6;
 }
