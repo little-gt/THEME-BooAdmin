@@ -45,15 +45,15 @@ include 'menu.php';
                              </label>
                              <div class="relative group">
                                 <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
-                                    <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                    <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
                                 <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white border border-gray-100 py-1 hidden z-50">
-                                    <a lang="<?php _e('此分类下的所有内容将被删除, 你确认要删除这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
-                                    <a lang="<?php _e('刷新分类可能需要等待较长时间, 你确认要刷新这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=refresh'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('刷新'); ?></a>
+                                    <a lang="<?php _e('此分类下的所有内容将被删除, 你确认要删除这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
+                                    <a lang="<?php _e('刷新分类可能需要等待较长时间, 你确认要刷新这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=refresh'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-sync-alt mr-1"></i><?php _e('刷新'); ?></a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <div class="px-4 py-2">
                                         <div class="flex items-center space-x-2">
-                                            <button type="submit" lang="<?php _e('你确认要合并这些分类吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
+                                            <button type="submit" lang="<?php _e('你确认要合并这些分类吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><i class="fas fa-compress-alt mr-1"></i><?php _e('合并到'); ?></button>
                                             <select name="merge" class="text-xs border border-gray-300 px-2 py-1 focus:outline-none focus:border-discord-accent w-24">
                                                 <?php $categories->parse('<option value="{mid}">{name}</option>'); ?>
                                             </select>
@@ -99,7 +99,7 @@ include 'menu.php';
                                             <?php if (count($categories->children) > 0): ?>
                                                 <a href="<?php $options->adminUrl('manage-categories.php?parent=' . $categories->mid); ?>" class="text-discord-accent hover:underline bg-discord-light px-2 py-0.5 text-xs font-medium"><?php echo _n('1', '%d', count($categories->children)); ?></a>
                                             <?php else: ?>
-                                                <a href="<?php $options->adminUrl('category.php?parent=' . $categories->mid); ?>" class="text-gray-400 hover:text-discord-accent text-xs"><i class="fas fa-plus"></i> <?php echo _e('新增'); ?></a>
+                                                <a href="<?php $options->adminUrl('category.php?parent=' . $categories->mid); ?>" class="text-gray-400 hover:text-discord-accent text-xs"><i class="fas fa-folder-plus mr-1"></i> <?php echo _e('新增'); ?></a>
                                             <?php endif; ?>
                                         </td>
                                         <td class="py-3 hidden md:table-cell text-sm text-gray-600 font-mono text-xs">
@@ -123,8 +123,10 @@ include 'menu.php';
                             <?php else: ?>
                                 <tr>
                                     <td colspan="6" class="px-4 py-8 text-center text-gray-500">
-                                        <div class="mb-2 text-4xl text-gray-300"><i class="far fa-folder-open"></i></div>
-                                        <?php _e('没有找到任何分类'); ?>
+                                        <div class="min-h-[260px] flex flex-col items-center justify-center">
+                                            <div class="mb-3 text-5xl text-gray-300"><i class="far fa-folder-open"></i></div>
+                                            <p class="text-sm text-gray-500"><?php _e('没有找到任何分类'); ?></p>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endif; ?>

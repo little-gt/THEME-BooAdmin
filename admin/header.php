@@ -155,6 +155,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         z-index: 100;
         transition: all 0.3s ease;
+        border-radius: 0;
     }
     
     .plugin-banner-content {
@@ -195,7 +196,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
         color: white;
         padding: 0.5rem 1rem;
         border: none;
-        border-radius: 0.375rem;
+        border-radius: 0;
         font-size: 0.875rem;
         font-weight: 500;
         cursor: pointer;
@@ -213,6 +214,7 @@ $header = '<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nor
     .plugin-banner-button.primary {
         background: white;
         color: #5865F2;
+        border-radius: 0;
     }
     
     .plugin-banner-button.primary:hover {

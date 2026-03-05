@@ -12,8 +12,9 @@ $userAvatarUrl = \Typecho\Common::gravatarUrl($user->mail, 36);
 $userName = $user->screenName;
 $userFirstChar = mb_substr($userName, 0, 1, 'UTF-8');
 ?>
+<?php if(!$isPluginPage): ?>
 <!-- Sidebar -->
-<aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300 transform md:translate-x-0 fixed md:relative z-20 h-full <?php if($isPluginPage) echo 'md:translate-x-[-100%] md:opacity-0 pointer-events-none'; ?>" id="sidebar">
+<aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300 transform md:translate-x-0 fixed md:relative z-20 h-full" id="sidebar">
     <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100 bg-white">
         <h1 class="text-xl font-bold text-discord-accent flex items-center">
              <div class="w-8 h-8 bg-discord-accent text-white flex items-center justify-center mr-2">
@@ -320,12 +321,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<?php endif; ?>
 
 <?php if($isPluginPage): ?>
 <!-- Plugin page banner -->
 <div class="plugin-banner">
     <div class="plugin-banner-content">
-        <div class="relative w-10 h-10 shrink-0"><img src="<?php echo $userAvatarUrl; ?>" alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" class="plugin-banner-avatar w-10 h-10 border border-gray-200 rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-lg border border-gray-200 absolute inset-0 hidden"><?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?></div></div>
+        <div class="relative w-10 h-10 shrink-0">
+            <img src="<?php echo $userAvatarUrl; ?>" alt="<?php echo htmlspecialchars($userName, ENT_QUOTES, 'UTF-8'); ?>" class="plugin-banner-avatar w-10 h-10 border border-gray-200 rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div class="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-lg border border-gray-200 absolute inset-0 hidden"><?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?></div>
+        </div>
         <div class="plugin-banner-text">
             <div class="plugin-banner-username"><?php $user->screenName(); ?></div>
             <div class="plugin-banner-role"><?php echo $user->group; ?></div>

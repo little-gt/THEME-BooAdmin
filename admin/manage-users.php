@@ -48,7 +48,9 @@ $users = \Widget\Users\Admin::alloc();
                         </div>
                         <input type="text" name="keywords" value="<?php echo htmlspecialchars($request->keywords ?? ''); ?>" placeholder="<?php _e('请输入关键字'); ?>" class="pr-3 py-1.5 bg-white text-sm focus:outline-none w-48 md:w-64 border-0">
                     </div>
-                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium"><?php _e('筛选'); ?></button>
+                    <button type="submit" class="px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium flex items-center">
+                        <i class="fas fa-filter mr-1"></i><?php _e('筛选'); ?>
+                    </button>
                 </form>
             </div>
 
@@ -63,10 +65,10 @@ $users = \Widget\Users\Admin::alloc();
                                  </label>
                                  <div class="relative group">
                                     <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
-                                        <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                        <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                     </button>
                                     <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
-                                        <a lang="<?php _e('你确认要删除这些用户吗?'); ?>" href="<?php $security->index('/action/users-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
+                                        <a lang="<?php _e('你确认要删除这些用户吗?'); ?>" href="<?php $security->index('/action/users-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
                                     </div>
                                  </div>
                              </div>
@@ -74,10 +76,10 @@ $users = \Widget\Users\Admin::alloc();
 
                     <div class="table-wrapper" data-table-scroll>
                     <table class="w-full text-left border-collapse typecho-list-table draggable">
-                        <thead>
+                                <thead>
                             <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
                                 <th class="w-10 pl-4 py-3"></th>
-                                <th class="w-16 py-3 text-center"><i class="fas fa-edit"></i></th>
+                                <th class="w-16 py-3 text-center"><i class="fas fa-user-circle"></i></th>
                                 <th class="py-3"><?php _e('用户名'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('昵称'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('电子邮件'); ?></th>
@@ -162,8 +164,10 @@ $users = \Widget\Users\Admin::alloc();
                             <?php else: ?>
                                 <tr>
                                     <td colspan="6" class="px-4 py-8 text-center text-gray-500">
-                                        <div class="mb-2 text-4xl text-gray-300"><i class="fas fa-users"></i></div>
-                                        <?php _e('没有找到任何用户'); ?>
+                                        <div class="min-h-[260px] flex flex-col items-center justify-center">
+                                            <div class="mb-3 text-5xl text-gray-300"><i class="far fa-users"></i></div>
+                                            <p class="text-sm text-gray-500"><?php _e('没有找到任何用户'); ?></p>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endif; ?>

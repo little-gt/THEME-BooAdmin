@@ -43,15 +43,15 @@ include 'menu.php';
                                  </label>
                                  <div class="relative group">
                                     <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
-                                        <?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
+                                        <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                     </button>
                                     <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white border border-gray-100 py-1 hidden z-50">
-                                        <a lang="<?php _e('你确认要删除这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><?php _e('删除'); ?></a>
-                                        <a lang="<?php _e('刷新标签可能需要等待较长时间, 你确认要刷新这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=refresh'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><?php _e('刷新'); ?></a>
+                                        <a lang="<?php _e('你确认要删除这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
+                                        <a lang="<?php _e('刷新标签可能需要等待较长时间, 你确认要刷新这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=refresh'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-sync-alt mr-1"></i><?php _e('刷新'); ?></a>
                                         <div class="border-t border-gray-100 my-1"></div>
                                         <div class="px-4 py-2">
                                             <div class="flex items-center space-x-2">
-                                                <button type="submit" lang="<?php _e('你确认要合并这些标签吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-tag-edit?do=merge'); ?>"><?php _e('合并到'); ?></button>
+                                                <button type="submit" lang="<?php _e('你确认要合并这些标签吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-tag-edit?do=merge'); ?>"><i class="fas fa-compress-alt mr-1"></i><?php _e('合并到'); ?></button>
                                                 <input type="text" name="merge" class="text-xs border border-gray-300 px-2 py-1 focus:outline-none focus:border-discord-accent w-24" placeholder="<?php _e('标签名'); ?>">
                                             </div>
                                         </div>
@@ -69,7 +69,7 @@ include 'menu.php';
                                             <div class="flex items-center px-3 py-1.5 bg-gray-100 border border-gray-200 hover:border-discord-accent hover:bg-blue-50 transition-all cursor-pointer peer-checked:bg-discord-accent peer-checked:text-white peer-checked:border-discord-accent select-none">
                                                 <span class="text-sm font-medium mr-1" rel="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>"><?php $tags->name(); ?></span>
                                                 <span class="text-xs opacity-60 bg-gray-200 px-1.5 text-gray-600 ml-1 group-hover:bg-white peer-checked:text-discord-accent"><?php $tags->count(); ?></span>
-                                                <a class="ml-2 text-gray-400 hover:text-discord-accent peer-checked:text-white peer-checked:hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" href="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>" title="<?php _e('编辑'); ?>"><i class="fas fa-edit"></i></a>
+                                                <a class="ml-2 text-gray-400 hover:text-discord-accent peer-checked:text-white peer-checked:hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" href="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>" title="<?php _e('编辑'); ?>"><i class="fas fa-pen mr-1"></i></a>
                                             </div>
                                             <!-- Checkbox logic via JS needs to toggle checked state on click of the div -->
                                         </li>
