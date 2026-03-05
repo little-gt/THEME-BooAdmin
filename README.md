@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.9-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.10-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -49,14 +49,11 @@
 
 ---
 
-## 🚀 v1.1.9 版本更新速递
+## 🚀 v1.1.10 版本更新速递
 
-- ⏳ **加载指示器优化**：调整加载指示器位置到页面右下角，并提升其视觉效果。
-- ⚙️ **主题编辑器优化**：支持全屏编辑，并在保存时增加二次确认。
-- 🖼️ **欢迎页面优化**：提升欢迎页面的视觉设计和用户体验。
-- 🔧 **升级页面优化**：优化升级流程和界面设计。
-- 💬 **评论弹窗优化**：统一评论管理器的弹窗设计，使其更加简洁。
-- 🎨 **管理页面优化**：优化整体代码和视觉设计，提升一致性。
+- 🎯 **管理页面 Icon 统一**：统一了所有管理页面的 icon 设计，提升视觉一致性。
+- ⚡ **样式加载性能优化**：将 header.php 中的静态样式移动到 custom.css，优化加载速度。
+- 💬 **通知系统优化**：优化通知样式设计，采用简约矩形设计，提升用户体验。
 
 ---
 

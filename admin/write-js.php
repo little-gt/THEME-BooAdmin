@@ -269,7 +269,7 @@ $(document).ready(function() {
 
         // Create overlay and iframe container
         const overlay = $('<div class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center preview-overlay"></div>');
-        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 md:rounded-lg shadow-2xl relative flex flex-col overflow-hidden"></div>');
+        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 rounded-none shadow-2xl relative flex flex-col overflow-hidden"></div>');
         
         // Header
         const header = $('<div class="h-12 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-4"></div>');

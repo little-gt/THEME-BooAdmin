@@ -46,8 +46,10 @@ if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
     }
 </script>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
     body {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-family: "Inter", "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
         line-height: 1.6;
         color: #333;
         max-width: 800px;
@@ -62,8 +64,8 @@ if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
     a { color: #5865F2; text-decoration: none; }
     a:hover { text-decoration: underline; }
     blockquote { border-left: 4px solid #5865F2; margin: 1.5em 0; padding-left: 1em; color: #555; background: #f0f2fd; padding: 10px 15px; }
-    code { background: #eee; padding: 2px 5px; font-family: monospace; font-size: 0.9em; }
-    pre { background: #2f3136; color: #eee; padding: 15px; overflow-x: auto; }
+    code { background: #eee; padding: 2px 5px; font-family: "Cascadia Code", monospace; font-size: 0.9em; }
+    pre { background: #2f3136; color: #eee; padding: 15px; overflow-x: auto; font-family: "Cascadia Code", monospace; }
     pre code { background: none; padding: 0; color: inherit; }
     .post-title { text-align: center; margin-bottom: 40px; }
     .post-meta { text-align: center; color: #888; margin-bottom: 40px; font-size: 0.9em; }

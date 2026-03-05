@@ -53,7 +53,7 @@ include 'menu.php';
 
 <style>
 /* Custom styles for permalink page specifically */
-.typecho-option span { display: inline-block; margin-right: 0.5rem; color: #6b7280; font-family: monospace; }
+.typecho-option span { display: inline-block; margin-right: 0.5rem; color: #6b7280; font-family: "Cascadia Code", monospace; }
 </style>
 
 <?php
