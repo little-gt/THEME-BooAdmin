@@ -11,8 +11,10 @@
 > 因为我现在需要准备毕业设计等内容，并且考虑到 BooAdmin 的功能已经基本上完备了，且 BUG 也修的差不多了，因此，后续可能不会很频繁的看 GitHub 以及处理维护了，请见谅。
 
 ---
+![登录页面](screenshot/screenshot0.png)
 
-参与讨论：[Typecho 官方论坛](https://forum.typecho.org/viewtopic.php?p=62522#p62522)
+参与讨论：
+[Typecho 官方论坛](https://forum.typecho.org/viewtopic.php?p=62530#p62530)
 
 配套插件：
 [找回密码插件](https://github.com/little-gt/PLUGION-Passport)
@@ -22,60 +24,71 @@
 
 ## 📸 电脑端预览
 
-### 登录页面
-![登录页面](screenshot/screenshot0.png)
+<details>
+<summary style="cursor: pointer; font-weight: bold; color: #3b82f6; margin-bottom: 10px;">点击展开/收起电脑端截图</summary>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-top: 20px;">
 
 ### 控制台仪表盘
-![控制台仪表盘](screenshot/screenshot1.png)
+<img src="screenshot/screenshot1.png" alt="控制台仪表盘" style="width: 100%; border-radius: 8px;">
 
 ### 撰写文章
-![撰写文章页面](screenshot/screenshot2_1.png)
-![撰写文章页面](screenshot/screenshot2_2.png)
+<img src="screenshot/screenshot2_1.png" alt="撰写文章页面" style="width: 100%; border-radius: 8px;">
+<img src="screenshot/screenshot2_2.png" alt="撰写文章页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理文章
-![管理文章页面](screenshot/screenshot3.png)
+<img src="screenshot/screenshot3.png" alt="管理文章页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理文件
-![管理文件页面](screenshot/screenshot4.png)
+<img src="screenshot/screenshot4.png" alt="管理文件页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理标签
-![管理标签页面](screenshot/screenshot5.png)
+<img src="screenshot/screenshot5.png" alt="管理标签页面" style="width: 100%; border-radius: 8px;">
 
 ### 主题设置
-![主题设置页面](screenshot/screenshot6.png)
+<img src="screenshot/screenshot6.png" alt="主题设置页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理评论
-![管理评论页面](screenshot/screenshot7.png)
+<img src="screenshot/screenshot7.png" alt="管理评论页面" style="width: 100%; border-radius: 8px;">
 
 ### 系统设置页面
-![系统设置页面](screenshot/screenshot8.png)
+<img src="screenshot/screenshot8.png" alt="系统设置页面" style="width: 100%; border-radius: 8px;">
+
+</div>
+</details>
 
 ---
 
 ## 📱 移动端预览
 
+<details>
+<summary style="cursor: pointer; font-weight: bold; color: #3b82f6; margin-bottom: 10px;">点击展开/收起移动端截图</summary>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+
 ### 移动端截图预览
 
 #### 控制台
-![移动端控制台](screenshot/mobile/screenshot1.png)
+<img src="screenshot/mobile/screenshot1.png" alt="移动端控制台" style="width: 100%; border-radius: 8px;">
 
 #### 撰写文章
-![移动端撰写文章](screenshot/mobile/screenshot2.png)
+<img src="screenshot/mobile/screenshot2.png" alt="移动端撰写文章" style="width: 100%; border-radius: 8px;">
 
 #### 管理文章
-![移动端管理文章](screenshot/mobile/screenshot3.png)
+<img src="screenshot/mobile/screenshot3.png" alt="移动端管理文章" style="width: 100%; border-radius: 8px;">
 
 #### 管理独立页面
-![移动端管理独立页面](screenshot/mobile/screenshot4.png)
+<img src="screenshot/mobile/screenshot4.png" alt="移动端管理独立页面" style="width: 100%; border-radius: 8px;">
 
 #### 管理评论
-![移动端管理评论](screenshot/mobile/screenshot5.png)
+<img src="screenshot/mobile/screenshot5.png" alt="移动端管理评论" style="width: 100%; border-radius: 8px;">
 
 #### 主题设置
-![移动端主题设置](screenshot/mobile/screenshot6.png)
+<img src="screenshot/mobile/screenshot6.png" alt="移动端主题设置" style="width: 100%; border-radius: 8px;">
 
 #### 管理文件
-![移动端管理文件](screenshot/mobile/screenshot7.png)
+<img src="screenshot/mobile/screenshot7.png" alt="移动端管理文件" style="width: 100%; border-radius: 8px;">
+
+</div>
+</details>
 
 ---
 
