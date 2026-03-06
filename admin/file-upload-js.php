@@ -84,7 +84,7 @@ $(document).ready(function() {
     });
 
     function fileUploadStart (file) {
-        $('<li id="' + file.id + '" class="loading group flex items-center justify-between p-2 bg-white border border-gray-200">' +
+        $('<li id="' + file.id + '" class="loading group flex items-center justify-between p-2 bg-white border border-gray-200 hover:border-discord-accent transition-colors">' +
             '<span class="text-sm text-gray-500 flex items-center"><i class="fas fa-spinner fa-spin mr-2 text-discord-accent"></i> ' + file.name + '</span></li>').appendTo('#file-list');
     }
 
@@ -208,9 +208,73 @@ $(document).ready(function() {
     function attachInsertEvent (el) {
         $('.insert', el).click(function () {
             var t = $(this), p = t.parents('li');
-            Typecho.insertFileToEditor(t.text(), p.data('url'), p.data('image'));
+            var isImage = p.data('image');
+            var url = p.data('url');
+            var title = t.text();
+            
+            if (isImage) {
+                // 显示图片预览
+                showImagePreview(url, title, function() {
+                    Typecho.insertFileToEditor(title, url, isImage);
+                });
+            } else {
+                Typecho.insertFileToEditor(title, url, isImage);
+            }
             return false;
         });
+    }
+
+    // 显示图片预览模态框
+    function showImagePreview(url, title, callback) {
+        // 检查是否已存在预览模态框
+        var previewModal = $('#image-preview-modal');
+        if (previewModal.length === 0) {
+            // 创建预览模态框
+            previewModal = $('<div id="image-preview-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"></div>')
+                .appendTo('body')
+                .click(function(e) {
+                    if ($(e.target).is('#image-preview-modal')) {
+                        previewModal.remove();
+                    }
+                });
+            
+            var modalContent = $('<div class="bg-white max-w-4xl w-full max-h-[90vh] flex flex-col"></div>')
+                .appendTo(previewModal);
+            
+            // 模态框内容
+            var modalBody = $('<div class="flex-1 flex items-center justify-center p-4 overflow-auto"></div>')
+                .appendTo(modalContent);
+            
+            $('<img src="' + url + '" class="max-w-full max-h-[70vh] object-contain" alt="' + title + '">')
+                .appendTo(modalBody);
+            
+            // 模态框底部
+            var modalFooter = $('<div class="p-4 flex justify-between items-center"></div>')
+                .appendTo(modalContent);
+            
+            // 原始图片URL显示框
+            var urlContainer = $('<div class="flex-1 mr-4"></div>')
+                .appendTo(modalFooter);
+            
+            $('<input type="text" value="' + url + '" class="w-full px-3 py-2 bg-gray-100 border border-gray-300 text-sm text-gray-800 focus:outline-none" readonly>')
+                .appendTo(urlContainer);
+            
+            var buttonContainer = $('<div class="flex space-x-2"></div>')
+                .appendTo(modalFooter);
+            
+            $('<button class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none">取消</button>')
+                .click(function() {
+                    previewModal.remove();
+                })
+                .appendTo(buttonContainer);
+            
+            $('<button class="px-4 py-2 bg-discord-accent text-white hover:bg-blue-600 focus:outline-none">插入图片</button>')
+                .click(function() {
+                    previewModal.remove();
+                    callback();
+                })
+                .appendTo(buttonContainer);
+        }
     }
 
     function attachDeleteEvent (el) {

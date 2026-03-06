@@ -1158,8 +1158,7 @@ body:has(.menu-bar[open]) {
 	text-overflow:ellipsis
 }
 #file-list li {
-	padding:8px 0;
-	border-top:1px dashed #D9D9D6
+	padding:8px 0
 }
 #file-list .insert {
 	display:block;

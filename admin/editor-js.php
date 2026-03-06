@@ -213,15 +213,44 @@ $(document).ready(function () {
             Typecho.insertFileToEditor(attachment.title, attachment.url, attachment.isImage);
         };
 
+        function adjustToolbarHeight() {
+            const buttonRow = $('#wmd-button-row');
+            if (buttonRow.length > 0) {
+                // 总是设置为自动高度，确保按钮换行时能正确显示
+                buttonRow.css('height', 'auto');
+                buttonRow.css('flex-wrap', 'wrap');
+                buttonRow.css('align-items', 'center');
+                
+                // 同时调整整个工具栏容器的高度
+                const buttonBar = $('#wmd-button-bar');
+                if (buttonBar.length > 0) {
+                    buttonBar.css('height', 'auto');
+                    buttonBar.css('flex-wrap', 'wrap');
+                    buttonBar.css('align-items', 'center');
+                }
+                
+                // 移除编辑/预览标签的内联样式，保持默认设计
+                const editTab = $('.wmd-edittab');
+                if (editTab.length > 0) {
+                    editTab.css('margin-top', '');
+                    editTab.css('width', '');
+                    editTab.css('text-align', '');
+                }
+            }
+        }
+
+        adjustToolbarHeight();
+        $(window).on('resize', adjustToolbarHeight);
+
         // 编辑预览切换
-        const edittab = $('.editor').append('<div class="wmd-edittab"><a href="#wmd-editarea" class="active"><?php _e('撰写'); ?></a><a href="#wmd-preview"><?php _e('预览'); ?></a></div>'),
+        const edittab = $('#wmd-button-bar').append('<div class="wmd-edittab"><a href="#wmd-editarea" class="active"><?php _e('撰写'); ?></a><a href="#wmd-preview"><?php _e('预览'); ?></a></div>'),
             editarea = $(textarea.parent()).attr("id", "wmd-editarea");
 
         $(".wmd-edittab a").click(function() {
             $(".wmd-edittab a").removeClass('active');
             $(this).addClass("active");
             $("#wmd-editarea, #wmd-preview").addClass("wmd-hidetab");
-        
+            
             const selected_tab = $(this).attr("href"),
                 selected_el = $(selected_tab).removeClass("wmd-hidetab");
 
@@ -231,6 +260,9 @@ $(document).ready(function () {
             } else {
                 $("#wmd-button-row").removeClass("wmd-visualhide");
             }
+
+            // 重新调整工具栏高度和布局
+            adjustToolbarHeight();
 
             // 预览和编辑窗口高度一致
             $("#wmd-preview").outerHeight($("#wmd-editarea").innerHeight());
