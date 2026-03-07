@@ -28,7 +28,7 @@
 <summary style="cursor: pointer; font-weight: bold; color: #3b82f6; margin-bottom: 10px;">点击展开/收起电脑端截图</summary>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-top: 20px;">
 
-### 控制台仪表盘
+### 控制台
 <img src="screenshot/screenshot1.png" alt="控制台仪表盘" style="width: 100%; border-radius: 8px;">
 
 ### 撰写文章
@@ -50,7 +50,7 @@
 ### 管理评论
 <img src="screenshot/screenshot7.png" alt="管理评论页面" style="width: 100%; border-radius: 8px;">
 
-### 系统设置页面
+### 系统设置
 <img src="screenshot/screenshot8.png" alt="系统设置页面" style="width: 100%; border-radius: 8px;">
 
 </div>
@@ -64,27 +64,25 @@
 <summary style="cursor: pointer; font-weight: bold; color: #3b82f6; margin-bottom: 10px;">点击展开/收起移动端截图</summary>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
 
-### 移动端截图预览
-
-#### 控制台
+### 控制台
 <img src="screenshot/mobile/screenshot1.png" alt="移动端控制台" style="width: 100%; border-radius: 8px;">
 
-#### 撰写文章
+### 撰写文章
 <img src="screenshot/mobile/screenshot2.png" alt="移动端撰写文章" style="width: 100%; border-radius: 8px;">
 
-#### 管理文章
+### 管理文章
 <img src="screenshot/mobile/screenshot3.png" alt="移动端管理文章" style="width: 100%; border-radius: 8px;">
 
-#### 管理独立页面
+### 管理独立页面
 <img src="screenshot/mobile/screenshot4.png" alt="移动端管理独立页面" style="width: 100%; border-radius: 8px;">
 
-#### 管理评论
+### 管理评论
 <img src="screenshot/mobile/screenshot5.png" alt="移动端管理评论" style="width: 100%; border-radius: 8px;">
 
-#### 主题设置
+### 管理文件
 <img src="screenshot/mobile/screenshot6.png" alt="移动端主题设置" style="width: 100%; border-radius: 8px;">
 
-#### 管理文件
+### 插件设置
 <img src="screenshot/mobile/screenshot7.png" alt="移动端管理文件" style="width: 100%; border-radius: 8px;">
 
 </div>
