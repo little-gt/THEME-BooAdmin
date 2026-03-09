@@ -1,23 +1,57 @@
 <?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
+<!-- Field Delete Confirm Modal -->
+<div id="field-delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
+        <p class="text-discord-muted mb-6"><?php _e('确认要删除此字段吗?'); ?></p>
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-field-delete" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                <?php _e('取消'); ?>
+            </button>
+            <button id="confirm-field-delete" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                <?php _e('确认删除'); ?>
+            </button>
+        </div>
+    </div>
+</div>
 <script>
 $(document).ready(function () {
     // 自定义字段
+    var fieldToDelete = null;
+
     function attachDeleteEvent (el) {
         $('.btn-delete', el).click(function () {
-            if (confirm('<?php _e('确认要删除此字段吗?'); ?>')) {
-                // Find parent .field and remove it
-                $(this).closest('.field').fadeOut(function () {
-                    $(this).remove();
-                });
-                
-                // Trigger change event if needed
-                // $(this).closest('form').trigger('change');
-            }
+            fieldToDelete = $(this).closest('.field');
+            $('#field-delete-confirm-modal').removeClass('hidden');
         });
     }
 
     $('#custom-field .fields .field').each(function () {
         attachDeleteEvent(this);
+    });
+
+    // Field delete modal handlers
+    $('#cancel-field-delete').click(function () {
+        $('#field-delete-confirm-modal').addClass('hidden');
+        fieldToDelete = null;
+    });
+
+    $('#confirm-field-delete').click(function () {
+        if (fieldToDelete) {
+            fieldToDelete.fadeOut(function () {
+                $(this).remove();
+            });
+        }
+        $('#field-delete-confirm-modal').addClass('hidden');
+        fieldToDelete = null;
+    });
+
+    // Close modal when clicking outside
+    $('#field-delete-confirm-modal').click(function (e) {
+        if (e.target === this) {
+            $('#field-delete-confirm-modal').addClass('hidden');
+            fieldToDelete = null;
+        }
     });
 
     $('#custom-field button.operate-add').click(function () {

@@ -440,6 +440,17 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     </div>
 </div>
 
+<!-- Message Modal -->
+<div id="messageModal" class="comment-modal">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4" id="messageModalTitle"><?php _e('提示'); ?></h3>
+        <p class="text-discord-muted mb-6" id="messageModalContent"></p>
+        <div class="flex justify-end">
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="closeMessageModal()"><i class="fas fa-check mr-1"></i><?php _e('确定'); ?></button>
+        </div>
+    </div>
+</div>
+
 <style>
 .typecho-pager li a, .typecho-pager li span {
     display: inline-flex;
@@ -675,6 +686,15 @@ var currentDeleteUrl = '';
 var currentDeleteTarget = null;
 
 // Modal control functions
+function showMessageModal(title, content) {
+    $('#messageModalTitle').text(title);
+    $('#messageModalContent').text(content);
+    $('#messageModal').addClass('active');
+}
+
+function closeMessageModal() {
+    $('#messageModal').removeClass('active');
+}
 function openReplyModal(commentData, actionUrl) {
     currentReplyUrl = actionUrl;
     
@@ -743,18 +763,20 @@ function closeReplyModal() {
 function submitReply() {
     var text = $('#replyText').val().trim();
     if (!text) {
-        alert('<?php _e('请输入回复内容'); ?>');
+        showMessageModal('<?php _e('提示'); ?>', '<?php _e('请输入回复内容'); ?>');
         return;
     }
     
     $.post(currentReplyUrl, {text: text}, function(o) {
         if (o && o.comment) {
             closeReplyModal();
-            alert('<?php _e('回复成功'); ?>');
-            window.location.reload();
+            showMessageModal('<?php _e('成功'); ?>', '<?php _e('回复成功'); ?>');
+            setTimeout(function() {
+                window.location.reload();
+            }, 1000);
         }
     }, 'json').fail(function() {
-        alert('<?php _e('回复失败，请重试'); ?>');
+        showMessageModal('<?php _e('错误'); ?>', '<?php _e('回复失败，请重试'); ?>');
     });
 }
 
@@ -836,7 +858,7 @@ function submitEdit() {
     };
     
     if (!formData.author || !formData.text) {
-        alert('<?php _e('用户名和内容不能为空'); ?>');
+        showMessageModal('<?php _e('提示'); ?>', '<?php _e('用户名和内容不能为空'); ?>');
         return;
     }
     
@@ -910,7 +932,7 @@ function submitEdit() {
             closeEditModal();
         }
     }, 'json').fail(function() {
-        alert('<?php _e('保存失败，请重试'); ?>');
+        showMessageModal('<?php _e('错误'); ?>', '<?php _e('保存失败，请重试'); ?>');
     });
 }
 
@@ -1049,6 +1071,8 @@ $(document).ready(function () {
                 closeEditModal();
             } else if ($(this).attr('id') === 'deleteModal') {
                 closeDeleteModal();
+            } else if ($(this).attr('id') === 'messageModal') {
+                closeMessageModal();
             }
         }
     });
@@ -1071,6 +1095,9 @@ $(document).ready(function () {
             }
             if ($('#deleteModal').hasClass('active')) {
                 closeDeleteModal();
+            }
+            if ($('#messageModal').hasClass('active')) {
+                closeMessageModal();
             }
         }
     });

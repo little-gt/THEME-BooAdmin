@@ -80,7 +80,7 @@ while ($parents->next()) {
                         ?>
                         <p class="text-sm text-discord-muted flex items-center mb-4 font-mono">
                              <i class="fas fa-link mr-2 text-gray-400"></i>
-                             <span class="mr-1"><?php echo $scheme . ':'; ?></span>
+                             <span class="mr-1"><?php echo $scheme . '://'; ?></span>
                              <span class="truncate"><?php echo preg_replace_callback("/\{(slug|directory)\}/i", function ($matches) use ($input) {
                                 if ($matches[1] == 'slug') {
                                     return $input;

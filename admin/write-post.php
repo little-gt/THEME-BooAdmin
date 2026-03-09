@@ -69,7 +69,7 @@ $post = \Widget\Contents\Post\Edit::alloc()->prepare();
                         ?>
                         <p class="text-sm text-discord-muted flex items-center mb-4 font-mono">
                              <i class="fas fa-link mr-2 text-gray-400"></i>
-                             <span class="mr-1"><?php echo $scheme . ':'; ?></span>
+                             <span class="mr-1"><?php echo $scheme . '://'; ?></span>
                              <span class="truncate"><?php echo preg_replace("/\{slug\}/i", $input, $permalink); ?></span>
                         </p>
 

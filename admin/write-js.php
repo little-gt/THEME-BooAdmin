@@ -309,17 +309,40 @@ $(document).ready(function() {
         }
     });
 
+    // Preview save confirmation modal
+    var previewSaveCallback = null;
     btnPreview.click(function () {
         if (changed) {
-            if (confirm('<?php _e('修改后的内容需要保存后才能预览, 是否保存?'); ?>')) {
+            $('#preview-save-confirm-modal').removeClass('hidden');
+            previewSaveCallback = function () {
                 Typecho.savePost(function () {
                     previewData(draftId);
                 });
-            }
+            };
         } else if (!!draftId) {
             previewData(draftId);
         } else if (!!cid) {
             previewData(cid);
+        }
+    });
+
+    $('#cancel-preview-save').click(function () {
+        $('#preview-save-confirm-modal').addClass('hidden');
+        previewSaveCallback = null;
+    });
+
+    $('#confirm-preview-save').click(function () {
+        if (previewSaveCallback) {
+            previewSaveCallback();
+        }
+        $('#preview-save-confirm-modal').addClass('hidden');
+    });
+
+    // Close modal when clicking outside
+    $('#preview-save-confirm-modal').click(function (e) {
+        if (e.target === this) {
+            $('#preview-save-confirm-modal').addClass('hidden');
+            previewSaveCallback = null;
         }
     });
 
@@ -370,14 +393,63 @@ $(document).ready(function() {
         }
     });
     
-    // 草稿删除确认
+    // Draft delete confirmation modal
+    var draftDeleteHref = null;
     $('.edit-draft-notice a').click(function () {
-        if (confirm('<?php _e('您确认要删除这份草稿吗?'); ?>')) {
-            window.location.href = $(this).attr('href');
-        }
-
+        draftDeleteHref = $(this).attr('href');
+        $('#draft-delete-confirm-modal').removeClass('hidden');
         return false;
+    });
+
+    $('#cancel-draft-delete').click(function () {
+        $('#draft-delete-confirm-modal').addClass('hidden');
+        draftDeleteHref = null;
+    });
+
+    $('#confirm-draft-delete').click(function () {
+        if (draftDeleteHref) {
+            window.location.href = draftDeleteHref;
+        }
+        $('#draft-delete-confirm-modal').addClass('hidden');
+    });
+
+    // Close modal when clicking outside
+    $('#draft-delete-confirm-modal').click(function (e) {
+        if (e.target === this) {
+            $('#draft-delete-confirm-modal').addClass('hidden');
+            draftDeleteHref = null;
+        }
     });
 });
 </script>
+<!-- Preview Save Confirm Modal -->
+<div id="preview-save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认保存'); ?></h3>
+        <p class="text-discord-muted mb-6"><?php _e('修改后的内容需要保存后才能预览, 是否保存?'); ?></p>
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-preview-save" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                <?php _e('取消'); ?>
+            </button>
+            <button id="confirm-preview-save" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                <?php _e('确认保存'); ?>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Draft Delete Confirm Modal -->
+<div id="draft-delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
+        <p class="text-discord-muted mb-6"><?php _e('您确认要删除这份草稿吗?'); ?></p>
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-draft-delete" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                <?php _e('取消'); ?>
+            </button>
+            <button id="confirm-draft-delete" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                <?php _e('确认删除'); ?>
+            </button>
+        </div>
+    </div>
+</div>
 

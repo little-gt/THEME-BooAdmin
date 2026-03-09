@@ -277,21 +277,20 @@ $(document).ready(function() {
         }
     }
 
+    // File delete confirmation modal
+    var fileDeleteData = null;
+    var fileDeleteEl = null;
+
     function attachDeleteEvent (el) {
         var file = $('a.insert', el).text();
         $('.delete', el).click(function () {
-            if (confirm('<?php _e('确认要删除文件 %s 吗?'); ?>'.replace('%s', file))) {
-                var cid = $(this).parents('li').data('cid');
-                $.post('<?php $security->index('/action/contents-attachment-edit'); ?>',
-                    {'do' : 'delete', 'cid' : cid},
-                    function () {
-                        $(el).fadeOut(function () {
-                            $(this).remove();
-                            updateAttachmentNumber();
-                        });
-                    });
-            }
-
+            fileDeleteEl = el;
+            fileDeleteData = {
+                cid: $(this).parents('li').data('cid'),
+                file: file
+            };
+            $('#file-delete-confirm-message').text('<?php _e('确认要删除文件 %s 吗?'); ?>'.replace('%s', file));
+            $('#file-delete-confirm-modal').removeClass('hidden');
             return false;
         });
     }
@@ -300,6 +299,53 @@ $(document).ready(function() {
         attachInsertEvent(this);
         attachDeleteEvent(this);
     });
+
+    // File delete modal handlers
+    $('#cancel-file-delete').click(function () {
+        $('#file-delete-confirm-modal').addClass('hidden');
+        fileDeleteData = null;
+        fileDeleteEl = null;
+    });
+
+    $('#confirm-file-delete').click(function () {
+        if (fileDeleteData && fileDeleteEl) {
+            $.post('<?php $security->index('/action/contents-attachment-edit'); ?>',
+                {'do' : 'delete', 'cid' : fileDeleteData.cid},
+                function () {
+                    $(fileDeleteEl).fadeOut(function () {
+                        $(this).remove();
+                        updateAttachmentNumber();
+                    });
+                });
+        }
+        $('#file-delete-confirm-modal').addClass('hidden');
+        fileDeleteData = null;
+        fileDeleteEl = null;
+    });
+
+    // Close modal when clicking outside
+    $('#file-delete-confirm-modal').click(function (e) {
+        if (e.target === this) {
+            $('#file-delete-confirm-modal').addClass('hidden');
+            fileDeleteData = null;
+            fileDeleteEl = null;
+        }
+    });
 });
 </script>
+<!-- File Delete Confirm Modal -->
+<div id="file-delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
+        <p id="file-delete-confirm-message" class="text-discord-muted mb-6"></p>
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-file-delete" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                <?php _e('取消'); ?>
+            </button>
+            <button id="confirm-file-delete" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                <?php _e('确认删除'); ?>
+            </button>
+        </div>
+    </div>
+</div>
 

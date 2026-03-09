@@ -69,7 +69,7 @@ include 'menu.php';
                             <label class="block text-sm font-medium text-gray-700 mb-1"><?php _e('文件链接'); ?></label>
                             <div class="flex">
                                 <input id="attachment-url" type="text" class="flex-1 px-3 py-2 border border-gray-300 bg-gray-50 text-sm text-gray-600 focus:outline-none focus:border-discord-accent" value="<?php $attachment->attachment->url(); ?>" readonly/>
-                                <button type="button" class="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium" onclick="document.getElementById('attachment-url').select();document.execCommand('copy');alert('<?php _e('已复制到剪贴板'); ?>');"><?php _e('复制'); ?></button>
+                                <button type="button" class="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 text-gray-600 hover:bg-gray-200 transition-colors text-sm font-medium" onclick="document.getElementById('attachment-url').select();document.execCommand('copy');document.getElementById('copy-success-modal').classList.remove('hidden'); setTimeout(function(){ document.getElementById('copy-success-modal').classList.add('hidden'); }, 2000);"><?php _e('复制'); ?></button>
                             </div>
                         </div>
                     </div>
@@ -112,20 +112,67 @@ include 'menu.php';
 include 'common-js.php';
 include 'file-upload-js.php';
 ?>
+<!-- Delete Confirm Modal -->
+<div id="delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
+        <p id="delete-confirm-message" class="text-discord-muted mb-6"></p>
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-delete" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                <?php _e('取消'); ?>
+            </button>
+            <button id="confirm-delete" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                <?php _e('确认删除'); ?>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Copy Success Modal -->
+<div id="copy-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('复制成功'); ?></h3>
+        <p class="text-discord-muted mb-6"><?php _e('已复制到剪贴板'); ?></p>
+        <div class="flex justify-end">
+            <button class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm" onclick="document.getElementById('copy-success-modal').classList.add('hidden');">
+                <?php _e('确定'); ?>
+            </button>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#attachment-url').click(function () {
             $(this).select();
         });
 
+        // Delete confirmation modal
+        var deleteHref = null;
         $('.operate-delete').click(function () {
-            var t = $(this), href = t.attr('href');
-
-            if (confirm(t.attr('lang'))) {
-                window.location.href = href;
-            }
-
+            var t = $(this);
+            deleteHref = t.attr('href');
+            $('#delete-confirm-message').text(t.attr('lang'));
+            $('#delete-confirm-modal').removeClass('hidden');
             return false;
+        });
+
+        $('#cancel-delete').click(function () {
+            $('#delete-confirm-modal').addClass('hidden');
+            deleteHref = null;
+        });
+
+        $('#confirm-delete').click(function () {
+            if (deleteHref) {
+                window.location.href = deleteHref;
+            }
+            $('#delete-confirm-modal').addClass('hidden');
+        });
+
+        // Close modal when clicking outside
+        $('#delete-confirm-modal').click(function (e) {
+            if (e.target === this) {
+                $('#delete-confirm-modal').addClass('hidden');
+                deleteHref = null;
+            }
         });
 
         Typecho.uploadComplete = function (attachment) {

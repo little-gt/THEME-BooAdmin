@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.11-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.12-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -90,22 +90,16 @@
 
 ---
 
-## 🚀 v1.1.11 版本更新速递
+## 🚀 v1.1.12 版本更新速递
 
-- 📱 **移动端编辑器全面优化**：
-  - 修复 Markdown 编辑器工具栏在移动端的显示问题，支持按钮自动换行
-  - 优化编辑器预览切换时的布局稳定性
-  - 统一工具栏设计，确保撰写/预览模式切换时视觉一致
-- 🖼️ **图片附件预览功能**：
-  - 新增图片附件点击预览功能，支持在插入前预览图片
-  - 预览窗口显示原始图片 URL，方便用户复制使用
-  - 优化预览窗口设计，采用简洁的无圆角风格
-- 🔧 **附件列表样式统一**：
-  - 修复附件上传过程中列表项边框样式不一致的问题
-  - 统一所有附件列表项的悬停效果
-- 🎨 **UI 细节优化**：
-  - 优化编辑器工具栏 HTML 结构，提升可维护性
-  - 修复附件列表顶部边框线显示异常
+### 特性优化
+
+- 🎨 **UI 体验提升**：将所有原始浏览器的 `confirm()` 和 `alert()` 弹窗替换为页面内部的 Modal 弹窗，保持设计一致性，提升用户体验。
+- 🔧 **链接预览修复**：修复了撰写文章页面的链接预览功能，解决了 http 与 https 协议缺少 `://` 的问题。
+
+### 特别鸣谢
+
+感谢 **莫失·莫忘** 对 BooAdmin 的赞赏和支持！
 
 ---
 

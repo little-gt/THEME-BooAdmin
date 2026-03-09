@@ -373,6 +373,21 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 include 'common-js.php';
 include 'table-js.php';
 ?>
+<!-- Operate Confirm Modal -->
+<div id="operate-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认操作'); ?></h3>
+        <p id="operate-confirm-message" class="text-discord-muted mb-6"></p>
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-operate" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                <?php _e('取消'); ?>
+            </button>
+            <button id="confirm-operate" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                <?php _e('确认'); ?>
+            </button>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 $(document).ready(function () {
     $('.typecho-list-table').tableSelectable({
@@ -387,12 +402,34 @@ $(document).ready(function () {
         menuEl      :   '.dropdown-menu'
     });
 
+    // Operate confirmation modal
+    var operateHref = null;
     $('.btn-operate').click(function () {
-        var t = $(this), href = t.attr('href');
-        if (confirm(t.attr('lang'))) {
-            window.location.href = href;
-        }
+        var t = $(this);
+        operateHref = t.attr('href');
+        $('#operate-confirm-message').text(t.attr('lang'));
+        $('#operate-confirm-modal').removeClass('hidden');
         return false;
+    });
+
+    $('#cancel-operate').click(function () {
+        $('#operate-confirm-modal').addClass('hidden');
+        operateHref = null;
+    });
+
+    $('#confirm-operate').click(function () {
+        if (operateHref) {
+            window.location.href = operateHref;
+        }
+        $('#operate-confirm-modal').addClass('hidden');
+    });
+
+    // Close modal when clicking outside
+    $('#operate-confirm-modal').click(function (e) {
+        if (e.target === this) {
+            $('#operate-confirm-modal').addClass('hidden');
+            operateHref = null;
+        }
     });
 });
 </script>
