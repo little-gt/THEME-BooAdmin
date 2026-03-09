@@ -445,8 +445,11 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     <div class="bg-white shadow-xl max-w-md w-full p-6">
         <h3 class="text-lg font-bold text-discord-text mb-4" id="messageModalTitle"><?php _e('提示'); ?></h3>
         <p class="text-discord-muted mb-6" id="messageModalContent"></p>
-        <div class="flex justify-end">
-            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="closeMessageModal()"><i class="fas fa-check mr-1"></i><?php _e('确定'); ?></button>
+        <div class="flex justify-end space-x-3">
+            <button type="button" id="messageModalCancel" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm hidden">
+                <?php _e('取消'); ?>
+            </button>
+            <button type="button" id="messageModalConfirm" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center"><i class="fas fa-check mr-1"></i><?php _e('确定'); ?></button>
         </div>
     </div>
 </div>
@@ -686,14 +689,24 @@ var currentDeleteUrl = '';
 var currentDeleteTarget = null;
 
 // Modal control functions
-function showMessageModal(title, content) {
+function showMessageModal(title, content, isConfirm) {
     $('#messageModalTitle').text(title);
     $('#messageModalContent').text(content);
+    $('#messageModal').data('is-confirm', isConfirm || false);
+    
+    if (isConfirm) {
+        $('#messageModalCancel').removeClass('hidden');
+    } else {
+        $('#messageModalCancel').addClass('hidden');
+    }
+    
     $('#messageModal').addClass('active');
 }
 
 function closeMessageModal() {
     $('#messageModal').removeClass('active');
+    $('#messageModal').removeData('confirm-url');
+    $('#messageModal').removeData('is-confirm');
 }
 function openReplyModal(commentData, actionUrl) {
     currentReplyUrl = actionUrl;
@@ -944,6 +957,20 @@ $(document).ready(function () {
         });
     }
 
+    // 处理 btn-operate 按钮（删除所有垃圾评论）
+    $('.btn-operate').click(function() {
+        var t = $(this);
+        var href = t.attr('href');
+        var lang = t.attr('lang');
+        
+        if (lang) {
+            showMessageModal('<?php _e('确认操作'); ?>', lang);
+            $('#messageModal').data('confirm-url', href);
+            $('#messageModal').data('is-confirm', true);
+        }
+        return false;
+    });
+
     // 自动滚动
     (function () {
         var scroll = $.cookie('__typecho_comments_scroll');
@@ -1075,6 +1102,25 @@ $(document).ready(function () {
                 closeMessageModal();
             }
         }
+    });
+    
+    // Message modal confirm button click
+    $('#messageModalConfirm').click(function() {
+        var $modal = $('#messageModal');
+        var isConfirm = $modal.data('is-confirm');
+        var confirmUrl = $modal.data('confirm-url');
+        
+        if (isConfirm && confirmUrl) {
+            rememberScroll();
+            window.location.href = confirmUrl;
+        } else {
+            closeMessageModal();
+        }
+    });
+    
+    // Message modal cancel button click
+    $('#messageModalCancel').click(function() {
+        closeMessageModal();
     });
     
     // Enter key in reply textarea submits

@@ -394,7 +394,7 @@ $(document).ready(function () {
         checkEl     :   'input[type=checkbox]',
         rowEl       :   'tr',
         selectAllEl :   '.typecho-table-select-all',
-        actionEl    :   '.dropdown-menu a,button.btn-operate'
+        actionEl    :   '.dropdown-menu a'
     });
 
     $('.btn-dropdown-toggle').dropdownMenu({
