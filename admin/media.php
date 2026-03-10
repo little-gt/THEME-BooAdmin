@@ -94,7 +94,7 @@ include 'menu.php';
                     <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e('编辑信息'); ?></h3>
                     <?php $attachment->form()->render(); ?>
                     
-                    <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+                    <div class="mt-6 pt-4 border-t border-gray-100 text-center hidden">
                         <button class="text-red-500 hover:text-red-700 text-sm operate-delete" lang="<?php _e('你确认要删除文件 %s 吗?', $attachment->attachment->name); ?>" href="<?php $security->index('/action/contents-attachment-edit?do=delete&cid=' . $attachment->cid); ?>">
                             <i class="fas fa-trash-alt mr-1"></i> <?php _e('删除此文件'); ?>
                         </button>

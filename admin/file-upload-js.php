@@ -309,18 +309,53 @@ $(document).ready(function() {
 
     $('#confirm-file-delete').click(function () {
         if (fileDeleteData && fileDeleteEl) {
+            var $modal = $('#file-delete-confirm-modal');
+            var $confirmBtn = $('#confirm-file-delete');
+            
+            // 禁用按钮防止重复点击
+            $confirmBtn.prop('disabled', true).addClass('opacity-50');
+            
             $.post('<?php $security->index('/action/contents-attachment-edit'); ?>',
                 {'do' : 'delete', 'cid' : fileDeleteData.cid},
-                function () {
-                    $(fileDeleteEl).fadeOut(function () {
-                        $(this).remove();
-                        updateAttachmentNumber();
-                    });
-                });
+                function (response) {
+                    if (response && response.success !== false) {
+                        // 显示成功通知
+                        if (window.TypechoNotification) {
+                            TypechoNotification.success('<?php _e('文件已删除'); ?>');
+                        }
+                        
+                        // 移除文件项
+                        $(fileDeleteEl).fadeOut(function () {
+                            $(this).remove();
+                            updateAttachmentNumber();
+                        });
+                        
+                        // 恢复按钮状态
+                        $confirmBtn.prop('disabled', false).removeClass('opacity-50');
+                        
+                        // 关闭模态框并重置状态
+                        $modal.addClass('hidden');
+                        fileDeleteData = null;
+                        fileDeleteEl = null;
+                    } else {
+                        // 显示错误通知
+                        if (window.TypechoNotification) {
+                            TypechoNotification.error(response.message || '<?php _e('删除失败，请重试'); ?>');
+                        }
+                        $confirmBtn.prop('disabled', false).removeClass('opacity-50');
+                    }
+                },
+                'json'
+            ).fail(function() {
+                // 网络错误
+                if (window.TypechoNotification) {
+                    TypechoNotification.error('<?php _e('网络错误，删除失败'); ?>');
+                }
+                $confirmBtn.prop('disabled', false).removeClass('opacity-50');
+            });
+        } else {
+            $('#file-delete-confirm-modal').addClass('hidden');
         }
-        $('#file-delete-confirm-modal').addClass('hidden');
-        fileDeleteData = null;
-        fileDeleteEl = null;
     });
 
     // Close modal when clicking outside
