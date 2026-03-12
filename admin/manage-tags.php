@@ -126,19 +126,12 @@ include 'form-js.php';
 <script type="text/javascript">
 (function () {
     $(document).ready(function () {
-        // Tag selection logic
-        $('.tag-list li div').click(function(e) {
-            // If clicking edit link, don't toggle checkbox
-            if ($(e.target).closest('a').length) return;
-            
-            var checkbox = $(this).siblings('input[type="checkbox"]');
-            checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
-        });
-
-        // Select All logic customization for this specific layout
-        $('.typecho-table-select-all').change(function() {
-            var checked = $(this).prop('checked');
-            $('.tag-list input[type="checkbox"]').prop('checked', checked);
+        // Reuse Typecho's batch action behavior so selected mid[] are submitted with delete/refresh.
+        $('.tag-list').tableSelectable({
+            checkEl     :   'input[type=checkbox]',
+            rowEl       :   'li',
+            selectAllEl :   '.typecho-table-select-all',
+            actionEl    :   '.dropdown-menu a'
         });
 
         $('.btn-dropdown-toggle').dropdownMenu({
