@@ -19,7 +19,7 @@ include 'menu.php';
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="px-3 py-1.5 bg-gray-100 text-gray-600 text-sm font-medium hover:bg-gray-200 transition-colors">
+            <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="flex items-center px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
                 <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">

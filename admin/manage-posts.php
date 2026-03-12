@@ -20,7 +20,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
         </div>
         
         <div class="flex items-center space-x-4">
-             <a href="<?php $options->adminUrl('write-post.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white text-sm font-medium hover:bg-blue-600 transition-colors">
+            <a href="<?php $options->adminUrl('write-post.php'); ?>" class="flex items-center px-4 py-2 bg-discord-accent text-white hover:bg-blue-600 transition-colors text-sm font-medium">
                 <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -143,7 +143,7 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
                         <thead>
                             <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50">
                                 <th class="w-10 pl-4 py-3"></th>
-                                <th class="w-16 py-3 text-center"><i class="fas fa-comment-alt"></i></th>
+                                <th class="w-16 py-3 text-center"><?php _e('评论数'); ?></th>
                                 <th class="py-3"><?php _e('标题'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('作者'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('分类'); ?></th>

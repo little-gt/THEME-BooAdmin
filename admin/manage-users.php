@@ -18,7 +18,7 @@ $users = \Widget\Users\Admin::alloc();
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="<?php $options->adminUrl('user.php'); ?>" class="px-3 py-1.5 bg-discord-accent text-white hover:bg-discord-accent-hover transition-colors text-sm font-medium">
+            <a href="<?php $options->adminUrl('user.php'); ?>" class="flex items-center px-4 py-2 bg-discord-accent text-white hover:bg-blue-600 transition-colors text-sm font-medium">
                 <i class="fas fa-plus mr-1"></i> <?php _e('新增'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -79,7 +79,7 @@ $users = \Widget\Users\Admin::alloc();
                                 <thead>
                             <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
                                 <th class="w-10 pl-4 py-3"></th>
-                                <th class="w-16 py-3 text-center"><i class="fas fa-user-circle"></i></th>
+                                <th class="w-16 py-3 text-center"><?php _e('文章数'); ?></th>
                                 <th class="py-3"><?php _e('用户名'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('昵称'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('电子邮件'); ?></th>
@@ -112,7 +112,14 @@ $users = \Widget\Users\Admin::alloc();
                                                     <a href="<?php $options->adminUrl('user.php?uid=' . $users->uid); ?>" class="text-discord-text font-medium hover:text-discord-accent transition-colors block">
                                                         <?php $users->name(); ?>
                                                     </a>
-                                                    <a href="<?php $users->permalink(); ?>" target="_blank" class="text-gray-400 hover:text-discord-accent opacity-0 group-hover:opacity-100 transition-opacity text-xs" title="<?php _e('浏览 %s', $users->screenName); ?>"><i class="fas fa-external-link-alt"></i> <?php _e('主页'); ?></a>
+                                                    <div class="mt-1 flex flex-wrap items-center gap-2">
+                                                        <a href="<?php $options->adminUrl('user.php?uid=' . $users->uid); ?>" class="inline-flex items-center px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-discord-text transition-colors">
+                                                            <i class="fas fa-edit mr-1"></i><?php _e('编辑'); ?>
+                                                        </a>
+                                                        <a href="<?php $users->permalink(); ?>" target="_blank" class="inline-flex items-center text-xs text-gray-400 hover:text-discord-accent transition-colors md:opacity-0 md:group-hover:opacity-100" title="<?php _e('浏览 %s', $users->screenName); ?>">
+                                                            <i class="fas fa-external-link-alt mr-1"></i><?php _e('主页'); ?>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>

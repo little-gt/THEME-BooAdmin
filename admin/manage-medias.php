@@ -88,7 +88,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
                         <thead>
                             <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50 nodrag">
                                 <th class="w-10 pl-4 py-3"></th>
-                                <th class="w-16 py-3 text-center"><i class="fas fa-comment-alt"></i></th>
+                                <th class="w-16 py-3 text-center"><?php _e('评论数'); ?></th>
                                 <th class="py-3"><?php _e('文件名'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('上传者'); ?></th>
                                 <th class="py-3 hidden md:table-cell"><?php _e('所属文章'); ?></th>
