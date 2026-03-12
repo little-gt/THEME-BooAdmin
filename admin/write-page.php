@@ -107,8 +107,8 @@ while ($parents->next()) {
                         <div class="flex items-center space-x-3 ml-auto">
                             <input type="hidden" name="do" value="publish" />
                             <input type="hidden" name="cid" value="<?php $page->cid(); ?>"/>
-                            <?php if ($options->markdown && (!$page->have() || $page->isMarkdown)): ?>
-                                <input type="hidden" name="markdown" value="1"/>
+                            <?php if ($options->markdown): ?>
+                                <input type="hidden" name="markdown" value="<?php echo (!$page->have() || $page->isMarkdown) ? '1' : '0'; ?>" data-write-markdown="1"/>
                             <?php endif; ?>
 
                             <button type="button" id="btn-preview" class="px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
@@ -200,6 +200,16 @@ while ($parents->next()) {
                                 </summary>
 
                                 <div class="space-y-6 pt-4 px-2">
+                                     <?php if ($options->markdown): ?>
+                                        <div>
+                                            <label class="block text-sm font-bold text-discord-text mb-2"><?php _e('写作格式'); ?></label>
+                                            <label class="flex items-center">
+                                                <input id="use-markdown" type="checkbox" class="mr-2 text-discord-accent focus:ring-discord-accent" <?php if (!$page->have() || $page->isMarkdown): ?>checked="true"<?php endif; ?> />
+                                                <span class="text-sm text-discord-text"><?php _e('使用 Markdown 撰写'); ?></span>
+                                            </label>
+                                        </div>
+                                    <?php endif; ?>
+
                                      <div>
                                         <label for="visibility" class="block text-sm font-bold text-discord-text mb-2"><?php _e('公开度'); ?></label>
                                         <select id="visibility" name="visibility" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-discord-accent transition-colors">

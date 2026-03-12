@@ -38,7 +38,10 @@ $(document).ready(function () {
         preview = $('<div id="wmd-preview" class="wmd-hidetab" />').insertAfter('.editor');
     let isFullScreen = false;
 
-    const options = {}, isMarkdown = <?php echo json_encode(!$content->have() || $content->isMarkdown); ?>;
+    const options = {},
+        defaultMarkdown = <?php echo json_encode(!$content->have() || $content->isMarkdown); ?>,
+        markdownInput = $('input[data-write-markdown="1"]'),
+        isMarkdown = markdownInput.length > 0 ? markdownInput.val() === '1' : defaultMarkdown;
 
     options.strings = {
         bold: '<?php _e('加粗'); ?> <strong> Ctrl+B',
@@ -301,7 +304,12 @@ $(document).ready(function () {
 
         $('.yes', notice).click(function () {
             notice.remove();
-            $('<input type="hidden" name="markdown" value="1" />').appendTo('.submit');
+            if (markdownInput.length > 0) {
+                markdownInput.val('1');
+                $('#use-markdown').prop('checked', true);
+            } else {
+                $('<input type="hidden" name="markdown" value="1" data-write-markdown="1" />').appendTo(textarea.closest('form'));
+            }
             initMarkdown();
         });
 
