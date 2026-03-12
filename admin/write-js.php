@@ -153,6 +153,23 @@ $(document).ready(function() {
         written = false,
         lastSaveTime = null;
 
+    // Markdown 开关和隐藏字段保持一致，确保保存/发布时提交正确参数
+    const markdownToggle = $('#use-markdown'),
+        markdownInput = $('input[data-write-markdown="1"]');
+
+    if (markdownToggle.length > 0 && markdownInput.length > 0) {
+        function syncMarkdownValue() {
+            markdownInput.val(markdownToggle.prop('checked') ? '1' : '0');
+        }
+
+        markdownToggle.on('change', function () {
+            syncMarkdownValue();
+            form.trigger('datachange');
+        });
+
+        syncMarkdownValue();
+    }
+
     form.on('write', function () {
         written = true;
         form.trigger('datachange');

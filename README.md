@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.12-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.13-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -90,12 +90,14 @@
 
 ---
 
-## 🚀 v1.1.12 版本更新速递
+## 🚀 v1.1.13 版本更新速递
 
 ### 特性优化
 
-- 🎨 **UI 体验提升**：将所有原始浏览器的 `confirm()` 和 `alert()` 弹窗替换为页面内部的 Modal 弹窗，保持设计一致性，提升用户体验。
-- 🔧 **链接预览修复**：修复了撰写文章页面的链接预览功能，解决了 http 与 https 协议缺少 `://` 的问题。
+- 🏷️ **标签批量操作修复**：修复了管理标签页“选中后删除无效”的问题，恢复批量删除/刷新/合并的正确提交流程。
+- ✍️ **Markdown 写作开关**：在文章与独立页面的高级选项中新增“是否使用 Markdown 撰写”开关，并与保存/发布逻辑联动。
+- 🧭 **头部操作按钮统一**：统一管理页与编辑页头部主按钮/次按钮样式（新增、返回），提升视觉一致性与操作可预期性。
+- 👤 **用户管理体验优化**：新增“编辑用户”快捷入口，并优化移动端及极端内容场景下的布局表现（超长用户名/邮箱、自适应换行、头像对齐）。
 
 ### 特别鸣谢
 

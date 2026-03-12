@@ -136,7 +136,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                         <thead>
                             <tr class="text-xs font-bold text-gray-500 uppercase border-b border-gray-100 bg-gray-50/50">
                                 <th class="w-10 pl-4 py-3"></th>
-                                <th class="w-16 py-3 text-center"><i class="fas fa-user-circle"></i></th>
+                                <th class="w-16 py-3 text-center"><?php _e('头像'); ?></th>
                                 <th class="py-3"><?php _e('作者'); ?></th>
                                 <th class="py-3"><?php _e('内容'); ?></th>
                                 <th class="py-3 w-48 text-right pr-4"><?php _e('操作'); ?></th>
