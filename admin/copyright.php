@@ -28,11 +28,13 @@
         transform: translate(-50%, -50%);
         background: white;
         border: 1px solid #e2e8f0;
-        padding: 32px;
+        padding: 28px;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         z-index: 1000;
         width: 90%;
         max-width: 640px;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
         display: none;
     }
     
@@ -64,13 +66,13 @@
         text-align: center;
         font-size: 12px;
         color: #718096;
-        margin: 0 0 24px 0;
+        margin: 0 0 8px 0;
     }
-    
+
     .booadmin-copyright-popup .content {
         display: flex;
         align-items: flex-start;
-        gap: 32px;
+        gap: 20px;
     }
     
     .booadmin-copyright-popup .left {
@@ -79,7 +81,36 @@
     }
     
     .booadmin-copyright-popup .right {
-        flex: 0 0 200px;
+        flex: 0 0 240px;
+    }
+
+    .booadmin-copyright-popup .main-copy {
+        margin: 0 0 12px 0;
+        font-size: 13px;
+        color: #475569;
+        line-height: 1.6;
+    }
+
+    .booadmin-copyright-popup .support-points {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .booadmin-copyright-popup .support-points li {
+        margin: 0 0 8px 0;
+        padding: 8px 10px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        font-size: 13px;
+        color: #334155;
+        line-height: 1.6;
+    }
+
+    .booadmin-copyright-popup .donation-card {
+        border: 1px solid #e2e8f0;
+        padding: 8px;
+        background: #ffffff;
     }
     
     .booadmin-copyright-popup p {
@@ -91,7 +122,8 @@
     }
     
     .booadmin-copyright-popup img {
-        max-width: 100%;
+        width: 100%;
+        max-width: none;
         height: auto;
         display: block;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -117,37 +149,71 @@
     }
     
     .booadmin-copyright-popup .action {
-        margin-top: 24px;
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
     }
     
     .booadmin-copyright-popup .action a {
         display: inline-block;
-        padding: 10px 40px;
+        padding: 10px 16px;
         background-color: #3182ce;
         color: white;
         transition: all 0.2s ease;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
+        text-align: center;
     }
     
     .booadmin-copyright-popup .action a:hover {
         background-color: #2c5282;
     }
+
+    .booadmin-copyright-popup .action a.secondary {
+        background-color: #e2e8f0;
+        color: #1f2937;
+    }
+
+    .booadmin-copyright-popup .action a.secondary:hover {
+        background-color: #cbd5e1;
+    }
     
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
         .booadmin-copyright-popup {
-            padding: 24px;
+            padding: 18px;
             width: 95%;
+            max-height: calc(100vh - 20px);
         }
         
         .booadmin-copyright-popup .content {
             flex-direction: column;
-            text-align: center;
-            gap: 24px;
+            gap: 16px;
         }
         
         .booadmin-copyright-popup .right {
-            flex: 0 0 140px;
+            flex: 0 0 auto;
+            width: 100%;
+        }
+
+        .booadmin-copyright-popup .donation-card {
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .booadmin-copyright-popup .main-copy,
+        .booadmin-copyright-popup .support-points li {
+            font-size: 12px;
+        }
+
+        .booadmin-copyright-popup .action {
+            margin-top: 12px;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .booadmin-copyright-popup .action a {
+            width: 100%;
         }
     }
 </style>
@@ -165,18 +231,25 @@
             <div class="booadmin-copyright-popup" id="booadminCopyrightPopup">
                 <button class="close-btn" onclick="closePopup(); event.stopPropagation();">&times;</button>
                 <h3>关于 BooAdmin</h3>
-                <div class="version">版本 1.1.13</div>
+                <div class="version">版本 1.1.14</div>
                 <div class="content">
                     <div class="left">
-                        <p>感谢您选择使用 BooAdmin 开源项目！</p>
-                        <p>如果您希望支持 BooAdmin 后续开发与更新，可以扫描右侧小程序码支持开发者，感谢您的支持。</p>
-                        <p class="text-sm text-gray-500">您可以在小程序中留言说明您希望的优化方向，相比于 GitHub Issue 会更优先看到和处理。</p>
+                        <p class="main-copy"><strong>BooAdmin 是免费开源项目。</strong>BooAdmin 的开源维护、CDN资源分发与新功能更新都离不开您的捐助。您的支持将帮助我覆盖以下成本：</p>
+
+                        <ul class="support-points">
+                            <li><strong>开源维护成本：</strong>进行版本适配、问题修复、体验优化与 LTS 支持。</li>
+                            <li><strong>服务运行成本：</strong>提供静态资源分发、国际/国内线路与 IPv6 优化保障。</li>
+                        </ul>
+
                         <div class="action">
-                            <a href="https://github.com/little-gt/THEME-BooAdmin" class="inline-block px-4 py-2 bg-discord-accent text-white hover:bg-discord-accent/90 transition-colors" target="_blank" rel="noopener">转跳到 GitHub 开源项目页</a>
+                            <a href="https://github.com/little-gt/THEME-BooAdmin" target="_blank" rel="noopener">访问 GitHub 开源项目</a>
+                            <a href="https://github.com/little-gt/THEME-BooAdmin/issues" class="secondary" target="_blank" rel="noopener">反馈问题</a>
                         </div>
                     </div>
                     <div class="right">
-                        <img src="<?php echo $options->adminUrl; ?>img/supportme.jpg" alt="支持我" />
+                        <div class="donation-card">
+                            <img src="<?php echo $options->adminUrl; ?>img/supportme.jpg" alt="支持 BooAdmin 开源维护" />
+                        </div>
                     </div>
                 </div>
             </div>
