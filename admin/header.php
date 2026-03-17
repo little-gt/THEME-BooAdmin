@@ -5,20 +5,20 @@ if (!defined('__TYPECHO_ADMIN__')) {
 
 $header = '
 <!-- Custom Styles -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.13', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.13', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'custom.css?v=1.1.13', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.13', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.13', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.14', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.14', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'custom.css?v=1.1.14', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.14', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.14', true) . '">
 <!-- NProgress -->
 <script src="' . $options->adminStaticUrl('js', 'nprogress.js', true) . '"></script>
 <!-- TailwindCSS -->
-<script src="https://image.uc.cn/s/uae/g/3n/mos-production/0915/3.4.17.js"></script>
+<script src="https://cdn.garfieldtom.cool/resource/libs/tailwind/3.4.17/tailwindcss.js"></script>
 <!-- Font Awesome -->
-<script src="https://image.uc.cn/s/uae/g/3n/mos-production/fontawesome-free-7.1.0-web/js/all.min.js"></script>
-<link href="https://image.uc.cn/s/uae/g/3n/mos-production/fontawesome-free-7.1.0-web/css/fontawesome.min.css" rel="stylesheet">
+<script src="https://cdn.garfieldtom.cool/resource/libs/fontawesome/7.1.0/js/all.min.js"></script>
+<link href="https://cdn.garfieldtom.cool/resource/libs/fontawesome/7.1.0/css/all.min.css" rel="stylesheet">
 <!-- ECharts -->
-<script src="https://image.uc.cn/s/uae/g/3n/mos-production/cdn-staticfile-net/echarts/5.4.3/echarts.min.js"></script>
+<script src="https://cdn.garfieldtom.cool/resource/libs/echarts/5.5.0/echarts.min.js"></script>
 <script>
     tailwind.config = {
         theme: {

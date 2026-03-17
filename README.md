@@ -2,9 +2,9 @@
 
 > **高效 · 现代 · 极简**
 
-一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用国内阿里云 CDN 加速资源，提供业界领先的加载速度和用户体验。
+一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.13-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.14-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -90,14 +90,15 @@
 
 ---
 
-## 🚀 v1.1.13 版本更新速递
+## 🚀 v1.1.14 版本更新速递
 
 ### 特性优化
 
-- 🏷️ **标签批量操作修复**：修复了管理标签页“选中后删除无效”的问题，恢复批量删除/刷新/合并的正确提交流程。
-- ✍️ **Markdown 写作开关**：在文章与独立页面的高级选项中新增“是否使用 Markdown 撰写”开关，并与保存/发布逻辑联动。
-- 🧭 **头部操作按钮统一**：统一管理页与编辑页头部主按钮/次按钮样式（新增、返回），提升视觉一致性与操作可预期性。
-- 👤 **用户管理体验优化**：新增“编辑用户”快捷入口，并优化移动端及极端内容场景下的布局表现（超长用户名/邮箱、自适应换行、头像对齐）。
+- 🪟 **管理标签确认弹窗升级**：将管理标签页的删除/刷新/合并确认流程统一为页面内 Modal，替代浏览器原生确认框，交互风格与主题保持一致。
+- 🔁 **批量操作确认链路增强**：优化“先确认、后执行”逻辑，确认后继续执行原有批量操作提交流程，避免重复操作与原生弹窗回退。
+- 💙 **开源项目说明弹窗优化**：重构页脚 BooAdmin 弹窗内容与视觉层级，更清晰说明开源项目定位、维护投入与长期支持方向。
+- 🤝 **赞助引导体验优化**：新增资金用途说明、赞助价值说明与双按钮引导（项目页/建议反馈），帮助社区用户更好理解支持方式。
+- 🚀 **CDN 资源稳定性增强**：资源分发升级为 [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool)，由GARFIELDTOM'S NEST（国内备案主体，懒猫小站），基于腾讯云 EdgeOne 提供分发能力，覆盖国际线路与国内线路，并提供 IPv6 优化支持。避免依赖 UC浏览器 的资源库，导致若未来该资源库下架，导致主题异常的风险。
 
 ### 特别鸣谢
 
@@ -160,9 +161,10 @@
 
 | 项目 | 说明 |
 | ---- | ---- |
-| CDN 提供商 | 阿里云 CDN — 国内节点覆盖，访问速度快且稳定 |
+| CDN 提供商 | GARFIELDTOM'S NEST CDN（腾讯云 EdgeOne）— 提供国际线路 + 国内线路，并支持 IPv6 优化 |
 | 分发范围 | JavaScript、CSS、字体、图标等静态资源通过 CDN 分发 |
-| 性能提升 | 面向国内用户，相比国外 CDN 可提升加载速度约 3–5 倍 |
+| 访问入口 | [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool) |
+| 升级说明 | 避免依赖 UC 浏览器工具链外源 CDN，降低因 UC 浏览器更新导致的资源异常风险 |
 
 ---
 

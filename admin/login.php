@@ -20,8 +20,8 @@ include 'header.php';
 ?>
 <div class="min-h-screen flex bg-discord-light text-discord-text">
     <!-- Left Side: Hero Image -->
-    <div class="hidden md:flex md:w-1/2 flex-col justify-center items-center bg-cover bg-center relative" style="background-image: url('https://image.uc.cn/s/uae/g/3n/mos-production/1220/85df1a9657682d1c.jpg');">
-        <div class="absolute inset-0 bg-gradient-to-br from-discord-accent/80 to-purple-900/80 pointer-events-none"></div>
+    <div class="hidden md:flex md:w-1/2 flex-col justify-center items-center bg-cover bg-center relative" style="background-image: url('https://cdn.garfieldtom.cool/img/wldairy/poster/horizontal/%E9%81%87%E8%A7%81%E4%BD%A0%E7%9A%84%E7%8C%AB_%E9%82%A3%E4%B8%80%E5%A4%A9.jpg');">
+        <div class="absolute inset-0 pointer-events-none" style="background-color: rgba(0, 0, 0, 0.58);"></div>
         <div class="relative z-10 text-white p-12 text-center">
             <h1 class="text-4xl font-bold mb-4"><?php _e('BooAdmin'); ?></h1>
             <p class="text-lg opacity-90"><?php _e('一个现代化、简洁且强大的 Typecho 后台主题'); ?></p>

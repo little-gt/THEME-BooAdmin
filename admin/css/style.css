@@ -925,9 +925,6 @@ select {
 	background:#292D33
 }
 }@media (max-width:575px) {
-	body {
-	padding-top:36px
-}
 body:has(.menu-bar[open]) {
 	overflow:hidden
 }
