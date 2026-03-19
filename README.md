@@ -122,7 +122,7 @@
 2. 上传最新版本的 `admin` 目录到网站根目录。
 3. 清理浏览器缓存，以加载最新的 CSS 和 JS 文件。
 4. 如果您使用的是 Typecho 1.3.0 或更高版本，升级后所有功能将自动适配。
-5. 🆕 移动端访问管理页时将自动切换到卡片视图，PC 端保持表格视图。
+5. 移动端访问管理页时将自动切换到卡片视图，PC 端保持表格视图。
 
 ---
 
@@ -153,8 +153,8 @@
 
 | 资源 | 说明 |
 | ---- | ---- |
-| 图标库 | FontAwesome 6 Free — 丰富图标集合（Free 版本） |
-| 字体 | Nunito (Google Fonts) — 清晰优雅的英文字体，通过 Google Fonts 提供统一的视觉体验 |
+| 图标库 | FontAwesome 7 Free — 丰富图标集合（Free 版本） |
+| 字体 | Google Fonts — 清晰优雅的英文字体，通过 Google Fonts 提供统一的视觉体验 |
 
 ### 资源加速
 
@@ -163,7 +163,6 @@
 | CDN 提供商 | GARFIELDTOM'S NEST CDN（腾讯云 EdgeOne）— 提供国际线路 + 国内线路，并支持 IPv6 优化 |
 | 分发范围 | JavaScript、CSS、字体、图标等静态资源通过 CDN 分发 |
 | 访问入口 | [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool) |
-| 升级说明 | 避免依赖 UC 浏览器工具链外源 CDN，降低因 UC 浏览器更新导致的资源异常风险 |
 
 ---
 
