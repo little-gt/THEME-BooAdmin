@@ -101,11 +101,13 @@ $users = \Widget\Users\Admin::alloc();
                                         </td>
                                         <td class="py-3 min-w-0">
                                             <div class="flex items-center min-w-0">
-                                                <div class="w-9 h-9 bg-gray-100 border border-gray-200 flex items-center justify-center mr-3 text-gray-500 overflow-hidden flex-shrink-0">
+                                                <div class="mr-3 flex-shrink-0">
                                                     <?php if ($users->mail): ?>
-                                                        <img src="<?php echo \Typecho\Common::gravatarUrl($users->mail, 64, 'X', 'mm', $request->isSecure()); ?>" alt="<?php $users->screenName(); ?>" class="w-full h-full object-cover">
+                                                        <?php echo getAvatar($users->mail, $users->screenName, 64); ?>
                                                     <?php else: ?>
-                                                        <i class="fas fa-user text-sm"></i>
+                                                        <div class="w-9 h-9 bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500 overflow-hidden flex-shrink-0">
+                                                            <i class="fas fa-user text-sm"></i>
+                                                        </div>
                                                     <?php endif; ?>
                                                 </div>
                                                 <div class="min-w-0">
