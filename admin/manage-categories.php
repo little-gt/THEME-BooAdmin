@@ -48,12 +48,12 @@ include 'menu.php';
                                     <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
                                 <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white border border-gray-100 py-1 hidden z-50">
-                                    <a lang="<?php _e('此分类下的所有内容将被删除, 你确认要删除这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
-                                    <a lang="<?php _e('刷新分类可能需要等待较长时间, 你确认要刷新这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=refresh'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-sync-alt mr-1"></i><?php _e('刷新'); ?></a>
+                                    <a lang="<?php _e('此分类下的所有内容将被删除, 你确认要删除这些分类吗?'); ?>" data-confirm-message="<?php _e('此分类下的所有内容将被删除, 你确认要删除这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=delete'); ?>" class="js-category-action block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
+                                    <a lang="<?php _e('刷新分类可能需要等待较长时间, 你确认要刷新这些分类吗?'); ?>" data-confirm-message="<?php _e('刷新分类可能需要等待较长时间, 你确认要刷新这些分类吗?'); ?>" href="<?php $security->index('/action/metas-category-edit?do=refresh'); ?>" class="js-category-action block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-sync-alt mr-1"></i><?php _e('刷新'); ?></a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <div class="px-4 py-2">
                                         <div class="flex items-center space-x-2">
-                                            <button type="submit" lang="<?php _e('你确认要合并这些分类吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><i class="fas fa-compress-alt mr-1"></i><?php _e('合并到'); ?></button>
+                                            <button type="button" lang="<?php _e('你确认要合并这些分类吗?'); ?>" data-confirm-message="<?php _e('你确认要合并这些分类吗?'); ?>" class="btn-merge px-2 py-1 text-xs bg-discord-accent text-white hover:bg-blue-600 transition-colors" rel="<?php $security->index('/action/metas-category-edit?do=merge'); ?>"><i class="fas fa-compress-alt mr-1"></i><?php _e('合并到'); ?></button>
                                             <select name="merge" class="text-xs border border-gray-300 px-2 py-1 focus:outline-none focus:border-discord-accent w-24">
                                                 <?php $categories->parse('<option value="{mid}">{name}</option>'); ?>
                                             </select>
@@ -142,6 +142,21 @@ include 'menu.php';
     <?php include 'copyright.php'; ?>
 </main>
 
+<div id="categories-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="categories-confirm-modal-title">
+    <div class="bg-white shadow-xl max-w-md w-full p-6 mx-4">
+        <h3 id="categories-confirm-modal-title" class="text-lg font-bold text-discord-text mb-4"><?php _e('操作确认'); ?></h3>
+        <p id="categories-confirm-modal-message" class="text-discord-muted mb-6"><?php _e('请确认是否继续。'); ?></p>
+        <div class="flex justify-end space-x-3">
+            <button id="categories-modal-cancel" type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                <?php _e('取消'); ?>
+            </button>
+            <button id="categories-modal-confirm" type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                <?php _e('确认'); ?>
+            </button>
+        </div>
+    </div>
+</div>
+
 <?php
 include 'common-js.php';
 ?>
@@ -149,6 +164,52 @@ include 'common-js.php';
 <script type="text/javascript">
 (function () {
     $(document).ready(function () {
+        var form = $('form[name="manage_categories"]'),
+            confirmModal = $('#categories-confirm-modal'),
+            confirmTitle = $('#categories-confirm-modal-title'),
+            confirmMessage = $('#categories-confirm-modal-message'),
+            confirmButton = $('#categories-modal-confirm'),
+            cancelButton = $('#categories-modal-cancel'),
+            pendingSubmit = null,
+            pendingActionEl = null,
+            replayingNativeAction = false;
+
+        function openModal(title, message, onConfirm, confirmOnly) {
+            confirmTitle.text(title);
+            confirmMessage.text(message);
+            pendingSubmit = onConfirm || null;
+
+            if (confirmOnly) {
+                cancelButton.addClass('hidden');
+                confirmButton.text('<?php _e('我知道了'); ?>');
+            } else {
+                cancelButton.removeClass('hidden');
+                confirmButton.text('<?php _e('确认'); ?>');
+            }
+
+            confirmModal.removeClass('hidden').addClass('flex');
+        }
+
+        function closeModal() {
+            confirmModal.removeClass('flex').addClass('hidden');
+            pendingSubmit = null;
+        }
+
+        function hasSelectedCategories() {
+            return form.find('input[name="mid[]"]:checked').length > 0;
+        }
+
+        function requestBatchAction(actionUrl, message) {
+            if (!hasSelectedCategories()) {
+                openModal('<?php _e('提示'); ?>', '<?php _e('请先选择至少一个分类。'); ?>', null, true);
+                return;
+            }
+
+            openModal('<?php _e('操作确认'); ?>', message, function () {
+                form.attr('action', actionUrl).submit();
+            }, false);
+        }
+
         var table = $('.typecho-list-table').tableDnD({
             onDrop: function () {
                 var ids = [];
@@ -162,11 +223,55 @@ include 'common-js.php';
             }
         });
 
+        $('.dropdown-menu a.js-category-action').on('click.categoriesConfirm', function (e) {
+            var actionLink = $(this),
+                message = actionLink.data('confirm-message') || actionLink.attr('lang') || '<?php _e('你确认要执行该操作吗?'); ?>';
+
+            if (replayingNativeAction) {
+                return true;
+            }
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            if (!hasSelectedCategories()) {
+                openModal('<?php _e('提示'); ?>', '<?php _e('请先选择至少一个分类。'); ?>', null, true);
+                return false;
+            }
+
+            pendingActionEl = actionLink;
+            openModal('<?php _e('操作确认'); ?>', message, function () {
+                var target = pendingActionEl,
+                    originalLang;
+
+                if (!target || target.length === 0) {
+                    return;
+                }
+
+                originalLang = target.attr('lang');
+                if (typeof originalLang !== 'undefined') {
+                    target.removeAttr('lang');
+                }
+
+                replayingNativeAction = true;
+                target.trigger('click');
+                replayingNativeAction = false;
+
+                if (typeof originalLang !== 'undefined') {
+                    target.attr('lang', originalLang);
+                }
+
+                pendingActionEl = null;
+            }, false);
+
+            return false;
+        });
+
         $('.typecho-list-table').tableSelectable({
             checkEl     :   'input[type=checkbox]',
             rowEl       :   'tr',
             selectAllEl :   '.typecho-table-select-all',
-            actionEl    :   '.dropdown-menu a'
+            actionEl    :   '.dropdown-menu a.js-category-action'
         });
 
         $('.btn-dropdown-toggle').dropdownMenu({
@@ -175,8 +280,34 @@ include 'common-js.php';
         });
 
         $('.btn-merge').click(function () {
-            var btn = $(this);
-            btn.parents('form').attr('action', btn.attr('rel')).submit();
+            var btn = $(this),
+                message = btn.data('confirm-message') || btn.attr('lang') || '<?php _e('你确认要执行该操作吗?'); ?>';
+
+            requestBatchAction(btn.attr('rel'), message);
+        });
+
+        confirmButton.on('click', function () {
+            var callback = pendingSubmit;
+            closeModal();
+            if (callback) {
+                callback();
+            }
+        });
+
+        cancelButton.on('click', function () {
+            closeModal();
+        });
+
+        confirmModal.on('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        $(document).on('keydown', function (e) {
+            if (e.key === 'Escape' && confirmModal.hasClass('flex')) {
+                closeModal();
+            }
         });
 
         <?php if (isset($request->mid)): ?>

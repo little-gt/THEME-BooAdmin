@@ -26,6 +26,69 @@ if (!defined('__TYPECHO_ROOT_DIR__') && !@include_once __DIR__ . '/../config.inc
 $request = $options->request;
 $response = $options->response;
 
+/**
+ * 统一的头像处理函数
+ * @param string $mail 邮箱地址
+ * @param string $name 用户名（用于降级头像）
+ * @param int $size 头像大小
+ * @param string $className 自定义CSS类
+ * @return string 头像HTML
+ */
+function getAvatar($mail, $name, $size = 48, $className = '') {
+    // 生成邮箱的MD5哈希，用于cookie键名
+    $mailHash = md5(strtolower(trim($mail)));
+    $cookieKey = 'avatar_failed_' . $mailHash;
+    
+    // 检查cookie是否记录了头像加载失败
+    $avatarFailed = isset($_COOKIE[$cookieKey]) && $_COOKIE[$cookieKey] == 1;
+    
+    // 生成用户名首字母
+    $firstChar = $name ? mb_substr($name, 0, 1, 'UTF-8') : '?';
+    
+    // 检查是否使用HTTPS
+    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+    
+    // 更加灵活的尺寸计算
+    $baseSize = max(8, floor($size / 8));
+    $sizeClass = 'w-' . $baseSize . ' h-' . $baseSize;
+    
+    // 根据尺寸设置合适的文本大小
+    $textSizeMap = [
+        4 => 'text-xs',
+        5 => 'text-sm',
+        6 => 'text-base',
+        7 => 'text-lg',
+        8 => 'text-xl',
+        9 => 'text-2xl',
+        10 => 'text-3xl',
+        11 => 'text-4xl',
+        12 => 'text-5xl'
+    ];
+    $textSize = $textSizeMap[$baseSize] ?? 'text-sm';
+    
+    // 过滤className参数，只允许有效的CSS类名字符
+    $className = preg_replace('/[^a-zA-Z0-9\s\-]/', '', $className);
+    
+    // 如果头像加载失败过，直接返回降级头像
+    if ($avatarFailed) {
+        return '<div class="' . $className . ' ' . $sizeClass . ' flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold ' . $textSize . ' border border-gray-200">' . htmlspecialchars($firstChar, ENT_QUOTES, 'UTF-8') . '</div>';
+    }
+    
+    // 生成Gravatar URL
+    $gravatarUrl = \Typecho\Common::gravatarUrl($mail, $size, 'X', 'mm', $isSecure);
+    
+    // 生成包含错误处理的头像HTML
+    $cookieExpire = 30 * 24 * 60 * 60; // 30天
+    // 对cookie键名进行安全转义，避免注入
+    $safeCookieKey = addslashes($cookieKey);
+    $html = '<div class="relative ' . $className . ' ' . $sizeClass . ' flex-shrink-0">';
+    $html .= '<img src="' . $gravatarUrl . '" alt="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" class="w-full h-full object-cover border border-gray-200" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\'; document.cookie=\'' . $safeCookieKey . '=1; path=/; max-age=' . $cookieExpire . '\'" />';
+    $html .= '<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold ' . $textSize . ' border border-gray-200 absolute inset-0 hidden">' . htmlspecialchars($firstChar, ENT_QUOTES, 'UTF-8') . '</div>';
+    $html .= '</div>';
+    
+    return $html;
+}
+
 /** 检测是否是第一次登录 */
 $currentMenu = $menu->getCurrentMenu();
 

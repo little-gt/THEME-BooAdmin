@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.14-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.15-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -90,15 +90,14 @@
 
 ---
 
-## 🚀 v1.1.14 版本更新速递
+## 🚀 v1.1.15 版本更新速递
 
 ### 特性优化
 
-- 🪟 **管理标签确认弹窗升级**：将管理标签页的删除/刷新/合并确认流程统一为页面内 Modal，替代浏览器原生确认框，交互风格与主题保持一致。
-- 🔁 **批量操作确认链路增强**：优化“先确认、后执行”逻辑，确认后继续执行原有批量操作提交流程，避免重复操作与原生弹窗回退。
-- 💙 **开源项目说明弹窗优化**：重构页脚 BooAdmin 弹窗内容与视觉层级，更清晰说明开源项目定位、维护投入与长期支持方向。
-- 🤝 **赞助引导体验优化**：新增资金用途说明、赞助价值说明与双按钮引导（项目页/建议反馈），帮助社区用户更好理解支持方式。
-- 🚀 **CDN 资源稳定性增强**：资源分发升级为 [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool)，由GARFIELDTOM'S NEST（国内备案主体，懒猫小站），基于腾讯云 EdgeOne 提供分发能力，覆盖国际线路与国内线路，并提供 IPv6 优化支持。避免依赖 UC浏览器 的资源库，导致若未来该资源库下架，导致主题异常的风险。
+- **头像获取统一化**：采用统一的 `getAvatar()` 函数处理所有头像显示，实现智能降级功能。当头像加载失败时，会自动记录状态并在后续加载中直接使用降级头像，提升页面加载速度和用户体验。
+- **弹窗设计统一**：优化管理评论页面的确认弹窗设计，与管理标签等页面保持一致的视觉风格，提升操作体验的统一性。
+- **分类管理优化**：管理分类页面接入页面内弹窗设计，进一步统一操作体验和交互顺滑度。
+- **个人资料页面**：接入统一头像函数，确保个人资料页面的头像显示与其他页面保持一致，支持智能降级功能。
 
 ### 特别鸣谢
 

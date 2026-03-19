@@ -157,12 +157,10 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                         'text'      =>  $comments->text
                                     );
                                     
-                                    // Capture gravatar output using output buffering
+                                    // Use getAvatar function for consistent avatar handling
                                     $gravatarHtml = '';
                                     if ('comment' == $comments->type) {
-                                        ob_start();
-                                        $comments->gravatar(40, null, true);
-                                        $gravatarHtml = ob_get_clean();
+                                        $gravatarHtml = getAvatar($comments->mail, $comments->author, 40);
                                     }
                                     
                                     // Store data for card view
@@ -195,13 +193,11 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                             <input type="checkbox" value="<?php $comments->coid(); ?>" name="coid[]" class="text-discord-accent focus:ring-discord-accent border-gray-300 mt-1">
                                         </td>
                                         <td class="py-3 text-center align-top">
-                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 mx-auto relative">
+                                            <div class="w-10 h-10 mx-auto flex items-center justify-center">
                                                 <?php if ('comment' == $comments->type): ?>
-                                                    <?php $gravatarUrl = \Typecho\Common::gravatarUrl($comments->mail, 40); $authorName = $comments->author; $authorFirstChar = $authorName ? mb_substr($authorName, 0, 1, 'UTF-8') : '?'; ?>
-                                                    <img src="<?php echo $gravatarUrl; ?>" alt="<?php echo htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?>" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-sm absolute inset-0 hidden"><?php echo htmlspecialchars($authorFirstChar, ENT_QUOTES, 'UTF-8'); ?></div>
+                                                    <?php echo getAvatar($comments->mail, $comments->author, 40); ?>
                                                 <?php else: ?>
-                                                    <div class="flex items-center justify-center w-full h-full text-gray-500"><i class="fas fa-quote-right"></i></div>
+                                                    <div class="flex items-center justify-center w-full h-full bg-gray-200 text-gray-500"><i class="fas fa-quote-right"></i></div>
                                                 <?php endif; ?>
                                             </div>
                                         </td>
@@ -273,13 +269,11 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
                                     
                                     <div class="card-header">
                                         <div class="flex items-center space-x-3 flex-1">
-                                            <div class="w-10 h-10 overflow-hidden bg-gray-200 flex-shrink-0 relative">
+                                            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center">
                                                 <?php if ('comment' == $commentData['type'] && $commentData['gravatar']): ?>
-                                                    <?php $gravatarUrl = \Typecho\Common::gravatarUrl($commentData['mail'], 40); $authorName = $commentData['author']; $authorFirstChar = $authorName ? mb_substr($authorName, 0, 1, 'UTF-8') : '?'; ?>
-                                                    <img src="<?php echo $gravatarUrl; ?>" alt="<?php echo htmlspecialchars($authorName, ENT_QUOTES, 'UTF-8'); ?>" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-sm absolute inset-0 hidden"><?php echo htmlspecialchars($authorFirstChar, ENT_QUOTES, 'UTF-8'); ?></div>
+                                                    <?php echo getAvatar($commentData['mail'], $commentData['author'], 40); ?>
                                                 <?php else: ?>
-                                                    <div class="flex items-center justify-center w-full h-full text-gray-500"><i class="fas fa-quote-right"></i></div>
+                                                    <div class="flex items-center justify-center w-full h-full bg-gray-200 text-gray-500"><i class="fas fa-quote-right"></i></div>
                                                 <?php endif; ?>
                                             </div>
                                             <div class="flex-1 min-w-0">
@@ -389,8 +383,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
             </div>
         </form>
         <div class="flex justify-end space-x-3 mt-6">
-            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeReplyModal()"><i class="fas fa-times mr-1"></i><?php _e('取消'); ?></button>
-            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitReply()"><i class="fas fa-paper-plane mr-1"></i><?php _e('提交回复'); ?></button>
+            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeReplyModal()"></i><?php _e('取消'); ?></button>
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitReply()"></i><?php _e('提交回复'); ?></button>
         </div>
     </div>
 </div>
@@ -421,8 +415,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
             </div>
         </form>
         <div class="flex justify-end space-x-3 mt-6">
-            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeEditModal()"><i class="fas fa-times mr-1"></i><?php _e('取消'); ?></button>
-            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitEdit()"><i class="fas fa-save mr-1"></i><?php _e('保存'); ?></button>
+            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeEditModal()"><?php _e('取消'); ?></button>
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitEdit()"><?php _e('确认保存'); ?></button>
         </div>
     </div>
 </div>
@@ -430,12 +424,12 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="comment-modal">
     <div class="bg-white shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
+        <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('操作确认'); ?></h3>
         <p class="text-discord-muted mb-2" id="deleteAuthorName"><?php _e('确认删除此评论？'); ?></p>
         <p class="text-discord-muted mb-6"><?php _e('此操作不可逆，删除后无法恢复评论内容。'); ?></p>
         <div class="flex justify-end space-x-3">
-            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeDeleteModal()"><i class="fas fa-times mr-1"></i><?php _e('取消'); ?></button>
-            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="confirmDelete()"><i class="fas fa-trash-alt mr-1"></i><?php _e('确认删除'); ?></button>
+            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeDeleteModal()"><?php _e('取消'); ?></button>
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="confirmDelete()"><?php _e('确认删除'); ?></button>
         </div>
     </div>
 </div>
@@ -443,13 +437,13 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 <!-- Message Modal -->
 <div id="messageModal" class="comment-modal">
     <div class="bg-white shadow-xl max-w-md w-full p-6">
-        <h3 class="text-lg font-bold text-discord-text mb-4" id="messageModalTitle"><?php _e('提示'); ?></h3>
+        <h3 class="text-lg font-bold text-discord-text mb-4" id="messageModalTitle"><?php _e('操作确认'); ?></h3>
         <p class="text-discord-muted mb-6" id="messageModalContent"></p>
         <div class="flex justify-end space-x-3">
             <button type="button" id="messageModalCancel" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm hidden">
                 <?php _e('取消'); ?>
             </button>
-            <button type="button" id="messageModalConfirm" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center"><i class="fas fa-check mr-1"></i><?php _e('确定'); ?></button>
+            <button type="button" id="messageModalConfirm" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center"><?php _e('确定'); ?></button>
         </div>
     </div>
 </div>
@@ -736,9 +730,9 @@ function openReplyModal(commentData, actionUrl) {
         }
         
         if (gravatarUrl) {
-            gravatarHtml = '<div class="relative w-8 h-8"><img src="' + gravatarUrl + '" alt="' + commentData.author + '" class="w-full h-full object-cover" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" /><div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-xs absolute inset-0 hidden">' + authorFirstChar + '</div></div>';
+            gravatarHtml = '<div class="relative w-8 h-8"><img src="' + gravatarUrl + '" alt="' + commentData.author + '" class="w-full h-full object-cover border border-gray-200" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" /><div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xs border border-gray-200 absolute inset-0 hidden">' + authorFirstChar + '</div></div>';
         } else {
-            gravatarHtml = '<div class="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-xs">' + authorFirstChar + '</div>';
+            gravatarHtml = '<div class="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xs border border-gray-200">' + authorFirstChar + '</div>';
         }
     }
     
@@ -964,7 +958,7 @@ $(document).ready(function () {
         var lang = t.attr('lang');
         
         if (lang) {
-            showMessageModal('<?php _e('确认操作'); ?>', lang);
+            showMessageModal('<?php _e('操作确认'); ?>', lang);
             $('#messageModal').data('confirm-url', href);
             $('#messageModal').data('is-confirm', true);
         }

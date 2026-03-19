@@ -37,13 +37,16 @@ $stat = \Widget\Stat::alloc();
                     <div class="bg-white p-6 text-center border border-gray-100">
                         <div class="relative inline-block mb-4 group">
                             <div class="w-32 h-32 overflow-hidden mx-auto border-4 border-discord-light relative">
-                                <?php $userAvatarUrl = \Typecho\Common::gravatarUrl($user->mail, 220, 'X', 'mm', $request->isSecure()); $userName = $user->screenName; $userFirstChar = mb_substr($userName, 0, 1, 'UTF-8'); ?>
-                                <img src="<?php echo $userAvatarUrl; ?>" alt="<?php $user->screenName(); ?>" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 rounded-full text-white font-bold text-5xl absolute inset-0 hidden"><?php echo htmlspecialchars($userFirstChar, ENT_QUOTES, 'UTF-8'); ?></div>
+                                <?php $avatarHtml = getAvatar($user->mail, $user->screenName, 220); ?>
+                                <?php 
+                                // 替换所有尺寸类为w-full h-full，确保降级头像也能正确自适应
+                                $avatarHtml = preg_replace('/w-\d+(\.\d+)?\s+h-\d+(\.\d+)?/', 'w-full h-full', $avatarHtml);
+                                echo $avatarHtml;
+                                ?>
+                                <a href="https://gravatar.com/" target="_blank" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm font-medium">
+                                    <i class="fas fa-camera mr-1"></i> <?php _e('修改头像'); ?>
+                                </a>
                             </div>
-                            <a href="https://gravatar.com/" target="_blank" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm font-medium">
-                                <i class="fas fa-camera mr-1"></i> <?php _e('修改头像'); ?>
-                            </a>
                         </div>
                         
                         <h2 class="text-xl font-bold text-discord-text"><?php $user->screenName(); ?></h2>

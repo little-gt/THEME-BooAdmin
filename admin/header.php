@@ -5,11 +5,11 @@ if (!defined('__TYPECHO_ADMIN__')) {
 
 $header = '
 <!-- Custom Styles -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.14', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.14', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'custom.css?v=1.1.14', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.14', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.14', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.15', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.15', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'custom.css?v=1.1.15', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.15', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.15', true) . '">
 <!-- NProgress -->
 <script src="' . $options->adminStaticUrl('js', 'nprogress.js', true) . '"></script>
 <!-- TailwindCSS -->
