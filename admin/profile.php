@@ -38,7 +38,11 @@ $stat = \Widget\Stat::alloc();
                         <div class="relative inline-block mb-4 group">
                             <div class="w-32 h-32 overflow-hidden mx-auto border-4 border-discord-light relative">
                                 <?php $avatarHtml = getAvatar($user->mail, $user->screenName, 220); ?>
-                                <?php echo str_replace('w-27.5 h-27.5', 'w-full h-full', $avatarHtml); ?>
+                                <?php 
+                                // 替换所有尺寸类为w-full h-full，确保降级头像也能正确自适应
+                                $avatarHtml = preg_replace('/w-\d+(\.\d+)?\s+h-\d+(\.\d+)?/', 'w-full h-full', $avatarHtml);
+                                echo $avatarHtml;
+                                ?>
                                 <a href="https://gravatar.com/" target="_blank" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm font-medium">
                                     <i class="fas fa-camera mr-1"></i> <?php _e('修改头像'); ?>
                                 </a>
