@@ -85,41 +85,41 @@ $chartComments = json_encode($commentsData);
                 <!-- Card 1 -->
                 <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="flex items-center justify-between mb-4 relative z-10">
+                    <div class="flex items-center justify-between mb-4 relative z-1">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('总文章数'); ?></h3>
                         <div class="w-10 h-10 bg-blue-100 flex items-center justify-center text-blue-500">
                             <i class="fas fa-file-alt text-lg"></i>
                         </div>
                     </div>
-                    <div class="text-3xl font-black text-gray-800 relative z-10"><?php echo $stat->myPublishedPostsNum; ?></div>
-                    <div class="mt-2 text-xs text-green-500 font-bold flex items-center relative z-10">
+                    <div class="text-3xl font-black text-gray-800 relative z-1"><?php echo $stat->myPublishedPostsNum; ?></div>
+                    <div class="mt-2 text-xs text-green-500 font-bold flex items-center relative z-1">
                         <i class="fas fa-arrow-up mr-1"></i> <span><?php _e('持续更新中'); ?></span>
                     </div>
                 </div>
                 <!-- Card 2 -->
                 <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="flex items-center justify-between mb-4 relative z-10">
+                    <div class="flex items-center justify-between mb-4 relative z-1">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('总评论数'); ?></h3>
                          <div class="w-10 h-10 bg-green-100 flex items-center justify-center text-green-500">
                             <i class="fas fa-comments text-lg"></i>
                         </div>
                     </div>
-                    <div class="text-3xl font-black text-gray-800 relative z-10"><?php echo $stat->myPublishedCommentsNum; ?></div>
-                    <div class="mt-2 text-xs text-blue-500 font-bold flex items-center relative z-10">
+                    <div class="text-3xl font-black text-gray-800 relative z-1"><?php echo $stat->myPublishedCommentsNum; ?></div>
+                    <div class="mt-2 text-xs text-blue-500 font-bold flex items-center relative z-1">
                          <i class="fas fa-chart-line mr-1"></i> <span><?php _e('互动活跃'); ?></span>
                     </div>
                 </div>
                  <!-- Card 3 -->
                  <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-yellow-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="flex items-center justify-between mb-4 relative z-10">
+                    <div class="flex items-center justify-between mb-4 relative z-1">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('待审核'); ?></h3>
                          <div class="w-10 h-10 bg-yellow-100 flex items-center justify-center text-yellow-500">
                             <i class="fas fa-hourglass-half text-lg"></i>
                         </div>
                     </div>
-                    <div class="text-3xl font-black text-gray-800 relative z-10"><?php echo $stat->waitingCommentsNum; ?></div>
+                    <div class="text-3xl font-black text-gray-800 relative z-1"><?php echo $stat->waitingCommentsNum; ?></div>
                     <div class="mt-2 text-xs text-discord-muted font-bold flex items-center relative z-10">
                         <span><?php _e('需要处理'); ?></span>
                     </div>
@@ -127,13 +127,13 @@ $chartComments = json_encode($commentsData);
                  <!-- Card 4 -->
                  <div class="bg-white p-6 border border-gray-100 relative overflow-hidden group">
                     <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="flex items-center justify-between mb-4 relative z-10">
+                    <div class="flex items-center justify-between mb-4 relative z-1">
                         <h3 class="text-discord-muted font-bold text-xs uppercase tracking-wider"><?php _e('分类数量'); ?></h3>
                          <div class="w-10 h-10 bg-purple-100 flex items-center justify-center text-purple-500">
                             <i class="fas fa-folder text-lg"></i>
                         </div>
                     </div>
-                    <div class="text-3xl font-black text-gray-800 relative z-10"><?php echo $stat->categoriesNum; ?></div>
+                    <div class="text-3xl font-black text-gray-800 relative z-1"><?php echo $stat->categoriesNum; ?></div>
                      <div class="mt-2 text-xs text-discord-muted font-bold flex items-center relative z-10">
                         <span><?php _e('内容架构'); ?></span>
                     </div>
