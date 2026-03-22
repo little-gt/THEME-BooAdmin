@@ -8,10 +8,8 @@
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
-> 因为我现在需要准备毕业设计等内容，并且考虑到 BooAdmin 的功能已经基本上完备了，且 BUG 也修的差不多了，因此，后续可能不会很频繁的看 GitHub 以及处理维护了，请见谅。
-
 ---
-![登录页面](screenshot/screenshot0.png)
+![登录页面](https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot0.png)
 
 参与讨论：
 [Typecho 官方论坛](https://forum.typecho.org/viewtopic.php?p=62530#p62530)
@@ -29,29 +27,29 @@
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-top: 20px;">
 
 ### 控制台
-<img src="screenshot/screenshot1.png" alt="控制台仪表盘" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot1.png" alt="控制台仪表盘" style="width: 100%; border-radius: 8px;">
 
 ### 撰写文章
-<img src="screenshot/screenshot2_1.png" alt="撰写文章页面" style="width: 100%; border-radius: 8px;">
-<img src="screenshot/screenshot2_2.png" alt="撰写文章页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot2_1.png" alt="撰写文章页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot2_2.png" alt="撰写文章页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理文章
-<img src="screenshot/screenshot3.png" alt="管理文章页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot3.png" alt="管理文章页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理文件
-<img src="screenshot/screenshot4.png" alt="管理文件页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot4.png" alt="管理文件页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理标签
-<img src="screenshot/screenshot5.png" alt="管理标签页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot5.png" alt="管理标签页面" style="width: 100%; border-radius: 8px;">
 
 ### 主题设置
-<img src="screenshot/screenshot6.png" alt="主题设置页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot6.png" alt="主题设置页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理评论
-<img src="screenshot/screenshot7.png" alt="管理评论页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot7.png" alt="管理评论页面" style="width: 100%; border-radius: 8px;">
 
 ### 系统设置
-<img src="screenshot/screenshot8.png" alt="系统设置页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot8.png" alt="系统设置页面" style="width: 100%; border-radius: 8px;">
 
 </div>
 </details>
@@ -65,25 +63,25 @@
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
 
 ### 控制台
-<img src="screenshot/mobile/screenshot1.png" alt="移动端控制台" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/mobile/screenshot1.png" alt="移动端控制台" style="width: 100%; border-radius: 8px;">
 
 ### 撰写文章
-<img src="screenshot/mobile/screenshot2.png" alt="移动端撰写文章" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/mobile/screenshot2.png" alt="移动端撰写文章" style="width: 100%; border-radius: 8px;">
 
 ### 管理文章
-<img src="screenshot/mobile/screenshot3.png" alt="移动端管理文章" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/mobile/screenshot3.png" alt="移动端管理文章" style="width: 100%; border-radius: 8px;">
 
 ### 管理独立页面
-<img src="screenshot/mobile/screenshot4.png" alt="移动端管理独立页面" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/mobile/screenshot4.png" alt="移动端管理独立页面" style="width: 100%; border-radius: 8px;">
 
 ### 管理评论
-<img src="screenshot/mobile/screenshot5.png" alt="移动端管理评论" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/mobile/screenshot5.png" alt="移动端管理评论" style="width: 100%; border-radius: 8px;">
 
 ### 管理文件
-<img src="screenshot/mobile/screenshot6.png" alt="移动端主题设置" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/mobile/screenshot6.png" alt="移动端主题设置" style="width: 100%; border-radius: 8px;">
 
 ### 插件设置
-<img src="screenshot/mobile/screenshot7.png" alt="移动端管理文件" style="width: 100%; border-radius: 8px;">
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/mobile/screenshot7.png" alt="移动端管理文件" style="width: 100%; border-radius: 8px;">
 
 </div>
 </details>
@@ -182,4 +180,4 @@
 
 ---
 
-**BooAdmin** — TailwindCSS 重构，阿里云 CDN 加速，为您的 Typecho 后台注入现代化活力。
+**BooAdmin** — TailwindCSS 重构，腾讯云 CDN 加速，为您的 Typecho 后台注入现代化活力。
