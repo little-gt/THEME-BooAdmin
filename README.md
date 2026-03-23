@@ -56,6 +56,32 @@
 
 ---
 
+## 🌙 深色模式预览
+
+<details>
+<summary style="cursor: pointer; font-weight: bold; color: #3b82f6; margin-bottom: 10px;">点击展开/收起深色模式截图</summary>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-top: 20px;">
+
+### 控制台
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot1.png" alt="深色模式控制台" style="width: 100%; border-radius: 8px;">
+
+### 撰写文章
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot2.png" alt="深色模式撰写文章" style="width: 100%; border-radius: 8px;">
+
+### 管理文章
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot3.png" alt="深色模式管理文章" style="width: 100%; border-radius: 8px;">
+
+### 管理分类
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot4.png" alt="深色模式管理分类" style="width: 100%; border-radius: 8px;">
+
+### 外观编辑
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot5.png" alt="深色模式外观编辑" style="width: 100%; border-radius: 8px;">
+
+</div>
+</details>
+
+---
+
 ## 📱 移动端预览
 
 <details>
