@@ -12,7 +12,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: var(--booadmin-overlay);
         z-index: 999;
         display: none;
     }
@@ -26,8 +26,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: white;
-        border: 1px solid #e2e8f0;
+        background: var(--booadmin-surface);
+        border: 1px solid var(--booadmin-border);
         padding: 28px;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         z-index: 1000;
@@ -58,14 +58,14 @@
         margin: 0 0 8px 0;
         font-size: 20px;
         font-weight: 700;
-        color: #1a202c;
+        color: var(--booadmin-text);
         text-align: center;
     }
     
     .booadmin-copyright-popup .version {
         text-align: center;
         font-size: 12px;
-        color: #718096;
+        color: var(--booadmin-muted);
         margin: 0 0 8px 0;
     }
 
@@ -87,7 +87,7 @@
     .booadmin-copyright-popup .main-copy {
         margin: 0 0 12px 0;
         font-size: 13px;
-        color: #475569;
+        color: var(--booadmin-muted);
         line-height: 1.6;
     }
 
@@ -100,23 +100,23 @@
     .booadmin-copyright-popup .support-points li {
         margin: 0 0 8px 0;
         padding: 8px 10px;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+        background: var(--booadmin-surface-2);
+        border: 1px solid var(--booadmin-border);
         font-size: 13px;
-        color: #334155;
+        color: var(--booadmin-text);
         line-height: 1.6;
     }
 
     .booadmin-copyright-popup .donation-card {
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--booadmin-border);
         padding: 8px;
-        background: #ffffff;
+        background: var(--booadmin-surface);
     }
     
     .booadmin-copyright-popup p {
         margin: 0 0 16px 0;
         font-size: 14px;
-        color: #4a5568;
+        color: var(--booadmin-muted);
         line-height: 1.5;
         text-align: left;
     }
@@ -137,15 +137,15 @@
         border: none;
         font-size: 20px;
         cursor: pointer;
-        color: #718096;
+        color: var(--booadmin-muted);
         padding: 4px;
         line-height: 1;
         transition: all 0.2s ease;
     }
     
     .booadmin-copyright-popup .close-btn:hover {
-        color: #4a5568;
-        background-color: #f7fafc;
+        color: var(--booadmin-text);
+        background-color: var(--booadmin-surface-2);
     }
     
     .booadmin-copyright-popup .action {
@@ -158,7 +158,7 @@
     .booadmin-copyright-popup .action a {
         display: inline-block;
         padding: 10px 16px;
-        background-color: #3182ce;
+        background-color: var(--booadmin-accent);
         color: white;
         transition: all 0.2s ease;
         font-size: 13px;
@@ -167,16 +167,16 @@
     }
     
     .booadmin-copyright-popup .action a:hover {
-        background-color: #2c5282;
+        background-color: var(--booadmin-accent-hover);
     }
 
     .booadmin-copyright-popup .action a.secondary {
-        background-color: #e2e8f0;
-        color: #1f2937;
+        background-color: var(--booadmin-surface-2);
+        color: var(--booadmin-text);
     }
 
     .booadmin-copyright-popup .action a.secondary:hover {
-        background-color: #cbd5e1;
+        background-color: var(--booadmin-border-strong);
     }
     
     @media (max-width: 768px) {
@@ -231,7 +231,7 @@
             <div class="booadmin-copyright-popup" id="booadminCopyrightPopup">
                 <button class="close-btn" onclick="closePopup(); event.stopPropagation();">&times;</button>
                 <h3>关于 BooAdmin</h3>
-                <div class="version">版本 1.1.15</div>
+                <div class="version">版本 1.1.16</div>
                 <div class="content">
                     <div class="left">
                         <p class="main-copy"><strong>BooAdmin 是免费开源项目。</strong>BooAdmin 的开源维护、CDN资源分发与新功能更新都离不开您的捐助。您的支持将帮助我覆盖以下成本：</p>

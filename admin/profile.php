@@ -135,12 +135,12 @@ $stat = \Widget\Stat::alloc();
     font-size: 0.875rem;
 }
 .typecho-reform-style .message.success {
-    background-color: #DEF7EC;
-    color: #03543F;
+    background-color: var(--booadmin-success-bg);
+    color: var(--booadmin-success-text);
 }
 .typecho-reform-style .message.error {
-    background-color: #FDE8E8;
-    color: #9B1C1C;
+    background-color: var(--booadmin-error-bg);
+    color: var(--booadmin-error-text);
 }
 </style>
 

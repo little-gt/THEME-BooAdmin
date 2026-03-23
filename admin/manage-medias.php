@@ -268,24 +268,24 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
     min-width: 32px;
     height: 32px;
     padding: 0 8px;
-    background-color: white;
-    color: #4b5563; /* text-gray-600 */
+    background-color: var(--booadmin-surface);
+    color: var(--booadmin-muted);
     font-size: 0.875rem; /* text-sm */
-    border: 1px solid #e5e7eb; /* border-gray-200 */
+    border: 1px solid var(--booadmin-border);
     transition: all 0.2s;
     text-decoration: none;
 }
 
 .typecho-pager li a:hover {
-    background-color: #f3f4f6; /* bg-gray-100 */
-    color: #5865F2; /* text-discord-accent */
-    border-color: #d1d5db; /* border-gray-300 */
+    background-color: var(--booadmin-surface-2);
+    color: var(--booadmin-accent);
+    border-color: var(--booadmin-border-strong);
 }
 
 .typecho-pager li.current span {
-    background-color: #5865F2; /* bg-discord-accent */
+    background-color: var(--booadmin-accent);
     color: white;
-    border-color: #5865F2;
+    border-color: var(--booadmin-accent);
     font-weight: 600;
 }
 
@@ -306,12 +306,12 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
     position: relative;
     width: 100%;
     height: 200px;
-    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    background: linear-gradient(135deg, var(--booadmin-surface-2) 0%, var(--booadmin-border) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--booadmin-border);
 }
 
 .media-preview-link {
@@ -335,7 +335,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 }
 
 .media-preview-icon {
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    background: linear-gradient(135deg, var(--booadmin-surface-2) 0%, var(--booadmin-highlight-soft) 100%);
 }
 
 .media-card .card-comment-badge {
@@ -365,7 +365,7 @@ $attachments = \Widget\Contents\Attachment\Admin::alloc();
 .media-card .card-actions {
     margin-top: auto;
     padding: 0.75rem 1.25rem 1rem;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--booadmin-border);
 }
 </style>
 

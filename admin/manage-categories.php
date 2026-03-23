@@ -311,7 +311,10 @@ include 'common-js.php';
         });
 
         <?php if (isset($request->mid)): ?>
-        $('#mid-<?php echo $request->mid; ?>').effect('highlight', {color: '#F3F4F6'}, 1500);
+        (function () {
+            var highlightSoft = getComputedStyle(document.documentElement).getPropertyValue('--booadmin-highlight-soft').trim() || '#F3F4F6';
+            $('#mid-<?php echo $request->mid; ?>').effect('highlight', {color: highlightSoft}, 1500);
+        })();
         <?php endif; ?>
     });
 })();

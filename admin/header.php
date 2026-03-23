@@ -5,11 +5,12 @@ if (!defined('__TYPECHO_ADMIN__')) {
 
 $header = '
 <!-- Custom Styles -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.15', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.15', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'custom.css?v=1.1.15', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.15', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.15', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.16', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.16', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.16', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.1.16', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.1.16', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.16', true) . '">
 <!-- NProgress -->
 <script src="' . $options->adminStaticUrl('js', 'nprogress.js', true) . '"></script>
 <!-- TailwindCSS -->
@@ -25,12 +26,12 @@ $header = '
             extend: {
                 colors: {
                     discord: {
-                        light: "#F2F3F5",
-                        sidebar: "#E3E5E8",
-                        active: "#D4D7DC",
-                        accent: "#5865F2",
-                        text: "#2E3338",
-                        muted: "#5C5E66",
+                        light: "var(--color-discord-light)",
+                        sidebar: "var(--color-discord-sidebar)",
+                        active: "var(--color-discord-active)",
+                        accent: "var(--color-discord-accent)",
+                        text: "var(--color-discord-text)",
+                        muted: "var(--color-discord-muted)",
                     }
                 }
             }

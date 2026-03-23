@@ -194,7 +194,7 @@
                             $('<style id="highlight-animation-style">' +
                                 '@keyframes highlight-flash {' +
                                     '0%, 100% { background-color: transparent; }' +
-                                    '50% { background-color: rgba(88, 101, 242, 0.2); }' +
+                                    '50% { background-color: rgba(var(--booadmin-accent-rgb), 0.2); }' +
                                 '}' +
                             '</style>').appendTo('head');
                         }
@@ -321,27 +321,38 @@
                         var $container = $(this).closest('.relative, .group');
                         var $btn = $(this);
                         var $menu = $container.find('.dropdown-menu');
-                        
-                        // Remove group-hover based display - use JS only
-                        $menu.css('display', '');
+
+                        function setDropdownState(isOpen) {
+                            $menu.toggleClass('is-open', isOpen)
+                                .attr('aria-hidden', isOpen ? 'false' : 'true');
+                            $btn.toggleClass('active', isOpen)
+                                .attr('aria-expanded', isOpen ? 'true' : 'false');
+                        }
+
+                        function closeOtherDropdowns() {
+                            $('.btn-dropdown-toggle').not($btn).each(function() {
+                                var $otherBtn = $(this);
+                                var $otherContainer = $otherBtn.closest('.relative, .group');
+                                var $otherMenu = $otherContainer.find('.dropdown-menu');
+                                $otherMenu.removeClass('is-open').attr('aria-hidden', 'true');
+                                $otherBtn.removeClass('active').attr('aria-expanded', 'false');
+                            });
+                        }
                         
                         $btn.off('click.dropdown').on('click.dropdown', function(e) {
                             e.preventDefault();
                             e.stopPropagation();
                             
-                            var isVisible = $menu.is(':visible');
+                            var isVisible = $menu.hasClass('is-open');
                             
                             // Close all other dropdowns first
-                            $('.dropdown-menu').not($menu).hide();
-                            $('.btn-dropdown-toggle').not($btn).removeClass('active');
+                            closeOtherDropdowns();
                             
                             if (isVisible) {
-                                $menu.hide();
-                                $btn.removeClass('active');
+                                setDropdownState(false);
                                 activeDropdown = null;
                             } else {
-                                $menu.show();
-                                $btn.addClass('active');
+                                setDropdownState(true);
                                 activeDropdown = $container;
                             }
                             
@@ -353,16 +364,16 @@
                 // Close dropdown when clicking outside
                 $doc.on('click.dropdown', function(e) {
                     if (activeDropdown && !$(e.target).closest(activeDropdown).length) {
-                        $('.dropdown-menu').hide();
-                        $('.btn-dropdown-toggle').removeClass('active');
+                        $('.dropdown-menu').removeClass('is-open').attr('aria-hidden', 'true');
+                        $('.btn-dropdown-toggle').removeClass('active').attr('aria-expanded', 'false');
                         activeDropdown = null;
                     }
                 });
 
                 // Close dropdown when clicking on a menu item
                 $doc.on('click.dropdown', '.dropdown-menu a', function() {
-                    $('.dropdown-menu').hide();
-                    $('.btn-dropdown-toggle').removeClass('active');
+                    $('.dropdown-menu').removeClass('is-open').attr('aria-hidden', 'true');
+                    $('.btn-dropdown-toggle').removeClass('active').attr('aria-expanded', 'false');
                     activeDropdown = null;
                 });
 
@@ -372,9 +383,10 @@
                         var $btn = $(this);
                         var $container = $btn.closest('.relative, .group');
                         var $menu = $container.find('.dropdown-menu');
-                        
-                        // Ensure menu is initially hidden and not controlled by CSS hover
-                        $menu.hide();
+
+                        // Initialize semantic state for menu visibility.
+                        $menu.removeClass('is-open').attr('aria-hidden', 'true');
+                        $btn.attr('aria-expanded', 'false');
                     });
                 });
             })();
@@ -411,15 +423,17 @@
                 // Apply view mode to the page
                 function applyViewMode(mode) {
                     var $container = $('.operate-form').closest('.bg-white');
+                    var $tableBtn = $('.view-toggle .btn-table-view');
+                    var $cardBtn = $('.view-toggle .btn-card-view');
                     
                     if (mode === 'card') {
-                        $container.addClass('view-mode-card');
-                        $('.view-toggle .btn-table-view').removeClass('active');
-                        $('.view-toggle .btn-card-view').addClass('active');
+                        $container.addClass('view-mode-card').removeClass('view-mode-table').attr('data-view-mode', 'card');
+                        $tableBtn.removeClass('active').attr('aria-pressed', 'false');
+                        $cardBtn.addClass('active').attr('aria-pressed', 'true');
                     } else {
-                        $container.removeClass('view-mode-card');
-                        $('.view-toggle .btn-table-view').addClass('active');
-                        $('.view-toggle .btn-card-view').removeClass('active');
+                        $container.removeClass('view-mode-card').addClass('view-mode-table').attr('data-view-mode', 'table');
+                        $tableBtn.addClass('active').attr('aria-pressed', 'true');
+                        $cardBtn.removeClass('active').attr('aria-pressed', 'false');
                     }
                 }
                 

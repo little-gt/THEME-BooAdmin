@@ -123,12 +123,12 @@ include 'menu.php';
 <style>
 /* Tag selection styling */
 .tag-list li input:checked ~ div {
-    background-color: #5865F2;
+    background-color: var(--booadmin-accent);
     color: white;
-    border-color: #5865F2;
+    border-color: var(--booadmin-accent);
 }
 .tag-list li input:checked ~ div .text-xs {
-    color: #5865F2;
+    color: var(--booadmin-accent);
     background-color: white;
 }
 </style>

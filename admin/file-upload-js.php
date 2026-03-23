@@ -115,7 +115,8 @@ $(document).ready(function() {
             li = $('<li class="p-2 bg-red-50 border border-red-200 text-sm">' + fileError + '<br /><span class="text-xs text-gray-500">' + word + '</span></li>').appendTo('#file-list');
         }
 
-        li.effect('highlight', {color : '#FBC2C4'}, 2000, function () {
+        const highlightDanger = getComputedStyle(document.documentElement).getPropertyValue('--booadmin-highlight-danger').trim() || '#FBC2C4';
+        li.effect('highlight', {color : highlightDanger}, 2000, function () {
             $(this).remove();
         });
     }

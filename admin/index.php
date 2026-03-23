@@ -250,25 +250,25 @@ $chartComments = json_encode($commentsData);
                 </div>
 
                 <!-- Official Log (Compact) -->
-                 <div class="lg:col-span-3 bg-gradient-to-r from-indigo-50 via-white to-purple-50 p-5 border border-gray-100 mt-2">
+                <div class="lg:col-span-3 booadmin-news-section p-5 border mt-2">
                     <div class="flex items-center justify-between mb-4">
-                         <h3 class="text-sm font-bold text-gray-700 flex items-center">
-                            <span class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mr-3">
+                         <h3 class="booadmin-news-header-title text-sm font-bold flex items-center">
+                            <span class="booadmin-news-header-icon w-8 h-8 flex items-center justify-center mr-3">
                                 <i class="fas fa-bullhorn text-white text-xs"></i>
                             </span>
                             <?php _e('Typecho 官方动态'); ?>
                         </h3>
-                        <a href="https://typecho.org" target="_blank" class="text-xs text-indigo-500 hover:text-indigo-700 font-medium flex items-center transition-colors">
+                        <a href="https://typecho.org" target="_blank" class="booadmin-news-official-link text-xs font-medium flex items-center transition-colors">
                             <?php _e('访问官网'); ?> <i class="fas fa-external-link-alt ml-1 text-[10px]"></i>
                         </a>
                     </div>
-                    <div id="typecho-message" class="text-sm text-gray-600">
+                    <div id="typecho-message" class="booadmin-news-message text-sm">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="typecho-news-grid">
-                            <div class="flex items-center space-x-3 p-3 bg-white border border-gray-100">
-                                <div class="w-10 h-10 bg-gray-200"></div>
+                            <div class="booadmin-news-skeleton-item flex items-center space-x-3 p-3 border">
+                                <div class="booadmin-news-skeleton-icon w-10 h-10"></div>
                                 <div class="flex-1">
-                                    <div class="h-3 bg-gray-200 w-3/4 mb-2"></div>
-                                    <div class="h-2 bg-gray-100 w-1/2"></div>
+                                    <div class="booadmin-news-skeleton-line h-3 w-3/4 mb-2"></div>
+                                    <div class="booadmin-news-skeleton-line-soft h-2 w-1/2"></div>
                                 </div>
                             </div>
                         </div>
@@ -291,21 +291,40 @@ include 'common-js.php';
         var chartDays = <?php echo $chartDays; ?>;
         var chartPosts = <?php echo $chartPosts; ?>;
         var chartComments = <?php echo $chartComments; ?>;
+
+        var css = getComputedStyle(document.documentElement);
+        var chartColor = {
+            tooltipBg: css.getPropertyValue('--booadmin-chart-tooltip-bg').trim() || 'rgba(255,255,255,0.95)',
+            border: css.getPropertyValue('--booadmin-border').trim() || '#e5e7eb',
+            text: css.getPropertyValue('--booadmin-chart-text').trim() || '#374151',
+            axis: css.getPropertyValue('--booadmin-chart-axis').trim() || '#9ca3af',
+            grid: css.getPropertyValue('--booadmin-chart-grid').trim() || '#f3f4f6',
+            posts: css.getPropertyValue('--booadmin-chart-posts').trim() || '#5865F2',
+            postsSoft: css.getPropertyValue('--booadmin-chart-posts-soft').trim() || 'rgba(88, 101, 242, 0.3)',
+            postsFade: css.getPropertyValue('--booadmin-chart-posts-fade').trim() || 'rgba(88, 101, 242, 0.05)',
+            comments: css.getPropertyValue('--booadmin-chart-comments').trim() || '#3BA55C',
+            commentsSoft: css.getPropertyValue('--booadmin-chart-comments-soft').trim() || 'rgba(59, 165, 92, 0.2)',
+            commentsFade: css.getPropertyValue('--booadmin-chart-comments-fade').trim() || 'rgba(59, 165, 92, 0.02)',
+            warn: css.getPropertyValue('--booadmin-chart-warn').trim() || '#FAA61A',
+            danger: css.getPropertyValue('--booadmin-chart-danger').trim() || '#ED4245',
+            surface: css.getPropertyValue('--booadmin-surface').trim() || '#ffffff'
+        };
         
         var activityOption = {
             grid: { top: 30, right: 20, bottom: 30, left: 40, containLabel: true },
             tooltip: { 
                 trigger: 'axis',
-                backgroundColor: 'rgba(255,255,255,0.95)',
-                borderColor: '#e5e7eb',
+                backgroundColor: chartColor.tooltipBg,
+                borderColor: chartColor.border,
                 borderWidth: 1,
-                textStyle: { color: '#374151' },
+                textStyle: { color: chartColor.text },
                 formatter: function(params) {
-                    var result = '<div style="font-weight:600;margin-bottom:8px">' + params[0].axisValue + '</div>';
+                    var result = '<div class="booadmin-chart-tooltip-title">' + params[0].axisValue + '</div>';
                     params.forEach(function(item) {
-                        result += '<div style="display:flex;align-items:center;margin:4px 0">' +
-                            '<span style="display:inline-block;width:10px;height:10px;background:' + item.color + ';margin-right:8px"></span>' +
-                            item.seriesName + ': <strong style="margin-left:auto">' + item.value + '</strong></div>';
+                        result += '<div class="booadmin-chart-tooltip-row">' +
+                            '<span class="booadmin-chart-tooltip-dot" style="background:' + item.color + '"></span>' +
+                            '<span class="booadmin-chart-tooltip-label">' + item.seriesName + ':</span>' +
+                            '<strong class="booadmin-chart-tooltip-value">' + item.value + '</strong></div>';
                     });
                     return result;
                 }
@@ -315,13 +334,13 @@ include 'common-js.php';
                 data: chartDays,
                 axisLine: { show: false },
                 axisTick: { show: false },
-                axisLabel: { color: '#9ca3af', fontSize: 11 }
+                axisLabel: { color: chartColor.axis, fontSize: 11 }
             },
             yAxis: {
                 type: 'value',
                 minInterval: 1,
-                splitLine: { lineStyle: { type: 'dashed', color: '#f3f4f6' } },
-                axisLabel: { color: '#9ca3af' }
+                splitLine: { lineStyle: { type: 'dashed', color: chartColor.grid } },
+                axisLabel: { color: chartColor.axis }
             },
             series: [
                 {
@@ -331,11 +350,11 @@ include 'common-js.php';
                     smooth: true,
                     symbol: 'circle',
                     symbolSize: 8,
-                    itemStyle: { color: '#5865F2' },
+                    itemStyle: { color: chartColor.posts },
                     areaStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: 'rgba(88, 101, 242, 0.3)' },
-                            { offset: 1, color: 'rgba(88, 101, 242, 0.05)' }
+                            { offset: 0, color: chartColor.postsSoft },
+                            { offset: 1, color: chartColor.postsFade }
                         ])
                     },
                     lineStyle: { width: 3 }
@@ -347,11 +366,11 @@ include 'common-js.php';
                     smooth: true,
                     symbol: 'circle',
                     symbolSize: 8,
-                    itemStyle: { color: '#3BA55C' },
+                    itemStyle: { color: chartColor.comments },
                     areaStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: 'rgba(59, 165, 92, 0.2)' },
-                            { offset: 1, color: 'rgba(59, 165, 92, 0.02)' }
+                            { offset: 0, color: chartColor.commentsSoft },
+                            { offset: 1, color: chartColor.commentsFade }
                         ])
                     },
                     lineStyle: { width: 3 }
@@ -370,7 +389,7 @@ include 'common-js.php';
                      radius: ['40%', '70%'],
                      avoidLabelOverlap: false,
                      itemStyle: {
-                         borderColor: '#fff',
+                         borderColor: chartColor.surface,
                          borderWidth: 2
                      },
 
@@ -380,10 +399,10 @@ include 'common-js.php';
                      },
                      labelLine: { show: false },
                      data: [
-                         { value: <?php echo $stat->myPublishedPostsNum; ?>, name: '<?php _e('文章'); ?>', itemStyle: { color: '#5865F2' } },
-                         { value: <?php echo $stat->myPublishedCommentsNum; ?>, name: '<?php _e('评论'); ?>', itemStyle: { color: '#3BA55C' } },
-                         { value: <?php echo $stat->categoriesNum; ?>, name: '<?php _e('分类'); ?>', itemStyle: { color: '#FAA61A' } },
-                         { value: <?php echo $stat->waitingCommentsNum; ?>, name: '<?php _e('待审'); ?>', itemStyle: { color: '#ED4245' } }
+                         { value: <?php echo $stat->myPublishedPostsNum; ?>, name: '<?php _e('文章'); ?>', itemStyle: { color: chartColor.posts } },
+                         { value: <?php echo $stat->myPublishedCommentsNum; ?>, name: '<?php _e('评论'); ?>', itemStyle: { color: chartColor.comments } },
+                         { value: <?php echo $stat->categoriesNum; ?>, name: '<?php _e('分类'); ?>', itemStyle: { color: chartColor.warn } },
+                         { value: <?php echo $stat->waitingCommentsNum; ?>, name: '<?php _e('待审'); ?>', itemStyle: { color: chartColor.danger } }
                      ]
                  }
              ]
@@ -402,17 +421,18 @@ include 'common-js.php';
         });
 
         var newsGrid = $('#typecho-news-grid'), cache = window.sessionStorage,
-            html = cache ? cache.getItem('feed_v2') : '',
+            NEWS_CACHE_KEY = 'feed_v3',
+            html = cache ? cache.getItem(NEWS_CACHE_KEY) : '',
             update = cache ? cache.getItem('update') : '';
         
         var newsIcons = ['fa-newspaper', 'fa-code-branch', 'fa-rocket', 'fa-star', 'fa-bolt', 'fa-gift'];
-        var newsColors = [
-            'from-blue-500 to-indigo-500',
-            'from-green-500 to-teal-500', 
-            'from-purple-500 to-pink-500',
-            'from-orange-500 to-red-500',
-            'from-cyan-500 to-blue-500',
-            'from-rose-500 to-pink-500'
+        var newsBadgeClasses = [
+            'booadmin-news-badge-1',
+            'booadmin-news-badge-2',
+            'booadmin-news-badge-3',
+            'booadmin-news-badge-4',
+            'booadmin-news-badge-5',
+            'booadmin-news-badge-6'
         ];
 
         if (!!html) {
@@ -423,32 +443,32 @@ include 'common-js.php';
                 for (var i = 0; i < o.length && i < 6; i++) {
                     var item = o[i];
                     var icon = newsIcons[i % newsIcons.length];
-                    var color = newsColors[i % newsColors.length];
-                    html += '<a href="' + item.link + '" target="_blank" class="group flex items-center space-x-3 p-3 bg-white hover:bg-gray-50 border border-gray-100 hover:border-indigo-200 transition-all">' +
-                        '<div class="w-10 h-10 bg-gradient-to-br ' + color + ' flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">' +
-                        '<i class="fas ' + icon + ' text-white text-sm"></i></div>' +
+                    var badgeClass = newsBadgeClasses[i % newsBadgeClasses.length];
+                    html += '<a href="' + item.link + '" target="_blank" class="booadmin-news-item group flex items-center space-x-3 p-3 transition-all">' +
+                        '<div class="booadmin-news-icon w-10 h-10 ' + badgeClass + ' flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">' +
+                        '<i class="fas ' + icon + ' booadmin-news-icon-glyph text-sm"></i></div>' +
                         '<div class="flex-1 min-w-0">' +
-                        '<p class="text-sm font-medium text-gray-700 group-hover:text-indigo-600 truncate transition-colors">' + item.title + '</p>' +
-                        '<p class="text-xs text-gray-400 mt-0.5">' + item.date + '</p>' +
+                        '<p class="booadmin-news-title text-sm font-medium truncate transition-colors">' + item.title + '</p>' +
+                        '<p class="booadmin-news-meta text-xs mt-0.5">' + item.date + '</p>' +
                         '</div>' +
-                        '<i class="fas fa-chevron-right text-gray-300 group-hover:text-indigo-400 text-xs transition-colors"></i></a>';
+                        '<i class="fas fa-chevron-right booadmin-news-arrow text-xs transition-colors"></i></a>';
 
                 }
                 
                 if (o.length === 0) {
-                    html = '<div class="col-span-full text-center py-4 text-gray-400"><i class="fas fa-inbox mr-2"></i><?php _e('暂无动态'); ?></div>';
+                    html = '<div class="col-span-full text-center py-4 booadmin-news-empty"><i class="fas fa-inbox mr-2"></i><?php _e('暂无动态'); ?></div>';
                 }
 
                 newsGrid.html(html);
-                cache.setItem('feed_v2', html);
+                cache.setItem(NEWS_CACHE_KEY, html);
             }, 'json');
         }
 
         function applyUpdate(update) {
             if (update.available) {
-                $('<div class="bg-blue-50 text-blue-700 p-3 mb-4 text-sm"><i class="fas fa-info-circle mr-1"></i> '
+                $('<div class="booadmin-update-banner p-3 mb-4 text-sm"><i class="fas fa-info-circle mr-1"></i> '
                     + '<?php _e('您当前使用的版本是 %s'); ?>'.replace('%s', update.current) 
-                    + ' <a href="' + update.link + '" target="_blank" class="font-bold underline ml-2">'
+                    + ' <a href="' + update.link + '" target="_blank" class="booadmin-update-link font-bold underline ml-2">'
                     + '<?php _e('官方最新版本是 %s'); ?>'.replace('%s', update.latest) + '</a></div>')
                     .insertBefore('.typecho-page-main, .max-w-7xl');
             }
