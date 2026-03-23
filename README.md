@@ -4,19 +4,26 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.16-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.16--fix-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
----
 ![登录页面](https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot0.png)
 
 参与讨论：
 [Typecho 官方论坛](https://forum.typecho.org/viewtopic.php?p=62530#p62530)
 
-配套插件：
-[找回密码插件](https://github.com/little-gt/PLUGION-Passport)
-[通行秘钥插件](https://github.com/little-gt/PLUGION-Passkey)
+---
+
+## 🔗 项目地址
+
+为方便快速下载主题、插件和相关依赖，提供以下国内/国际地址：
+
+| 项目 | 类型 | 国内地址 | 国际地址 |
+| ---- | ---- | ---- | ---- |
+| BooAdmin | 后台主题 | https://cnb.cool/little-gt/BooAdmin | https://github.com/little-gt/THEME-BooAdmin |
+| Passkey | 配套插件 | https://cnb.cool/little-gt/Passkey | https://github.com/little-gt/PLUGION-Passkey |
+| Passport | 配套插件 | https://cnb.cool/little-gt/Passport | https://github.com/little-gt/PLUGION-Passport |
 
 ---
 
@@ -114,7 +121,7 @@
 
 ---
 
-## 🚀 v1.1.16 版本更新速递
+## 🚀 v1.1.16-fix 版本更新速递
 
 ### 特性优化
 
@@ -152,6 +159,7 @@
 - 修复表格容器四周边框在深色模式下的显示异常
 - 修复卡片视图在深色模式下背景色不适配的问题
 - 修复新闻信息区域在深色模式下的梯度渐变问题
+- 修复在样式文件合并时候，import 没有提前的问题
 
 
 
@@ -182,11 +190,10 @@
 
 如果您在使用过程中遇到任何问题，请优先尝试以下解决方案：
 
-1. **资源加载缓慢**：这通常是网络问题，BooAdmin 已使用阿里云 CDN 加速，国内用户应该能获得最佳速度。如果仍有问题，请检查您的网络连接。
+1. **资源加载缓慢**：这通常是网络问题，BooAdmin 已使用 CDN 加速，国内用户应该能获得最佳速度。如果仍有问题，请检查您的网络连接。
 2. **样式显示不完整**：请确保您的 `admin/css/` 目录中包含所有样式文件，并清理浏览器缓存。
 3. **JavaScript 报错**：请确保没有其他插件修改了全局 JavaScript 环境，并查看浏览器控制台的具体错误信息。
-4. **移动端顶部横条**：移动端顶部的横条（header）为兼容性设计，如果移除，会导致您的插件无法使用甚至 Typecho 的 JavaScript 直接报错。请勿修改或移除该设计元素，其作为侧边栏收缩之后的相对定位和 JavaScript 注入点存在。这就是为什么 PC 端部没有设计侧边栏收缩的原因。
-5. **插件配合使用**：建议配合插件一同使用，插件和主题深度集成，可以获得更好的功能体验和视觉一致性。
+4. **插件配合使用**：建议配合插件一同使用，插件和主题深度集成，可以获得更好的功能体验和视觉一致性。
 
 ---
 
