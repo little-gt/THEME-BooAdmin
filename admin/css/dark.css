@@ -1,0 +1,381 @@
+/*
+ * BooAdmin dark theme overrides.
+ * Uses the same semantic tokens as light.css for maintainability.
+ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+
+        --booadmin-bg: #0f1217;
+        --booadmin-sidebar: #111722;
+        --booadmin-active: #273246;
+        --booadmin-surface: #171b22;
+        --booadmin-surface-2: #1d232d;
+        --booadmin-surface-muted: #141922;
+        --booadmin-border: #2b3442;
+        --booadmin-border-strong: #3a475a;
+        --booadmin-text: #e8edf3;
+        --booadmin-muted: #9aa7b7;
+        --booadmin-placeholder: #8694a6;
+        --booadmin-on-accent: #ffffff;
+
+        --booadmin-control-bg: #263041;
+        --booadmin-control-bg-hover: #2d3a4f;
+        --booadmin-control-disabled-bg: #141922;
+        --booadmin-control-disabled-text: #8694a6;
+        --booadmin-focus-ring: rgba(122, 139, 255, 0.32);
+        --booadmin-danger-strong: #a94a4a;
+
+        --booadmin-token-bg: #263041;
+        --booadmin-token-bg-selected: #2d3a4f;
+        --booadmin-token-text: #e8edf3;
+        --booadmin-token-remove: #9aa7b7;
+        --booadmin-token-remove-hover: #ff8b8b;
+        --booadmin-token-dropdown-hover: #1d232d;
+        --booadmin-token-dropdown-selected-bg: #273246;
+        --booadmin-token-dropdown-selected-text: #e8edf3;
+
+        --booadmin-table-head: #151c28;
+        --booadmin-table-row-odd: #151a22;
+        --booadmin-table-row-even: #111722;
+        --booadmin-table-row-hover: #1d2532;
+        --booadmin-accent: #7a8bff;
+        --booadmin-accent-hover: #90a0ff;
+        --booadmin-accent-rgb: 122, 139, 255;
+        --booadmin-highlight-soft: #1b2230;
+        --booadmin-highlight-danger: #5e2f37;
+        --booadmin-selection-bg: #273246;
+        --booadmin-selection-border: #3a475a;
+
+        --booadmin-chart-text: #d9e1ec;
+        --booadmin-chart-axis: #8f9db0;
+        --booadmin-chart-grid: #2a3342;
+        --booadmin-chart-tooltip-bg: rgba(17, 23, 34, 0.95);
+        --booadmin-chart-posts: #7a8bff;
+        --booadmin-chart-posts-soft: rgba(122, 139, 255, 0.35);
+        --booadmin-chart-posts-fade: rgba(122, 139, 255, 0.08);
+        --booadmin-chart-comments: #66c787;
+        --booadmin-chart-comments-soft: rgba(102, 199, 135, 0.28);
+        --booadmin-chart-comments-fade: rgba(102, 199, 135, 0.05);
+        --booadmin-chart-warn: #ffc766;
+        --booadmin-chart-danger: #ff7b7b;
+
+        --booadmin-success-bg: #203f2b;
+        --booadmin-success-text: #8fdc8f;
+        --booadmin-error-bg: #4c2428;
+        --booadmin-error-text: #ffc0c0;
+
+        --booadmin-success: #8fdc8f;
+        --booadmin-warning: #ffd37a;
+        --booadmin-danger: #ff8b8b;
+        --booadmin-info: #76a2ff;
+        --booadmin-info-hover: #9fb8ff;
+        --booadmin-info-bg: #1a2232;
+        --booadmin-warning-bg: #43381d;
+        --booadmin-warning-text: #ffd37a;
+        --booadmin-success-bg-alt: #203f2b;
+        --booadmin-success-text-strong: #8fdc8f;
+        --booadmin-danger-hover: #ff9a9a;
+        --booadmin-danger-active: #ffb0b0;
+        --booadmin-danger-disabled: #c76f75;
+        --booadmin-link: #7a8bff;
+        --booadmin-link-hover: #90a0ff;
+        --booadmin-link-active: #a7b4ff;
+        --booadmin-link-disabled: #7382c4;
+        --booadmin-link-soft-bg: #273246;
+        --booadmin-link-soft-hover: #34445c;
+        --booadmin-accent-active: #a7b4ff;
+        --booadmin-highlight-warm: #2f2a1d;
+        --booadmin-overlay-solid: #000000;
+        --booadmin-nav-bg: #111722;
+        --booadmin-nav-bg-hover: #171f2c;
+        --booadmin-nav-border: #2b3442;
+        --booadmin-overlay: rgba(0, 0, 0, 0.7);
+        --booadmin-hero-overlay: rgba(0, 0, 0, 0.62);
+
+        --color-discord-light: var(--booadmin-bg);
+        --color-discord-sidebar: var(--booadmin-sidebar);
+        --color-discord-active: var(--booadmin-active);
+        --color-discord-accent: var(--booadmin-accent);
+        --color-discord-text: var(--booadmin-text);
+        --color-discord-muted: var(--booadmin-muted);
+    }
+
+    html,
+    body,
+    body.body-100,
+    body:not(.body-100),
+    main,
+    .bg-discord-light {
+        background-color: var(--booadmin-bg) !important;
+        color: var(--booadmin-text) !important;
+    }
+
+    a {
+        color: var(--booadmin-accent);
+    }
+
+    a:hover {
+        color: var(--booadmin-accent-hover);
+    }
+
+    .bg-white {
+        background-color: var(--booadmin-surface) !important;
+    }
+
+    .bg-gray-50 {
+        background-color: var(--booadmin-surface-muted) !important;
+    }
+
+    .bg-gray-100 {
+        background-color: var(--booadmin-highlight-soft) !important;
+    }
+
+    .bg-gray-200 {
+        background-color: var(--booadmin-active) !important;
+    }
+
+    .bg-gray-300 {
+        background-color: var(--booadmin-link-soft-bg) !important;
+    }
+
+    .text-discord-text,
+    .text-gray-900,
+    .text-gray-800,
+    .text-gray-700,
+    .text-gray-600 {
+        color: var(--booadmin-text) !important;
+    }
+
+    .text-discord-muted,
+    .text-gray-300,
+    .text-gray-500,
+    .text-gray-400 {
+        color: var(--booadmin-muted) !important;
+    }
+
+    .border,
+    .border-gray-100,
+    .border-gray-200,
+    .border-gray-300,
+    .border-dashed {
+        border-color: var(--booadmin-border) !important;
+    }
+
+    .bg-discord-sidebar {
+        background-color: var(--color-discord-sidebar) !important;
+    }
+
+    .bg-discord-active {
+        background-color: var(--color-discord-active) !important;
+    }
+
+    .text-discord-accent,
+    .hover\:text-discord-accent:hover {
+        color: var(--booadmin-accent) !important;
+    }
+
+    .bg-discord-accent,
+    .hover\:bg-discord-accent:hover {
+        background-color: var(--booadmin-accent) !important;
+    }
+
+    .hover\:bg-gray-50:hover {
+        background-color: var(--booadmin-highlight-soft) !important;
+    }
+
+    .hover\:bg-gray-100:hover {
+        background-color: var(--booadmin-surface-2) !important;
+    }
+
+    .hover\:bg-gray-300:hover {
+        background-color: var(--booadmin-link-soft-hover) !important;
+    }
+
+    .hover\:text-discord-text:hover {
+        color: var(--booadmin-text) !important;
+    }
+
+    .hover\:text-red-500:hover {
+        color: var(--booadmin-danger) !important;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    textarea,
+    select,
+    .typecho-option input[type="text"],
+    .typecho-option input[type="password"],
+    .typecho-option input[type="email"],
+    .typecho-option input[type="url"],
+    .typecho-option input[type="number"],
+    .typecho-option textarea {
+        background-color: var(--booadmin-surface-2) !important;
+        border-color: var(--booadmin-border) !important;
+        color: var(--booadmin-text) !important;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: var(--booadmin-placeholder) !important;
+    }
+
+    input[type="text"]:disabled,
+    input[type="text"]:read-only,
+    input[type="url"]:disabled,
+    input[type="url"]:read-only,
+    input[type="password"]:disabled,
+    input[type="password"]:read-only,
+    input[type="email"]:disabled,
+    input[type="email"]:read-only,
+    input[type="number"]:disabled,
+    input[type="number"]:read-only,
+    textarea:disabled,
+    textarea:read-only {
+        background-color: var(--booadmin-surface-muted) !important;
+    }
+
+    .btn,
+    .btn-xs,
+    .btn-s,
+    .btn-l,
+    #ui-datepicker-div .ui-datepicker-current,
+    #ui-datepicker-div .ui-datepicker-close {
+        background-color: var(--booadmin-control-bg) !important;
+        color: var(--booadmin-text) !important;
+    }
+
+    .btn:hover,
+    #ui-datepicker-div .ui-datepicker-current:hover,
+    #ui-datepicker-div .ui-datepicker-close:hover {
+        background-color: var(--booadmin-control-bg-hover) !important;
+    }
+
+    .primary,
+    .btn.primary {
+        background-color: var(--booadmin-accent) !important;
+        color: var(--booadmin-on-accent) !important;
+    }
+
+    .primary:hover,
+    .btn.primary:hover {
+        background-color: var(--booadmin-accent-hover) !important;
+    }
+
+    .btn-warn {
+        background-color: var(--booadmin-danger-strong) !important;
+        color: var(--booadmin-on-accent) !important;
+    }
+
+    .dropdown-menu {
+        background: var(--booadmin-surface) !important;
+        border-color: var(--booadmin-border) !important;
+    }
+
+    .dropdown-menu a {
+        color: var(--booadmin-text) !important;
+    }
+
+    .dropdown-menu a:hover {
+        background: var(--booadmin-surface-2) !important;
+    }
+
+    .typecho-pager li a,
+    .typecho-pager li span {
+        background-color: var(--booadmin-surface) !important;
+        color: var(--booadmin-muted) !important;
+        border-color: var(--booadmin-border) !important;
+    }
+
+    .typecho-pager li a:hover {
+        background-color: var(--booadmin-highlight-soft) !important;
+        color: var(--booadmin-accent) !important;
+        border-color: var(--booadmin-border-strong) !important;
+    }
+
+    .typecho-pager li.current span {
+        background-color: var(--booadmin-accent) !important;
+        border-color: var(--booadmin-accent) !important;
+        color: var(--booadmin-on-accent) !important;
+    }
+
+    .table-wrapper,
+    table,
+    .typecho-list-table,
+    .typecho-list-table th,
+    .typecho-list-table td {
+        border-color: var(--booadmin-border) !important;
+    }
+
+    .typecho-list-table thead th {
+        background-color: var(--booadmin-table-head) !important;
+        color: var(--booadmin-text) !important;
+    }
+
+    .typecho-list-table tbody tr:nth-child(odd) {
+        background-color: var(--booadmin-table-row-odd) !important;
+    }
+
+    .typecho-list-table tbody tr:nth-child(even) {
+        background-color: var(--booadmin-table-row-even) !important;
+    }
+
+    .typecho-list-table tbody tr:hover {
+        background-color: var(--booadmin-table-row-hover) !important;
+    }
+
+    .message.notice,
+    .notice {
+        background: var(--booadmin-warning-bg) !important;
+        color: var(--booadmin-warning-text) !important;
+    }
+
+    .message.error,
+    .error,
+    .typecho-reform-style .message.error {
+        background: var(--booadmin-error-bg) !important;
+        color: var(--booadmin-error-text) !important;
+    }
+
+    .message.success,
+    .success,
+    .typecho-reform-style .message.success {
+        background: var(--booadmin-success-bg-alt) !important;
+        color: var(--booadmin-success-text-strong) !important;
+    }
+
+    .warning {
+        color: var(--booadmin-warning) !important;
+    }
+
+    .comment-modal,
+    [class$="-confirm-modal"],
+    [id$="-confirm-modal"] {
+        background: var(--booadmin-overlay) !important;
+    }
+
+    .comment-modal-content,
+    .booadmin-copyright-popup {
+        background: var(--booadmin-surface) !important;
+        border-color: var(--booadmin-border) !important;
+        color: var(--booadmin-text) !important;
+    }
+
+    #admin-footer {
+        background-color: var(--booadmin-nav-bg) !important;
+        border-top-color: var(--booadmin-border) !important;
+        color: var(--booadmin-muted) !important;
+    }
+
+    #nprogress .bar {
+        background: var(--booadmin-accent) !important;
+    }
+
+    #nprogress .spinner-icon {
+        border-top-color: var(--booadmin-accent) !important;
+        border-left-color: var(--booadmin-accent) !important;
+    }
+}

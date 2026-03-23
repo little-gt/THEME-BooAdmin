@@ -82,8 +82,8 @@ function getAvatar($mail, $name, $size = 48, $className = '') {
     // 对cookie键名进行安全转义，避免注入
     $safeCookieKey = addslashes($cookieKey);
     $html = '<div class="relative ' . $className . ' ' . $sizeClass . ' flex-shrink-0">';
-    $html .= '<img src="' . $gravatarUrl . '" alt="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" class="w-full h-full object-cover border border-gray-200" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\'; document.cookie=\'' . $safeCookieKey . '=1; path=/; max-age=' . $cookieExpire . '\'" />';
-    $html .= '<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold ' . $textSize . ' border border-gray-200 absolute inset-0 hidden">' . htmlspecialchars($firstChar, ENT_QUOTES, 'UTF-8') . '</div>';
+    $html .= '<img src="' . $gravatarUrl . '" alt="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" class="w-full h-full object-cover border border-gray-200" onerror="this.classList.add(\'booadmin-avatar-image-hidden\'); this.nextElementSibling.classList.add(\'is-visible\'); document.cookie=\'' . $safeCookieKey . '=1; path=/; max-age=' . $cookieExpire . '\'" />';
+    $html .= '<div class="booadmin-avatar-fallback w-full h-full items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold ' . $textSize . ' border border-gray-200 absolute inset-0">' . htmlspecialchars($firstChar, ENT_QUOTES, 'UTF-8') . '</div>';
     $html .= '</div>';
     
     return $html;

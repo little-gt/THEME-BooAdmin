@@ -456,24 +456,24 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     min-width: 32px;
     height: 32px;
     padding: 0 8px;
-    background-color: white;
-    color: #4b5563; /* text-gray-600 */
+    background-color: var(--booadmin-surface);
+    color: var(--booadmin-muted);
     font-size: 0.875rem; /* text-sm */
-    border: 1px solid #e5e7eb; /* border-gray-200 */
+    border: 1px solid var(--booadmin-border);
     transition: all 0.2s;
     text-decoration: none;
 }
 
 .typecho-pager li a:hover {
-    background-color: #f3f4f6; /* bg-gray-100 */
-    color: #5865F2; /* text-discord-accent */
-    border-color: #d1d5db; /* border-gray-300 */
+    background-color: var(--booadmin-surface-2);
+    color: var(--booadmin-accent);
+    border-color: var(--booadmin-border-strong);
 }
 
 .typecho-pager li.current span {
-    background-color: #5865F2; /* bg-discord-accent */
+    background-color: var(--booadmin-accent);
     color: white;
-    border-color: #5865F2;
+    border-color: var(--booadmin-accent);
     font-weight: 600;
 }
 
@@ -513,8 +513,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     position: relative;
     display: flex;
     flex-direction: column;
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: var(--booadmin-surface);
+    border: 1px solid var(--booadmin-border);
     padding: 1rem;
     min-height: 340px;
     transition: all 0.2s;
@@ -522,7 +522,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 .content-card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: #5865F2;
+    border-color: var(--booadmin-accent);
 }
 
 .card-checkbox {
@@ -547,7 +547,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 .card-title {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--booadmin-text);
     margin-bottom: 0.25rem;
 }
 
@@ -557,7 +557,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     gap: 0.75rem;
     margin-bottom: 0.75rem;
     font-size: 0.75rem;
-    color: #6b7280;
+    color: var(--booadmin-muted);
 }
 
 .card-meta-item {
@@ -575,7 +575,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     margin-bottom: 0.75rem;
     min-height: 100px;
     padding: 0.75rem;
-    background: #f9fafb;
+    background: var(--booadmin-surface-2);
     font-size: 0.875rem;
     line-height: 1.5;
     max-height: 150px;
@@ -589,19 +589,19 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     margin-top: auto;
     font-size: 0.75rem;
     padding-top: 0.75rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--booadmin-border);
 }
 
 .card-actions a {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    color: #6b7280;
+    color: var(--booadmin-muted);
     transition: color 0.2s;
 }
 
 .card-actions a:hover {
-    color: #5865F2;
+    color: var(--booadmin-accent);
 }
 
 .card-actions a i {
@@ -616,7 +616,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: var(--booadmin-overlay);
     z-index: 9999;
     align-items: center;
     justify-content: center;
@@ -628,8 +628,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 }
 
 .original-comment {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
+    background: var(--booadmin-surface-2);
+    border: 1px solid var(--booadmin-border);
     padding: 1rem;
     margin-bottom: 1rem;
 }
@@ -648,18 +648,18 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 .original-comment-author {
     font-weight: 600;
-    color: #1f2937;
+    color: var(--booadmin-text);
 }
 
 .original-comment-meta {
     font-size: 0.75rem;
-    color: #6b7280;
+    color: var(--booadmin-muted);
 }
 
 .original-comment-content {
     font-size: 0.875rem;
     line-height: 1.5;
-    color: #4b5563;
+    color: var(--booadmin-muted);
 }
 
 
@@ -730,7 +730,7 @@ function openReplyModal(commentData, actionUrl) {
         }
         
         if (gravatarUrl) {
-            gravatarHtml = '<div class="relative w-8 h-8"><img src="' + gravatarUrl + '" alt="' + commentData.author + '" class="w-full h-full object-cover border border-gray-200" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" /><div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xs border border-gray-200 absolute inset-0 hidden">' + authorFirstChar + '</div></div>';
+            gravatarHtml = '<div class="relative w-8 h-8"><img src="' + gravatarUrl + '" alt="' + commentData.author + '" class="w-full h-full object-cover border border-gray-200" onerror="this.classList.add(\'booadmin-avatar-image-hidden\'); this.nextElementSibling.classList.add(\'is-visible\');" /><div class="booadmin-avatar-fallback w-full h-full items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xs border border-gray-200 absolute inset-0">' + authorFirstChar + '</div></div>';
         } else {
             gravatarHtml = '<div class="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white font-bold text-xs border border-gray-200">' + authorFirstChar + '</div>';
         }

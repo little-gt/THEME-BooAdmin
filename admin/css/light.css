@@ -1,0 +1,190 @@
+/*
+ * BooAdmin light theme tokens and shared color system.
+ * This file is the source of truth for semantic colors.
+ */
+:root {
+    color-scheme: light;
+
+    /* Semantic tokens */
+    --booadmin-bg: #f2f3f5;
+    --booadmin-sidebar: #e3e5e8;
+    --booadmin-active: #d4d7dc;
+    --booadmin-surface: #ffffff;
+    --booadmin-surface-2: #f9fafb;
+    --booadmin-surface-muted: #f3f4f6;
+    --booadmin-border: #e5e7eb;
+    --booadmin-border-strong: #d1d5db;
+    --booadmin-text: #2e3338;
+    --booadmin-muted: #5c5e66;
+    --booadmin-placeholder: #9ca3af;
+    --booadmin-on-accent: #ffffff;
+
+    --booadmin-control-bg: #f3f4f6;
+    --booadmin-control-bg-hover: #e5e7eb;
+    --booadmin-control-disabled-bg: #f3f4f6;
+    --booadmin-control-disabled-text: #9ca3af;
+    --booadmin-focus-ring: rgba(88, 101, 242, 0.22);
+    --booadmin-danger-strong: #a4403f;
+
+    --booadmin-token-bg: #eef2ff;
+    --booadmin-token-bg-selected: #dbe4ff;
+    --booadmin-token-text: #2e3338;
+    --booadmin-token-remove: #5c5e66;
+    --booadmin-token-remove-hover: #dc2626;
+    --booadmin-token-dropdown-hover: #f3f4f6;
+    --booadmin-token-dropdown-selected-bg: #d8e7ee;
+    --booadmin-token-dropdown-selected-text: #2e3338;
+
+    --booadmin-table-head: #f9fafb;
+    --booadmin-table-row-odd: #ffffff;
+    --booadmin-table-row-even: #f9fafb;
+    --booadmin-table-row-hover: #f3f4f6;
+    --booadmin-accent: #5865f2;
+    --booadmin-accent-hover: #4752c4;
+    --booadmin-accent-rgb: 88, 101, 242;
+    --booadmin-highlight-soft: #f3f4f6;
+    --booadmin-highlight-danger: #fbc2c4;
+    --booadmin-selection-bg: #eef2ff;
+    --booadmin-selection-border: #c7d2fe;
+
+    --booadmin-chart-text: #374151;
+    --booadmin-chart-axis: #9ca3af;
+    --booadmin-chart-grid: #f3f4f6;
+    --booadmin-chart-tooltip-bg: rgba(255, 255, 255, 0.95);
+    --booadmin-chart-posts: #5865f2;
+    --booadmin-chart-posts-soft: rgba(88, 101, 242, 0.3);
+    --booadmin-chart-posts-fade: rgba(88, 101, 242, 0.05);
+    --booadmin-chart-comments: #3ba55c;
+    --booadmin-chart-comments-soft: rgba(59, 165, 92, 0.2);
+    --booadmin-chart-comments-fade: rgba(59, 165, 92, 0.02);
+    --booadmin-chart-warn: #faa61a;
+    --booadmin-chart-danger: #ed4245;
+
+    --booadmin-success-bg: #def7ec;
+    --booadmin-success-text: #03543f;
+    --booadmin-error-bg: #fde8e8;
+    --booadmin-error-text: #9b1c1c;
+
+    --booadmin-success: #16a34a;
+    --booadmin-warning: #ea580c;
+    --booadmin-danger: #dc2626;
+    --booadmin-info: #2563eb;
+    --booadmin-info-hover: #1e40af;
+    --booadmin-info-bg: #eff6ff;
+    --booadmin-warning-bg: #fff6bf;
+    --booadmin-warning-text: #8a6d3b;
+    --booadmin-success-bg-alt: #e6efc2;
+    --booadmin-success-text-strong: #264409;
+    --booadmin-danger-hover: #a4403f;
+    --booadmin-danger-active: #9c3e3c;
+    --booadmin-danger-disabled: #c1605e;
+    --booadmin-link: #467b96;
+    --booadmin-link-hover: #499bc3;
+    --booadmin-link-active: #39647a;
+    --booadmin-link-disabled: #508cab;
+    --booadmin-link-soft-bg: #d8e7ee;
+    --booadmin-link-soft-hover: #a5cadc;
+    --booadmin-accent-active: #3c45a5;
+    --booadmin-highlight-warm: #fffbcc;
+    --booadmin-overlay-solid: #000000;
+    --booadmin-nav-bg: #292d33;
+    --booadmin-nav-bg-hover: #202328;
+    --booadmin-nav-border: #383d45;
+    --booadmin-overlay: rgba(0, 0, 0, 0.5);
+    --booadmin-hero-overlay: rgba(0, 0, 0, 0.58);
+
+    /* Legacy and utility aliases for easier migration */
+    --color-discord-light: var(--booadmin-bg);
+    --color-discord-sidebar: var(--booadmin-sidebar);
+    --color-discord-active: var(--booadmin-active);
+    --color-discord-accent: var(--booadmin-accent);
+    --color-discord-text: var(--booadmin-text);
+    --color-discord-muted: var(--booadmin-muted);
+}
+
+html,
+body,
+body.body-100,
+body:not(.body-100),
+.bg-discord-light {
+    background-color: var(--booadmin-bg);
+    color: var(--booadmin-text);
+}
+
+/* Common components that are repeatedly styled inline in PHP pages */
+.typecho-pager li a,
+.typecho-pager li span {
+    background-color: var(--booadmin-surface);
+    color: var(--booadmin-muted);
+    border-color: var(--booadmin-border);
+}
+
+.typecho-pager li a:hover {
+    background-color: var(--booadmin-surface-2);
+    color: var(--booadmin-accent);
+    border-color: var(--booadmin-border-strong);
+}
+
+.typecho-pager li.current span {
+    background-color: var(--booadmin-accent);
+    color: var(--booadmin-on-accent);
+    border-color: var(--booadmin-accent);
+}
+
+.comment-modal,
+[class$="-confirm-modal"],
+[id$="-confirm-modal"] {
+    background: var(--booadmin-overlay);
+}
+
+.comment-modal-content,
+.booadmin-copyright-popup {
+    background: var(--booadmin-surface);
+    border-color: var(--booadmin-border);
+    color: var(--booadmin-text);
+}
+
+.typecho-option span,
+.typecho-option .description,
+.typecho-option small {
+    color: var(--booadmin-muted);
+}
+
+.typecho-reform-style .message.success {
+    background-color: var(--booadmin-success-bg);
+    color: var(--booadmin-success-text);
+}
+
+.typecho-reform-style .message.error {
+    background-color: var(--booadmin-error-bg);
+    color: var(--booadmin-error-text);
+}
+
+/* Keep utility classes aligned with semantic tokens */
+.bg-white {
+    background-color: var(--booadmin-surface);
+}
+
+.border,
+.border-gray-100,
+.border-gray-200,
+.border-gray-300,
+.border-dashed {
+    border-color: var(--booadmin-border);
+}
+
+.text-discord-text {
+    color: var(--booadmin-text);
+}
+
+.text-discord-muted {
+    color: var(--booadmin-muted);
+}
+
+.text-discord-accent {
+    color: var(--booadmin-accent);
+}
+
+.bg-discord-accent {
+    background-color: var(--booadmin-accent);
+}

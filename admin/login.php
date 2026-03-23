@@ -21,7 +21,7 @@ include 'header.php';
 <div class="min-h-screen flex bg-discord-light text-discord-text">
     <!-- Left Side: Hero Image -->
     <div class="hidden md:flex md:w-1/2 flex-col justify-center items-center bg-cover bg-center relative" style="background-image: url('https://cdn.garfieldtom.cool/img/wldairy/poster/horizontal/%E9%81%87%E8%A7%81%E4%BD%A0%E7%9A%84%E7%8C%AB_%E9%82%A3%E4%B8%80%E5%A4%A9.jpg');">
-        <div class="absolute inset-0 pointer-events-none" style="background-color: rgba(0, 0, 0, 0.58);"></div>
+        <div class="absolute inset-0 pointer-events-none" style="background-color: var(--booadmin-hero-overlay);"></div>
         <div class="relative z-10 text-white p-12 text-center">
             <h1 class="text-4xl font-bold mb-4"><?php _e('BooAdmin'); ?></h1>
             <p class="text-lg opacity-90"><?php _e('一个现代化、简洁且强大的 Typecho 后台主题'); ?></p>
@@ -182,17 +182,20 @@ $(document).ready(function () {
 document.addEventListener('DOMContentLoaded', function () {
     var btn = document.getElementById('passkey-login-btn');
     if (!btn) return;
+    var rootStyle = getComputedStyle(document.documentElement);
+    var accent = rootStyle.getPropertyValue('--booadmin-accent').trim() || '#5865f2';
+    var accentHover = rootStyle.getPropertyValue('--booadmin-accent-hover').trim() || '#4752c4';
     // 强制修正按钮样式
-    btn.style.setProperty('background-color', '#5865f2', 'important');
+    btn.style.setProperty('background-color', accent, 'important');
     btn.style.setProperty('color', '#ffffff', 'important');
     btn.style.setProperty('font-size', '14px', 'important');
     btn.style.setProperty('font-weight', '500', 'important');
     // 悬停时保持颜色一致
     btn.addEventListener('mouseenter', function () {
-        btn.style.setProperty('background-color', '#4752c4', 'important');
+        btn.style.setProperty('background-color', accentHover, 'important');
     });
     btn.addEventListener('mouseleave', function () {
-        btn.style.setProperty('background-color', '#5865f2', 'important');
+        btn.style.setProperty('background-color', accent, 'important');
     });
 });
 </script>

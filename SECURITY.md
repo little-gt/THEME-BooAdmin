@@ -3,7 +3,7 @@
 > 感谢您对 **BooAdmin** 的关注与支持！我们致力于为 Typecho 用户提供既美观又安全的现代化后台环境。
 > BooAdmin 项目代码完全开源且未经过任何压缩或加密，保证代码透明可审计，您在使用前和使用过程中，可以随时审计 BooAdmin 项目代码，如果您在审计或者使用的过程中遇到了问题，您可遵循本安全策略进行反馈，感谢。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.15-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.16-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 
 > 当您在贡献代码时，我们鼓励您使用 GPG 技术为您的提交的代码进行签名，以保证其经过身份验证。
