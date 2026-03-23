@@ -1,3 +1,6 @@
+/* 字体导入 */
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Noto+Sans+SC:wght@100..900&display=swap');
+
 html {
 	height:100%
 }
@@ -2226,8 +2229,6 @@ ul.token-input-list[aria-disabled="true"] li input {
 }
 
 /* BooAdmin merged custom.css */
-/* 字体导入 */
-@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Noto+Sans+SC:wght@100..900&display=swap');
 body {
 	font-family:"Inter","Noto Sans SC",-apple-system,BlinkMacSystemFont,sans-serif;
 }
