@@ -2395,7 +2395,7 @@ body:not(.body-100) {
 	transform:translateY(-1px);
 }
 .plugin-banner-button.primary {
-	background:white;
+	background:var(--booadmin-surface);
 	color:var(--booadmin-accent);
 	border-radius:0;
 }
@@ -2440,13 +2440,13 @@ body:not(.body-100) {
 /* Search input specific styles */
     .search-input-container input[type="text"] {
 	border:0 !important;
-	background-color:white !important;
+	background-color:var(--booadmin-surface) !important;
 	padding:0.375rem 0.75rem !important;
 }
 .typecho-option input[type="text"]:focus,.typecho-option input[type="password"]:focus,.typecho-option input[type="email"]:focus,.typecho-option input[type="url"]:focus,.typecho-option input[type="number"]:focus,.typecho-option textarea:focus {
 	outline:none;
 	border-color:var(--booadmin-accent);
-	background-color:white;
+	background-color:var(--booadmin-surface);
 }
 /* Checkbox and Radio - keep on same line */
     .typecho-option label input[type="checkbox"],.typecho-option label input[type="radio"] {
@@ -2511,7 +2511,7 @@ body:not(.body-100) {
 .typecho-option select:focus {
 	outline:none;
 	border-color:var(--booadmin-accent);
-	background-color:white;
+	background-color:var(--booadmin-surface);
 }
 @media (max-width:767px) {
 	select {
@@ -2909,7 +2909,7 @@ body:not(.body-100) {
 	/* Firefox */
         -ms-overflow-style:none;
 	/* IE/Edge */
-        background-color:white;
+	background-color:var(--booadmin-surface);
 	border:1px solid var(--booadmin-border);
 }
 .settings-tabs::-webkit-scrollbar {
@@ -3037,7 +3037,7 @@ body:not(.body-100) {
 .typecho-reform-style input:focus,.typecho-reform-style textarea:focus,.typecho-reform-style select:focus {
 	outline:none;
 	border-color:var(--booadmin-accent);
-	background-color:white;
+	background-color:var(--booadmin-surface);
 }
 .typecho-reform-style .description {
 	display:block;
@@ -3130,7 +3130,9 @@ body:not(.body-100) {
 /* 通知卡片 */
     .typecho-notification {
 	pointer-events:all;
-	background:white;
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	box-shadow:0 4px 12px rgba(0,0,0,0.15);
 	padding:14px 16px;
 	display:flex;
 	align-items:flex-start;
@@ -3246,7 +3248,7 @@ body:not(.body-100) {
 }
 /* 警告样式 */
     .typecho-notification.notice {
-	background:var(--booadmin-surface)beb;
+	background:var(--booadmin-warning-bg);
 	border-left-color:var(--booadmin-warning);
 }
 .typecho-notification.notice .typecho-notification-icon {

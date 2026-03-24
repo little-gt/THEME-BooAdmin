@@ -378,4 +378,27 @@
         border-top-color: var(--booadmin-accent) !important;
         border-left-color: var(--booadmin-accent) !important;
     }
+
+    .typecho-notification {
+        background: var(--booadmin-surface) !important;
+        border-color: var(--booadmin-border) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+        border-left-color: var(--booadmin-muted) !important;
+    }
+
+    .typecho-notification.success {
+        background: var(--booadmin-success-bg) !important;
+    }
+
+    .typecho-notification.error {
+        background: var(--booadmin-error-bg) !important;
+    }
+
+    .typecho-notification.notice {
+        background: var(--booadmin-warning-bg) !important;
+    }
+
+    .typecho-notification.info {
+        background: var(--booadmin-info-bg) !important;
+    }
 }
