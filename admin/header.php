@@ -9,7 +9,7 @@ $header = '
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.17b', true) . '">
 <!-- Theme Variables -->
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.1.17e', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.1.17e', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.1.17f', true) . '">
 <!-- Component Styles -->
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.17f', true) . '">
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.17e', true) . '">

@@ -540,4 +540,53 @@
     .typecho-notification.info {
         border-left-color: var(--booadmin-info) !important;
     }
+
+    /* ========================================
+     * 插件样式兼容层 - Plugin Compatibility
+     * ======================================== */
+    
+    /* 代码块 */
+    code,
+    pre,
+    .code,
+    .code-block,
+    .highlight,
+    .typecho-option pre,
+    .typecho-option code {
+        background: var(--booadmin-surface-2) !important;
+        color: var(--booadmin-text) !important;
+        border-color: var(--booadmin-border) !important;
+    }
+
+    /* 描述/说明区域 */
+    .description,
+    .typecho-option .description {
+        color: var(--booadmin-muted) !important;
+    }
+
+    /* 面板/容器 */
+    .panel,
+    .panel-body,
+    .widget,
+    .widget-body,
+    .box,
+    .box-body {
+        background: var(--booadmin-surface) !important;
+        border-color: var(--booadmin-border) !important;
+        color: var(--booadmin-text) !important;
+    }
+
+    /* 标签页 */
+    .tabs,
+    .tab-content {
+        background: var(--booadmin-surface) !important;
+        border-color: var(--booadmin-border) !important;
+    }
+
+    .tab.active,
+    .tabs li.active a {
+        background: var(--booadmin-surface-2) !important;
+        color: var(--booadmin-accent) !important;
+        border-color: var(--booadmin-accent) !important;
+    }
 }

@@ -11,7 +11,7 @@
 ![登录页面](https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/screenshot0.png)
 
 参与讨论：
-[Typecho 官方论坛](https://forum.typecho.org/viewtopic.php?p=62530#p62530)
+[Typecho 官方论坛](https://forum.typecho.org/viewtopic.php?p=62603#p62603)
 
 ---
 
@@ -135,11 +135,20 @@
   - 采用边框高亮 + FontAwesome 对钩图标方案，增强视觉区分度
   - 统一深色/浅色模式下的视觉层次，确保在各种背景下清晰可见
 
+- **🎨 主题架构优化**
+  - 优化暗色/亮色模式的架构设计，使其更加统一并减少相互耦合
+
+- **📎 附件插入修复**
+  - 修复插入图片等附件时文件名包含多余空格的问题
+
 ---
 
 ## ⚙️ 安装与升级
 
-**⚠️ 重要提示：操作前请务必备份您的网站数据库和 `admin` 目录！**
+> ⚠️ 重要提示：
+>
+> 涉及系统后台的操作，均建议您在操作进行前备份网站数据库和 `admin` 目录。
+> 解压过程中，请勿刷新后台，避免浏览器加载不完整，或者错误保存旧的静态资源文件。
 
 ### 全新安装
 
@@ -151,21 +160,9 @@
 ### 从旧版本升级
 
 1. **强烈建议**删除服务器上旧的 `admin` 目录。
-2. 上传最新版本的 `admin` 目录到网站根目录。
-3. 清理浏览器缓存，以加载最新的 CSS 和 JS 文件。
-4. 如果您使用的是 Typecho 1.3.0 或更高版本，升级后所有功能将自动适配。
-5. 移动端访问管理页时将自动切换到卡片视图，PC 端保持表格视图。
-
----
-
-## 🐛 常见问题
-
-如果您在使用过程中遇到任何问题，请优先尝试以下解决方案：
-
-1. **资源加载缓慢**：这通常是网络问题，BooAdmin 已使用 CDN 加速，国内用户应该能获得最佳速度。如果仍有问题，请检查您的网络连接。
-2. **样式显示不完整**：请确保您的 `admin/css/` 目录中包含所有样式文件，并清理浏览器缓存。
-3. **JavaScript 报错**：请确保没有其他插件修改了全局 JavaScript 环境，并查看浏览器控制台的具体错误信息。
-4. **插件配合使用**：建议配合插件一同使用，插件和主题深度集成，可以获得更好的功能体验和视觉一致性。
+2. 上传最新版本的 `admin` 目录到网站根目录，并且解压。
+3. 如果您使用的是 Typecho 1.3.0 或更高版本，升级后所有功能将自动适配。
+4. 移动端访问管理页时将自动切换到卡片视图，PC 端保持表格视图。
 
 ---
 
@@ -175,23 +172,17 @@
 
 | 组件 | 说明 |
 | ---- | ---- |
-| CSS 框架 | TailwindCSS 3.0+ — Utility-first 设计，按需生成，体积小，响应快 |
-| JavaScript 库 | jQuery 3.x — 事件处理与 DOM 操作 |
-| 图表组件 | Chart.js — 仪表盘数据可视化 |
-| 进度条 | NProgress 0.2.0 — 页面加载进度提示 |
-
-### 资源与字体
-
-| 资源 | 说明 |
-| ---- | ---- |
-| 图标库 | FontAwesome 7 Free — 丰富图标集合（Free 版本） |
-| 字体 | Google Fonts — 清晰优雅的英文字体，通过 Google Fonts 提供统一的视觉体验 |
+| 字体 | Google Fonts |
+| 图标库 | FontAwesome 7 |
+| 图表库 | ECharts.js |
+| 进度条 | NProgress |
+| CSS 框架 | TailwindCSS 3.4.17 |
 
 ### 资源加速
 
 | 项目 | 说明 |
 | ---- | ---- |
-| CDN 提供商 | GARFIELDTOM'S NEST CDN（腾讯云 EdgeOne）— 提供国际线路 + 国内线路，并支持 IPv6 优化 |
+| CDN 提供商 | GARFIELDTOM'S NEST CDN |
 | 分发范围 | JavaScript、CSS、字体、图标等静态资源通过 CDN 分发 |
 | 访问入口 | [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool) |
 
@@ -209,7 +200,7 @@
 
 ## 🔐 安全策略
 
-如果您发现安全漏洞，请通过安全邮箱 [coolerxde@gt.ac.cn](mailto:coolerxde@gt.ac.cn) 私密报告，不要在 GitHub Issues 中公开披露。详细信息请参阅 [SECURITY.md](SECURITY.md)。
+如果您发现安全漏洞，请通过安全邮箱 [coolerxde@gt.ac.cn](mailto:coolerxde@gt.ac.cn) 报告，在推送安全更新前，不要在 GitHub Issues 中公开披露。详细信息请参阅 [SECURITY.md](SECURITY.md)。
 
 ---
 
