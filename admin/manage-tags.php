@@ -66,10 +66,11 @@ include 'menu.php';
                                     <?php while ($tags->next()): ?>
                                         <li class="relative group" id="<?php $tags->theId(); ?>">
                                             <input type="checkbox" value="<?php $tags->mid(); ?>" name="mid[]" class="absolute opacity-0 pointer-events-none peer">
-                                            <div class="flex items-center px-3 py-1.5 bg-gray-100 border border-gray-200 hover:border-discord-accent hover:bg-blue-50 transition-all cursor-pointer peer-checked:bg-discord-accent peer-checked:text-white peer-checked:border-discord-accent select-none">
+                                            <div class="flex items-center px-3 py-1.5 bg-gray-100 border border-gray-200 hover:border-discord-accent hover:bg-blue-50 transition-all cursor-pointer select-none tag-item">
+                                                <i class="fas fa-check text-xs mr-1.5 w-3.5 flex-shrink-0 tag-check-icon"></i>
                                                 <span class="text-sm font-medium mr-1" rel="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>"><?php $tags->name(); ?></span>
-                                                <span class="text-xs opacity-60 bg-gray-200 px-1.5 text-gray-600 ml-1 group-hover:bg-white peer-checked:text-discord-accent"><?php $tags->count(); ?></span>
-                                                <a class="ml-2 text-gray-400 hover:text-discord-accent peer-checked:text-white peer-checked:hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" href="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>" title="<?php _e('编辑'); ?>"><i class="fas fa-pen mr-1"></i></a>
+                                                <span class="text-xs opacity-60 bg-gray-200 px-1.5 text-gray-600 ml-1 group-hover:bg-white tag-count"><?php $tags->count(); ?></span>
+                                                <a class="ml-2 text-gray-400 hover:text-discord-accent opacity-0 group-hover:opacity-100 transition-opacity" href="<?php echo $request->makeUriByRequest('mid=' . $tags->mid); ?>" title="<?php _e('编辑'); ?>"><i class="fas fa-pen mr-1"></i></a>
                                             </div>
                                             <!-- Checkbox logic via JS needs to toggle checked state on click of the div -->
                                         </li>
@@ -121,15 +122,31 @@ include 'menu.php';
 </div>
 
 <style>
-/* Tag selection styling */
-.tag-list li input:checked ~ div {
-    background-color: var(--booadmin-accent);
-    color: white;
-    border-color: var(--booadmin-accent);
+/* 标签选中样式优化 */
+.tag-list li input:checked ~ .tag-item {
+    border: 2px solid var(--booadmin-accent);
+    background: var(--booadmin-selection-bg, rgba(var(--booadmin-accent-rgb, 99, 102, 241), 0.08));
+    box-shadow: 0 0 0 1px var(--booadmin-accent),
+                0 0 10px rgba(var(--booadmin-accent-rgb, 99, 102, 241), 0.25);
+    position: relative;
+    z-index: 1;
 }
-.tag-list li input:checked ~ div .text-xs {
+
+.tag-list li input:checked ~ .tag-item .tag-count {
+    background: rgba(var(--booadmin-accent-rgb, 99, 102, 241), 0.15);
     color: var(--booadmin-accent);
-    background-color: white;
+    border: 1px solid rgba(var(--booadmin-accent-rgb, 99, 102, 241), 0.3);
+    font-weight: 600;
+}
+
+/* 对钩图标控制 */
+.tag-check-icon {
+    display: none;
+    color: var(--booadmin-accent);
+}
+
+.tag-list li input:checked ~ .tag-item .tag-check-icon {
+    display: inline-flex;
 }
 </style>
 

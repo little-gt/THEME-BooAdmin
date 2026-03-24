@@ -324,6 +324,7 @@
 
                         function setDropdownState(isOpen) {
                             $menu.toggleClass('is-open', isOpen)
+                                .toggleClass('hidden', !isOpen)
                                 .attr('aria-hidden', isOpen ? 'false' : 'true');
                             $btn.toggleClass('active', isOpen)
                                 .attr('aria-expanded', isOpen ? 'true' : 'false');
@@ -334,7 +335,7 @@
                                 var $otherBtn = $(this);
                                 var $otherContainer = $otherBtn.closest('.relative, .group');
                                 var $otherMenu = $otherContainer.find('.dropdown-menu');
-                                $otherMenu.removeClass('is-open').attr('aria-hidden', 'true');
+                                $otherMenu.removeClass('is-open').addClass('hidden').attr('aria-hidden', 'true');
                                 $otherBtn.removeClass('active').attr('aria-expanded', 'false');
                             });
                         }
@@ -364,7 +365,7 @@
                 // Close dropdown when clicking outside
                 $doc.on('click.dropdown', function(e) {
                     if (activeDropdown && !$(e.target).closest(activeDropdown).length) {
-                        $('.dropdown-menu').removeClass('is-open').attr('aria-hidden', 'true');
+                        $('.dropdown-menu').removeClass('is-open').addClass('hidden').attr('aria-hidden', 'true');
                         $('.btn-dropdown-toggle').removeClass('active').attr('aria-expanded', 'false');
                         activeDropdown = null;
                     }
@@ -372,7 +373,7 @@
 
                 // Close dropdown when clicking on a menu item
                 $doc.on('click.dropdown', '.dropdown-menu a', function() {
-                    $('.dropdown-menu').removeClass('is-open').attr('aria-hidden', 'true');
+                    $('.dropdown-menu').removeClass('is-open').addClass('hidden').attr('aria-hidden', 'true');
                     $('.btn-dropdown-toggle').removeClass('active').attr('aria-expanded', 'false');
                     activeDropdown = null;
                 });
@@ -385,7 +386,7 @@
                         var $menu = $container.find('.dropdown-menu');
 
                         // Initialize semantic state for menu visibility.
-                        $menu.removeClass('is-open').attr('aria-hidden', 'true');
+                        $menu.removeClass('is-open').addClass('hidden').attr('aria-hidden', 'true');
                         $btn.attr('aria-expanded', 'false');
                     });
                 });

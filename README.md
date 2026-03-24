@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.16--fix-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.17-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -121,47 +121,19 @@
 
 ---
 
-## 🚀 v1.1.16-fix 版本更新速递
+## 🚀 v1.1.17 版本更新速递
 
 ### 特性优化
 
-- **🌙 深色模式完全重构**
-  - 创建语义化 CSS 令牌系统（light.css、dark.css）
-  - 自动适配系统深色模式偏好（prefers-color-scheme）
-  - 90+ 语义化 CSS 变量，支持深色/浅色主题无缝切换
+- **🔄 下拉菜单交互修复**
+  - 修复了管理页面中下拉选项框因 CSS 类冲突导致的无法展开问题
+  - 优化菜单状态切换逻辑，确保在深色/浅色主题模式下稳定工作
+  - 增强键盘导航和屏幕阅读器兼容性，提升无障碍访问体验
 
-- **🎨 表格视图样式全面适配**
-  - 修复表格容器外层边框在深色模式下的显示问题
-  - 优化操作栏工具栏的对比度和视觉层次
-  - 表头、行分隔线、单元格边框全面适配深色主题
-  - 深色模式下的描边更加和谐、美观
-
-- **♿ 无障碍可访问性增强**
-  - 下拉菜单、视图切换添加完整 ARIA 属性支持
-  - 状态指示器（aria-expanded、aria-pressed、aria-hidden）规范化
-  - 键盘操作支持进一步优化
-
-- **⚡ 代码架构改进**
-  - 将内联样式操作文件迁移至 CSS 类名驱动
-  - 下拉菜单状态管理由 JavaScript 样式操作改为类名切换
-  - 头像加载失败降级处理改用语义类名而非 style.display 操作
-  - 改善代码可维护性和性能表现
-
-- **🔧 组件样式优化**
-  - 卡片视图背景色适配深色模式
-  - 仪表盘新闻区域样式完全语义化
-  - 文件上传、图表等辅助元素颜色系统统一
-  - 所有 Tailwind 工具类自动映射到语义令牌
-
-### 修复内容
-
-- 修复深色模式下列表工具栏按钮对比度不足问题
-- 修复表格容器四周边框在深色模式下的显示异常
-- 修复卡片视图在深色模式下背景色不适配的问题
-- 修复新闻信息区域在深色模式下的梯度渐变问题
-- 修复在样式文件合并时候，import 没有提前的问题
-
-
+- **🏷️ 标签选择视觉增强**
+  - 优化了标签管理页面的选中状态显示效果，解决对比度不足问题
+  - 采用边框高亮 + FontAwesome 对钩图标方案，增强视觉区分度
+  - 统一深色/浅色模式下的视觉层次，确保在各种背景下清晰可见
 
 ---
 
