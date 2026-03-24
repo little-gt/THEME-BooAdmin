@@ -1,72 +1,92 @@
-/* Make clicks pass-through */
+/* NProgress - 加载指示器样式 */
+/* 使用 CSS 变量实现主题适配，变量定义在 light.css / dark.css */
+
+/* 隐藏默认进度条 */
 #nprogress {
-  pointer-events: none;
+    pointer-events: none;
 }
 
 #nprogress .bar {
-  display: none;
+    display: none;
 }
 
 #nprogress .peg {
-  display: none;
+    display: none;
 }
 
+/* 加载动画容器 */
 #nprogress .spinner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  z-index: 1031;
-  bottom: 24px;
-  right: 24px;
-  background-color: rgba(26, 32, 44, 0.9);
-  padding: 12px 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  gap: 12px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 1031;
+    bottom: 24px;
+    right: 24px;
+    /* 使用主题变量 - 暗色模式会自动切换 */
+    background-color: var(--booadmin-spinner-bg);
+    padding: 12px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    gap: 12px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* 隐藏动画 */
 #nprogress .spinner.hide {
-  opacity: 0;
-  transform: translateY(10px);
+    opacity: 0;
+    transform: translateY(10px);
 }
 
+/* 旋转图标 */
 #nprogress .spinner-icon {
-  width: 20px;
-  height: 20px;
-  box-sizing: border-box;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  -webkit-animation: nprogress-spinner 0.8s linear infinite;
-  animation: nprogress-spinner 0.8s linear infinite;
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    /* 使用主题变量 */
+    border: 2px solid var(--booadmin-spinner-icon-bg);
+    border-top-color: var(--booadmin-spinner-icon-active);
+    border-radius: 50%;
+    -webkit-animation: nprogress-spinner 0.8s linear infinite;
+    animation: nprogress-spinner 0.8s linear infinite;
 }
 
+/* 加载文字 */
 #nprogress .spinner-text {
-  color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  white-space: nowrap;
+    /* 使用主题变量 */
+    color: var(--booadmin-spinner-text);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
+/* 自定义父容器模式 */
 .nprogress-custom-parent {
-  overflow: hidden;
-  position: relative;
+    overflow: hidden;
+    position: relative;
 }
 
 .nprogress-custom-parent #nprogress .spinner,
 .nprogress-custom-parent #nprogress .bar {
-  position: absolute;
+    position: absolute;
 }
 
+/* 旋转动画关键帧 */
 @-webkit-keyframes nprogress-spinner {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @keyframes nprogress-spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

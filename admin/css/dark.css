@@ -1,31 +1,108 @@
 /*
- * BooAdmin dark theme overrides.
- * Uses the same semantic tokens as light.css for maintainability.
+ * BooAdmin Dark Theme
+ * 
+ * 结构说明：
+ * - 本文件通过 @media (prefers-color-scheme: dark) 覆盖 light.css 的变量
+ * - 变量顺序和分类与 light.css 完全对齐
+ * - 包含 Tailwind 工具类和组件的暗色覆盖（必需，因为 PHP 中大量使用）
  */
+
 @media (prefers-color-scheme: dark) {
     :root {
         color-scheme: dark;
 
+        /* ========================================
+         * 基础色板 - Backgrounds
+         * ======================================== */
         --booadmin-bg: #0f1217;
         --booadmin-sidebar: #111722;
         --booadmin-active: #273246;
+
+        /* ========================================
+         * 表面色板 - Surfaces
+         * ======================================== */
         --booadmin-surface: #171b22;
         --booadmin-surface-2: #1d232d;
         --booadmin-surface-muted: #141922;
+
+        /* ========================================
+         * 边框色板 - Borders
+         * ======================================== */
         --booadmin-border: #2b3442;
         --booadmin-border-strong: #3a475a;
+
+        /* ========================================
+         * 文本色板 - Text Colors
+         * ======================================== */
         --booadmin-text: #e8edf3;
         --booadmin-muted: #9aa7b7;
         --booadmin-placeholder: #8694a6;
         --booadmin-on-accent: #ffffff;
 
+        /* ========================================
+         * 控件色板 - Form Controls
+         * ======================================== */
         --booadmin-control-bg: #263041;
         --booadmin-control-bg-hover: #2d3a4f;
         --booadmin-control-disabled-bg: #141922;
         --booadmin-control-disabled-text: #8694a6;
         --booadmin-focus-ring: rgba(122, 139, 255, 0.32);
-        --booadmin-danger-strong: #a94a4a;
 
+        /* ========================================
+         * 强调色 - Accent (Primary Brand Color)
+         * ======================================== */
+        --booadmin-accent: #7a8bff;
+        --booadmin-accent-hover: #90a0ff;
+        --booadmin-accent-active: #a7b4ff;
+        --booadmin-accent-rgb: 122, 139, 255;
+
+        /* ========================================
+         * 链接色 - Links
+         * ======================================== */
+        --booadmin-link: #7a8bff;
+        --booadmin-link-hover: #90a0ff;
+        --booadmin-link-active: #a7b4ff;
+        --booadmin-link-disabled: #7382c4;
+        --booadmin-link-soft-bg: #273246;
+        --booadmin-link-soft-hover: #34445c;
+
+        /* ========================================
+         * 语义色 - Success
+         * ======================================== */
+        --booadmin-success: #8fdc8f;
+        --booadmin-success-bg: #203f2b;
+        --booadmin-success-bg-alt: #203f2b;
+        --booadmin-success-text: #8fdc8f;
+        --booadmin-success-text-strong: #8fdc8f;
+
+        /* ========================================
+         * 语义色 - Warning
+         * ======================================== */
+        --booadmin-warning: #ffd37a;
+        --booadmin-warning-bg: #43381d;
+        --booadmin-warning-text: #ffd37a;
+
+        /* ========================================
+         * 语义色 - Danger/Error
+         * ======================================== */
+        --booadmin-danger: #ff8b8b;
+        --booadmin-danger-strong: #a94a4a;
+        --booadmin-danger-hover: #ff9a9a;
+        --booadmin-danger-active: #ffb0b0;
+        --booadmin-danger-disabled: #c76f75;
+        --booadmin-error-bg: #4c2428;
+        --booadmin-error-text: #ffc0c0;
+
+        /* ========================================
+         * 语义色 - Info
+         * ======================================== */
+        --booadmin-info: #76a2ff;
+        --booadmin-info-hover: #9fb8ff;
+        --booadmin-info-bg: #1a2232;
+
+        /* ========================================
+         * Token Input 组件
+         * ======================================== */
         --booadmin-token-bg: #263041;
         --booadmin-token-bg-selected: #2d3a4f;
         --booadmin-token-text: #e8edf3;
@@ -35,18 +112,26 @@
         --booadmin-token-dropdown-selected-bg: #273246;
         --booadmin-token-dropdown-selected-text: #e8edf3;
 
+        /* ========================================
+         * 表格组件 - Table
+         * ======================================== */
         --booadmin-table-head: #151c28;
         --booadmin-table-row-odd: #151a22;
         --booadmin-table-row-even: #111722;
         --booadmin-table-row-hover: #1d2532;
-        --booadmin-accent: #7a8bff;
-        --booadmin-accent-hover: #90a0ff;
-        --booadmin-accent-rgb: 122, 139, 255;
+
+        /* ========================================
+         * 高亮与选中 - Highlights
+         * ======================================== */
         --booadmin-highlight-soft: #1b2230;
         --booadmin-highlight-danger: #5e2f37;
+        --booadmin-highlight-warm: #2f2a1d;
         --booadmin-selection-bg: #273246;
         --booadmin-selection-border: #3a475a;
 
+        /* ========================================
+         * 图表组件 - Charts
+         * ======================================== */
         --booadmin-chart-text: #d9e1ec;
         --booadmin-chart-axis: #8f9db0;
         --booadmin-chart-grid: #2a3342;
@@ -60,39 +145,44 @@
         --booadmin-chart-warn: #ffc766;
         --booadmin-chart-danger: #ff7b7b;
 
-        --booadmin-success-bg: #203f2b;
-        --booadmin-success-text: #8fdc8f;
-        --booadmin-error-bg: #4c2428;
-        --booadmin-error-text: #ffc0c0;
-
-        --booadmin-success: #8fdc8f;
-        --booadmin-warning: #ffd37a;
-        --booadmin-danger: #ff8b8b;
-        --booadmin-info: #76a2ff;
-        --booadmin-info-hover: #9fb8ff;
-        --booadmin-info-bg: #1a2232;
-        --booadmin-warning-bg: #43381d;
-        --booadmin-warning-text: #ffd37a;
-        --booadmin-success-bg-alt: #203f2b;
-        --booadmin-success-text-strong: #8fdc8f;
-        --booadmin-danger-hover: #ff9a9a;
-        --booadmin-danger-active: #ffb0b0;
-        --booadmin-danger-disabled: #c76f75;
-        --booadmin-link: #7a8bff;
-        --booadmin-link-hover: #90a0ff;
-        --booadmin-link-active: #a7b4ff;
-        --booadmin-link-disabled: #7382c4;
-        --booadmin-link-soft-bg: #273246;
-        --booadmin-link-soft-hover: #34445c;
-        --booadmin-accent-active: #a7b4ff;
-        --booadmin-highlight-warm: #2f2a1d;
-        --booadmin-overlay-solid: #000000;
+        /* ========================================
+         * 导航栏 - Navigation
+         * ======================================== */
         --booadmin-nav-bg: #111722;
         --booadmin-nav-bg-hover: #171f2c;
         --booadmin-nav-border: #2b3442;
+
+        /* ========================================
+         * 遮罩层 - Overlays
+         * ======================================== */
         --booadmin-overlay: rgba(0, 0, 0, 0.7);
+        --booadmin-overlay-solid: #000000;
         --booadmin-hero-overlay: rgba(0, 0, 0, 0.62);
 
+        /* ========================================
+         * NProgress 加载指示器
+         * ======================================== */
+        --booadmin-spinner-bg: rgba(255, 255, 255, 0.95);
+        --booadmin-spinner-text: #0f1217;
+        --booadmin-spinner-icon-bg: rgba(0, 0, 0, 0.25);
+        --booadmin-spinner-icon-active: #7a8bff;
+
+        /* ========================================
+         * 插件横幅 - Plugin Banner
+         * ======================================== */
+        --booadmin-banner-avatar-border: rgba(232, 237, 243, 0.3);
+        --booadmin-banner-btn-bg: rgba(232, 237, 243, 0.15);
+        --booadmin-banner-btn-hover: rgba(232, 237, 243, 0.25);
+        --booadmin-banner-primary-bg: rgba(232, 237, 243, 0.95);
+
+        /* ========================================
+         * 设置标签页 - Settings Tabs (Mobile)
+         * ======================================== */
+        --booadmin-tabs-fade-mask: rgba(15, 18, 23, 0.95);
+
+        /* ========================================
+         * 兼容性别名 - Legacy Aliases
+         * ======================================== */
         --color-discord-light: var(--booadmin-bg);
         --color-discord-sidebar: var(--booadmin-sidebar);
         --color-discord-active: var(--booadmin-active);
@@ -101,6 +191,9 @@
         --color-discord-muted: var(--booadmin-muted);
     }
 
+    /* ========================================
+     * 基础元素
+     * ======================================== */
     html,
     body,
     body.body-100,
@@ -119,6 +212,9 @@
         color: var(--booadmin-accent-hover);
     }
 
+    /* ========================================
+     * Tailwind 背景色工具类覆盖
+     * ======================================== */
     .bg-white {
         background-color: var(--booadmin-surface) !important;
     }
@@ -139,6 +235,9 @@
         background-color: var(--booadmin-link-soft-bg) !important;
     }
 
+    /* ========================================
+     * Tailwind 文本色工具类覆盖
+     * ======================================== */
     .text-discord-text,
     .text-gray-900,
     .text-gray-800,
@@ -148,12 +247,15 @@
     }
 
     .text-discord-muted,
-    .text-gray-300,
     .text-gray-500,
-    .text-gray-400 {
+    .text-gray-400,
+    .text-gray-300 {
         color: var(--booadmin-muted) !important;
     }
 
+    /* ========================================
+     * Tailwind 边框色工具类覆盖
+     * ======================================== */
     .border,
     .border-gray-100,
     .border-gray-200,
@@ -162,24 +264,9 @@
         border-color: var(--booadmin-border) !important;
     }
 
-    .bg-discord-sidebar {
-        background-color: var(--color-discord-sidebar) !important;
-    }
-
-    .bg-discord-active {
-        background-color: var(--color-discord-active) !important;
-    }
-
-    .text-discord-accent,
-    .hover\:text-discord-accent:hover {
-        color: var(--booadmin-accent) !important;
-    }
-
-    .bg-discord-accent,
-    .hover\:bg-discord-accent:hover {
-        background-color: var(--booadmin-accent) !important;
-    }
-
+    /* ========================================
+     * Tailwind Hover 状态覆盖
+     * ======================================== */
     .hover\:bg-gray-50:hover {
         background-color: var(--booadmin-highlight-soft) !important;
     }
@@ -200,6 +287,30 @@
         color: var(--booadmin-danger) !important;
     }
 
+    /* ========================================
+     * Discord 主题工具类
+     * ======================================== */
+    .bg-discord-sidebar {
+        background-color: var(--booadmin-sidebar) !important;
+    }
+
+    .bg-discord-active {
+        background-color: var(--booadmin-active) !important;
+    }
+
+    .text-discord-accent,
+    .hover\:text-discord-accent:hover {
+        color: var(--booadmin-accent) !important;
+    }
+
+    .bg-discord-accent,
+    .hover\:bg-discord-accent:hover {
+        background-color: var(--booadmin-accent) !important;
+    }
+
+    /* ========================================
+     * 表单控件
+     * ======================================== */
     input[type="text"],
     input[type="url"],
     input[type="password"],
@@ -238,6 +349,9 @@
         background-color: var(--booadmin-surface-muted) !important;
     }
 
+    /* ========================================
+     * 按钮
+     * ======================================== */
     .btn,
     .btn-xs,
     .btn-s,
@@ -270,6 +384,9 @@
         color: var(--booadmin-on-accent) !important;
     }
 
+    /* ========================================
+     * 下拉菜单
+     * ======================================== */
     .dropdown-menu {
         background: var(--booadmin-surface) !important;
         border-color: var(--booadmin-border) !important;
@@ -283,6 +400,9 @@
         background: var(--booadmin-surface-2) !important;
     }
 
+    /* ========================================
+     * 分页器
+     * ======================================== */
     .typecho-pager li a,
     .typecho-pager li span {
         background-color: var(--booadmin-surface) !important;
@@ -302,6 +422,9 @@
         color: var(--booadmin-on-accent) !important;
     }
 
+    /* ========================================
+     * 表格
+     * ======================================== */
     .table-wrapper,
     table,
     .typecho-list-table,
@@ -327,6 +450,9 @@
         background-color: var(--booadmin-table-row-hover) !important;
     }
 
+    /* ========================================
+     * 消息提示
+     * ======================================== */
     .message.notice,
     .notice {
         background: var(--booadmin-warning-bg) !important;
@@ -351,6 +477,9 @@
         color: var(--booadmin-warning) !important;
     }
 
+    /* ========================================
+     * 模态框
+     * ======================================== */
     .comment-modal,
     [class$="-confirm-modal"],
     [id$="-confirm-modal"] {
@@ -364,12 +493,18 @@
         color: var(--booadmin-text) !important;
     }
 
+    /* ========================================
+     * 页脚
+     * ======================================== */
     #admin-footer {
         background-color: var(--booadmin-nav-bg) !important;
         border-top-color: var(--booadmin-border) !important;
         color: var(--booadmin-muted) !important;
     }
 
+    /* ========================================
+     * NProgress
+     * ======================================== */
     #nprogress .bar {
         background: var(--booadmin-accent) !important;
     }
@@ -379,26 +514,34 @@
         border-left-color: var(--booadmin-accent) !important;
     }
 
+    /* ========================================
+     * 通知 Toast
+     * ======================================== */
     .typecho-notification {
-        background: var(--booadmin-surface) !important;
+        background: #171b22 !important;
         border-color: var(--booadmin-border) !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
         border-left-color: var(--booadmin-muted) !important;
+        color: var(--booadmin-text) !important;
     }
 
     .typecho-notification.success {
-        background: var(--booadmin-success-bg) !important;
+        background: #171b22 !important;
+        border-left-color: var(--booadmin-success) !important;
     }
 
     .typecho-notification.error {
-        background: var(--booadmin-error-bg) !important;
+        background: #171b22 !important;
+        border-left-color: var(--booadmin-danger) !important;
     }
 
     .typecho-notification.notice {
-        background: var(--booadmin-warning-bg) !important;
+        background: #171b22 !important;
+        border-left-color: var(--booadmin-warning) !important;
     }
 
     .typecho-notification.info {
-        background: var(--booadmin-info-bg) !important;
+        background: #171b22 !important;
+        border-left-color: var(--booadmin-info) !important;
     }
 }

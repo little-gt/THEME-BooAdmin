@@ -1882,7 +1882,7 @@ body:has(.menu-bar[open]) {
 	position:absolute
 }
 #wmd-preview .focus,#wmd-preview .focus * {
-	background-color:rgba(255,230,0,0.5) !important
+	background-color:var(--booadmin-highlight-warm) !important
 }
 @keyframes fullscreen-upload {
 	0% {
@@ -2339,7 +2339,7 @@ body:not(.body-100) {
 	left:0;
 	right:0;
 	background:linear-gradient(135deg,var(--booadmin-accent) 0%,var(--booadmin-accent-hover) 100%);
-	color:white;
+	color:var(--booadmin-on-accent);
 	padding:1rem 2rem;
 	display:flex;
 	align-items:center;
@@ -2358,7 +2358,7 @@ body:not(.body-100) {
 	width:2.5rem;
 	height:2.5rem;
 	border-radius:50%;
-	border:2px solid rgba(255,255,255,0.3);
+	border:2px solid var(--booadmin-banner-avatar-border);
 }
 .plugin-banner-text {
 	display:flex;
@@ -2400,7 +2400,7 @@ body:not(.body-100) {
 	border-radius:0;
 }
 .plugin-banner-button.primary:hover {
-	background:rgba(255,255,255,0.9);
+	background:var(--booadmin-banner-primary-bg);
 }
 /* Adjust main content for plugin banner */
     .has-plugin-banner main {
@@ -2948,7 +2948,7 @@ body:not(.body-100) {
 	right:0;
 	bottom:0;
 	width:60px;
-	background:linear-gradient(to left,rgba(255,255,255,0.95),transparent);
+	background:linear-gradient(to left,var(--booadmin-tabs-fade-mask),transparent);
 	pointer-events:none;
 }
 .settings-tabs > a {
@@ -3130,7 +3130,7 @@ body:not(.body-100) {
 /* 通知卡片 */
     .typecho-notification {
 	pointer-events:all;
-	background:var(--booadmin-surface);
+	background:#ffffff;
 	border:1px solid var(--booadmin-border);
 	box-shadow:0 4px 12px rgba(0,0,0,0.15);
 	padding:14px 16px;
@@ -3143,6 +3143,7 @@ body:not(.body-100) {
 	transform:translateX(400px);
 	transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
 	border-left:3px solid var(--booadmin-muted);
+	color:var(--booadmin-text);
 }
 /* 显示动画 */
     .typecho-notification.show {
