@@ -170,6 +170,7 @@
     --booadmin-spinner-text: #2e3338;
     --booadmin-spinner-icon-bg: rgba(0, 0, 0, 0.15);
     --booadmin-spinner-icon-active: #5865f2;
+    --booadmin-spinner-border: rgba(0, 0, 0, 0.1);
 
     /* ========================================
      * 插件横幅 - Plugin Banner

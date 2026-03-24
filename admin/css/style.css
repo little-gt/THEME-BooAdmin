@@ -396,7 +396,7 @@ select {
 	border-spacing:0;
 	background:var(--booadmin-surface);
 	table-layout:fixed;
-	border:30px solid var(--booadmin-surface)
+	border:none
 }
 .typecho-list-table.deactivate {
 	color:var(--booadmin-muted)
@@ -444,7 +444,7 @@ select {
 }
 @media (max-width:575px) {
 	.typecho-list-table {
-	border-width:10px
+	border:none
 }
 .typecho-list-table th {
 	padding:0 5px 5px
@@ -2377,8 +2377,8 @@ body:not(.body-100) {
 	gap:0.75rem;
 }
 .plugin-banner-button {
-	background:rgba(255,255,255,0.2);
-	color:white;
+	background:var(--booadmin-banner-btn-bg);
+	color:var(--booadmin-on-accent);
 	padding:0.5rem 1rem;
 	border:none;
 	border-radius:0;
@@ -2391,7 +2391,7 @@ body:not(.body-100) {
 	gap:0.5rem;
 }
 .plugin-banner-button:hover {
-	background:rgba(255,255,255,0.3);
+	background:var(--booadmin-banner-btn-hover);
 	transform:translateY(-1px);
 }
 .plugin-banner-button.primary {
@@ -2963,7 +2963,7 @@ body:not(.body-100) {
 }
 .typecho-option-submit button,.typecho-option-submit input[type="submit"] {
 	background:linear-gradient(135deg,var(--booadmin-accent) 0%,var(--booadmin-accent-hover) 100%);
-	color:white;
+	color:var(--booadmin-on-accent);
 	padding:0.75rem 2rem;
 	font-weight:600;
 	font-size:0.875rem;
@@ -3048,7 +3048,7 @@ body:not(.body-100) {
 }
 .typecho-reform-style button[type="submit"],.typecho-reform-style input[type="submit"] {
 	background:linear-gradient(135deg,var(--booadmin-accent) 0%,var(--booadmin-accent-hover) 100%);
-	color:white;
+	color:var(--booadmin-on-accent);
 	padding:0.75rem 2rem;
 	font-weight:600;
 	font-size:0.875rem;
@@ -3221,7 +3221,6 @@ body:not(.body-100) {
 }
 /* 成功样式 */
     .typecho-notification.success {
-	background:var(--booadmin-success-bg);
 	border-left-color:var(--booadmin-success);
 }
 .typecho-notification.success .typecho-notification-icon {
@@ -3235,7 +3234,6 @@ body:not(.body-100) {
 }
 /* 错误样式 */
     .typecho-notification.error {
-	background:var(--booadmin-error-bg);
 	border-left-color:var(--booadmin-danger);
 }
 .typecho-notification.error .typecho-notification-icon {
@@ -3249,7 +3247,6 @@ body:not(.body-100) {
 }
 /* 警告样式 */
     .typecho-notification.notice {
-	background:var(--booadmin-warning-bg);
 	border-left-color:var(--booadmin-warning);
 }
 .typecho-notification.notice .typecho-notification-icon {
@@ -3263,7 +3260,6 @@ body:not(.body-100) {
 }
 /* 信息样式 */
     .typecho-notification.info {
-	background:var(--booadmin-info-bg);
 	border-left-color:var(--booadmin-info);
 }
 .typecho-notification.info .typecho-notification-icon {

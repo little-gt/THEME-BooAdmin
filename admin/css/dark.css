@@ -162,10 +162,11 @@
         /* ========================================
          * NProgress 加载指示器
          * ======================================== */
-        --booadmin-spinner-bg: rgba(255, 255, 255, 0.95);
-        --booadmin-spinner-text: #0f1217;
-        --booadmin-spinner-icon-bg: rgba(0, 0, 0, 0.25);
+        --booadmin-spinner-bg: rgba(30, 37, 48, 0.95);
+        --booadmin-spinner-text: #e8edf3;
+        --booadmin-spinner-icon-bg: rgba(232, 237, 243, 0.2);
         --booadmin-spinner-icon-active: #7a8bff;
+        --booadmin-spinner-border: rgba(232, 237, 243, 0.15);
 
         /* ========================================
          * 插件横幅 - Plugin Banner
@@ -521,27 +522,22 @@
         background: #171b22 !important;
         border-color: var(--booadmin-border) !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
-        border-left-color: var(--booadmin-muted) !important;
         color: var(--booadmin-text) !important;
     }
 
     .typecho-notification.success {
-        background: #171b22 !important;
         border-left-color: var(--booadmin-success) !important;
     }
 
     .typecho-notification.error {
-        background: #171b22 !important;
         border-left-color: var(--booadmin-danger) !important;
     }
 
     .typecho-notification.notice {
-        background: #171b22 !important;
         border-left-color: var(--booadmin-warning) !important;
     }
 
     .typecho-notification.info {
-        background: #171b22 !important;
         border-left-color: var(--booadmin-info) !important;
     }
 }
