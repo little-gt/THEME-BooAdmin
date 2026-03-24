@@ -78,11 +78,11 @@
 ### 管理文章
 <img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot3.png" alt="深色模式管理文章" style="width: 100%; border-radius: 8px;">
 
-### 管理分类
-<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot4.png" alt="深色模式管理分类" style="width: 100%; border-radius: 8px;">
+### 管理标签
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot4.png" alt="深色模式管理标签" style="width: 100%; border-radius: 8px;">
 
-### 外观编辑
-<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot5.png" alt="深色模式外观编辑" style="width: 100%; border-radius: 8px;">
+### 外观管理
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot5.png" alt="深色模式外观管理" style="width: 100%; border-radius: 8px;">
 
 </div>
 </details>
@@ -140,6 +140,9 @@
 
 - **🔧 PHP 8 兼容性改进**
   - 修复侧边栏标题在 PHP 8 环境下可能的空值警告问题，优化默认显示逻辑
+
+- **🛡️ 权限不足友好提示**
+  - 权限不足时显示友好提示而非抛出异常
 
 - **💡 推荐插件体验优化**
   - 登录页与插件管理页新增配套插件推荐，提供国内镜像与 GitHub 双下载渠道链接
