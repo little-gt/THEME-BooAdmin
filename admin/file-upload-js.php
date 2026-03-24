@@ -211,7 +211,7 @@ $(document).ready(function() {
             var t = $(this), p = t.parents('li');
             var isImage = p.data('image');
             var url = p.data('url');
-            var title = t.text();
+            var title = $.trim(t.text());
             
             if (isImage) {
                 // 显示图片预览
