@@ -84,6 +84,9 @@
 ### 外观管理
 <img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot5.png" alt="深色模式外观管理" style="width: 100%; border-radius: 8px;">
 
+### 权限不足提示
+<img src="https://cnb.cool/little-gt/BooAdmin/-/git/raw/main/screenshot/dark/screenshot6.png" alt="深色模式权限不足提示" style="width: 100%; border-radius: 8px;">
+
 </div>
 </details>
 
@@ -137,12 +140,14 @@
 
 - **🎨 主题架构优化**
   - 优化暗色/亮色模式的架构设计，使其更加统一并减少相互耦合
+  - 优化菜单的设计逻辑，移除冗余代码，并且增强了权限检查逻辑
 
 - **🔧 PHP 8 兼容性改进**
   - 修复侧边栏标题在 PHP 8 环境下可能的空值警告问题，优化默认显示逻辑
 
 - **🛡️ 权限不足友好提示**
   - 权限不足时显示友好提示而非抛出异常
+  - 支持自动化暗色/亮色模式切换
 
 - **💡 推荐插件体验优化**
   - 登录页与插件管理页新增配套插件推荐，提供国内镜像与 GitHub 双下载渠道链接

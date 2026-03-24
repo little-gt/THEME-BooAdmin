@@ -3,6 +3,41 @@
 // 配置获取网站标题
 $options = Typecho_Widget::widget('Widget_Options');
 $title = trim($options->title);
+
+// 菜单定义：[分组标题 => [[url, 图标, 标题, 最低权限组], ...]]
+$menuData = [
+    '撰写' => [
+        ['write-post.php', 'fa-pen-fancy', '撰写文章', 'contributor'],
+        ['write-page.php', 'fa-file-alt', '创建页面', 'editor'],
+    ],
+    '管理' => [
+        ['manage-posts.php', 'fa-layer-group', '文章', 'contributor'],
+        ['manage-pages.php', 'fa-file', '页面', 'editor'],
+        ['manage-comments.php', 'fa-comments', '评论', 'editor'],
+        ['manage-medias.php', 'fa-images', '文件', 'editor'],
+    ],
+    '数据' => [
+        ['manage-categories.php', 'fa-folder', '分类', 'editor'],
+        ['manage-tags.php', 'fa-tags', '标签', 'editor'],
+        ['manage-users.php', 'fa-users', '用户', 'administrator'],
+    ],
+];
+
+// 按权限过滤，仅保留用户可访问的分组与项目
+$visibleMenu = [];
+foreach ($menuData as $label => $items) {
+    $allowed = [];
+    foreach ($items as $item) {
+        if ($user->pass($item[3], true)) {
+            $allowed[] = $item;
+        }
+    }
+    if ($allowed) {
+        $visibleMenu[$label] = $allowed;
+    }
+}
+$canAdmin = $user->pass('administrator', true);
+
 // 是否处于拓展页面
 $isPluginPage = false;
 $currentUrl = $_SERVER['REQUEST_URI'];
@@ -32,68 +67,18 @@ if (strpos($currentUrl, 'extending.php') !== false) {
                 </a>
             </li>
             
-            <!-- Create -->
-            <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('撰写'); ?></li>
+            <!-- Menu -->
+            <?php foreach ($visibleMenu as $sectionLabel => $sectionItems): ?>
+            <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e($sectionLabel); ?></li>
+            <?php foreach ($sectionItems as $item): ?>
             <li>
-                <a href="<?php $options->adminUrl('write-post.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'write-post.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-pen-fancy w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('撰写文章'); ?></span>
+                <a href="<?php $options->adminUrl($item[0]); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == $item[0]) echo 'bg-blue-50 text-discord-accent'; ?>">
+                    <i class="fas <?php echo $item[1]; ?> w-5 text-center mr-3 text-sm opacity-80"></i>
+                    <span class="sidebar-text"><?php _e($item[2]); ?></span>
                 </a>
             </li>
-            <li>
-                <a href="<?php $options->adminUrl('write-page.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'write-page.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-file-alt w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('创建页面'); ?></span>
-                </a>
-            </li>
-
-            <!-- Content -->
-            <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('管理'); ?></li>
-            <li>
-                <a href="<?php $options->adminUrl('manage-posts.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-posts.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-layer-group w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('文章'); ?></span>
-                </a>
-            </li>
-            <li>
-                <a href="<?php $options->adminUrl('manage-pages.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-pages.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-file w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('页面'); ?></span>
-                </a>
-            </li>
-            <li>
-                <a href="<?php $options->adminUrl('manage-comments.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-comments.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-comments w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('评论'); ?></span>
-                </a>
-            </li>
-            <li>
-                <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-medias.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-images w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('文件'); ?></span>
-                </a>
-            </li>
-
-            <!-- Data -->
-            <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('数据'); ?></li>
-            <li>
-                <a href="<?php $options->adminUrl('manage-categories.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-categories.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-folder w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('分类'); ?></span>
-                </a>
-            </li>
-            <li>
-                <a href="<?php $options->adminUrl('manage-tags.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-tags.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-tags w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('标签'); ?></span>
-                </a>
-            </li>
-            <li>
-                <a href="<?php $options->adminUrl('manage-users.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'manage-users.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-users w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('用户'); ?></span>
-                </a>
-            </li>
+            <?php endforeach; ?>
+            <?php endforeach; ?>
 
             <!-- Dynamic Plugin Menu Items -->
             <?php 
@@ -135,7 +120,7 @@ if (strpos($currentUrl, 'extending.php') !== false) {
             ?>
 
             <!-- Settings -->
-            <?php if ($user->pass('administrator', true)): ?>
+            <?php if ($canAdmin): ?>
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('系统'); ?></li>
             <li>
                 <a href="<?php $options->adminUrl('themes.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'themes.php') echo 'bg-blue-50 text-discord-accent'; ?>">
