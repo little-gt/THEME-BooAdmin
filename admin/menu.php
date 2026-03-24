@@ -1,20 +1,21 @@
 <?php if (!defined('__TYPECHO_ADMIN__')) exit; ?>
 <?php
-// 检测当前页面是否在插件菜单中
+// 配置获取网站标题
+$options = Typecho_Widget::widget('Widget_Options');
+$title = trim($options->title);
+// 是否处于拓展页面
 $isPluginPage = false;
 $currentUrl = $_SERVER['REQUEST_URI'];
 if (strpos($currentUrl, 'extending.php') !== false) {
     $isPluginPage = true;
 }
-
-
 ?>
 <?php if(!$isPluginPage): ?>
 <!-- Sidebar -->
 <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col transition-all duration-300 transform md:translate-x-0 fixed md:relative z-20 h-full" id="sidebar">
     <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100 bg-white">
         <h1 class="text-xl font-bold text-discord-accent flex items-center">
-            <span class="sidebar-text text-gray-800 tracking-tight" title="<?php $options->title(); ?>"><?php echo mb_strimwidth($options->title() ?? 'BooAdmin', 0, 15, '...'); ?></span>
+            <span class="sidebar-text text-gray-800 tracking-tight" title="<?php echo htmlspecialchars($title ?: 'BooAdmin'); ?>"><?php echo mb_strimwidth($title ?: 'BooAdmin', 0, 15, '...'); ?></span>
         </h1>
         <button id="sidebar-toggle" class="md:hidden text-gray-400 hover:text-gray-600 focus:outline-none">
             <i class="fas fa-times"></i>
