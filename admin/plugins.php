@@ -48,28 +48,26 @@ include 'menu.php';
                         <p class="text-sm mb-3" style="color: var(--booadmin-muted);"><?php _e('以下插件为 BooAdmin 配套插件，可增强后台安全与功能体验。'); ?></p>
                         <div class="space-y-2">
                             <?php if (!$hasPasskey): ?>
-                            <div class="flex items-center justify-between p-3 border" style="background-color: var(--booadmin-surface); border-color: var(--booadmin-border);">
-                                <div>
+                            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between p-3 border gap-3" style="background-color: var(--booadmin-surface); border-color: var(--booadmin-border);">
+                                <div class="flex-1 min-w-0">
                                     <span class="font-medium" style="color: var(--booadmin-text);">Passkey</span>
-                                    <span class="text-xs ml-2" style="color: var(--booadmin-info);"><?php _e('通行密钥登录插件，完全开源，且符合 IEEE 安全标准，支持同一账号的多设备通信秘钥绑定，轻松实现同微软等大厂一致快捷、安全的无密码登录体验。'); ?></span>
+                                    <span class="text-xs ml-2 block sm:inline" style="color: var(--booadmin-info);"><?php _e('通行密钥登录插件，完全开源，且符合 IEEE 安全标准，支持同一账号的多设备通信秘钥绑定，轻松实现同微软等大厂一致快捷、安全的无密码登录体验。'); ?></span>
                                 </div>
-                                <div class="flex gap-2 text-xs">
-                                    <a href="https://cnb.cool/little-gt/Passkey" target="_blank" class="hover:underline" style="color: var(--booadmin-link);"><?php _e('国内下载'); ?></a>
-                                    <span style="color: var(--booadmin-border-strong);">|</span>
-                                    <a href="https://github.com/little-gt/PLUGION-Passkey" target="_blank" class="hover:underline" style="color: var(--booadmin-link);"><?php _e('GitHub'); ?></a>
+                                <div class="flex items-center gap-2 text-xs shrink-0">
+                                    <a href="https://cnb.cool/little-gt/Passkey" target="_blank" class="px-2 py-1 border hover:opacity-80 transition-opacity whitespace-nowrap" style="color: var(--booadmin-link); border-color: var(--booadmin-border); background-color: var(--booadmin-bg);"><?php _e('国内下载'); ?></a>
+                                    <a href="https://github.com/little-gt/PLUGION-Passkey" target="_blank" class="px-2 py-1 border hover:opacity-80 transition-opacity whitespace-nowrap" style="color: var(--booadmin-link); border-color: var(--booadmin-border); background-color: var(--booadmin-bg);"><?php _e('GitHub'); ?></a>
                                 </div>
                             </div>
                             <?php endif; ?>
                             <?php if (!$hasPassport): ?>
-                            <div class="flex items-center justify-between p-3 border" style="background-color: var(--booadmin-surface); border-color: var(--booadmin-border);">
-                                <div>
+                            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between p-3 border gap-3" style="background-color: var(--booadmin-surface); border-color: var(--booadmin-border);">
+                                <div class="flex-1 min-w-0">
                                     <span class="font-medium" style="color: var(--booadmin-text);">Passport</span>
-                                    <span class="text-xs ml-2" style="color: var(--booadmin-info);"><?php _e('账户密码找回插件，完全开源，且支持自定义邮件模版，内置网安标准的行为日志系统，可实现快速、安全的密码找回体验。'); ?></span>
+                                    <span class="text-xs ml-2 block sm:inline" style="color: var(--booadmin-info);"><?php _e('账户密码找回插件，完全开源，且支持自定义邮件模版，内置网安标准的行为日志系统，可实现快速、安全的密码找回体验。'); ?></span>
                                 </div>
-                                <div class="flex gap-2 text-xs">
-                                    <a href="https://cnb.cool/little-gt/Passport" target="_blank" class="hover:underline" style="color: var(--booadmin-link);"><?php _e('国内下载'); ?></a>
-                                    <span style="color: var(--booadmin-border-strong);">|</span>
-                                    <a href="https://github.com/little-gt/PLUGION-Passport" target="_blank" class="hover:underline" style="color: var(--booadmin-link);"><?php _e('GitHub'); ?></a>
+                                <div class="flex items-center gap-2 text-xs shrink-0">
+                                    <a href="https://cnb.cool/little-gt/Passport" target="_blank" class="px-2 py-1 border hover:opacity-80 transition-opacity whitespace-nowrap" style="color: var(--booadmin-link); border-color: var(--booadmin-border); background-color: var(--booadmin-bg);"><?php _e('国内下载'); ?></a>
+                                    <a href="https://github.com/little-gt/PLUGION-Passport" target="_blank" class="px-2 py-1 border hover:opacity-80 transition-opacity whitespace-nowrap" style="color: var(--booadmin-link); border-color: var(--booadmin-border); background-color: var(--booadmin-bg);"><?php _e('GitHub'); ?></a>
                                 </div>
                             </div>
                             <?php endif; ?>

@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.17-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.18-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -124,37 +124,14 @@
 
 ---
 
-## 🚀 v1.1.17 版本更新速递
+## 🚀 v1.1.18 版本更新速递
 
-### 特性优化
+> ⚠️ **重要提示**：
+> 
+> FontAwesome 7.1.0 版本已失效，请尽快升级到 v1.1.18 版本以确保图标正常显示
 
-- **🔄 下拉菜单交互修复**
-  - 修复了管理页面中下拉选项框因 CSS 类冲突导致的无法展开问题
-  - 优化菜单状态切换逻辑，确保在深色/浅色主题模式下稳定工作
-  - 增强键盘导航和屏幕阅读器兼容性，提升无障碍访问体验
-
-- **🏷️ 标签选择视觉增强**
-  - 优化了标签管理页面的选中状态显示效果，解决对比度不足问题
-  - 采用边框高亮 + FontAwesome 对钩图标方案，增强视觉区分度
-  - 统一深色/浅色模式下的视觉层次，确保在各种背景下清晰可见
-
-- **🎨 主题架构优化**
-  - 优化暗色/亮色模式的架构设计，使其更加统一并减少相互耦合
-  - 优化菜单的设计逻辑，移除冗余代码，并且增强了权限检查逻辑
-
-- **🔧 PHP 8 兼容性改进**
-  - 修复侧边栏标题在 PHP 8 环境下可能的空值警告问题，优化默认显示逻辑
-
-- **🛡️ 权限不足友好提示**
-  - 权限不足时显示友好提示而非抛出异常
-  - 支持自动化暗色/亮色模式切换
-
-- **💡 推荐插件体验优化**
-  - 登录页与插件管理页新增配套插件推荐，提供国内镜像与 GitHub 双下载渠道链接
-  - 提示样式适配深色/浅色主题，确保各模式下的视觉一致性
-
-- **📎 附件插入修复**
-  - 修复插入图片等附件时文件名包含多余空格的问题
+- ⬆️ 升级 FontAwesome 到 7.2.0
+- 🐛 修复因样式系统升级导致的多个已知问题
 
 ---
 

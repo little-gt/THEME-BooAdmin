@@ -2,7 +2,7 @@
 
 > BooAdmin 是一个完全开源、未压缩加密的 Typecho 后台主题，代码透明可审计。如发现安全问题，您可以根据本安全策略的说明进行处理，并且通知 BooAdmin 的开发者。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.17-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.18-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 
 ---
@@ -11,8 +11,8 @@
 
 | 版本 | 状态 | 说明 |
 | :--- | :---: | :--- |
-| **v1.1.x** | ✅ 支持 | 当前主分支，持续接收安全更新 |
-| **v1.0.x** | ❌ EOL | 已停止维护，请升级至 v1.1.x |
+| **v1.1.18** | ✅ 支持 | 当前主分支，持续接收安全更新 |
+| 低于 **v1.1.17** | ❌ EOL | 资源已失效，停止维护，请升级至 v1.1.18 版本 |
 
 ---
 
