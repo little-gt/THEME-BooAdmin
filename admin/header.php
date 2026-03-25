@@ -5,21 +5,21 @@ if (!defined('__TYPECHO_ADMIN__')) {
 
 $header = '
 <!-- CSS Reset & Grid -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.17b', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.17b', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.18', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.18', true) . '">
 <!-- Theme Variables -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.1.17e', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.1.17f', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.1.18', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.1.18', true) . '">
 <!-- Component Styles -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.17f', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.17e', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.18', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.18', true) . '">
 <!-- NProgress -->
 <script src="' . $options->adminStaticUrl('js', 'nprogress.js', true) . '"></script>
 <!-- TailwindCSS -->
 <script src="https://cdn.garfieldtom.cool/resource/libs/tailwind/3.4.17/tailwindcss.js"></script>
 <!-- Font Awesome -->
-<script src="https://cdn.garfieldtom.cool/resource/libs/fontawesome/7.1.0/js/all.min.js"></script>
-<link href="https://cdn.garfieldtom.cool/resource/libs/fontawesome/7.1.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.garfieldtom.cool/resource/libs/fontawesome/7.2.0/js/all.min.js"></script>
+<link href="https://cdn.garfieldtom.cool/resource/libs/fontawesome/7.2.0/css/all.min.css" rel="stylesheet">
 <!-- ECharts -->
 <script src="https://cdn.garfieldtom.cool/resource/libs/echarts/5.5.0/echarts.min.js"></script>
 <script>
