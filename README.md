@@ -126,12 +126,16 @@
 
 ## 🚀 v1.1.18 版本更新速递
 
-> ⚠️ **重要提示**：
-> 
-> FontAwesome 7.1.0 版本已失效，请尽快升级到 v1.1.18 版本以确保图标正常显示
+### 样式系统重构
 
-- ⬆️ 升级 FontAwesome 到 7.2.0
-- 🐛 修复因样式系统升级导致的多个已知问题
+- ⬆️ 升级 FontAwesome 到 7.2.0 版本
+- 🐛 修复因适配暗色的样式系统升级导致的多个已知问题
+
+### 权限体系重构
+
+- 🔒 **权限不足优雅处理** — 访问无权限页面时，返回 HTTP 403 及自适应暗色/亮色的扁平化错误页，不再抛出异常堆栈
+- 📋 **菜单权限控制** — 侧边栏按 `contributor` / `editor` / `administrator` 三级角色动态过滤，无权访问的菜单项及空分组自动隐藏，插件面板保留自身权限逻辑
+- 🛡️ **控制台权限细化** — 撰写按钮、文章编辑（仅显示自己的）、评论管理等操作按钮按权限显示，避免越权引导
 
 ---
 
@@ -162,21 +166,21 @@
 
 ### 前端框架与样式
 
-| 组件 | 说明 |
-| ---- | ---- |
-| 字体 | Google Fonts |
-| 图标库 | FontAwesome 7 |
-| 图表库 | ECharts.js |
-| 进度条 | NProgress |
-| CSS 框架 | TailwindCSS 3.4.17 |
+| 组件 | 资源名称 | 资源版本 | 资源说明 |
+| ---- | ---- | ---- | ---- |
+| 字体     | Google Fonts | Sans Serif 系列字体 | 用于加载中文和英文字体 |
+| 图标库   | FontAwesome  | 7.2.0               | 用于加载主题内的个性化图标 |
+| 图表库   | ECharts.js   | 5.1.2               | 用于加载主题内控制台的图表 |
+| 进度条   | NProgress    | 0.2.0               | 用于加载主题内的进度条 |
+| CSS 框架 | TailwindCSS  | 3.4.12              | 用于构建主题的样式系统 |
 
 ### 资源加速
 
 | 项目 | 说明 |
 | ---- | ---- |
-| CDN 提供商 | GARFIELDTOM'S NEST CDN |
-| 分发范围 | JavaScript、CSS、字体、图标等静态资源通过 CDN 分发 |
-| 访问入口 | [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool) |
+| CDN 提供商 | GARFIELDTOM'S NEST CDN （中文名：懒猫小站静态资源分发系统） |
+| 分发范围   | BooAdmin 所依赖的 JavaScript、CSS、字体、图标等静态资源库 |
+| 访问入口   | [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool) |
 
 ---
 

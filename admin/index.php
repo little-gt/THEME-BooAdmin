@@ -5,6 +5,10 @@ include 'menu.php';
 
 $stat = \Widget\Stat::alloc();
 
+// 权限预检查
+$canWrite = $user->pass('contributor', true);
+$canEdit  = $user->pass('editor', true);
+
 // 获取最近7天的文章和评论数据
 $db = \Typecho\Db::get();
 $days = [];
@@ -74,9 +78,11 @@ $chartComments = json_encode($commentsData);
                         $stat->myPublishedPostsNum, $stat->myPublishedCommentsNum, $stat->categoriesNum); ?></p>
                 </div>
                 <div class="flex space-x-3">
+                    <?php if ($canWrite): ?>
                     <a href="<?php $options->adminUrl('write-post.php'); ?>" class="bg-discord-accent hover:bg-blue-600 text-white px-4 py-2 font-medium transition-colors text-sm">
                         <i class="fas fa-pen mr-2"></i> <?php _e('撰写新文章'); ?>
                     </a>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -177,7 +183,7 @@ $chartComments = json_encode($commentsData);
                             <i class="fas fa-newspaper mr-2 text-gray-400"></i>
                             <?php _e('最近文章'); ?>
                         </h3>
-                        <a href="<?php $options->adminUrl('write-post.php'); ?>" class="text-xs font-medium text-discord-accent hover:underline"><?php _e('写文章'); ?></a>
+                        <?php if ($canWrite): ?><a href="<?php $options->adminUrl('write-post.php'); ?>" class="text-xs font-medium text-discord-accent hover:underline"><?php _e('写文章'); ?></a><?php endif; ?>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm">
@@ -198,7 +204,9 @@ $chartComments = json_encode($commentsData);
                                             </td>
                                             <td class="py-3 px-6 text-gray-400 text-xs"><?php $posts->date('Y-m-d'); ?></td>
                                             <td class="py-3 px-6 text-right">
+                                                <?php if ($canEdit || ($canWrite && $posts->authorId == $user->uid)): ?>
                                                 <a href="<?php $options->adminUrl('write-post.php?cid=' . $posts->cid); ?>" class="text-gray-400 hover:text-discord-accent transition-colors p-2 hover:bg-gray-100" title="<?php _e('编辑'); ?>"><i class="fas fa-pencil-alt"></i></a>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endwhile; ?>
@@ -246,7 +254,7 @@ $chartComments = json_encode($commentsData);
                             <div class="p-8 text-center text-sm text-gray-400"><?php _e('暂时没有回复'); ?></div>
                         <?php endif; ?>
                     </div>
-                    <a href="<?php $options->adminUrl('manage-comments.php'); ?>" class="block p-3 text-center text-xs font-bold text-gray-500 hover:text-discord-accent bg-gray-50 border-t border-gray-100 transition-colors uppercase tracking-wide"><?php _e('查看所有评论'); ?></a>
+                    <?php if ($canEdit): ?><a href="<?php $options->adminUrl('manage-comments.php'); ?>" class="block p-3 text-center text-xs font-bold text-gray-500 hover:text-discord-accent bg-gray-50 border-t border-gray-100 transition-colors uppercase tracking-wide"><?php _e('查看所有评论'); ?></a><?php endif; ?>
                 </div>
 
                 <!-- Official Log (Compact) -->
