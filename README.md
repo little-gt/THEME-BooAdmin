@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.18-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.19-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -124,14 +124,18 @@
 
 ---
 
-## 🚀 v1.1.18 版本更新速递
+## 🚀 v1.1.19 版本更新速递
 
-> ⚠️ **重要提示**：
-> 
-> FontAwesome 7.1.0 版本已失效，请尽快升级到 v1.1.18 版本以确保图标正常显示
+### 界面优化
 
-- ⬆️ 升级 FontAwesome 到 7.2.0
-- 🐛 修复因样式系统升级导致的多个已知问题
+- 🎨 文章预览样式优化，强化表格渲染和 LaTeX 公式渲染
+- 🖥️ 文章预览支持全屏显示
+- 📋 管理页面多选功能，卡片模式和列表模式数据互通
+
+## 其他更新
+
+- 🧹 优化样式文件缩进
+- 🐛 修复了一些已知问题
 
 ---
 
@@ -162,21 +166,21 @@
 
 ### 前端框架与样式
 
-| 组件 | 说明 |
-| ---- | ---- |
-| 字体 | Google Fonts |
-| 图标库 | FontAwesome 7 |
-| 图表库 | ECharts.js |
-| 进度条 | NProgress |
-| CSS 框架 | TailwindCSS 3.4.17 |
+| 组件 | 资源名称 | 资源版本 | 资源说明 |
+| ---- | ---- | ---- | ---- |
+| 字体     | Google Fonts | Sans Serif 系列字体 | 用于加载中文和英文字体 |
+| 图标库   | FontAwesome  | 7.2.0               | 用于加载主题内的个性化图标 |
+| 图表库   | ECharts.js   | 5.1.2               | 用于加载主题内控制台的图表 |
+| 进度条   | NProgress    | 0.2.0               | 用于加载主题内的进度条 |
+| CSS 框架 | TailwindCSS  | 3.4.12              | 用于构建主题的样式系统 |
 
 ### 资源加速
 
 | 项目 | 说明 |
 | ---- | ---- |
-| CDN 提供商 | GARFIELDTOM'S NEST CDN |
-| 分发范围 | JavaScript、CSS、字体、图标等静态资源通过 CDN 分发 |
-| 访问入口 | [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool) |
+| CDN 提供商 | GARFIELDTOM'S NEST CDN （中文名：懒猫小站静态资源分发系统） |
+| 分发范围   | BooAdmin 所依赖的 JavaScript、CSS、字体、图标等静态资源库 |
+| 访问入口   | [https://cdn.garfieldtom.cool](https://cdn.garfieldtom.cool) |
 
 ---
 

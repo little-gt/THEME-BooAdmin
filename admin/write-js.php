@@ -280,39 +280,67 @@ $(document).ready(function() {
     // 预览功能
     let isFullScreen = false;
 
+    function togglePreviewFullScreen() {
+        isFullScreen = !isFullScreen;
+        const container = $('.preview-overlay > div');
+        if (isFullScreen) {
+            container.removeClass('md:w-11/12 md:h-5/6').addClass('w-full h-full');
+        } else {
+            container.removeClass('w-full h-full').addClass('md:w-11/12 md:h-5/6');
+        }
+        const fullscreenBtn = container.find('.preview-fullscreen-btn i');
+        fullscreenBtn.toggleClass('fa-expand fa-compress');
+    }
+
     function previewData(cid) {
-        // Remove fullscreen class handling for redesign compatibility
+        isFullScreen = false;
         $(document.body).addClass('preview-mode');
 
-        // Create overlay and iframe container
         const overlay = $('<div class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center preview-overlay"></div>');
-        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 rounded-none shadow-2xl relative flex flex-col overflow-hidden"></div>');
-        
-        // Header
-        const header = $('<div class="h-12 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-4"></div>');
+        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 rounded-none shadow-2xl relative flex flex-col overflow-hidden transition-all duration-200"></div>');
+
+        const header = $('<div class="h-12 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-4 flex-shrink-0"></div>');
         header.append('<h3 class="font-bold text-gray-700 text-sm"><i class="fas fa-eye mr-2"></i><?php _e('文章预览'); ?></h3>');
-        
-        const closeBtn = $('<button class="text-gray-500 hover:text-red-500 focus:outline-none"><i class="fas fa-times"></i></button>');
+
+        const headerBtns = $('<div class="flex items-center space-x-2"></div>');
+
+        const fullscreenBtn = $('<button class="preview-fullscreen-btn text-gray-500 hover:text-discord-accent focus:outline-none" title="<?php _e('全屏'); ?>"></button>');
+        fullscreenBtn.html('<i class="fas fa-expand"></i>');
+        fullscreenBtn.click(togglePreviewFullScreen);
+        headerBtns.append(fullscreenBtn);
+
+        const closeBtn = $('<button class="text-gray-500 hover:text-red-500 focus:outline-none" title="<?php _e('关闭'); ?>"></button>');
+        closeBtn.html('<i class="fas fa-times"></i>');
         closeBtn.click(cancelPreview);
-        header.append(closeBtn);
-        
+        headerBtns.append(closeBtn);
+
+        header.append(headerBtns);
         container.append(header);
 
-        // Iframe
         const frame = $('<iframe frameborder="0" class="w-full flex-1 bg-white"></iframe>')
             .attr('src', './preview.php?cid=' + cid)
             .attr('sandbox', 'allow-same-origin allow-scripts');
-            
+
         container.append(frame);
         overlay.append(container).appendTo(document.body);
 
-        // Close on escape key
         $(document).on('keydown.preview', function(e) {
-            if (e.key === 'Escape') cancelPreview();
+            if (e.key === 'Escape') {
+                if (isFullScreen) {
+                    togglePreviewFullScreen();
+                } else {
+                    cancelPreview();
+                }
+            }
+            if (e.key === 'F11') {
+                e.preventDefault();
+                togglePreviewFullScreen();
+            }
         });
     }
 
     function cancelPreview() {
+        isFullScreen = false;
         $(document.body).removeClass('preview-mode');
         $('.preview-overlay').remove();
         $(document).off('keydown.preview');

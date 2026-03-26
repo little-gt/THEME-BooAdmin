@@ -2240,7 +2240,7 @@ code,pre,.mono,input[type="password"],input[type="text"],textarea,select {
 	display:none;
 }
 /* Global Select Optimization */
-    select {
+select {
 	height:auto !important;
 	min-height:42px !important;
 	padding-top:8px !important;
@@ -2249,7 +2249,7 @@ code,pre,.mono,input[type="password"],input[type="text"],textarea,select {
 	background-color:var(--booadmin-surface);
 	border-color:var(--booadmin-border);
 	/* Tailwind gray-200 */
-        white-space:nowrap !important;
+white-space:nowrap !important;
 	overflow:hidden !important;
 	text-overflow:ellipsis !important;
 	width:auto !important;
@@ -2258,10 +2258,10 @@ code,pre,.mono,input[type="password"],input[type="text"],textarea,select {
 select:focus {
 	border-color:var(--booadmin-accent) !important;
 	/* Discord accent */
-        outline:none !important;
+outline:none !important;
 }
 /* Sidebar fixed positioning on desktop */
-    @media (min-width:768px) {
+@media (min-width:768px) {
 	#sidebar {
 	position:fixed !important;
 	top:0;
@@ -2270,12 +2270,12 @@ select:focus {
 	z-index:20;
 }
 /* Add left margin to main content to account for fixed sidebar */
-        body:not(.body-100) > main {
+body:not(.body-100) > main {
 	margin-left:16rem;
 	/* w-64 = 16rem */
 }
 }/* Mobile layout guardrails */
-    @media (max-width:767px) {
+@media (max-width:767px) {
 	body:not(.body-100) {
 	overflow-x:hidden;
 }
@@ -2290,21 +2290,21 @@ body:not(.body-100) > main {
 	height:100vh;
 }
 }/* Body Layout Classes */
-    .body-100 {
+.body-100 {
 	/* For login/register pages - no restrictions on height and layout */
-        background-color:var(--booadmin-bg);
+background-color:var(--booadmin-bg);
 	color:var(--booadmin-text);
 }
 body:not(.body-100) {
 	/* For admin pages - natural scrolling layout */
-        background-color:var(--booadmin-bg);
+background-color:var(--booadmin-bg);
 	color:var(--booadmin-text);
 	min-height:100vh;
 	display:flex;
 	/* No overflow hidden - allow natural page scroll */
 }
 /* Main content area flows naturally */
-    main {
+main {
 	flex:1;
 	display:flex;
 	flex-direction:column;
@@ -2312,28 +2312,28 @@ body:not(.body-100) {
 	/* Remove overflow restrictions */
 }
 /* Override overflow-hidden class on main */
-    main.overflow-hidden {
+main.overflow-hidden {
 	overflow:visible !important;
 }
 /* Header stays at top of main */
-    main > header {
+main > header {
 	flex-shrink:0;
 	z-index:10;
 }
 /* Content area expands to fill space,no internal scroll */
-    main > .flex-1.overflow-y-auto,main > div.flex-1 {
+main > .flex-1.overflow-y-auto,main > div.flex-1 {
 	flex:1 0 auto;
 	overflow:visible !important;
 	/* Override overflow-y-auto,let page scroll */
 }
 /* Footer follows content naturally */
-    #admin-footer {
+#admin-footer {
 	flex-shrink:0;
 	margin-top:auto;
 	/* Push to bottom when content is short */
 }
 /* Plugin page banner */
-    .plugin-banner {
+.plugin-banner {
 	position:fixed;
 	bottom:0;
 	left:0;
@@ -2403,21 +2403,21 @@ body:not(.body-100) {
 	background:var(--booadmin-banner-primary-bg);
 }
 /* Adjust main content for plugin banner */
-    .has-plugin-banner main {
+.has-plugin-banner main {
 	padding-bottom:5rem;
 }
 /* ========================================
-       Global Form Styling for Settings Pages
-       ======================================== */
-    
-    /* Form container */
-    .typecho-option {
+   Global Form Styling for Settings Pages
+   ======================================== */
+
+/* Form container */
+.typecho-option {
 	margin-bottom:0;
 	padding-bottom:0;
 	border-bottom:none;
 }
 /* Labels */
-    .typecho-option > label:first-child {
+.typecho-option > label:first-child {
 	display:block;
 	font-weight:600;
 	font-size:0.875rem;
@@ -2425,7 +2425,7 @@ body:not(.body-100) {
 	margin-bottom:0.5rem;
 }
 /* Text inputs */
-    .typecho-option input[type="text"],.typecho-option input[type="password"],.typecho-option input[type="email"],.typecho-option input[type="url"],.typecho-option input[type="number"],.typecho-option textarea {
+.typecho-option input[type="text"],.typecho-option input[type="password"],.typecho-option input[type="email"],.typecho-option input[type="url"],.typecho-option input[type="number"],.typecho-option textarea {
 	width:100%;
 	max-width:600px;
 	min-width:200px;
@@ -2438,7 +2438,7 @@ body:not(.body-100) {
 	box-sizing:border-box;
 }
 /* Search input specific styles */
-    .search-input-container input[type="text"] {
+.search-input-container input[type="text"] {
 	border:0 !important;
 	background-color:var(--booadmin-surface) !important;
 	padding:0.375rem 0.75rem !important;
@@ -2449,7 +2449,7 @@ body:not(.body-100) {
 	background-color:var(--booadmin-surface);
 }
 /* Checkbox and Radio - keep on same line */
-    .typecho-option label input[type="checkbox"],.typecho-option label input[type="radio"] {
+.typecho-option label input[type="checkbox"],.typecho-option label input[type="radio"] {
 	margin-right:0.5rem;
 	flex-shrink:0;
 	width:1rem;
@@ -2457,7 +2457,7 @@ body:not(.body-100) {
 	accent-color:var(--booadmin-accent);
 }
 /* Checkbox/Radio label containers - inline flex */
-    .typecho-option label:has(input[type="checkbox"]),.typecho-option label:has(input[type="radio"]) {
+.typecho-option label:has(input[type="checkbox"]),.typecho-option label:has(input[type="radio"]) {
 	display:inline-flex !important;
 	align-items:center;
 	padding:0.5rem 0.75rem;
@@ -2480,12 +2480,12 @@ body:not(.body-100) {
 	border-color:var(--booadmin-selection-border);
 }
 /* Fallback for browsers without:has() support */
-    .typecho-option input[type="checkbox"] + *,.typecho-option input[type="radio"] + * {
+.typecho-option input[type="checkbox"] + *,.typecho-option input[type="radio"] + * {
 	white-space:normal;
 	word-break:break-word;
 }
 /* Description text */
-    .typecho-option .description,.typecho-option small {
+.typecho-option .description,.typecho-option small {
 	display:block;
 	margin-top:0.5rem;
 	font-size:0.75rem;
@@ -2493,7 +2493,7 @@ body:not(.body-100) {
 	line-height:1.5;
 }
 /* Select dropdowns */
-    .typecho-option select {
+.typecho-option select {
 	width:auto;
 	min-width:200px;
 	max-width:600px;
@@ -2528,11 +2528,11 @@ body:not(.body-100) {
 	width:100%;
 }
 }/* ========================================
-       Mobile Optimizations
-       ======================================== */
-    
-    /* 1. Table scroll indicator - gradient masks */
-    @media (max-width:767px) {
+   Mobile Optimizations
+   ======================================== */
+
+/* 1. Table scroll indicator - gradient masks */
+@media (max-width:767px) {
 	.table-wrapper {
 	position:relative;
 	overflow-x:auto;
@@ -2570,7 +2570,7 @@ body:not(.body-100) {
 	opacity:1;
 }
 }/* 2. Top operation area - stack vertically on mobile */
-    @media (max-width:640px) {
+@media (max-width:640px) {
 	.operate-bar {
 	flex-direction:column !important;
 	align-items:flex-start !important;
@@ -2581,48 +2581,48 @@ body:not(.body-100) {
 	justify-content:space-between;
 }
 }/* ========================================
-       Touch Target Size Optimization
-       ======================================== */
-    
-    /* Increase touch targets for mobile */
-    @media (max-width:767px) {
+   Touch Target Size Optimization
+   ======================================== */
+
+/* Increase touch targets for mobile */
+@media (max-width:767px) {
 	/* Table checkboxes */
-        .typecho-list-table input[type="checkbox"] {
+.typecho-list-table input[type="checkbox"] {
 	width:20px !important;
 	height:20px !important;
 	min-width:20px !important;
 	min-height:20px !important;
 }
 /* Table cells padding for easier tapping */
-        .typecho-list-table td {
+.typecho-list-table td {
 	padding:1rem 0.5rem !important;
 }
 /* Buttons minimum height (exclude view-toggle buttons) */
-        button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
+button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	min-height:44px !important;
 	padding-top:0.625rem !important;
 	padding-bottom:0.625rem !important;
 }
 /* Links in action rows */
-        .typecho-list-table .group a {
+.typecho-list-table .group a {
 	padding:0.5rem !important;
 	margin:-0.5rem 0 !important;
 }
 /* Dropdown buttons */
-        .btn-dropdown-toggle {
+.btn-dropdown-toggle {
 	min-height:44px !important;
 }
 /* View toggle buttons remain compact */
-        .view-toggle button {
+.view-toggle button {
 	min-height:36px !important;
 	padding:0.5rem 0.75rem !important;
 }
 }/* ========================================
-       Card Layout View for List Pages
-       ======================================== */
-    
-    /* Card view container */
-    .card-view-container {
+   Card Layout View for List Pages
+   ======================================== */
+
+/* Card view container */
+.card-view-container {
 	display:none;
 	grid-template-columns:1fr;
 	gap:1rem;
@@ -2632,17 +2632,17 @@ body:not(.body-100) {
 	display:grid;
 }
 /* Mobile:1 column */
-    @media (min-width:768px) {
+@media (min-width:768px) {
 	.card-view-container {
 	grid-template-columns:repeat(2,1fr);
 }
 }/* Desktop:3 columns */
-    @media (min-width:1280px) {
+@media (min-width:1280px) {
 	.card-view-container {
 	grid-template-columns:repeat(3,1fr);
 }
 }/* Individual card styles */
-    .content-card {
+.content-card {
 	background:var(--booadmin-surface);
 	color:var(--booadmin-text);
 	border:1px solid var(--booadmin-border);
@@ -2730,18 +2730,18 @@ body:not(.body-100) {
 	font-weight:600;
 }
 /* Card view container - hidden by default */
-    .card-view-container {
+.card-view-container {
 	display:none !important;
 }
 /* Hide table when card view is active */
-    .view-mode-card .table-wrapper {
+.view-mode-card .table-wrapper {
 	display:none !important;
 }
 .view-mode-card .card-view-container {
 	display:grid !important;
 }
 /* View toggle buttons */
-    .view-toggle {
+.view-toggle {
 	display:inline-flex;
 	gap:0.25rem;
 	background:var(--booadmin-highlight-soft);
@@ -2896,18 +2896,18 @@ body:not(.body-100) {
 	display:flex
 }
 /* Hide view toggle on very small screens */
-    @media (max-width:480px) {
+@media (max-width:480px) {
 	.view-toggle {
 	display:none;
 }
 }
 /* 3. Settings tabs - scroll snap and hint */
-    .settings-tabs {
+.settings-tabs {
 	scroll-snap-type:x mandatory;
 	-webkit-overflow-scrolling:touch;
 	scrollbar-width:none;
 	/* Firefox */
-        -ms-overflow-style:none;
+-ms-overflow-style:none;
 	/* IE/Edge */
 	background-color:var(--booadmin-surface);
 	border:1px solid var(--booadmin-border);
@@ -2955,7 +2955,7 @@ body:not(.body-100) {
 	min-width:100px;
 }
 }/* Submit button styling */
-    .typecho-option-submit {
+.typecho-option-submit {
 	display:block !important;
 	margin-top:1.5rem;
 	padding-top:0;
@@ -2983,14 +2983,14 @@ body:not(.body-100) {
 	transform:translateY(-1px);
 }
 /* Required field indicator */
-    .typecho-option .required {
+.typecho-option .required {
 	color:var(--booadmin-danger);
 	margin-left:0.25rem;
 }
 /* ========================================
-       Typecho Reform Style (for plugin/theme settings)
-       ======================================== */
-    .typecho-reform-style ul {
+   Typecho Reform Style (for plugin/theme settings)
+   ======================================== */
+.typecho-reform-style ul {
 	list-style:none;
 	padding:0;
 	margin:0 0 1rem 0;
@@ -3068,7 +3068,7 @@ body:not(.body-100) {
 	transform:translateY(-1px);
 }
 /* Radio and checkbox styling for reform style */
-    .typecho-reform-style input[type="radio"],.typecho-reform-style input[type="checkbox"] {
+.typecho-reform-style input[type="radio"],.typecho-reform-style input[type="checkbox"] {
 	margin-right:0.5rem;
 	accent-color:var(--booadmin-accent);
 	flex-shrink:0;
@@ -3112,11 +3112,11 @@ body:not(.body-100) {
 	width:100%;
 }
 }/* ========================================
-       Modern Notification System (Toast)
-       ======================================== */
-    
-    /* 通知容器 - 固定在右上角 */
-    #typecho-notification-container {
+   Modern Notification System (Toast)
+   ======================================== */
+
+/* 通知容器 - 固定在右上角 */
+#typecho-notification-container {
 	position:fixed;
 	top:20px;
 	right:20px;
@@ -3128,7 +3128,7 @@ body:not(.body-100) {
 	pointer-events:none;
 }
 /* 通知卡片 */
-    .typecho-notification {
+.typecho-notification {
 	pointer-events:all;
 	background:#ffffff;
 	border:1px solid var(--booadmin-border);
@@ -3146,18 +3146,18 @@ body:not(.body-100) {
 	color:var(--booadmin-text);
 }
 /* 显示动画 */
-    .typecho-notification.show {
+.typecho-notification.show {
 	opacity:1;
 	transform:translateX(0);
 }
 /* 隐藏动画 */
-    .typecho-notification.hide {
+.typecho-notification.hide {
 	opacity:0;
 	transform:translateX(400px);
 	transition:all 0.2s ease-out;
 }
 /* 图标样式 */
-    .typecho-notification-icon {
+.typecho-notification-icon {
 	flex-shrink:0;
 	width:18px;
 	height:18px;
@@ -3170,21 +3170,21 @@ body:not(.body-100) {
 	color:var(--booadmin-muted);
 }
 /* 内容区域 */
-    .typecho-notification-content {
+.typecho-notification-content {
 	flex:1;
 	display:flex;
 	flex-direction:column;
 	gap:4px;
 }
 /* 标题 */
-    .typecho-notification-title {
+.typecho-notification-title {
 	font-weight:600;
 	font-size:13px;
 	line-height:1.4;
 	color:var(--booadmin-text);
 }
 /* 消息列表 */
-    .typecho-notification-messages {
+.typecho-notification-messages {
 	list-style:none;
 	margin:0;
 	padding:0;
@@ -3199,7 +3199,7 @@ body:not(.body-100) {
 	margin-bottom:2px;
 }
 /* 关闭按钮 */
-    .typecho-notification-close {
+.typecho-notification-close {
 	flex-shrink:0;
 	width:18px;
 	height:18px;
@@ -3220,7 +3220,7 @@ body:not(.body-100) {
 	color:var(--booadmin-muted);
 }
 /* 成功样式 */
-    .typecho-notification.success {
+.typecho-notification.success {
 	border-left-color:var(--booadmin-success);
 }
 .typecho-notification.success .typecho-notification-icon {
@@ -3233,7 +3233,7 @@ body:not(.body-100) {
 	color:var(--booadmin-muted);
 }
 /* 错误样式 */
-    .typecho-notification.error {
+.typecho-notification.error {
 	border-left-color:var(--booadmin-danger);
 }
 .typecho-notification.error .typecho-notification-icon {
@@ -3246,7 +3246,7 @@ body:not(.body-100) {
 	color:var(--booadmin-muted);
 }
 /* 警告样式 */
-    .typecho-notification.notice {
+.typecho-notification.notice {
 	border-left-color:var(--booadmin-warning);
 }
 .typecho-notification.notice .typecho-notification-icon {
@@ -3259,7 +3259,7 @@ body:not(.body-100) {
 	color:var(--booadmin-muted);
 }
 /* 信息样式 */
-    .typecho-notification.info {
+.typecho-notification.info {
 	border-left-color:var(--booadmin-info);
 }
 .typecho-notification.info .typecho-notification-icon {
@@ -3272,7 +3272,7 @@ body:not(.body-100) {
 	color:var(--booadmin-muted);
 }
 /* 移动端适配 */
-    @media (max-width:640px) {
+@media (max-width:640px) {
 	#typecho-notification-container {
 	top:10px;
 	right:10px;
@@ -3287,158 +3287,375 @@ body:not(.body-100) {
 }
 }
 /* 旧版兼容 - 隐藏旧的通知样式 */
-    .message.popup {
+.message.popup {
 	display:none !important;
 }
 
-	/* JS-generated component theming */
-	.booadmin-chart-tooltip-title {
-		font-weight:600;
-		margin-bottom:8px;
-		color:var(--booadmin-chart-text);
+/* JS-generated component theming */
+.booadmin-chart-tooltip-title {
+	font-weight:600;
+	margin-bottom:8px;
+	color:var(--booadmin-chart-text);
+}
+
+.booadmin-chart-tooltip-row {
+	display:flex;
+	align-items:center;
+	margin:4px 0;
+	gap:8px;
+}
+
+.booadmin-chart-tooltip-dot {
+	display:inline-block;
+	width:10px;
+	height:10px;
+	flex:0 0 10px;
+}
+
+.booadmin-chart-tooltip-label {
+	color:var(--booadmin-chart-text);
+}
+
+.booadmin-chart-tooltip-value {
+	margin-left:auto;
+	color:var(--booadmin-chart-text);
+}
+
+.booadmin-news-item {
+	background-color:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+}
+
+.booadmin-news-item:hover {
+	background-color:var(--booadmin-surface-2);
+	border-color:var(--booadmin-border-strong);
+}
+
+.booadmin-news-icon {
+	background-image:linear-gradient(135deg,var(--booadmin-accent),var(--booadmin-info));
+}
+
+.booadmin-news-icon-glyph {
+	color:var(--booadmin-on-accent);
+}
+
+.booadmin-news-badge-1 {
+	background-image:linear-gradient(135deg,var(--booadmin-accent),var(--booadmin-info));
+}
+
+.booadmin-news-badge-2 {
+	background-image:linear-gradient(135deg,var(--booadmin-success),var(--booadmin-info));
+}
+
+.booadmin-news-badge-3 {
+	background-image:linear-gradient(135deg,var(--booadmin-link),var(--booadmin-accent));
+}
+
+.booadmin-news-badge-4 {
+	background-image:linear-gradient(135deg,var(--booadmin-warning),var(--booadmin-danger));
+}
+
+.booadmin-news-badge-5 {
+	background-image:linear-gradient(135deg,var(--booadmin-info),var(--booadmin-accent-hover));
+}
+
+.booadmin-news-badge-6 {
+	background-image:linear-gradient(135deg,var(--booadmin-danger),var(--booadmin-accent));
+}
+
+.booadmin-news-title {
+	color:var(--booadmin-text);
+}
+
+.booadmin-news-item:hover .booadmin-news-title {
+	color:var(--booadmin-accent);
+}
+
+.booadmin-news-meta {
+	color:var(--booadmin-muted);
+}
+
+.booadmin-news-arrow {
+	color:var(--booadmin-muted);
+}
+
+.booadmin-news-item:hover .booadmin-news-arrow {
+	color:var(--booadmin-accent);
+}
+
+.booadmin-news-section {
+	background:linear-gradient(135deg,var(--booadmin-surface-2) 0%,var(--booadmin-surface) 55%,var(--booadmin-surface-2) 100%);
+	border-color:var(--booadmin-border);
+}
+
+.booadmin-news-header-title {
+	color:var(--booadmin-text);
+}
+
+.booadmin-news-header-icon {
+	background-image:linear-gradient(135deg,var(--booadmin-accent),var(--booadmin-info));
+}
+
+.booadmin-news-official-link {
+	color:var(--booadmin-accent);
+}
+
+.booadmin-news-official-link:hover {
+	color:var(--booadmin-accent-hover);
+}
+
+.booadmin-news-message {
+	color:var(--booadmin-muted);
+}
+
+.booadmin-news-skeleton-item {
+	background-color:var(--booadmin-surface);
+	border-color:var(--booadmin-border);
+}
+
+.booadmin-news-skeleton-icon {
+	background-color:var(--booadmin-surface-2);
+}
+
+.booadmin-news-skeleton-line {
+	background-color:var(--booadmin-border);
+}
+
+.booadmin-news-skeleton-line-soft {
+	background-color:var(--booadmin-surface-2);
+}
+
+.booadmin-news-empty {
+	color:var(--booadmin-muted);
+}
+
+.booadmin-update-banner {
+	background-color:var(--booadmin-info-bg);
+	color:var(--booadmin-info-hover);
+	border:1px solid var(--booadmin-border);
+}
+
+.booadmin-update-link {
+	color:var(--booadmin-info-hover);
+}
+
+.booadmin-update-link:hover {
+	color:var(--booadmin-accent);
+}
+
+.booadmin-copyright-tooltip {
+	position:relative;
+	display:inline-block;
+	cursor:pointer;
+}
+
+.booadmin-copyright-overlay {
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background-color:var(--booadmin-overlay);
+	z-index:999;
+	display:none;
+}
+
+.booadmin-copyright-overlay.show {
+	display:block;
+}
+
+.booadmin-copyright-popup {
+	position:fixed;
+	top:50%;
+	left:50%;
+	transform:translate(-50%, -50%);
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	padding:28px;
+	box-shadow:0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	z-index:1000;
+	width:90%;
+	max-width:640px;
+	max-height:calc(100vh - 32px);
+	overflow-y:auto;
+	display:none;
+}
+
+.booadmin-copyright-popup.show {
+	display:block;
+	animation:fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity:0;
+		transform:translate(-50%, -50%) scale(0.95);
+	}
+	to {
+		opacity:1;
+		transform:translate(-50%, -50%) scale(1);
+	}
+}
+
+.booadmin-copyright-popup h3 {
+	margin:0 0 8px 0;
+	font-size:20px;
+	font-weight:700;
+	color:var(--booadmin-text);
+	text-align:center;
+}
+
+.booadmin-copyright-popup .version {
+	text-align:center;
+	font-size:12px;
+	color:var(--booadmin-muted);
+	margin:0 0 8px 0;
+}
+
+.booadmin-copyright-popup .content {
+	display:flex;
+	align-items:flex-start;
+	gap:20px;
+}
+
+.booadmin-copyright-popup .left {
+	flex:1;
+	min-width:0;
+}
+
+.booadmin-copyright-popup .right {
+	flex:0 0 240px;
+}
+
+.booadmin-copyright-popup .main-copy {
+	margin:0 0 12px 0;
+	font-size:13px;
+	color:var(--booadmin-muted);
+	line-height:1.6;
+}
+
+.booadmin-copyright-popup .support-points {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+.booadmin-copyright-popup .support-points li {
+	margin:0 0 8px 0;
+	padding:8px 10px;
+	background:var(--booadmin-surface-2);
+	border:1px solid var(--booadmin-border);
+	font-size:13px;
+	color:var(--booadmin-text);
+	line-height:1.6;
+}
+
+.booadmin-copyright-popup .donation-card {
+	border:1px solid var(--booadmin-border);
+	padding:8px;
+	background:var(--booadmin-surface);
+}
+
+.booadmin-copyright-popup p {
+	margin:0 0 16px 0;
+	font-size:14px;
+	color:var(--booadmin-muted);
+	line-height:1.5;
+	text-align:left;
+}
+
+.booadmin-copyright-popup img {
+	width:100%;
+	max-width:none;
+	height:auto;
+	display:block;
+	box-shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.booadmin-copyright-popup .close-btn {
+	position:absolute;
+	top:16px;
+	right:16px;
+	background:none;
+	border:none;
+	font-size:20px;
+	cursor:pointer;
+	color:var(--booadmin-muted);
+	padding:4px;
+	line-height:1;
+	transition:all 0.2s ease;
+}
+
+.booadmin-copyright-popup .close-btn:hover {
+	color:var(--booadmin-text);
+	background-color:var(--booadmin-surface-2);
+}
+
+.booadmin-copyright-popup .action {
+	margin-top:14px;
+	display:flex;
+	gap:10px;
+	flex-wrap:wrap;
+}
+
+.booadmin-copyright-popup .action a {
+	display:inline-block;
+	padding:10px 16px;
+	background-color:var(--booadmin-accent);
+	color:white;
+	transition:all 0.2s ease;
+	font-size:13px;
+	font-weight:500;
+	text-align:center;
+}
+
+.booadmin-copyright-popup .action a:hover {
+	background-color:var(--booadmin-accent-hover);
+}
+
+.booadmin-copyright-popup .action a.secondary {
+	background-color:var(--booadmin-surface-2);
+	color:var(--booadmin-text);
+}
+
+.booadmin-copyright-popup .action a.secondary:hover {
+	background-color:var(--booadmin-border-strong);
+}
+
+@media (max-width: 768px) {
+	.booadmin-copyright-popup {
+		padding:18px;
+		width:95%;
+		max-height:calc(100vh - 20px);
 	}
 
-	.booadmin-chart-tooltip-row {
-		display:flex;
-		align-items:center;
-		margin:4px 0;
+	.booadmin-copyright-popup .content {
+		flex-direction:column;
+		gap:16px;
+	}
+
+	.booadmin-copyright-popup .right {
+		flex:0 0 auto;
+		width:100%;
+	}
+
+	.booadmin-copyright-popup .donation-card {
+		max-width:280px;
+		margin:0 auto;
+	}
+
+	.booadmin-copyright-popup .main-copy,
+	.booadmin-copyright-popup .support-points li {
+		font-size:12px;
+	}
+
+	.booadmin-copyright-popup .action {
+		margin-top:12px;
+		flex-direction:column;
 		gap:8px;
 	}
 
-	.booadmin-chart-tooltip-dot {
-		display:inline-block;
-		width:10px;
-		height:10px;
-		flex:0 0 10px;
+	.booadmin-copyright-popup .action a {
+		width:100%;
 	}
-
-	.booadmin-chart-tooltip-label {
-		color:var(--booadmin-chart-text);
-	}
-
-	.booadmin-chart-tooltip-value {
-		margin-left:auto;
-		color:var(--booadmin-chart-text);
-	}
-
-	.booadmin-news-item {
-		background-color:var(--booadmin-surface);
-		border:1px solid var(--booadmin-border);
-	}
-
-	.booadmin-news-item:hover {
-		background-color:var(--booadmin-surface-2);
-		border-color:var(--booadmin-border-strong);
-	}
-
-	.booadmin-news-icon {
-		background-image:linear-gradient(135deg,var(--booadmin-accent),var(--booadmin-info));
-	}
-
-	.booadmin-news-icon-glyph {
-		color:var(--booadmin-on-accent);
-	}
-
-	.booadmin-news-badge-1 {
-		background-image:linear-gradient(135deg,var(--booadmin-accent),var(--booadmin-info));
-	}
-
-	.booadmin-news-badge-2 {
-		background-image:linear-gradient(135deg,var(--booadmin-success),var(--booadmin-info));
-	}
-
-	.booadmin-news-badge-3 {
-		background-image:linear-gradient(135deg,var(--booadmin-link),var(--booadmin-accent));
-	}
-
-	.booadmin-news-badge-4 {
-		background-image:linear-gradient(135deg,var(--booadmin-warning),var(--booadmin-danger));
-	}
-
-	.booadmin-news-badge-5 {
-		background-image:linear-gradient(135deg,var(--booadmin-info),var(--booadmin-accent-hover));
-	}
-
-	.booadmin-news-badge-6 {
-		background-image:linear-gradient(135deg,var(--booadmin-danger),var(--booadmin-accent));
-	}
-
-	.booadmin-news-title {
-		color:var(--booadmin-text);
-	}
-
-	.booadmin-news-item:hover .booadmin-news-title {
-		color:var(--booadmin-accent);
-	}
-
-	.booadmin-news-meta {
-		color:var(--booadmin-muted);
-	}
-
-	.booadmin-news-arrow {
-		color:var(--booadmin-muted);
-	}
-
-	.booadmin-news-item:hover .booadmin-news-arrow {
-		color:var(--booadmin-accent);
-	}
-
-	.booadmin-news-section {
-		background:linear-gradient(135deg,var(--booadmin-surface-2) 0%,var(--booadmin-surface) 55%,var(--booadmin-surface-2) 100%);
-		border-color:var(--booadmin-border);
-	}
-
-	.booadmin-news-header-title {
-		color:var(--booadmin-text);
-	}
-
-	.booadmin-news-header-icon {
-		background-image:linear-gradient(135deg,var(--booadmin-accent),var(--booadmin-info));
-	}
-
-	.booadmin-news-official-link {
-		color:var(--booadmin-accent);
-	}
-
-	.booadmin-news-official-link:hover {
-		color:var(--booadmin-accent-hover);
-	}
-
-	.booadmin-news-message {
-		color:var(--booadmin-muted);
-	}
-
-	.booadmin-news-skeleton-item {
-		background-color:var(--booadmin-surface);
-		border-color:var(--booadmin-border);
-	}
-
-	.booadmin-news-skeleton-icon {
-		background-color:var(--booadmin-surface-2);
-	}
-
-	.booadmin-news-skeleton-line {
-		background-color:var(--booadmin-border);
-	}
-
-	.booadmin-news-skeleton-line-soft {
-		background-color:var(--booadmin-surface-2);
-	}
-
-	.booadmin-news-empty {
-		color:var(--booadmin-muted);
-	}
-
-	.booadmin-update-banner {
-		background-color:var(--booadmin-info-bg);
-		color:var(--booadmin-info-hover);
-		border:1px solid var(--booadmin-border);
-	}
-
-	.booadmin-update-link {
-		color:var(--booadmin-info-hover);
-	}
-
-	.booadmin-update-link:hover {
-		color:var(--booadmin-accent);
-	}
+}
