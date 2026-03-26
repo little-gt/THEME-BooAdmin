@@ -4,8 +4,9 @@
 $options = Typecho_Widget::widget('Widget_Options');
 $title = trim($options->title);
 
-// 菜单定义：[分组标题 => [[url, 图标, 标题, 最低权限组], ...]]
-$menuData = [
+// 统一菜单配置：[分组标题 => [[url, 图标, 标题, 最低权限组], ...]]
+// url 为 'settings' 时表示可折叠设置子菜单（模板渲染时特殊处理）
+$menuConfig = [
     '撰写' => [
         ['write-post.php', 'fa-pen-fancy', '撰写文章', 'contributor'],
         ['write-page.php', 'fa-file-alt', '创建页面', 'editor'],
@@ -21,29 +22,32 @@ $menuData = [
         ['manage-tags.php', 'fa-tags', '标签', 'editor'],
         ['manage-users.php', 'fa-users', '用户', 'administrator'],
     ],
+    '系统' => [
+        ['themes.php', 'fa-paint-brush', '外观', 'administrator'],
+        ['plugins.php', 'fa-plug', '插件', 'administrator'],
+        ['settings', 'fa-cog', '设置', 'administrator'],
+        ['backup.php', 'fa-download', '备份', 'administrator'],
+    ],
 ];
+
+// 设置子菜单项
+$settingsSubItems = [
+    'options-general.php' => '基本',
+    'options-discussion.php' => '评论',
+    'options-reading.php' => '阅读',
+    'options-permalink.php' => '永久链接',
+];
+$inSettingsPage = in_array($menu->current, array_keys($settingsSubItems));
 
 // 按权限过滤，仅保留用户可访问的分组与项目
 $visibleMenu = [];
-foreach ($menuData as $label => $items) {
-    $allowed = [];
-    foreach ($items as $item) {
-        if ($user->pass($item[3], true)) {
-            $allowed[] = $item;
-        }
-    }
-    if ($allowed) {
-        $visibleMenu[$label] = $allowed;
-    }
+foreach ($menuConfig as $label => $items) {
+    $visibleMenu[$label] = array_values(array_filter($items, fn($item) => $user->pass($item[3], true)));
 }
-$canAdmin = $user->pass('administrator', true);
+$visibleMenu = array_filter($visibleMenu);
 
 // 是否处于拓展页面
-$isPluginPage = false;
-$currentUrl = $_SERVER['REQUEST_URI'];
-if (strpos($currentUrl, 'extending.php') !== false) {
-    $isPluginPage = true;
-}
+$isPluginPage = (strpos($_SERVER['REQUEST_URI'], 'extending.php') !== false);
 ?>
 <?php if(!$isPluginPage): ?>
 <!-- Sidebar -->
@@ -68,7 +72,8 @@ if (strpos($currentUrl, 'extending.php') !== false) {
             </li>
             
             <!-- Menu -->
-            <?php foreach ($visibleMenu as $sectionLabel => $sectionItems): ?>
+            <?php foreach ($visibleMenu as $sectionLabel => $sectionItems):
+                if ($sectionLabel === '系统') continue; ?>
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e($sectionLabel); ?></li>
             <?php foreach ($sectionItems as $item): ?>
             <li>
@@ -104,7 +109,7 @@ if (strpos($currentUrl, 'extending.php') !== false) {
                     foreach ($pluginLinks as $link) {
                         $href = $link->getAttribute('href');
                         $text = trim($link->textContent);
-                        $isActive = (isset($_GET['panel']) && strpos($href, $_GET['panel']) !== false);
+                        $isActive = (!empty($_GET['panel']) && strpos($href, $_GET['panel']) !== false);
                         
                         echo '<li>';
                         echo '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors';
@@ -119,44 +124,36 @@ if (strpos($currentUrl, 'extending.php') !== false) {
             }
             ?>
 
-            <!-- Settings -->
-            <?php if ($canAdmin): ?>
+            <!-- System -->
+            <?php if (!empty($visibleMenu['系统'])): ?>
             <li class="mt-5 mb-2 px-3 text-xs font-bold text-gray-400 uppercase tracking-wider sidebar-text"><?php _e('系统'); ?></li>
+            <?php foreach ($visibleMenu['系统'] as $item): ?>
+            <?php if ($item[0] === 'settings'): ?>
             <li>
-                <a href="<?php $options->adminUrl('themes.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'themes.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-paint-brush w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('外观'); ?></span>
-                </a>
-            </li>
-            <li>
-                <a href="<?php $options->adminUrl('plugins.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'plugins.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-plug w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('插件'); ?></span>
-                </a>
-            </li>
-            <li>
-                 <div class="relative group-settings">
-                    <button class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors focus:outline-none justify-between <?php if(in_array($menu->current, ['options-general.php', 'options-discussion.php', 'options-reading.php', 'options-permalink.php', 'backup.php'])) echo 'bg-blue-50 text-discord-accent'; ?>" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.fa-chevron-right').classList.toggle('rotate-90')">
+                <div class="relative group-settings">
+                    <button class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors focus:outline-none justify-between <?php if($inSettingsPage) echo 'bg-blue-50 text-discord-accent'; ?>" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.settings-chevron').classList.toggle('rotate-0')">
                         <div class="flex items-center">
-                            <i class="fas fa-cog w-5 text-center mr-3 text-sm opacity-80"></i>
-                            <span class="sidebar-text"><?php _e('设置'); ?></span>
+                            <i class="fas <?php echo $item[1]; ?> w-5 text-center mr-3 text-sm opacity-80"></i>
+                            <span class="sidebar-text"><?php _e($item[2]); ?></span>
                         </div>
-                        <i class="fas fa-chevron-right text-xs transition-transform duration-200 <?php if(in_array($menu->current, ['options-general.php', 'options-discussion.php', 'options-reading.php', 'options-permalink.php', 'backup.php'])) echo 'rotate-90'; ?>"></i>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-200 -rotate-90 settings-chevron"></i>
                     </button>
-                    <ul class="mt-1 ml-2 pl-6 space-y-1 border-l-2 border-gray-100 <?php if(!in_array($menu->current, ['options-general.php', 'options-discussion.php', 'options-reading.php', 'options-permalink.php', 'backup.php'])) echo 'hidden'; ?>">
-                        <li><a href="<?php $options->adminUrl('options-general.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'options-general.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('基本'); ?></a></li>
-                        <li><a href="<?php $options->adminUrl('options-discussion.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'options-discussion.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('评论'); ?></a></li>
-                        <li><a href="<?php $options->adminUrl('options-reading.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'options-reading.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('阅读'); ?></a></li>
-                        <li><a href="<?php $options->adminUrl('options-permalink.php'); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == 'options-permalink.php') echo 'text-discord-accent font-medium'; ?>"><?php _e('永久链接'); ?></a></li>
+                    <ul class="mt-1 ml-2 pl-6 space-y-1 border-l-2 border-gray-100 hidden">
+                        <?php foreach ($settingsSubItems as $page => $label): ?>
+                        <li><a href="<?php $options->adminUrl($page); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == $page) echo 'text-discord-accent font-medium'; ?>"><?php _e($label); ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
-                 </div>
+                </div>
             </li>
+            <?php else: ?>
             <li>
-                <a href="<?php $options->adminUrl('backup.php'); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == 'backup.php') echo 'bg-blue-50 text-discord-accent'; ?>">
-                    <i class="fas fa-download w-5 text-center mr-3 text-sm opacity-80"></i>
-                    <span class="sidebar-text"><?php _e('备份'); ?></span>
+                <a href="<?php $options->adminUrl($item[0]); ?>" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors <?php if($menu->current == $item[0]) echo 'bg-blue-50 text-discord-accent'; ?>">
+                    <i class="fas <?php echo $item[1]; ?> w-5 text-center mr-3 text-sm opacity-80"></i>
+                    <span class="sidebar-text"><?php _e($item[2]); ?></span>
                 </a>
             </li>
+            <?php endif; ?>
+            <?php endforeach; ?>
             <?php endif; ?>
         </ul>
     </nav>
@@ -190,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn'); // Will be added in header
     const nav = sidebar.querySelector('nav');
     const SIDEBAR_SCROLL_KEY = 'typecho_sidebar_scroll';
-    const SETTINGS_EXPANDED_KEY = 'typecho_settings_expanded';
 
     function openSidebar() {
         sidebar.classList.remove('-translate-x-full');
@@ -237,29 +233,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 保存设置菜单的展开/折叠状态
-    function saveSettingsExpanded(expanded) {
-        try {
-            localStorage.setItem(SETTINGS_EXPANDED_KEY, expanded ? 'true' : 'false');
-        } catch(e) {
-            // 忽略 localStorage 错误
-        }
-    }
-
-    // 恢复设置菜单的展开/折叠状态
-    function restoreSettingsExpanded() {
-        try {
-            const expanded = localStorage.getItem(SETTINGS_EXPANDED_KEY);
-            if (expanded === 'true') {
-                const settingsSubmenu = document.querySelector('.group-settings ul');
-                const chevron = document.querySelector('.group-settings .fa-chevron-right');
-                if (settingsSubmenu) settingsSubmenu.classList.remove('hidden');
-                if (chevron) chevron.classList.add('rotate-90');
-            }
-        } catch(e) {
-            // 忽略 localStorage 错误
-        }
-    }
 
     if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
@@ -270,20 +243,8 @@ document.addEventListener('DOMContentLoaded', function() {
         nav.addEventListener('scroll', saveScrollPosition);
     }
 
-    // 监听设置菜单的点击事件，保存展开/折叠状态
-    const settingsButton = document.querySelector('.group-settings > button');
-    if (settingsButton) {
-        settingsButton.addEventListener('click', function() {
-            const settingsSubmenu = this.nextElementSibling;
-            const chevron = this.querySelector('.fa-chevron-right');
-            const isExpanded = !settingsSubmenu.classList.contains('hidden');
-            saveSettingsExpanded(!isExpanded);
-        });
-    }
-
-    // 页面加载时恢复滚动位置和设置菜单状态
+    // 页面加载时恢复滚动位置
     restoreScrollPosition();
-    restoreSettingsExpanded();
 
     // Initial check for mobile
     if (window.innerWidth < 768) {
@@ -307,16 +268,16 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Plugin page banner -->
 <div class="plugin-banner">
     <div class="plugin-banner-content">
-            <?php echo getAvatar($user->mail, $user->screenName, 40, 'plugin-banner-avatar'); ?>
-            <div class="plugin-banner-text">
-                <div class="plugin-banner-username"><?php $user->screenName(); ?></div>
-                <div class="plugin-banner-role"><?php echo $user->group; ?></div>
-            </div>
+        <?php echo getAvatar($user->mail, $user->screenName, 40, 'plugin-banner-avatar'); ?>
+        <div class="plugin-banner-text">
+            <div class="plugin-banner-username"><?php $user->screenName(); ?></div>
+            <div class="plugin-banner-role"><?php echo $user->group; ?></div>
         </div>
+    </div>
     <div class="plugin-banner-actions">
         <a href="<?php $options->adminUrl('index.php'); ?>" class="plugin-banner-button primary">
             <i class="fas fa-arrow-left mr-1"></i>
-            返回控制台
+            <?php _e('返回控制台'); ?>
         </a>
     </div>
 </div>

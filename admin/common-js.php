@@ -489,6 +489,18 @@
                         $selectAll.prop('checked', false).prop('indeterminate', true);
                     }
                 }
+
+                // 全选复选框变化时，同步卡片复选框
+                $(document).on('change', '.typecho-table-select-all', function() {
+                    var isChecked = $(this).prop('checked');
+                    var isIndeterminate = $(this).prop('indeterminate');
+
+                    if (isIndeterminate) {
+                        return;
+                    }
+
+                    $('.content-card .card-checkbox').prop('checked', isChecked);
+                });
             })();
         });
     })();

@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.18-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.19-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -124,18 +124,18 @@
 
 ---
 
-## 🚀 v1.1.18 版本更新速递
+## 🚀 v1.1.19 版本更新速递
 
-### 样式系统重构
+### 界面优化
 
-- ⬆️ 升级 FontAwesome 到 7.2.0 版本
-- 🐛 修复因适配暗色的样式系统升级导致的多个已知问题
+- 🎨 文章预览样式优化，强化表格渲染和 LaTeX 公式渲染
+- 🖥️ 文章预览支持全屏显示
+- 📋 管理页面多选功能，卡片模式和列表模式数据互通
 
-### 权限体系重构
+## 其他更新
 
-- 🔒 **权限不足优雅处理** — 访问无权限页面时，返回 HTTP 403 及自适应暗色/亮色的扁平化错误页，不再抛出异常堆栈
-- 📋 **菜单权限控制** — 侧边栏按 `contributor` / `editor` / `administrator` 三级角色动态过滤，无权访问的菜单项及空分组自动隐藏，插件面板保留自身权限逻辑
-- 🛡️ **控制台权限细化** — 撰写按钮、文章编辑（仅显示自己的）、评论管理等操作按钮按权限显示，避免越权引导
+- 🧹 优化样式文件缩进
+- 🐛 修复了一些已知问题
 
 ---
 

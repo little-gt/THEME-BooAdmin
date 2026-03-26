@@ -2,7 +2,7 @@
 
 > BooAdmin 是一个完全开源、未压缩加密的 Typecho 后台主题，代码透明可审计。如发现安全问题，您可以根据本安全策略的说明进行处理，并且通知 BooAdmin 的开发者。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.18-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.19-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 
 ---
@@ -11,7 +11,7 @@
 
 | 版本 | 状态 | 说明 |
 | :--- | :---: | :--- |
-| **v1.1.18** | ✅ 支持 | 当前主分支，持续接收安全更新 |
+| **v1.1.19** | ✅ 支持 | 当前主分支，持续接收安全更新 |
 | **v1.1.17 及更低** | ❌ EOL | 已完成样式重构，停止维护，请升级至 v1.1.18 及更高 |
 | **v1.0.2  及更低** | ❌ EOL | 已抵达生命周期，停止维护，请升级至 v1.1.18 及更高 |
 
@@ -41,7 +41,7 @@ BooAdmin 通过 [GARFIELDTOM'S NEST CDN](https://cdn.garfieldtom.cool) 加速分
 <details>
 <summary><b>点击展开：邮件示例</b></summary>
 
-**标题**: `[Security] BooAdmin - 存储型 XSS 漏洞 - 版本 1.1.18`
+**标题**: `[Security] BooAdmin - 存储型 XSS 漏洞 - 版本 1.1.19`
 
 **正文**:
 ```

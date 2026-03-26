@@ -15,37 +15,23 @@ if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
     $response->redirect($options->adminUrl);
 }
 
-/** Output Content */
-// Instead of rendering the theme, we output a clean HTML structure
+/** 
+ * 作为 Iframe 使用，
+ * 无需引用 header 等复杂结构 
+ */
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php $content->title(); ?> - Preview</title>
-</head>
-<body>
-    <article>
-        <header class="post-title">
-            <h1><?php $content->title(); ?></h1>
-            <div class="post-meta">
-                <time datetime="<?php $content->date('c'); ?>"><?php $content->date(); ?></time>
-                <span>&bull;</span>
-                <span><?php $content->author(); ?></span>
-            </div>
-        </header>
-        <div class="post-content">
-            <?php $content->content(); ?>
-        </div>
-    </article>
-<script>
-    window.onbeforeunload = function () {
-        // Updated for modern preview modal handling
-        // No-op or send message if needed
-    }
-</script>
-<style>
+    <title><?php $content->title(); ?> - 预览</title>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.garfieldtom.cool/resource/libs/KaTeX/0.16.38/katex.min.css">
+    <script src="https://cdn.garfieldtom.cool/resource/libs/KaTeX/0.16.38/katex.min.js"></script>
+    <script src="https://cdn.garfieldtom.cool/resource/libs/KaTeX/0.16.38/contrib/auto-render.min.js"></script>
+    <!-- Preview Style -->
+    <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
     :root {
@@ -57,6 +43,9 @@ if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
         --preview-accent: #5865f2;
         --preview-quote-bg: #f0f2fd;
         --preview-quote-text: #555;
+        --preview-table-border: #e0e0e0;
+        --preview-table-stripe: #f6f8fa;
+        --preview-table-head-bg: #f0f2f5;
         --preview-code-bg: #eee;
         --preview-pre-bg: #2f3136;
         --preview-pre-text: #eee;
@@ -73,6 +62,9 @@ if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
             --preview-accent: #7a8bff;
             --preview-quote-bg: #1a2232;
             --preview-quote-text: #b8c2cf;
+            --preview-table-border: #3a4455;
+            --preview-table-stripe: #161c26;
+            --preview-table-head-bg: #1a2232;
             --preview-code-bg: #1d232d;
             --preview-pre-bg: #111722;
             --preview-pre-text: #e8edf3;
@@ -99,6 +91,40 @@ if (!$user->pass('editor', true) && $content->authorId != $user->uid) {
     code { background: var(--preview-code-bg); padding: 2px 5px; font-family: "Cascadia Code", monospace; font-size: 0.9em; }
     pre { background: var(--preview-pre-bg); color: var(--preview-pre-text); padding: 15px; overflow-x: auto; font-family: "Cascadia Code", monospace; }
     pre code { background: none; padding: 0; color: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: 0.95em; overflow-x: auto; display: block; }
+    thead { background: var(--preview-table-head-bg); }
+    th, td { border: 1px solid var(--preview-table-border); padding: 10px 14px; text-align: left; }
+    th { font-weight: 600; }
+    tbody tr:nth-child(even) { background: var(--preview-table-stripe); }
     .post-title { text-align: center; margin-bottom: 40px; }
     .post-meta { text-align: center; color: var(--preview-meta); margin-bottom: 40px; font-size: 0.9em; }
-</style>
+    </style>
+</head>
+<body>
+    <article>
+        <header class="post-title">
+            <h1><?php $content->title(); ?></h1>
+            <div class="post-meta">
+                <time datetime="<?php $content->date('c'); ?>"><?php $content->date(); ?></time>
+                <span>&bull;</span>
+                <span><?php $content->author(); ?></span>
+            </div>
+        </header>
+        <div class="post-content">
+            <?php $content->content(); ?>
+        </div>
+    </article>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            throwOnError: false
+        });
+    });
+</script>
+</html>
