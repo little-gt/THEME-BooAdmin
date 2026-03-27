@@ -96,17 +96,17 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
             <!-- Post List -->
             <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_posts" class="operate-form">
-                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
+                    <div class="booadmin-operate-bar operate-bar">
                          <div class="flex items-center space-x-2">
-                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                             <label class="booadmin-select-all">
                                  <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
+                                <button type="button" class="btn-dropdown-toggle booadmin-dropdown-toggle">
                                     <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
+                                <div class="dropdown-menu booadmin-dropdown-menu w-40 hidden">
                                     <a href="<?php $security->index('/action/contents-post-edit?do=delete'); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
                                     <?php if ($user->pass('editor', true)): ?>
                                         <div class="border-t border-gray-100 my-1"></div>
@@ -412,116 +412,3 @@ $isAllPosts = ('on' == $request->get('__typecho_all_posts') || 'on' == \Typecho\
 include 'common-js.php';
 include 'table-js.php';
 ?>
-<script>
-// Mobile-aware view mode initialization for manage-posts.php
-$(document).ready(function() {
-    var VIEW_MODE_KEY = 'typecho_list_view_mode';
-    var USER_PREFERENCE_KEY = 'typecho_list_view_user_set';
-    var MOBILE_BREAKPOINT = 768; // 移动端断点：小于 768px 为移动端
-    
-    // 检测是否为移动端
-    function isMobile() {
-        return $(window).width() < MOBILE_BREAKPOINT;
-    }
-    
-    // 获取用户是否手动设置过视图模式
-    function hasUserPreference() {
-        try {
-            return localStorage.getItem(USER_PREFERENCE_KEY) === 'true';
-        } catch(e) {
-            return false;
-        }
-    }
-    
-    // 保存视图模式
-    function saveViewMode(mode) {
-        try {
-            localStorage.setItem(VIEW_MODE_KEY, mode);
-        } catch(e) {
-            // Ignore localStorage errors
-        }
-    }
-    
-    // 获取保存的视图模式
-    function getSavedViewMode() {
-        try {
-            return localStorage.getItem(VIEW_MODE_KEY) || null;
-        } catch(e) {
-            return null;
-        }
-    }
-    
-    // 应用视图模式
-    function applyViewMode(mode) {
-        var $container = $('.operate-form').closest('.bg-white');
-        
-        if (mode === 'card') {
-            $container.addClass('view-mode-card');
-            $('.view-toggle .btn-table-view').removeClass('active');
-            $('.view-toggle .btn-card-view').addClass('active');
-        } else {
-            $container.removeClass('view-mode-card');
-            $('.view-toggle .btn-table-view').addClass('active');
-            $('.view-toggle .btn-card-view').removeClass('active');
-        }
-    }
-    
-    // 初始化视图模式
-    function initializeViewMode() {
-        var savedMode = getSavedViewMode();
-        var userHasPreference = hasUserPreference();
-        var mobile = isMobile();
-        
-        // 决策逻辑：
-        // 1. 如果用户手动设置过，使用用户的选择
-        // 2. 如果没有手动设置过，在移动端默认使用卡片模式
-        // 3. 桌面端默认使用表格模式
-        var defaultMode = mobile ? 'card' : 'table';
-        var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
-        
-        applyViewMode(finalMode);
-    }
-    
-    // 监听用户手动切换视图
-    $('.view-toggle button').on('click', function() {
-        var $btn = $(this);
-        var newMode = $btn.hasClass('btn-table-view') ? 'table' : 'card';
-        
-        // 保存视图模式
-        saveViewMode(newMode);
-        
-        // 标记用户已手动设置
-        try {
-            localStorage.setItem(USER_PREFERENCE_KEY, 'true');
-        } catch(e) {
-            // Ignore localStorage errors
-        }
-    });
-    
-    // 执行初始化
-    if ($('.view-toggle').length > 0) {
-        initializeViewMode();
-    }
-    
-    // 监听窗口大小变化
-    // 只在用户没有手动设置偏好时，根据屏幕大小自动调整
-    var resizeTimer;
-    $(window).on('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            // 只有在用户没有手动设置偏好时才自动调整
-            if (!hasUserPreference() && $('.view-toggle').length > 0) {
-                var mobile = isMobile();
-                var currentMode = mobile ? 'card' : 'table';
-                
-                // 自动切换时也保存到 localStorage
-                var savedMode = getSavedViewMode();
-                if (savedMode !== currentMode) {
-                    saveViewMode(currentMode);
-                    applyViewMode(currentMode);
-                }
-            }
-        }, 250); // 防抖，250ms 后才执行
-    });
-});
-</script>

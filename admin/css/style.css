@@ -252,7 +252,7 @@ select {
 	color:var(--booadmin-error-text)
 }
 .notice {
-	background:var(--booadmin-surface)6BF;
+	background:var(--booadmin-highlight-warm);
 	color:var(--booadmin-warning-text)
 }
 .notice a {
@@ -431,7 +431,7 @@ select {
 	background-color:var(--booadmin-bg)
 }
 .typecho-list-table tbody tr:has(input[type="checkbox"]:checked) {
-	background-color:var(--booadmin-surface)9E8
+	background-color:var(--booadmin-selection-bg)
 }
 .typecho-list-table tr td .hidden-by-mouse {
 	opacity:0
@@ -542,7 +542,7 @@ select {
 	visibility:visible
 }
 .tag-list.typecho-list-notable li:has(input[type="checkbox"]:checked) {
-	background-color:var(--booadmin-surface)BCC
+	background-color:var(--booadmin-selection-bg)
 }
 .tag-list.typecho-list-notable li.size-5 {
 	font-size:1em
@@ -610,7 +610,7 @@ select {
 .typecho-post-area #slug {
 	padding:2px;
 	border:none;
-	background:var(--booadmin-surface)BCC;
+	background:var(--booadmin-surface-muted);
 	color:var(--booadmin-muted)
 }
 .typecho-post-area #text {
@@ -1117,7 +1117,7 @@ body:has(.menu-bar[open]) {
 	color:var(--booadmin-muted)
 }
 .typecho-theme-list tbody tr.current td {
-	background-color:var(--booadmin-surface)9E8
+	background-color:var(--booadmin-selection-bg)
 }
 .typecho-edit-theme ul {
 	list-style:none;
@@ -1149,7 +1149,7 @@ body:has(.menu-bar[open]) {
 	font-size:.92857em
 }
 #upload-panel.drag {
-	background-color:var(--booadmin-surface)BCC
+	background-color:var(--booadmin-selection-bg)
 }
 .upload-area {
 	padding:15px;
@@ -1188,7 +1188,7 @@ body:has(.menu-bar[open]) {
 	margin-right:6px
 }
 .tDnD_whileDrag {
-	background-color:var(--booadmin-surface)BCC
+	background-color:var(--booadmin-selection-bg)
 }
 @media (max-width:575px) {
 	.typecho-option-submit button[type="submit"] {
@@ -1758,9 +1758,6 @@ body:has(.menu-bar[open]) {
 	background:var(--booadmin-surface-2);
 	color:var(--booadmin-muted)
 }
-#btn-cancel-preview {
-	display:none
-}
 .wmd-hidetab {
 	display:none
 }
@@ -1849,7 +1846,7 @@ body:has(.menu-bar[open]) {
 #wmd-preview .summary:after {
 	display:block;
 	margin:2em 0;
-	background:var(--booadmin-surface)9E8;
+	background:var(--booadmin-highlight-warm);
 	color:var(--booadmin-warning);
 	font-size:.85714em;
 	text-align:center;
@@ -1949,32 +1946,6 @@ body:has(.menu-bar[open]) {
 }
 .fullscreen .wmd-visualhide,.fullscreen #btn-fullscreen-upload {
 	visibility:visible
-}
-.preview .submit {
-	width:100%;
-	background:var(--booadmin-surface)FDD
-}
-.preview #wmd-button-bar,.preview #wmd-preview,.preview #text,.preview #upload-panel,.preview #tab-files,.preview #btn-preview,.preview #btn-fullscreen-upload,.preview #auto-save-message {
-	display:none
-}
-.preview .preview-frame {
-	width:100%;
-	border:0;
-	padding:0;
-	margin:0;
-	background:var(--booadmin-surface);
-	z-index:999;
-	position:absolute;
-	top:53px;
-	left:0
-}
-.preview .preview-loading {
-	background-image:url(../img/ajax-loader.gif);
-	background-position:center;
-	background-repeat:no-repeat
-}
-.preview #btn-cancel-preview {
-	display:inline-block
 }
 @media (max-width:575px) {
 	#wmd-spacer2,#wmd-olist-button,#wmd-ulist-button,#wmd-heading-button,#wmd-hr-button,#wmd-more-button,#wmd-spacer3,#wmd-undo-button,#wmd-redo-button,#wmd-spacer4,#wmd-fullscreen-button,#wmd-exit-fullscreen-button,#btn-fullscreen-upload {
@@ -2344,7 +2315,7 @@ main > .flex-1.overflow-y-auto,main > div.flex-1 {
 	display:flex;
 	align-items:center;
 	justify-content:space-between;
-	box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+	border-top:1px solid var(--booadmin-border);
 	z-index:100;
 	transition:all 0.3s ease;
 	border-radius:0;
@@ -3111,7 +3082,9 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	white-space:normal;
 	width:100%;
 }
-}/* ========================================
+}
+
+/* ========================================
    Modern Notification System (Toast)
    ======================================== */
 
@@ -3132,7 +3105,7 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	pointer-events:all;
 	background:#ffffff;
 	border:1px solid var(--booadmin-border);
-	box-shadow:0 4px 12px rgba(0,0,0,0.15);
+	box-shadow:none;
 	padding:14px 16px;
 	display:flex;
 	align-items:flex-start;
@@ -3289,6 +3262,128 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 /* 旧版兼容 - 隐藏旧的通知样式 */
 .message.popup {
 	display:none !important;
+}
+
+/* ========================================
+   Shared Modal Shell
+   ======================================== */
+.booadmin-modal {
+	position:fixed;
+	inset:0;
+	z-index:50;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:16px;
+	background-color:var(--booadmin-overlay);
+}
+
+.booadmin-modal.hidden {
+	display:none;
+}
+
+.booadmin-dialog {
+	width:100%;
+	padding:24px;
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	color:var(--booadmin-text);
+}
+
+.booadmin-dialog-sm {
+	max-width:28rem;
+}
+
+.booadmin-dialog-md {
+	max-width:40rem;
+}
+
+.booadmin-dialog-lg {
+	max-width:42rem;
+}
+
+.booadmin-operate-bar {
+	padding:12px;
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+	background:rgb(249 250 251 / 0.5);
+	border-bottom:1px solid var(--booadmin-border);
+}
+
+.booadmin-select-all {
+	display:flex;
+	align-items:center;
+	gap:8px;
+	font-size:14px;
+	color:var(--booadmin-muted);
+	cursor:pointer;
+	user-select:none;
+}
+
+.booadmin-dropdown-toggle {
+	padding:4px 12px;
+	display:flex;
+	align-items:center;
+	font-size:12px;
+	font-weight:500;
+	color:#374151;
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border-strong);
+}
+
+.booadmin-dropdown-toggle:hover,
+.booadmin-dropdown-toggle.active {
+	background:var(--booadmin-surface-2);
+	color:var(--booadmin-text);
+}
+
+.booadmin-dropdown-menu {
+	position:absolute;
+	left:0;
+	margin-top:4px;
+	padding:4px 0;
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	z-index:50;
+}
+
+.booadmin-panel {
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	padding:24px;
+}
+
+.booadmin-panel-md {
+	padding:32px;
+}
+
+.booadmin-panel-flush {
+	padding:0;
+}
+
+.booadmin-panel-title {
+	margin:0 0 16px;
+	padding-bottom:8px;
+	font-size:1.125rem;
+	font-weight:700;
+	color:var(--booadmin-text);
+	border-bottom:1px solid var(--booadmin-border);
+}
+
+.booadmin-back-button {
+	display:inline-flex;
+	align-items:center;
+	padding:8px 16px;
+	font-size:14px;
+	font-weight:500;
+	color:var(--booadmin-text);
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border-strong);
+}
+
+.booadmin-back-button:hover {
+	background:var(--booadmin-surface-2);
 }
 
 /* JS-generated component theming */
@@ -3472,7 +3567,7 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	background:var(--booadmin-surface);
 	border:1px solid var(--booadmin-border);
 	padding:28px;
-	box-shadow:0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	box-shadow:none;
 	z-index:1000;
 	width:90%;
 	max-width:640px;
@@ -3569,7 +3664,8 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	max-width:none;
 	height:auto;
 	display:block;
-	box-shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	border:1px solid var(--booadmin-border);
+	box-shadow:none;
 }
 
 .booadmin-copyright-popup .close-btn {

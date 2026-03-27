@@ -5,14 +5,14 @@ if (!defined('__TYPECHO_ADMIN__')) {
 
 $header = '
 <!-- CSS Reset & Grid -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.1.20', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.1.20', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.2.0', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.2.0', true) . '">
 <!-- Theme Variables -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.1.20', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.1.20', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.2.0c', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.2.0c', true) . '">
 <!-- Component Styles -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.1.20', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.1.20', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.2.0c', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.2.0c', true) . '">
 <!-- NProgress -->
 <script src="' . $options->adminStaticUrl('js', 'nprogress.js', true) . '"></script>
 <!-- TailwindCSS -->
@@ -58,8 +58,9 @@ $header = \Typecho\Plugin::factory('admin/header.php')->filter('header', $header
     <body class="<?php echo isset($bodyClass) ? $bodyClass : ''; ?>">
         <!-- NProgress Loading Indicator -->
         <div id="nprogress">
-            <div class="bar" role="bar"></div>
-            <div class="peg"></div>
+            <div class="bar" role="bar">
+                <div class="peg"></div>
+            </div>
             <div class="spinner">
                 <div class="spinner-icon"></div>
                 <span class="spinner-text"><?php _e('正在加载'); ?></span>

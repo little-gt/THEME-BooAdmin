@@ -26,7 +26,6 @@
     background-color: var(--booadmin-spinner-bg);
     border: 1px solid var(--booadmin-spinner-border);
     padding: 12px 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     gap: 12px;
     opacity: 1;
     transform: translateY(0);

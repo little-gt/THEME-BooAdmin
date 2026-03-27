@@ -84,9 +84,6 @@ $post = \Widget\Contents\Post\Edit::alloc()->prepare();
                     </div>
                     
                     <div class="flex items-center justify-between mb-8 px-1">
-                        <button type="button" id="btn-cancel-preview" class="btn hidden"><i
-                                class="i-caret-left"></i> <?php _e('取消预览'); ?></button>
-                        
                         <div class="flex items-center space-x-3 ml-auto">
                              <input type="hidden" name="do" value="publish" />
                             <input type="hidden" name="cid" value="<?php $post->cid(); ?>"/>

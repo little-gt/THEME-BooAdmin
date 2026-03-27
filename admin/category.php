@@ -19,7 +19,7 @@ include 'menu.php';
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="<?php $options->adminUrl('manage-categories.php'); ?>" class="flex items-center px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
+            <a href="<?php $options->adminUrl('manage-categories.php'); ?>" class="booadmin-back-button">
                 <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -33,7 +33,7 @@ include 'menu.php';
 
     <div class="flex-1 overflow-y-auto p-4 md:p-8">
         <div class="w-full max-w-none mx-auto">
-            <div class="bg-white border border-gray-200 p-6">
+            <div class="booadmin-panel">
                 <?php \Widget\Metas\Category\Edit::alloc()->form()->render(); ?>
             </div>
         </div>

@@ -88,17 +88,17 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
             <!-- Comment List -->
             <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_comments" class="operate-form">
-                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
+                    <div class="booadmin-operate-bar operate-bar">
                          <div class="flex items-center space-x-2">
-                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                             <label class="booadmin-select-all">
                                  <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
+                                <button type="button" class="btn-dropdown-toggle booadmin-dropdown-toggle">
                                     <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
+                                <div class="dropdown-menu booadmin-dropdown-menu w-40 hidden">
                                     <a href="<?php $security->index('/action/comments-edit?do=approved'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-check mr-1 text-green-600"></i><?php _e('通过'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=waiting'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-clock mr-1 text-yellow-600"></i><?php _e('待审核'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=spam'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-ban mr-1 text-orange-500"></i><?php _e('标记垃圾'); ?></a>
@@ -368,7 +368,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Comment Reply Modal -->
 <div id="replyModal" class="comment-modal">
-    <div class="bg-white shadow-xl w-full max-w-2xl p-6">
+    <div class="booadmin-dialog booadmin-dialog-lg">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-discord-text"><?php _e('回复评论'); ?></h3>
             <button type="button" class="text-gray-400 hover:text-discord-text text-xl leading-none" onclick="closeReplyModal()"><i class="fas fa-times"></i></button>
@@ -383,15 +383,15 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
             </div>
         </form>
         <div class="flex justify-end space-x-3 mt-6">
-            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeReplyModal()"></i><?php _e('取消'); ?></button>
-            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitReply()"></i><?php _e('提交回复'); ?></button>
+            <button type="button" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm flex items-center" onclick="closeReplyModal()"><?php _e('取消'); ?></button>
+            <button type="button" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm flex items-center" onclick="submitReply()"><?php _e('提交回复'); ?></button>
         </div>
     </div>
 </div>
 
 <!-- Comment Edit Modal -->
 <div id="editModal" class="comment-modal">
-    <div class="bg-white shadow-xl w-full max-w-2xl p-6">
+    <div class="booadmin-dialog booadmin-dialog-lg">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-discord-text"><?php _e('编辑评论'); ?></h3>
             <button type="button" class="text-gray-400 hover:text-discord-text text-xl leading-none" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
@@ -423,7 +423,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="comment-modal">
-    <div class="bg-white shadow-xl max-w-md w-full p-6">
+    <div class="booadmin-dialog booadmin-dialog-sm">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('操作确认'); ?></h3>
         <p class="text-discord-muted mb-2" id="deleteAuthorName"><?php _e('确认删除此评论？'); ?></p>
         <p class="text-discord-muted mb-6"><?php _e('此操作不可逆，删除后无法恢复评论内容。'); ?></p>
@@ -436,7 +436,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Message Modal -->
 <div id="messageModal" class="comment-modal">
-    <div class="bg-white shadow-xl max-w-md w-full p-6">
+    <div class="booadmin-dialog booadmin-dialog-sm">
         <h3 class="text-lg font-bold text-discord-text mb-4" id="messageModalTitle"><?php _e('操作确认'); ?></h3>
         <p class="text-discord-muted mb-6" id="messageModalContent"></p>
         <div class="flex justify-end space-x-3">
@@ -521,8 +521,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 }
 
 .content-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border-color: var(--booadmin-accent);
+    background: var(--booadmin-highlight-soft);
 }
 
 .card-checkbox {
@@ -1144,103 +1144,4 @@ $(document).ready(function () {
 });
 </script>
 
-<script>
-// Mobile-aware view mode initialization for manage-comments.php
-$(document).ready(function() {
-    var VIEW_MODE_KEY = 'typecho_list_view_mode';
-    var USER_PREFERENCE_KEY = 'typecho_list_view_user_set';
-    var MOBILE_BREAKPOINT = 768;
-    
-    function isMobile() {
-        return $(window).width() < MOBILE_BREAKPOINT;
-    }
-    
-    function hasUserPreference() {
-        try {
-            return localStorage.getItem(USER_PREFERENCE_KEY) === 'true';
-        } catch(e) {
-            return false;
-        }
-    }
-    
-    function saveViewMode(mode) {
-        try {
-            localStorage.setItem(VIEW_MODE_KEY, mode);
-        } catch(e) {
-            // Ignore localStorage errors
-        }
-    }
-    
-    function getSavedViewMode() {
-        try {
-            return localStorage.getItem(VIEW_MODE_KEY) || null;
-        } catch(e) {
-            return null;
-        }
-    }
-    
-    function applyViewMode(mode) {
-        var $container = $('.operate-form').closest('.bg-white');
-        
-        if (mode === 'card') {
-            $container.addClass('view-mode-card');
-            $('.view-toggle .btn-table-view').removeClass('active');
-            $('.view-toggle .btn-card-view').addClass('active');
-        } else {
-            $container.removeClass('view-mode-card');
-            $('.view-toggle .btn-table-view').addClass('active');
-            $('.view-toggle .btn-card-view').removeClass('active');
-        }
-    }
-    
-    function initializeViewMode() {
-        var savedMode = getSavedViewMode();
-        var userHasPreference = hasUserPreference();
-        var mobile = isMobile();
-        
-        var defaultMode = mobile ? 'card' : 'table';
-        var finalMode = userHasPreference && savedMode ? savedMode : defaultMode;
-        
-        applyViewMode(finalMode);
-    }
-    
-    // 监听用户手动切换视图
-    $('.view-toggle button').on('click', function() {
-        var $btn = $(this);
-        var newMode = $btn.hasClass('btn-table-view') ? 'table' : 'card';
-        
-        // 保存视图模式
-        saveViewMode(newMode);
-        
-        // 标记用户已手动设置
-        try {
-            localStorage.setItem(USER_PREFERENCE_KEY, 'true');
-        } catch(e) {
-            // Ignore localStorage errors
-        }
-    });
-    
-    if ($('.view-toggle').length > 0) {
-        initializeViewMode();
-    }
-    
-    var resizeTimer;
-    $(window).on('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            if (!hasUserPreference() && $('.view-toggle').length > 0) {
-                var mobile = isMobile();
-                var currentMode = mobile ? 'card' : 'table';
-                
-                // 自动切换时也保存到 localStorage
-                var savedMode = getSavedViewMode();
-                if (savedMode !== currentMode) {
-                    saveViewMode(currentMode);
-                    applyViewMode(currentMode);
-                }
-            }
-        }, 250);
-    });
-});
-</script>
 

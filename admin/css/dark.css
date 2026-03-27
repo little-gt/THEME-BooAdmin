@@ -521,7 +521,7 @@
     .typecho-notification {
         background: #171b22 !important;
         border-color: var(--booadmin-border) !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+        box-shadow: none !important;
         color: var(--booadmin-text) !important;
     }
 

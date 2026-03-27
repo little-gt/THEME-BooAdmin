@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.20-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.2.0-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -124,14 +124,26 @@
 
 ---
 
-## 🚀 v1.1.20 版本更新速递
+## 🚀 v1.2.0 版本更新速递
 
-### 质量更新
+### 🎨 样式架构
 
-- 🔧 表格模式下全选之后，若再取消选择项目，全选样式没有更新；
-- 🔧 窄边屏幕下预览文章，全屏按钮点击之后预览框缩小到不可用；
-- 🔧 修复了ensureNProgressStructure 重建元素时缺少 bar[role=bar]，导致 NProgress.start() 中 querySelector 返回 null 的问题；
-- 🔧 修复了在 admin/write-js.php:340，iframe 预览时，偶现 预览页（preview.php） 提示 session 错误的问题。
+* 重构通知系统框架，统一结构与状态管理逻辑；
+* 重构 NProgress 实现，规范生命周期与触发机制；
+
+### 🛠️ 内核质量
+
+* 系统性清理并整合历史遗留样式，消除不一致与冗余定义；
+* 重构 `table-js` 模块：
+
+  * 对齐 BooAdmin 现代化设计范式；
+  * 移除不稳定的原生依赖逻辑，修复偶发性功能与样式异常；
+* 重构预览功能：
+
+  * 替换历史实现方案；
+  * 解耦旧逻辑，提升可维护性与稳定性；
+* 合并重复样式单元，降低资源体积与加载开销；
+* 重新整理样式文件结构，优化模块划分与引用关系；
 
 ---
 

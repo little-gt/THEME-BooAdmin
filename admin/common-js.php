@@ -400,23 +400,24 @@
             // View Mode Toggle (Table/Card)
             // ========================================
             (function() {
-                // Only initialize if we have the view toggle
                 if ($('.view-toggle').length === 0) {
                     return;
                 }
-                
                 var VIEW_MODE_KEY = 'typecho_list_view_mode';
-                
-                // Get saved view mode from localStorage
+                var VIEW_MODE_USER_SET_KEY = 'typecho_list_view_user_set';
+
+                function isMobileViewport() {
+                    return window.matchMedia('(max-width: 767px)').matches;
+                }
+
                 function getSavedViewMode() {
                     try {
-                        return localStorage.getItem(VIEW_MODE_KEY) || 'table';
+                        return localStorage.getItem(VIEW_MODE_KEY) || null;
                     } catch(e) {
-                        return 'table';
+                        return null;
                     }
                 }
-                
-                // Save view mode to localStorage
+
                 function saveViewMode(mode) {
                     try {
                         localStorage.setItem(VIEW_MODE_KEY, mode);
@@ -424,13 +425,32 @@
                         // Ignore localStorage errors
                     }
                 }
-                
-                // Apply view mode to the page
+
+                function hasUserViewPreference() {
+                    try {
+                        return localStorage.getItem(VIEW_MODE_USER_SET_KEY) === 'true';
+                    } catch(e) {
+                        return false;
+                    }
+                }
+
+                function markUserViewPreference() {
+                    try {
+                        localStorage.setItem(VIEW_MODE_USER_SET_KEY, 'true');
+                    } catch(e) {
+                        // Ignore localStorage errors
+                    }
+                }
+
+                function getDefaultViewMode() {
+                    return isMobileViewport() ? 'card' : 'table';
+                }
+
                 function applyViewMode(mode) {
                     var $container = $('.operate-form').closest('.bg-white');
                     var $tableBtn = $('.view-toggle .btn-table-view');
                     var $cardBtn = $('.view-toggle .btn-card-view');
-                    
+
                     if (mode === 'card') {
                         $container.addClass('view-mode-card').removeClass('view-mode-table').attr('data-view-mode', 'card');
                         $tableBtn.removeClass('active').attr('aria-pressed', 'false');
@@ -441,53 +461,63 @@
                         $cardBtn.removeClass('active').attr('aria-pressed', 'false');
                     }
                 }
-                
-                // Initialize view mode on page load
-                var savedMode = getSavedViewMode();
-                applyViewMode(savedMode);
-                
-                // Handle view toggle button clicks
+
+                function initializeViewMode() {
+                    var savedMode = getSavedViewMode();
+                    var finalMode = hasUserViewPreference() && savedMode ? savedMode : getDefaultViewMode();
+                    applyViewMode(finalMode);
+                }
+
                 $('.view-toggle button').on('click', function(e) {
                     e.preventDefault();
                     var $btn = $(this);
                     var newMode = $btn.hasClass('btn-table-view') ? 'table' : 'card';
-                    
+
+                    markUserViewPreference();
                     saveViewMode(newMode);
                     applyViewMode(newMode);
-                    
+
                     return false;
                 });
-                
-                // Sync checkbox state between table and card views
+
+                initializeViewMode();
+
+                var resizeTimer = null;
+                $(window).on('resize.viewMode', function() {
+                    if (resizeTimer) {
+                        clearTimeout(resizeTimer);
+                    }
+
+                    resizeTimer = setTimeout(function() {
+                        if (!hasUserViewPreference()) {
+                            applyViewMode(getDefaultViewMode());
+                        }
+                    }, 150);
+                });
+
                 $(document).on('change', '.content-card .card-checkbox', function() {
                     var $checkbox = $(this);
                     var cid = $checkbox.val();
                     var isChecked = $checkbox.prop('checked');
-                    
-                    // Update corresponding table checkbox
+
                     $('.typecho-list-table input[type="checkbox"][value="' + cid + '"]').prop('checked', isChecked);
-                    
-                    // Update select all checkbox state
                     updateSelectAllState();
                 });
-                
+
                 $(document).on('change', '.typecho-list-table input[type="checkbox"]:not(.typecho-table-select-all)', function() {
                     var $checkbox = $(this);
                     var cid = $checkbox.val();
                     var isChecked = $checkbox.prop('checked');
-                    
-                    // Update corresponding card checkbox
+
                     $('.content-card .card-checkbox[value="' + cid + '"]').prop('checked', isChecked);
-                    
-                    // Update select all checkbox state
                     updateSelectAllState();
                 });
-                
+
                 function updateSelectAllState() {
                     var $allCheckboxes = $('.typecho-list-table input[type="checkbox"]:not(.typecho-table-select-all)');
                     var $checkedCheckboxes = $allCheckboxes.filter(':checked');
                     var $selectAll = $('.typecho-table-select-all');
-                    
+
                     if ($checkedCheckboxes.length === 0) {
                         $selectAll.prop('checked', false).prop('indeterminate', false);
                     } else if ($checkedCheckboxes.length === $allCheckboxes.length) {
@@ -497,7 +527,6 @@
                     }
                 }
 
-                // 全选复选框变化时，同步卡片复选框
                 $(document).on('change', '.typecho-table-select-all', function() {
                     var isChecked = $(this).prop('checked');
                     var isIndeterminate = $(this).prop('indeterminate');

@@ -34,7 +34,7 @@ include 'menu.php';
                         <i class="fas fa-swatchbook text-discord-accent mr-2"></i><?php _e('主题列表'); ?>
                     </h2>
                     <div class="flex flex-wrap gap-2">
-                        <a href="<?php $options->adminUrl('theme-editor.php'); ?>" class="flex items-center px-4 py-2 bg-white border border-gray-300 text-discord-text hover:bg-gray-50 transition-colors text-sm font-medium">
+                        <a href="<?php $options->adminUrl('theme-editor.php'); ?>" class="booadmin-back-button">
                             <i class="fas fa-code mr-1"></i> <?php _e('编辑当前主题'); ?>
                         </a>
                         <a href="<?php $options->adminUrl('options-theme.php'); ?>" class="flex items-center px-4 py-2 bg-discord-accent text-white hover:bg-blue-600 transition-colors text-sm font-medium">
