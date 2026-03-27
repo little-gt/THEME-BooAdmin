@@ -5,6 +5,7 @@
 <footer id="admin-footer" class="flex-shrink-0 py-4 text-center text-xs text-discord-muted bg-gray-50 border-t border-gray-200" role="contentinfo">
     <div class="mb-2">
         <span><a href="https://typecho.org" class="font-medium hover:text-discord-accent transition-colors" target="_blank" rel="noopener noreferrer">Typecho</a></span>
+        <span class="mx-2 text-gray-300">&bull;</span>
         <span><?php _e('由 <a href="https://typecho.org" class="hover:text-discord-accent" target="_blank" rel="noopener">%s</a> 驱动, 版本 %s', $options->software, $options->version); ?></span>
         <span class="mx-2 text-gray-300">&bull;</span>
         <span>Theme by <span class="booadmin-copyright-tooltip">

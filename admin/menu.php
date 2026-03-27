@@ -37,7 +37,7 @@ $settingsSubItems = [
     'options-reading.php' => '阅读',
     'options-permalink.php' => '永久链接',
 ];
-$inSettingsPage = in_array($menu->current, array_keys($settingsSubItems));
+$inSettingsPage = in_array($menu->current, array_keys($settingsSubItems), true);
 
 // 按权限过滤，仅保留用户可访问的分组与项目
 $visibleMenu = [];
@@ -131,14 +131,14 @@ $isPluginPage = (strpos($_SERVER['REQUEST_URI'], 'extending.php') !== false);
             <?php if ($item[0] === 'settings'): ?>
             <li>
                 <div class="relative group-settings">
-                    <button class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors focus:outline-none justify-between <?php if($inSettingsPage) echo 'bg-blue-50 text-discord-accent'; ?>" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.settings-chevron').classList.toggle('rotate-0')">
+                    <button class="w-full flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors focus:outline-none justify-between <?php if($inSettingsPage) echo 'bg-blue-50 text-discord-accent'; ?>" onclick="const expanded = this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.settings-chevron').classList.toggle('-rotate-90'); this.querySelector('.settings-chevron').classList.toggle('rotate-0'); this.setAttribute('aria-expanded', expanded ? 'false' : 'true');" aria-expanded="<?php echo $inSettingsPage ? 'true' : 'false'; ?>">
                         <div class="flex items-center">
                             <i class="fas <?php echo $item[1]; ?> w-5 text-center mr-3 text-sm opacity-80"></i>
                             <span class="sidebar-text"><?php _e($item[2]); ?></span>
                         </div>
-                        <i class="fas fa-chevron-down text-xs transition-transform duration-200 -rotate-90 settings-chevron"></i>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-200 <?php if(!$inSettingsPage) echo '-rotate-90'; ?> settings-chevron"></i>
                     </button>
-                    <ul class="mt-1 ml-2 pl-6 space-y-1 border-l-2 border-gray-100 hidden">
+                    <ul class="mt-1 ml-2 pl-6 space-y-1 border-l-2 border-gray-100 <?php if(!$inSettingsPage) echo 'hidden'; ?>">
                         <?php foreach ($settingsSubItems as $page => $label): ?>
                         <li><a href="<?php $options->adminUrl($page); ?>" class="block px-2 py-1.5 text-sm text-gray-500 hover:text-discord-accent <?php if($menu->current == $page) echo 'text-discord-accent font-medium'; ?>"><?php _e($label); ?></a></li>
                         <?php endforeach; ?>

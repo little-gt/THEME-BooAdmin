@@ -278,152 +278,210 @@ $(document).ready(function() {
     $('<input name="timezone" type="hidden" />').appendTo(form).val(- (new Date).getTimezoneOffset() * 60);
 
     // 预览功能
-    let isFullScreen = false;
+    const previewSaveModal = $('#preview-save-confirm-modal');
+    const previewState = {
+        overlay: null,
+        container: null,
+        frame: null,
+        loading: null,
+        fullScreenButton: null,
+        isOpen: false,
+        isFullScreen: false,
+        saveCallback: null
+    };
     const FULLSCREEN_BREAKPOINT = 768;
 
-    function checkNarrowScreen() {
+    function isNarrowPreviewViewport() {
         return window.innerWidth < FULLSCREEN_BREAKPOINT;
     }
 
+    function resolvePreviewCid() {
+        if (!!draftId) {
+            return draftId;
+        }
+
+        if (!!cid) {
+            return cid;
+        }
+
+        return 0;
+    }
+
+    function getPreviewUrl(previewCid) {
+        return './preview.php?cid=' + encodeURIComponent(previewCid);
+    }
+
+    function hidePreviewSaveConfirm() {
+        previewSaveModal.addClass('hidden');
+        previewState.saveCallback = null;
+    }
+
     function togglePreviewFullScreen() {
-        isFullScreen = !isFullScreen;
-        updatePreviewLayout();
-    }
-
-    function updatePreviewLayout() {
-        const container = $('.preview-overlay > div');
-        if (!container.length) return;
-
-        if (isFullScreen) {
-            container.removeClass('md:w-11/12 md:h-5/6').addClass('w-full h-full rounded-none');
-        } else {
-            container.removeClass('w-full h-full rounded-none').addClass('md:w-11/12 md:h-5/6');
+        if (!previewState.isOpen || isNarrowPreviewViewport()) {
+            return;
         }
 
-        const btnIcon = container.find('.preview-fullscreen-btn i');
-        btnIcon.removeClass('fa-expand fa-compress').addClass(isFullScreen ? 'fa-compress' : 'fa-expand');
-        container.find('.preview-fullscreen-btn').attr('title', isFullScreen ? '<?php _e('退出全屏'); ?>' : '<?php _e('全屏'); ?>');
+        previewState.isFullScreen = !previewState.isFullScreen;
+        syncPreviewLayout();
     }
 
-    function previewData(cid) {
-        isFullScreen = checkNarrowScreen();
-        $(document.body).addClass('preview-mode');
+    function syncPreviewLayout() {
+        if (!previewState.container) {
+            return;
+        }
 
-        const overlay = $('<div class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center preview-overlay"></div>');
-        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 shadow-2xl relative flex flex-col overflow-hidden transition-all duration-200"></div>');
+        const shouldFullScreen = isNarrowPreviewViewport() || previewState.isFullScreen;
+        previewState.container
+            .toggleClass('w-full h-full rounded-none', shouldFullScreen)
+            .toggleClass('md:w-11/12 md:h-5/6', !shouldFullScreen);
 
+        if (!previewState.fullScreenButton) {
+            return;
+        }
+
+        const hideToggle = isNarrowPreviewViewport();
+        const label = '<?php _e('切换全屏预览'); ?>';
+
+        previewState.fullScreenButton
+            .toggleClass('hidden', hideToggle)
+            .attr('title', label)
+            .attr('aria-label', label);
+    }
+
+    function closePreview() {
+        if (previewState.frame) {
+            previewState.frame.off('load');
+            previewState.frame.attr('src', 'about:blank');
+        }
+
+        if (previewState.overlay) {
+            previewState.overlay.remove();
+        }
+
+        previewState.overlay = null;
+        previewState.container = null;
+        previewState.frame = null;
+        previewState.loading = null;
+        previewState.fullScreenButton = null;
+        previewState.isOpen = false;
+        previewState.isFullScreen = false;
+
+        $(document).off('.writePreview');
+        $(window).off('.writePreview');
+    }
+
+    function bindPreviewEvents() {
+        $(document).off('keydown.writePreview').on('keydown.writePreview', function (e) {
+            if (!previewState.isOpen) {
+                return;
+            }
+
+            if (e.key === 'Escape') {
+                if (!isNarrowPreviewViewport() && previewState.isFullScreen) {
+                    previewState.isFullScreen = false;
+                    syncPreviewLayout();
+                } else {
+                    closePreview();
+                }
+            } else if (e.key === 'F11' && !isNarrowPreviewViewport()) {
+                e.preventDefault();
+                togglePreviewFullScreen();
+            }
+        });
+
+        $(window).off('resize.writePreview').on('resize.writePreview', function () {
+            if (!previewState.isOpen) {
+                return;
+            }
+
+            if (isNarrowPreviewViewport()) {
+                previewState.isFullScreen = true;
+            }
+
+            syncPreviewLayout();
+        });
+    }
+
+    function openPreview(previewCid) {
+        if (!previewCid) {
+            return;
+        }
+
+        closePreview();
+        previewState.isOpen = true;
+        previewState.isFullScreen = isNarrowPreviewViewport();
+
+        const overlay = $('<div class="fixed inset-0 z-50 bg-black/75 flex items-center justify-center preview-overlay"></div>');
+        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 shadow-2xl relative flex flex-col overflow-hidden"></div>');
         const header = $('<div class="h-12 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-4 flex-shrink-0"></div>');
-        header.append('<h3 class="font-bold text-gray-700 text-sm"><i class="fas fa-eye mr-2"></i><?php _e('文章预览'); ?></h3>');
+        const title = $('<h3 class="font-bold text-gray-700 text-sm"><i class="fas fa-eye mr-2"></i><?php _e('文章预览'); ?></h3>');
+        const headerButtons = $('<div class="flex items-center space-x-2"></div>');
+        const fullScreenButton = $('<button type="button" class="preview-fullscreen-btn text-gray-500 hover:text-discord-accent focus:outline-none" title="<?php _e('切换全屏预览'); ?>" aria-label="<?php _e('切换全屏预览'); ?>"><i class="fas fa-expand"></i></button>');
+        const closeButton = $('<button type="button" class="text-gray-500 hover:text-red-500 focus:outline-none" title="<?php _e('关闭'); ?>" aria-label="<?php _e('关闭'); ?>"><i class="fas fa-times"></i></button>');
+        const body = $('<div class="relative flex-1 min-h-0 bg-white"></div>');
+        const loading = $('<div class="absolute inset-0 flex items-center justify-center bg-white text-sm text-gray-500"><span><?php _e('正在加载预览...'); ?></span></div>');
+        const frame = $('<iframe frameborder="0" class="w-full h-full bg-white" loading="eager"></iframe>');
 
-        const headerBtns = $('<div class="flex items-center space-x-2"></div>');
+        fullScreenButton.on('click', togglePreviewFullScreen);
+        closeButton.on('click', closePreview);
+        frame.on('load', function () {
+            if (previewState.loading) {
+                previewState.loading.remove();
+                previewState.loading = null;
+            }
+        });
 
-        const fullscreenBtn = $('<button class="preview-fullscreen-btn text-gray-500 hover:text-discord-accent focus:outline-none" title="<?php _e('全屏'); ?>"></button>');
-        fullscreenBtn.html('<i class="fas fa-expand"></i>');
-
-        if (checkNarrowScreen()) {
-            fullscreenBtn.addClass('hidden');
-        }
-
-        fullscreenBtn.click(togglePreviewFullScreen);
-        headerBtns.append(fullscreenBtn);
-
-        const closeBtn = $('<button class="text-gray-500 hover:text-red-500 focus:outline-none" title="<?php _e('关闭'); ?>"></button>');
-        closeBtn.html('<i class="fas fa-times"></i>');
-        closeBtn.click(cancelPreview);
-        headerBtns.append(closeBtn);
-
-        header.append(headerBtns);
-        container.append(header);
-
-        const frame = $('<iframe frameborder="0" class="w-full flex-1 bg-white"></iframe>')
-            .attr('src', './preview.php?cid=' + cid);
-
-        container.append(frame);
+        headerButtons.append(fullScreenButton, closeButton);
+        header.append(title, headerButtons);
+        body.append(loading, frame);
+        container.append(header, body);
         overlay.append(container).appendTo(document.body);
 
-        $(document).on('keydown.preview', function(e) {
-            if (e.key === 'Escape') {
-                if (isFullScreen) {
-                    togglePreviewFullScreen();
-                } else {
-                    cancelPreview();
-                }
-            }
-            if (e.key === 'F11') {
-                e.preventDefault();
-                if (!checkNarrowScreen()) {
-                    togglePreviewFullScreen();
-                }
-            }
-        });
+        previewState.overlay = overlay;
+        previewState.container = container;
+        previewState.frame = frame;
+        previewState.loading = loading;
+        previewState.fullScreenButton = fullScreenButton;
 
-        $(window).on('resize.preview', function() {
-            const narrow = checkNarrowScreen();
-            const btn = container.find('.preview-fullscreen-btn');
-            if (narrow) {
-                isFullScreen = true;
-                btn.addClass('hidden');
-                updatePreviewLayout();
-            } else {
-                btn.removeClass('hidden');
-            }
-        });
+        syncPreviewLayout();
+        bindPreviewEvents();
+
+        frame.attr('src', getPreviewUrl(previewCid));
     }
 
-    function cancelPreview() {
-        isFullScreen = false;
-        $(document.body).removeClass('preview-mode');
-        $('.preview-overlay').remove();
-        $(document).off('keydown.preview');
-        $(window).off('resize.preview');
-    }
-
-    $('#btn-cancel-preview').click(cancelPreview);
-
-    $(window).bind('message', function (e) {
-        if (e.originalEvent.data === 'cancelPreview') {
-            cancelPreview();
-        }
-    });
-
-    // Preview save confirmation modal
-    var previewSaveCallback = null;
-    btnPreview.click(function () {
+    btnPreview.on('click', function () {
         if (changed) {
-            $('#preview-save-confirm-modal').removeClass('hidden');
-            previewSaveCallback = function () {
+            previewState.saveCallback = function () {
                 Typecho.savePost(function () {
-                    previewData(draftId);
+                    openPreview(resolvePreviewCid());
                 });
             };
-        } else if (!!draftId) {
-            previewData(draftId);
-        } else if (!!cid) {
-            previewData(cid);
+
+            previewSaveModal.removeClass('hidden');
+            return;
+        }
+
+        openPreview(resolvePreviewCid());
+    });
+
+    $('#cancel-preview-save').on('click', hidePreviewSaveConfirm);
+
+    $('#confirm-preview-save').on('click', function () {
+        const callback = previewState.saveCallback;
+
+        hidePreviewSaveConfirm();
+
+        if (callback) {
+            callback();
         }
     });
 
-    $('#cancel-preview-save').click(function () {
-        $('#preview-save-confirm-modal').addClass('hidden');
-        previewSaveCallback = null;
-    });
-
-    $('#confirm-preview-save').click(function () {
-        if (previewSaveCallback) {
-            previewSaveCallback();
-        }
-        $('#preview-save-confirm-modal').addClass('hidden');
-    });
-
-    // Close modal when clicking outside
-    $('#preview-save-confirm-modal').click(function (e) {
+    previewSaveModal.on('click', function (e) {
         if (e.target === this) {
-            $('#preview-save-confirm-modal').addClass('hidden');
-            previewSaveCallback = null;
+            hidePreviewSaveConfirm();
         }
     });
 
-    // 控制选项和附件的切换
     // Use 'on' for dynamic elements if needed, but direct click is fine for static
     $(document).on('click', '.typecho-option-tabs button, .typecho-option-tabs li', function() {
         const $this = $(this);
