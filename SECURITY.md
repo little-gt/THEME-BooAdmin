@@ -150,7 +150,7 @@ php verify/hash_tool.php --help
 官方 HASH 文件托管于 CDN，工具会自动使用该地址进行远程校验：
 
 ```
-https://cdn.garfieldtom.cool/resource/libs/booadmin/1.2.0/hash/hash.json
+https://cdn.garfieldtom.cool/resource/libs/booadmin/1.2.0/hash.json
 ```
 
 如果您打开工具时，提示工具被篡改或者不完整，请您尝试检查网络环境是否正常，或尝试更新到最新的已发布版本，开发版本可能因为没有更新权威数据导致校验异常。
