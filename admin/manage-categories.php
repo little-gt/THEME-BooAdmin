@@ -143,7 +143,7 @@ include 'menu.php';
 </main>
 
 <div id="categories-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="categories-confirm-modal-title">
-    <div class="bg-white shadow-xl max-w-md w-full p-6 mx-4">
+    <div class="bg-white border border-gray-200 max-w-md w-full p-6 mx-4">
         <h3 id="categories-confirm-modal-title" class="text-lg font-bold text-discord-text mb-4"><?php _e('操作确认'); ?></h3>
         <p id="categories-confirm-modal-message" class="text-discord-muted mb-6"><?php _e('请确认是否继续。'); ?></p>
         <div class="flex justify-end space-x-3">

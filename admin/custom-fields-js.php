@@ -1,7 +1,7 @@
 <?php if(!defined('__TYPECHO_ADMIN__')) exit; ?>
 <!-- Field Delete Confirm Modal -->
 <div id="field-delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white shadow-xl max-w-md w-full p-6">
+    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
         <p class="text-discord-muted mb-6"><?php _e('确认要删除此字段吗?'); ?></p>
         <div class="flex justify-end space-x-3">

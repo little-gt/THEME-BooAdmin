@@ -137,7 +137,7 @@ include 'form-js.php';
 ?>
 <!-- Restore Confirm Modal -->
 <div id="restore-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white shadow-xl max-w-md w-full p-6">
+    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认恢复'); ?></h3>
         <p class="text-discord-muted mb-6"><?php _e('恢复操作将覆盖所有现有数据, 是否继续?'); ?></p>
         <div class="flex justify-end space-x-3">

@@ -4,7 +4,7 @@
 
 一款使用 TailwindCSS 精心重构的 Typecho 现代化后台主题。完全支持 Typecho 1.3.0，采用 GARFIELDTOM'S NEST CDN 进行资源加速分发，提供稳定且高效的加载体验。
 
-[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.1.20-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
+[![BooAdmin](https://img.shields.io/badge/BooAdmin-v1.2.0-blue?style=for-the-badge)](https://github.com/little-gt/THEME-BooAdmin/releases)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)](LICENSE)
 ![LTS](https://img.shields.io/badge/Status-LTS%20Stable-blue?style=for-the-badge)
 
@@ -124,14 +124,11 @@
 
 ---
 
-## 🚀 v1.1.20 版本更新速递
+## 🚀 v1.2.0 版本更新速递
 
 ### 质量更新
 
-- 🔧 表格模式下全选之后，若再取消选择项目，全选样式没有更新；
-- 🔧 窄边屏幕下预览文章，全屏按钮点击之后预览框缩小到不可用；
-- 🔧 修复了ensureNProgressStructure 重建元素时缺少 bar[role=bar]，导致 NProgress.start() 中 querySelector 返回 null 的问题；
-- 🔧 修复了在 admin/write-js.php:340，iframe 预览时，偶现 预览页（preview.php） 提示 session 错误的问题。
+
 
 ---
 

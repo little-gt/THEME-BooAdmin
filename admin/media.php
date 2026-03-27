@@ -114,7 +114,7 @@ include 'file-upload-js.php';
 ?>
 <!-- Delete Confirm Modal -->
 <div id="delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white shadow-xl max-w-md w-full p-6">
+    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
         <p id="delete-confirm-message" class="text-discord-muted mb-6"></p>
         <div class="flex justify-end space-x-3">
@@ -129,7 +129,7 @@ include 'file-upload-js.php';
 </div>
 <!-- Copy Success Modal -->
 <div id="copy-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white shadow-xl max-w-md w-full p-6">
+    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('复制成功'); ?></h3>
         <p class="text-discord-muted mb-6"><?php _e('已复制到剪贴板'); ?></p>
         <div class="flex justify-end">

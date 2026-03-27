@@ -66,7 +66,7 @@ include 'menu.php';
                              <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-100">
                                 <span class="font-mono text-sm text-discord-text font-medium"><?php echo $files->currentFile(); ?></span>
                                 <div class="flex items-center space-x-3">
-                                    <button id="fullscreen-btn" class="text-discord-muted hover:text-discord-accent transition-colors p-1 rounded hover:bg-gray-200">
+                                    <button type="button" id="fullscreen-btn" class="text-discord-muted hover:text-discord-accent transition-colors p-1 rounded hover:bg-gray-200" title="<?php _e('切换全屏'); ?>" aria-label="<?php _e('切换全屏'); ?>">
                                         <i class="fas fa-expand"></i>
                                     </button>
                                     <?php if (!$files->currentIsWriteable()): ?>
@@ -95,15 +95,15 @@ include 'menu.php';
 
                             <!-- 保存确认提示框 -->
                             <div id="save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-                                <div class="bg-white shadow-xl max-w-md w-full p-6">
-                                    <h3 class="text-lg font-bold text-discord-text mb-4">确认保存</h3>
-                                    <p class="text-discord-muted mb-6">您确定要保存此文件吗？此操作不可逆。</p>
+                                <div class="bg-white border border-gray-200 max-w-md w-full p-6">
+                                    <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认保存'); ?></h3>
+                                    <p class="text-discord-muted mb-6"><?php _e('您确定要保存此文件吗？此操作不可逆。'); ?></p>
                                     <div class="flex justify-end space-x-3">
-                                        <button id="cancel-save" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
-                                            取消
+                                        <button type="button" id="cancel-save" class="px-4 py-2 bg-gray-200 text-discord-text font-medium hover:bg-gray-300 transition-colors text-sm">
+                                            <?php _e('取消'); ?>
                                         </button>
-                                        <button id="confirm-save" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
-                                            确认保存
+                                        <button type="button" id="confirm-save" class="px-4 py-2 bg-discord-accent text-white font-medium hover:bg-blue-600 transition-colors text-sm">
+                                            <?php _e('确认保存'); ?>
                                         </button>
                                     </div>
                                 </div>

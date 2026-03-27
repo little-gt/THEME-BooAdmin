@@ -375,7 +375,7 @@ include 'table-js.php';
 ?>
 <!-- Operate Confirm Modal -->
 <div id="operate-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white shadow-xl max-w-md w-full p-6">
+    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认操作'); ?></h3>
         <p id="operate-confirm-message" class="text-discord-muted mb-6"></p>
         <div class="flex justify-end space-x-3">
