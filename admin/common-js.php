@@ -13,8 +13,12 @@
                 function ensureNProgressStructure() {
                     var $nprogress = $('#nprogress');
                     if ($nprogress.length === 0) {
-                        $nprogress = $('<div id="nprogress"><div class="spinner"><div class="spinner-icon"></div><span class="spinner-text"><?php _e('正在加载'); ?></span></div></div>').appendTo('body');
+                        $nprogress = $('<div id="nprogress"><div class="bar" role="bar"><div class="peg"></div></div><div class="spinner"><div class="spinner-icon"></div><span class="spinner-text"><?php _e('正在加载'); ?></span></div></div>').appendTo('body');
                     } else {
+                        // NProgress.remove() 会删除整个元素后由此处重建，确保 bar 结构完整
+                        if ($nprogress.find('[role="bar"]').length === 0) {
+                            $nprogress.prepend('<div class="bar" role="bar"><div class="peg"></div></div>');
+                        }
                         var $spinner = $nprogress.find('.spinner');
                         if ($spinner.length === 0) {
                             $spinner = $('<div class="spinner"><div class="spinner-icon"></div><span class="spinner-text"><?php _e('正在加载'); ?></span></div>').appendTo($nprogress);
@@ -474,6 +478,9 @@
                     
                     // Update corresponding card checkbox
                     $('.content-card .card-checkbox[value="' + cid + '"]').prop('checked', isChecked);
+                    
+                    // Update select all checkbox state
+                    updateSelectAllState();
                 });
                 
                 function updateSelectAllState() {
