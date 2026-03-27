@@ -150,9 +150,9 @@
 
 ### 🔧 对 Typecho.js 修正的说明
 
-为了修复 manage-users.php 和 manage-categories.php 中多选框取消选择后状态不更新的 bug。问题根源在 typecho.js 中 tableSelectable 插件的事件处理逻辑：checkbox 的 click 事件冒泡到 tr 后会重复触发 toggle，导致两次取反等于状态不变。
+见 https://github.com/typecho/typecho/issues/1967 了解修复和改动，核心在于 tableSelectable 多选状态同步的补充。
 
-因此，移除 &&"checkbox"!=t.attr("type") 条件，使 checkbox 点击时也执行 stopPropagation，避免事件冒泡到 tr 后再次取反导致状态不变。建议更新主题之后，单独对 typecho.js 清理一下 CDN 的缓存。
+建议更新后，手动刷新 /admin/js/typecho.js 的缓存，使用了 CDN 请刷新 CDN 的缓存，确保修复生效。
 
 ---
 
