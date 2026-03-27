@@ -279,25 +279,38 @@ $(document).ready(function() {
 
     // 预览功能
     let isFullScreen = false;
+    const FULLSCREEN_BREAKPOINT = 768;
+
+    function checkNarrowScreen() {
+        return window.innerWidth < FULLSCREEN_BREAKPOINT;
+    }
 
     function togglePreviewFullScreen() {
         isFullScreen = !isFullScreen;
+        updatePreviewLayout();
+    }
+
+    function updatePreviewLayout() {
         const container = $('.preview-overlay > div');
+        if (!container.length) return;
+
         if (isFullScreen) {
-            container.removeClass('md:w-11/12 md:h-5/6').addClass('w-full h-full');
+            container.removeClass('md:w-11/12 md:h-5/6').addClass('w-full h-full rounded-none');
         } else {
-            container.removeClass('w-full h-full').addClass('md:w-11/12 md:h-5/6');
+            container.removeClass('w-full h-full rounded-none').addClass('md:w-11/12 md:h-5/6');
         }
-        const fullscreenBtn = container.find('.preview-fullscreen-btn i');
-        fullscreenBtn.toggleClass('fa-expand fa-compress');
+
+        const btnIcon = container.find('.preview-fullscreen-btn i');
+        btnIcon.removeClass('fa-expand fa-compress').addClass(isFullScreen ? 'fa-compress' : 'fa-expand');
+        container.find('.preview-fullscreen-btn').attr('title', isFullScreen ? '<?php _e('退出全屏'); ?>' : '<?php _e('全屏'); ?>');
     }
 
     function previewData(cid) {
-        isFullScreen = false;
+        isFullScreen = checkNarrowScreen();
         $(document.body).addClass('preview-mode');
 
         const overlay = $('<div class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center preview-overlay"></div>');
-        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 rounded-none shadow-2xl relative flex flex-col overflow-hidden transition-all duration-200"></div>');
+        const container = $('<div class="bg-white w-full h-full md:w-11/12 md:h-5/6 shadow-2xl relative flex flex-col overflow-hidden transition-all duration-200"></div>');
 
         const header = $('<div class="h-12 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-4 flex-shrink-0"></div>');
         header.append('<h3 class="font-bold text-gray-700 text-sm"><i class="fas fa-eye mr-2"></i><?php _e('文章预览'); ?></h3>');
@@ -306,6 +319,11 @@ $(document).ready(function() {
 
         const fullscreenBtn = $('<button class="preview-fullscreen-btn text-gray-500 hover:text-discord-accent focus:outline-none" title="<?php _e('全屏'); ?>"></button>');
         fullscreenBtn.html('<i class="fas fa-expand"></i>');
+
+        if (checkNarrowScreen()) {
+            fullscreenBtn.addClass('hidden');
+        }
+
         fullscreenBtn.click(togglePreviewFullScreen);
         headerBtns.append(fullscreenBtn);
 
@@ -318,8 +336,7 @@ $(document).ready(function() {
         container.append(header);
 
         const frame = $('<iframe frameborder="0" class="w-full flex-1 bg-white"></iframe>')
-            .attr('src', './preview.php?cid=' + cid)
-            .attr('sandbox', 'allow-same-origin allow-scripts');
+            .attr('src', './preview.php?cid=' + cid);
 
         container.append(frame);
         overlay.append(container).appendTo(document.body);
@@ -334,7 +351,21 @@ $(document).ready(function() {
             }
             if (e.key === 'F11') {
                 e.preventDefault();
-                togglePreviewFullScreen();
+                if (!checkNarrowScreen()) {
+                    togglePreviewFullScreen();
+                }
+            }
+        });
+
+        $(window).on('resize.preview', function() {
+            const narrow = checkNarrowScreen();
+            const btn = container.find('.preview-fullscreen-btn');
+            if (narrow) {
+                isFullScreen = true;
+                btn.addClass('hidden');
+                updatePreviewLayout();
+            } else {
+                btn.removeClass('hidden');
             }
         });
     }
@@ -344,6 +375,7 @@ $(document).ready(function() {
         $(document.body).removeClass('preview-mode');
         $('.preview-overlay').remove();
         $(document).off('keydown.preview');
+        $(window).off('resize.preview');
     }
 
     $('#btn-cancel-preview').click(cancelPreview);
