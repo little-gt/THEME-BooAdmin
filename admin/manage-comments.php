@@ -88,17 +88,17 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
             <!-- Comment List -->
             <div class="bg-white border border-gray-200 overflow-hidden">
                 <form method="post" name="manage_comments" class="operate-form">
-                    <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
+                    <div class="booadmin-operate-bar operate-bar">
                          <div class="flex items-center space-x-2">
-                             <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                             <label class="booadmin-select-all">
                                  <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                  <span><?php _e('全选'); ?></span>
                              </label>
                              <div class="relative group">
-                                <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
+                                <button type="button" class="btn-dropdown-toggle booadmin-dropdown-toggle">
                                     <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                 </button>
-                                <div class="dropdown-menu absolute left-0 mt-1 w-40 bg-white border border-gray-100 py-1 hidden z-50">
+                                <div class="dropdown-menu booadmin-dropdown-menu w-40 hidden">
                                     <a href="<?php $security->index('/action/comments-edit?do=approved'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-check mr-1 text-green-600"></i><?php _e('通过'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=waiting'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-clock mr-1 text-yellow-600"></i><?php _e('待审核'); ?></a>
                                     <a href="<?php $security->index('/action/comments-edit?do=spam'); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-ban mr-1 text-orange-500"></i><?php _e('标记垃圾'); ?></a>

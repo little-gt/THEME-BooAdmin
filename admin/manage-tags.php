@@ -35,17 +35,17 @@ include 'menu.php';
             <div class="lg:col-span-2">
                 <div class="bg-white border border-gray-200 overflow-hidden h-full flex flex-col">
                     <form method="post" name="manage_tags" class="operate-form flex flex-col h-full">
-                        <div class="p-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 operate-bar">
+                        <div class="booadmin-operate-bar operate-bar">
                              <div class="flex items-center space-x-2">
-                                 <label class="flex items-center space-x-2 text-sm text-gray-500 cursor-pointer select-none">
+                                 <label class="booadmin-select-all">
                                      <input type="checkbox" class="typecho-table-select-all text-discord-accent focus:ring-discord-accent border-gray-300">
                                      <span><?php _e('全选'); ?></span>
                                  </label>
                                  <div class="relative group">
-                                    <button type="button" class="btn-dropdown-toggle px-3 py-1 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 flex items-center">
+                                    <button type="button" class="btn-dropdown-toggle booadmin-dropdown-toggle">
                                         <i class="fas fa-tasks mr-1"></i><?php _e('选中项'); ?> <i class="fas fa-chevron-down ml-1"></i>
                                     </button>
-                                    <div class="dropdown-menu absolute left-0 mt-1 w-64 bg-white border border-gray-100 py-1 hidden z-50">
+                                    <div class="dropdown-menu booadmin-dropdown-menu w-64 hidden">
                                         <a lang="<?php _e('你确认要删除这些标签吗?'); ?>" data-confirm-message="<?php _e('你确认要删除这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=delete'); ?>" class="js-tag-action block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700"><i class="fas fa-trash-alt mr-1"></i><?php _e('删除'); ?></a>
                                         <a lang="<?php _e('刷新标签可能需要等待较长时间, 你确认要刷新这些标签吗?'); ?>" data-confirm-message="<?php _e('刷新标签可能需要等待较长时间, 你确认要刷新这些标签吗?'); ?>" href="<?php $security->index('/action/metas-tag-edit?do=refresh'); ?>" class="js-tag-action block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-sync-alt mr-1"></i><?php _e('刷新'); ?></a>
                                         <div class="border-t border-gray-100 my-1"></div>

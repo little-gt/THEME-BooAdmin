@@ -8,11 +8,11 @@ $header = '
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'normalize.css?v=1.2.0', true) . '">
 <link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'grid.css?v=1.2.0', true) . '">
 <!-- Theme Variables -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.2.0a', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.2.0a', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'light.css?v=1.2.0b', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'dark.css?v=1.2.0b', true) . '">
 <!-- Component Styles -->
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.2.0a', true) . '">
-<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.2.0a', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'style.css?v=1.2.0b', true) . '">
+<link rel="stylesheet" href="' . $options->adminStaticUrl('css', 'nprogress.css?v=1.2.0b', true) . '">
 <!-- NProgress -->
 <script src="' . $options->adminStaticUrl('js', 'nprogress.js', true) . '"></script>
 <!-- TailwindCSS -->

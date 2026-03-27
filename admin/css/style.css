@@ -3302,6 +3302,52 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	max-width:42rem;
 }
 
+.booadmin-operate-bar {
+	padding:12px;
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+	background:rgb(249 250 251 / 0.5);
+	border-bottom:1px solid var(--booadmin-border);
+}
+
+.booadmin-select-all {
+	display:flex;
+	align-items:center;
+	gap:8px;
+	font-size:14px;
+	color:var(--booadmin-muted);
+	cursor:pointer;
+	user-select:none;
+}
+
+.booadmin-dropdown-toggle {
+	padding:4px 12px;
+	display:flex;
+	align-items:center;
+	font-size:12px;
+	font-weight:500;
+	color:#374151;
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border-strong);
+}
+
+.booadmin-dropdown-toggle:hover,
+.booadmin-dropdown-toggle.active {
+	background:var(--booadmin-surface-2);
+	color:var(--booadmin-text);
+}
+
+.booadmin-dropdown-menu {
+	position:absolute;
+	left:0;
+	margin-top:4px;
+	padding:4px 0;
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	z-index:50;
+}
+
 /* JS-generated component theming */
 .booadmin-chart-tooltip-title {
 	font-weight:600;
