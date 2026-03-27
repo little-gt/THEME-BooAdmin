@@ -21,7 +21,7 @@ include 'menu.php';
         </div>
         
         <div class="flex items-center space-x-4">
-            <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="px-3 py-1.5 bg-gray-100 text-gray-600 text-sm font-medium hover:bg-gray-200 transition-colors">
+            <a href="<?php $options->adminUrl('manage-medias.php'); ?>" class="booadmin-back-button">
                 <i class="fas fa-arrow-left mr-1"></i> <?php _e('返回'); ?>
             </a>
             <a href="<?php $options->siteUrl(); ?>" class="text-discord-muted hover:text-discord-accent transition-colors" title="<?php _e('查看网站'); ?>" target="_blank">
@@ -38,8 +38,8 @@ include 'menu.php';
             
             <!-- File Preview & Info -->
             <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white border border-gray-200 p-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e('文件预览'); ?></h3>
+                <div class="booadmin-panel">
+                    <h3 class="booadmin-panel-title"><?php _e('文件预览'); ?></h3>
                     
                     <div class="flex flex-col items-center">
                         <?php if ($attachment->attachment->isImage): ?>
@@ -75,8 +75,8 @@ include 'menu.php';
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-200 p-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e('替换文件'); ?></h3>
+                <div class="booadmin-panel">
+                    <h3 class="booadmin-panel-title"><?php _e('替换文件'); ?></h3>
                     <div id="upload-panel" class="border-2 border-dashed border-gray-300 p-8 text-center hover:bg-gray-50 transition-colors relative">
                         <div class="upload-area cursor-pointer" data-url="<?php $security->index('/action/upload?do=modify'); ?>">
                             <i class="fas fa-cloud-upload-alt text-4xl text-gray-300 mb-3"></i>
@@ -90,8 +90,8 @@ include 'menu.php';
 
             <!-- Edit Form -->
             <div class="lg:col-span-1">
-                <div class="bg-white border border-gray-200 p-6 sticky top-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e('编辑信息'); ?></h3>
+                <div class="booadmin-panel sticky top-4">
+                    <h3 class="booadmin-panel-title"><?php _e('编辑信息'); ?></h3>
                     <?php $attachment->form()->render(); ?>
                     
                     <div class="mt-6 pt-4 border-t border-gray-100 text-center hidden">

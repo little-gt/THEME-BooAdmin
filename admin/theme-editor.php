@@ -34,7 +34,7 @@ include 'menu.php';
         <div class="w-full max-w-none mx-auto h-full flex flex-col">
 
 
-            <div class="bg-white border border-gray-100 overflow-hidden">
+            <div class="booadmin-panel booadmin-panel-flush overflow-hidden">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                     <h2 class="text-lg font-bold text-discord-text flex items-center">
                         <i class="fas fa-code text-discord-accent mr-2"></i> <?php _e('编辑外观文件'); ?>

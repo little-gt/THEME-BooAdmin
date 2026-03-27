@@ -41,7 +41,7 @@ include 'menu.php';
             </div>
             </div>
 
-            <div class="bg-white border border-gray-200 p-6">
+            <div class="booadmin-panel">
                 <?php \Widget\Options\Reading::alloc()->form()->render(); ?>
             </div>
         </div>

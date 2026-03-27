@@ -3348,6 +3348,44 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	z-index:50;
 }
 
+.booadmin-panel {
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	padding:24px;
+}
+
+.booadmin-panel-md {
+	padding:32px;
+}
+
+.booadmin-panel-flush {
+	padding:0;
+}
+
+.booadmin-panel-title {
+	margin:0 0 16px;
+	padding-bottom:8px;
+	font-size:1.125rem;
+	font-weight:700;
+	color:var(--booadmin-text);
+	border-bottom:1px solid var(--booadmin-border);
+}
+
+.booadmin-back-button {
+	display:inline-flex;
+	align-items:center;
+	padding:8px 16px;
+	font-size:14px;
+	font-weight:500;
+	color:var(--booadmin-text);
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border-strong);
+}
+
+.booadmin-back-button:hover {
+	background:var(--booadmin-surface-2);
+}
+
 /* JS-generated component theming */
 .booadmin-chart-tooltip-title {
 	font-weight:600;

@@ -90,8 +90,8 @@ include 'menu.php';
 
             <!-- Edit Form -->
             <div class="lg:col-span-1">
-                <div class="bg-white border border-gray-200 p-6 sticky top-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100"><?php _e(isset($request->mid) ? '编辑标签' : '新增标签'); ?></h3>
+                <div class="booadmin-panel sticky top-4">
+                    <h3 class="booadmin-panel-title"><?php _e(isset($request->mid) ? '编辑标签' : '新增标签'); ?></h3>
                     <?php \Widget\Metas\Tag\Edit::alloc()->form()->render(); ?>
                     <?php if (isset($request->mid)): ?>
                         <div class="mt-4 text-center">
