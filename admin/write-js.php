@@ -558,8 +558,8 @@ $(document).ready(function() {
 });
 </script>
 <!-- Preview Save Confirm Modal -->
-<div id="preview-save-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
+<div id="preview-save-confirm-modal" class="booadmin-modal hidden">
+    <div class="booadmin-dialog booadmin-dialog-sm">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认保存'); ?></h3>
         <p class="text-discord-muted mb-6"><?php _e('修改后的内容需要保存后才能预览, 是否保存?'); ?></p>
         <div class="flex justify-end space-x-3">
@@ -573,8 +573,8 @@ $(document).ready(function() {
     </div>
 </div>
 <!-- Draft Delete Confirm Modal -->
-<div id="draft-delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
+<div id="draft-delete-confirm-modal" class="booadmin-modal hidden">
+    <div class="booadmin-dialog booadmin-dialog-sm">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('确认删除'); ?></h3>
         <p class="text-discord-muted mb-6"><?php _e('您确认要删除这份草稿吗?'); ?></p>
         <div class="flex justify-end space-x-3">

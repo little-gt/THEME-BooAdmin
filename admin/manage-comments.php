@@ -368,7 +368,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Comment Reply Modal -->
 <div id="replyModal" class="comment-modal">
-    <div class="bg-white border border-gray-200 w-full max-w-2xl p-6">
+    <div class="booadmin-dialog booadmin-dialog-lg">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-discord-text"><?php _e('回复评论'); ?></h3>
             <button type="button" class="text-gray-400 hover:text-discord-text text-xl leading-none" onclick="closeReplyModal()"><i class="fas fa-times"></i></button>
@@ -391,7 +391,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Comment Edit Modal -->
 <div id="editModal" class="comment-modal">
-    <div class="bg-white border border-gray-200 w-full max-w-2xl p-6">
+    <div class="booadmin-dialog booadmin-dialog-lg">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold text-discord-text"><?php _e('编辑评论'); ?></h3>
             <button type="button" class="text-gray-400 hover:text-discord-text text-xl leading-none" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
@@ -423,7 +423,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="comment-modal">
-    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
+    <div class="booadmin-dialog booadmin-dialog-sm">
         <h3 class="text-lg font-bold text-discord-text mb-4"><?php _e('操作确认'); ?></h3>
         <p class="text-discord-muted mb-2" id="deleteAuthorName"><?php _e('确认删除此评论？'); ?></p>
         <p class="text-discord-muted mb-6"><?php _e('此操作不可逆，删除后无法恢复评论内容。'); ?></p>
@@ -436,7 +436,7 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 
 <!-- Message Modal -->
 <div id="messageModal" class="comment-modal">
-    <div class="bg-white border border-gray-200 max-w-md w-full p-6">
+    <div class="booadmin-dialog booadmin-dialog-sm">
         <h3 class="text-lg font-bold text-discord-text mb-4" id="messageModalTitle"><?php _e('操作确认'); ?></h3>
         <p class="text-discord-muted mb-6" id="messageModalContent"></p>
         <div class="flex justify-end space-x-3">
@@ -521,8 +521,8 @@ $isAllComments = ('on' == $request->get('__typecho_all_comments') || 'on' == \Ty
 }
 
 .content-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border-color: var(--booadmin-accent);
+    background: var(--booadmin-highlight-soft);
 }
 
 .card-checkbox {

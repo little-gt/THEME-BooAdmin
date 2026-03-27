@@ -106,8 +106,8 @@ include 'menu.php';
     <?php include 'copyright.php'; ?>
 </main>
 
-<div id="tags-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="tags-confirm-modal-title">
-    <div class="bg-white border border-gray-200 max-w-md w-full p-6 mx-4">
+<div id="tags-confirm-modal" class="booadmin-modal hidden" role="dialog" aria-modal="true" aria-labelledby="tags-confirm-modal-title">
+    <div class="booadmin-dialog booadmin-dialog-sm">
         <h3 id="tags-confirm-modal-title" class="text-lg font-bold text-discord-text mb-4"><?php _e('操作确认'); ?></h3>
         <p id="tags-confirm-modal-message" class="text-discord-muted mb-6"><?php _e('请确认是否继续。'); ?></p>
         <div class="flex justify-end space-x-3">

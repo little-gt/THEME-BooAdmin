@@ -2315,7 +2315,7 @@ main > .flex-1.overflow-y-auto,main > div.flex-1 {
 	display:flex;
 	align-items:center;
 	justify-content:space-between;
-	box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+	border-top:1px solid var(--booadmin-border);
 	z-index:100;
 	transition:all 0.3s ease;
 	border-radius:0;
@@ -3082,7 +3082,9 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	white-space:normal;
 	width:100%;
 }
-}/* ========================================
+}
+
+/* ========================================
    Modern Notification System (Toast)
    ======================================== */
 
@@ -3260,6 +3262,44 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 /* 旧版兼容 - 隐藏旧的通知样式 */
 .message.popup {
 	display:none !important;
+}
+
+/* ========================================
+   Shared Modal Shell
+   ======================================== */
+.booadmin-modal {
+	position:fixed;
+	inset:0;
+	z-index:50;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:16px;
+	background-color:var(--booadmin-overlay);
+}
+
+.booadmin-modal.hidden {
+	display:none;
+}
+
+.booadmin-dialog {
+	width:100%;
+	padding:24px;
+	background:var(--booadmin-surface);
+	border:1px solid var(--booadmin-border);
+	color:var(--booadmin-text);
+}
+
+.booadmin-dialog-sm {
+	max-width:28rem;
+}
+
+.booadmin-dialog-md {
+	max-width:40rem;
+}
+
+.booadmin-dialog-lg {
+	max-width:42rem;
 }
 
 /* JS-generated component theming */
@@ -3540,7 +3580,8 @@ button:not(.view-toggle button),.btn:not(.view-toggle button),a.btn {
 	max-width:none;
 	height:auto;
 	display:block;
-	box-shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	border:1px solid var(--booadmin-border);
+	box-shadow:none;
 }
 
 .booadmin-copyright-popup .close-btn {
