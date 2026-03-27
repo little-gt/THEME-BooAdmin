@@ -136,7 +136,7 @@ $isPluginPage = (strpos($_SERVER['REQUEST_URI'], 'extending.php') !== false);
                             <i class="fas <?php echo $item[1]; ?> w-5 text-center mr-3 text-sm opacity-80"></i>
                             <span class="sidebar-text"><?php _e($item[2]); ?></span>
                         </div>
-                        <i class="fas fa-chevron-down text-xs transition-transform duration-200 <?php if(!$inSettingsPage) echo '-rotate-90'; ?> settings-chevron"></i>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-200 settings-chevron <?php echo $inSettingsPage ? 'rotate-0' : '-rotate-90'; ?>"></i>
                     </button>
                     <ul class="mt-1 ml-2 pl-6 space-y-1 border-l-2 border-gray-100 <?php if(!$inSettingsPage) echo 'hidden'; ?>">
                         <?php foreach ($settingsSubItems as $page => $label): ?>
